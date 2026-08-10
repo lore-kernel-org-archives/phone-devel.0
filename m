@@ -1,145 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F223AE187;
-	Mon, 10 Aug 2026 10:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF653AE6E5;
+	Mon, 10 Aug 2026 10:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786357348; cv=none; b=ZjzqUm/R0+4amnwnpARBs61NcvoGYxH8sw4jlCXeeim5RzznFR1g/mMsCSIgdpAoyPkB3oYH7kRJZhHZUAOM2/KXb5bRs+OqnKxpBIj1AQukSlwJz6HXixUXbwPdnBwGwXJFHFsv0gCqudTeKz41ZERrABE7pDIcWwU7sn0vXL8=
+	t=1786357508; cv=none; b=ex0Qj+vrI7IzUa14p5TtuJb5LiNg94ss+vFlzVTUV4aybEtFoq1oHIGoWpkWQTQ8MLKn8x06isr5G6y07yuUsbClfFKqIJAsBjHTlgB2VBZGskptBZ+lteJiXu7oU1vKMes8skGdct7g0wz/26VKwnPbhrwnP/Hrls0pPtZSKNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786357348; c=relaxed/simple;
-	bh=TrdLOVS+kkSe+xLM9w5zf9ng53kF2srwRIVlxkVKxM0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=USJ1+9Gkx96jvkhJbkEhnDKGDqxEYycoUZWI8SLnASTk+/4qxmuqvT5OK0r7qjBZjGQn82NxD8uer8OCPwtcp2HWU89tSeV4P2+8cotiQyjg/gX2T04sJSApUcGKEln8LUWAXsQ5fbvlhAkzPshG11+O91B8CDLJw9HcDWOwpJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+/RWk2T; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786357508; c=relaxed/simple;
+	bh=3dsY8FIX9DzqEbT1NZad7IU9g0NMFzgWcKRnXmkmE5U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GCsNcXe//vw2GX/mHQ+H9bEvxhxjdmVJIS1F+NtA90M/Pr6OXi+biAYpqgAmoxlLw8/+H4+18ULkb64p76drZdkYBBiSYPvdiZ7tom1cdFx19RjgUu+lp5GejVj8tJ6egXZA5Z2EVQV0zahNfOOUBu9rjbEs5hytbRDQcupfvvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=CuhxUz4k; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+/RWk2T"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7D977C2BCFA;
-	Mon, 10 Aug 2026 10:22:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786357348;
-	bh=TrdLOVS+kkSe+xLM9w5zf9ng53kF2srwRIVlxkVKxM0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=U+/RWk2TGPoDBQOCaZqDrWlMSivrjaPP9p9bza8f3nNeLIVCsDC/pH7EZecUrqKZj
-	 Hq2cdwxrWpSt4QiAFj+cdLAA+q/0A9oBLtU21+m43B8LUNjJ69uxa3L89urRAPPhYd
-	 KClPwAkLUM0VyQaoGHLxOazW/kdxKqekqwH1jSrn+mSviFTgeOBo3UV94V2KhzJhmU
-	 oFzZvEfR5lLShLyfEnpeFvQ0KbPLPNvz0xY8TrkKVNn9GzDwML5QOxy4Fho1eqwX2G
-	 pmRDDUz1NJt+prelCzN0aziNaN5fbDbmjXZnyCPmCvEHSoP+s8iNK6UwcIkZiWjlLy
-	 gW6aI3mtpnfFQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B03DC5AC82;
-	Mon, 10 Aug 2026 10:22:28 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 10 Aug 2026 12:22:23 +0200
-Subject: [PATCH v4 1/2] dt-bindings: media: i2c: dongwoon,dw9714: Document
- DW9714A and V variant
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="CuhxUz4k"
+Received: from [10.0.0.152] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 0E11553407E8;
+	Mon, 10 Aug 2026 12:24:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1786357499;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=lZUtrJm2QH00/3zx50/d35ViLWwmpOYtZnYNMg+wTUE=;
+	b=CuhxUz4kcoXZqLfJc8QyhSQQTkIuiZbkDf1QP7cUWK4v40wsk69Nm12RnjKPs0DCb4zhC9
+	ZcHPnu/Xr6mvtlupJubiDxqQT7x1dGw9WPN+w7siXIGFjxX9u3MlykLzuejblQQZZDTS6g
+	I4/kziwOGdXfLT5VUMxjO46puhquK9c=
+Message-ID: <de220aa4-2bf1-4cf3-8d59-904fefa7e815@ixit.cz>
+Date: Mon, 10 Aug 2026 12:24:58 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260810-dw9714v-v4-1-a227cb1d29bd@ixit.cz>
-References: <20260810-dw9714v-v4-0-a227cb1d29bd@ixit.cz>
-In-Reply-To: <20260810-dw9714v-v4-0-a227cb1d29bd@ixit.cz>
-To: Alexander Martinz <amartinz@shiftphones.com>, 
- Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-media@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] dt-bindings: media: i2c: dongwoon,dw9714: Document
+ DW9714A and V variant
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Alexander Martinz <amartinz@shiftphones.com>,
+ Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, phone-devel@vger.kernel.org,
  Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2393; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=MctnB/YBUlKBkfY6HkmVWzrj67EeGRulizfUpQ/8RY4=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqeaZiY2wzpx14SQkqY7LkwyJr/qFiF0WFREa+N
- bXeuGxzqwGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCanmmYgAKCRBgAj/E00kg
- chY6EACMnaTvgqtjk+E0ak15UnUP0edb3ducN4jJSU/4iSSp8OpafdurfkvV4tT6Bapr8anetMd
- XNsy5p2RaOGLa/FWnAOXk2qY1SvkYq7oHZQXEDAtWoljxBMNtxNDlEqi2V19uHH0dxlqA4NpuXI
- 0fFaloefl8CeT50CWIgoUpRNzCeaV0CflVRLFfoEj4QsD70j2BOmEr0uFLgFuH3A7Wk4BtfFrId
- FwSdbh0bPjV4ULGT4GuAM+is5UQKiawq4Uji+3KULk6oXn8emrei7fUJoMqOzXm01sav4uFtU/u
- 7nMquHij2/bDdlVrDArAhpLKTBjRC6QjbBP3JKx7P2f/r12xLyzxDcu6w8KuuVISEAMmp/w/2Pj
- mAlWJxN9Vlobx+mjEkul8whjbmjGUpkXSHOcjwYw1uzFl3Sf6QtvunHOU1vZst5xwT8nha08qIR
- pdWniUwG+In4NvbTKJ9GeeU6R33JGKDW8ZnWOGLZVmr4QkhUs6QiLhssXhqqGzsgbR9OGELjX2p
- lyQqOdKh/6tgd7XuCnW9e6cZz7wyhuVlmqI2grODdScXerruertJLsSpbscmRKH3F3UWUnFlFNu
- H6U01ODdK6BlOMjD0SEAkg0DsjNLk88Dwku7gcnkVP8MS6O566iD2CMyGVBSNd4LUYxv8iA2axn
- sV4Ek/IqJJPgRZA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-
+References: <20260803-dw9714v-v3-0-8e10278dcd0d@ixit.cz>
+ <20260803-dw9714v-v3-1-8e10278dcd0d@ixit.cz>
+ <anmcEvEwld-ZV9WE@kekkonen.localdomain>
+Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <anmcEvEwld-ZV9WE@kekkonen.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-DW9714A is a successor of DW9714 and DW9714V is a successor of DW9714A.
+On 10/08/2026 11:38, Sakari Ailus wrote:
+> Hi David,
+> 
+> On Mon, Aug 03, 2026 at 11:50:25AM +0200, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> DW9714A is successor of DW9714 and DW9714V is successor of the DW9714A.
+>>
+>> All actuators are backward compatible, but they do introduce new features,
+>> such as Smart Actuator Control (SAC) mode which can minimize the
+>> mechanical vibration and achieve very fast mechanical settling time.
+>> Support for SAC can be implemented in the future.
+> 
+> What kind of configuration does SAC require? Such things generally aren't
+> configured from the userspace, compare e.g. with the dw9719 bindings
+> discussion.
 
-All three are compatible in their normal mode: a 10-bit DAC with the same
-Direct/LSC/DLC slew rate control. DW9714V additionally has an "advanced
-mode", which exposes Smart Actuator Control (SAC2/SAC3/SAC3.5/SLSC) and
-soft start/landing. Out of reset the DW9714V comes up in normal mode
-with ringing control disabled, i.e. behaving as a plain DW9714,
-so nothing has to be configured for it to work today.
+I don't have extra deep insight (except basic how the sensor works).
 
-Should SAC support be added later, it is board data rather than a userspace
-knob: the mode and the vibration period (SAC_CFG/PRESC/SACT) have to match
+By default all dw9714* sensors starts in the default "legacy" mode.
+
+The clanker after looking at datasheets and kernel struct produced, if it make 
+sense:
+
+the mode and the vibration period (SAC_CFG/PRESC/SACT) have to match
 the mechanical tVIB of the actuator and lens assembly of the given camera
-module. Those properties are left out until there is driver support and
-measured values.
+module, the same way dongwoon,aac-mode/aac-timing/clock-presc do for
+dongwoon,dw9768 and dongwoon,sac-mode/vcm-prescale for dongwoon,dw9719.
+Those properties are left out until there is driver support and measured
+values; note the DW9714V mode set differs from DW9719's, so its enum cannot
+be reused as is.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- .../devicetree/bindings/media/i2c/dongwoon,dw9714.yaml     | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+David
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
-index 66229a3dc05d6..7c2769e6c4880 100644
---- a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
-@@ -5,22 +5,30 @@ $id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9714.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Dongwoon Anatech DW9714 camera voice coil lens driver
- 
- maintainers:
-   - Krzysztof Kozlowski <krzk@kernel.org>
- 
- description:
--  DW9174 is a 10-bit DAC with current sink capability. It is intended for
--  driving voice coil lenses in camera modules.
-+  10-bit DAC with current sink capability. It is intended for driving
-+  voice coil lenses in camera modules.
- 
- properties:
-   compatible:
--    const: dongwoon,dw9714
-+    oneOf:
-+      - items:
-+          - const: dongwoon,dw9714v
-+          - const: dongwoon,dw9714a
-+          - const: dongwoon,dw9714
-+      - items:
-+          - const: dongwoon,dw9714a
-+          - const: dongwoon,dw9714
-+      - const: dongwoon,dw9714
- 
-   reg:
-     maxItems: 1
- 
-   powerdown-gpios:
-     description:
-       XSD pin for shutdown (active low)
- 
+> 
+>>
+>> Nit: fix typo in description by removing duplicate information.
+>>
+>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   .../devicetree/bindings/media/i2c/dongwoon,dw9714.yaml     | 14 +++++++++++---
+>>   1 file changed, 11 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+>> index 66229a3dc05d6..7c2769e6c4880 100644
+>> --- a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+>> +++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+>> @@ -5,22 +5,30 @@ $id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9714.yaml#
+>>   $schema: http://devicetree.org/meta-schemas/core.yaml#
+>>   
+>>   title: Dongwoon Anatech DW9714 camera voice coil lens driver
+>>   
+>>   maintainers:
+>>     - Krzysztof Kozlowski <krzk@kernel.org>
+>>   
+>>   description:
+>> -  DW9174 is a 10-bit DAC with current sink capability. It is intended for
+>> -  driving voice coil lenses in camera modules.
+>> +  10-bit DAC with current sink capability. It is intended for driving
+>> +  voice coil lenses in camera modules.
+>>   
+>>   properties:
+>>     compatible:
+>> -    const: dongwoon,dw9714
+>> +    oneOf:
+>> +      - items:
+>> +          - const: dongwoon,dw9714v
+>> +          - const: dongwoon,dw9714a
+>> +          - const: dongwoon,dw9714
+>> +      - items:
+>> +          - const: dongwoon,dw9714a
+>> +          - const: dongwoon,dw9714
+>> +      - const: dongwoon,dw9714
+>>   
+>>     reg:
+>>       maxItems: 1
+>>   
+>>     powerdown-gpios:
+>>       description:
+>>         XSD pin for shutdown (active low)
+>>   
+>>
+> 
 
 -- 
-2.55.0
-
+David Heidelberg
 
