@@ -1,78 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A50C43785E;
-	Tue, 11 Aug 2026 13:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6BD367B84
+	for <phone-devel@vger.kernel.org>; Tue, 11 Aug 2026 14:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786455952; cv=none; b=G/IcXCKLLP1HjJ2QPSoWDBUp9TlZIcudZO06aiV8Vxw+f8eWzP3Zk0i1kcT6o/PEbCioRSfpm9FUPFXwIJJWMOvo4xlUoblt5FExE0Ul0JeWatsBIX/UJMsbv2lWQcY303lRn/r2CDIUv5/UFzSaBEkt1ystTXJa/LkrjFTIFkk=
+	t=1786458518; cv=none; b=SIzeoIFOuW8GyHkRsyxjRfaqdtfgzcXVnVSkFw7ApYKuTBHKEPqM681dDuREpr9HjlBMXqd2IZDZUhYF804zUi20E9hpBiFU6DyTzYP0+jkdSpu2bqhUVc4CDufr8PJ8C4/nsAT/RjWHtuK5h+SAlnskqiZ0BGw8fIq2F/XBjHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786455952; c=relaxed/simple;
-	bh=oK+tJ8ePVa/STdgtlw7yhKAMmZR9w2BdcebxCJbE5ow=;
+	s=arc-20240116; t=1786458518; c=relaxed/simple;
+	bh=0M4hPtMCZnS9VZteKTZhp9qh2fKhCW7nMyH65uA8L3g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=upWkPQdqK1+WC2yC41/fJEHa05WKViE0DaRyD0PQJn+LIicm+b3Ni9xF5rScTEOTInlLkN2qH5LGsKcvNKNWEUfESxXYXN5+rt9dYR2fyUbzxS2pS6MPJa4jUvk8fElWN/UIrsfjAH5BGKWs6771JYdOanBZAFNonob2tqasKxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1nBu3De; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=JC3NQdEwZ7q/reawSvQbUWCLPjJSHBpYAeNmnu9KQQrfxddCuTCZcWXJPGo+i7YEA0MWkGNMjY60yOYVnMae5711lYawCLqwX6wwR/qKqunMhy51M9URO2CnY8gEGAnGGi7MFF8d5eBzb4O65zC3ZPZxaxdu5cUyYKEvkipnABU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=T6Z3OnYl; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1nBu3De"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103C51F000E9;
-	Tue, 11 Aug 2026 13:45:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786455945;
-	bh=WJsn94m6kic0rpMASlJenrkAlsCmPp1NHeAGw6wWVxQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Z1nBu3DebBwuYpYckdodFKUrP+ADbfP/H6DZ9Y7liRp4zCqpa1Em/f1dsmucYYZlB
-	 uKxKK9eBm9rDvJXTNMBEGOeutrmvkDldbUFo/u8nLPptd9AD9CTlMepHS0ndurXDNB
-	 E8dIWiONEFU8L85VE5esCGzLvc/K5IZrmyCwsSBPHRdEAwTUvtAT04th3lNApzi+q/
-	 /OlB/3rbUfl9L/OyH2IkRBWCgCVZyGX4+uYz01IvoOl1heuAcBLHr7+bJ5lrRae9NS
-	 sKgu9vcmgiAnVH5ReVr/rNA90/4er3MqtptduNrGJrk7/9FUK14kTH0wFhR+jIvihj
-	 ogEfyug8003eA==
-Date: Tue, 11 Aug 2026 08:45:44 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-Cc: Manuel Traut <manut@mecka.net>, imx@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
-	Ondrej Jirman <megi@xff.cz>,
-	Olivier Benjamin <olivier.benjamin@bootlin.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Alexander Warnecke <awarnecke002@hotmail.com>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	phone-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org,
-	Martin Kepplinger <martin.kepplinger@puri.sm>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH 1/4] media: dt-bindings: dongwoon,dw9714: Example
- shouldn't imply 1.8 V
-Message-ID: <178645594369.2062848.622744149571079300.robh@kernel.org>
-References: <20260801-pp-pro-camera-v1-0-7b4d90788f9f@ixit.cz>
- <20260801-pp-pro-camera-v1-1-7b4d90788f9f@ixit.cz>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="T6Z3OnYl"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47de008b020so654575f8f.1
+        for <phone-devel@vger.kernel.org>; Tue, 11 Aug 2026 07:28:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1786458514; x=1787063314; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=15/Bnl2VxSh6SuH4L0zNteMsMCshNZVm/S5m2oTyH2U=;
+        b=T6Z3OnYllA/aFR13y8UaNXDXNtGwzBoH1kI8u4DSg6ZJwHf3Wd6celYHrObMMn+Wip
+         +Rd1YmcCSFjpxaCEYxbYKwVCKeJc4WbyZcEct6lWed8ZTlMwijwaepybOUjEEObPYB06
+         D7ouVFtb4wZMbL7zgC8AkXADEhHBNglVygEIRCn3z/WexZyvwJrcWpuUFtmj+VzUqkhl
+         6RbuQnyjdyd4WCv2UCE278er1BtaY8+/NeU/y8U5h2/iPaIkAHEIUirNBRd8Xg3jwDTb
+         wwDxVf5fue5Nd6YQnfSgy7bb/7meq8Ycv48pcMPEf1YDhL2Wa8iEnadM/cMvHk0zR/yo
+         x4sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786458514; x=1787063314;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=15/Bnl2VxSh6SuH4L0zNteMsMCshNZVm/S5m2oTyH2U=;
+        b=EufgYw2jqpdxtPqlGXtxw3as2D3vjv7U0PuJIR2RjeM9ABaH1C/Q0pWF/rOxg8DFZT
+         EYZqeo2wAB6XNxgLQ2Mo2utNvJWJphWnl5Zwd/tmuuGPw++JPA2LKjESgaCX8e6r+vvO
+         2dDmxBHekoRN4YCBKbR5SYp3u/fS0AwUEDr9b4ivSAWkwymtmXRZOZdbioEdJeGw+Dko
+         P2JWA6tBii/3uNGLf23FFuhMYJe4BnaaUuCgyG8EBBykjgEEL0Clv/0LE00P9qhf7n16
+         8U304AoHC9LHDxucAgEUN4lvL1sVCPigeukNOOJ4yssgoIoixiIzgcg0WVb2vwszrvNI
+         5PWA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6SZA/x1ObbRgI7bP6K/7K8QBnza843Q6TiKC23v3MuQCFbOYNMEbk24H+1aTOoVp68oczRWUb8XmJrA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLsbHARRTyA3w9IjOiSzMKBam3Ecx15f8VDAOhPtBmT3ALK6Me
+	INn9JUKvYoRoYFxhBIemPln4fpzCNZuA3xIrdk/Lfr/ZXfgU/9RDEOtVcTddBlLWBJM=
+X-Gm-Gg: AR+sD109WdjPZSn9wKJSeHPf5P6gAsjkOhloeQEkhKIcCYdpGcF1uMDZ7HylyEtL5Ov
+	PxyF549g1+rn3eU7P5QFvFUfi2ydE7Fg+KAaoC9zTcuCobLCUz+YER1PpDRWlzXIzwwx6Ek73eo
+	KNOqDRYrg+V01j6IbzyfEEHLKb8BTe3qdANfIPEhf05FIEB3/5D05Upclbo2TkLa5yBkx5RcHn9
+	o6vQ7FcOwQ39C1U1swKSuoJM8St0t0O6T7ly3RmM2QETOfO4Ie0D7Xp6sRMSIeEG2fjENxXQv0q
+	+HwG4qWO2wVsiC7Z1CSVBGFt+S5FjJXfiXFhX+NftCopFzvXGWUckz8xNsLA58KJY6yPEx8Cbob
+	HDTPw+oW6xrsVZwoj/yHP4/D+8zAXmkQj+jy7TPGrSz6Zb8NnXXbHoEHQaenS5Z05Ztvvgmowi1
+	BTfABCIoGRmc/UloLAt3IuReiSBo6t3GTkLSLuEvY5rj7ttGd3x45/qkqtsGOTOXQRgfVSBFUOR
+	WhcRqhBREfrbWsRcGN7/uaNfL/Ut+welo9rURgo9K+AGDLLEi50
+X-Received: by 2002:a05:6000:46cb:b0:47f:e7f7:370f with SMTP id ffacd0b85a97d-4814ff0bd3bmr471948f8f.10.1786458513493;
+        Tue, 11 Aug 2026 07:28:33 -0700 (PDT)
+Received: from localhost (p200300f65f017104853c3975fdcddd6f.dip0.t-ipconnect.de. [2003:f6:5f01:7104:853c:3975:fdcd:dd6f])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4814a5be2aasm4934080f8f.13.2026.08.11.07.28.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Aug 2026 07:28:32 -0700 (PDT)
+Date: Tue, 11 Aug 2026 16:28:30 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Esteban Urrutia <esteuwu@proton.me>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
+	Jessica Zhang <jesszhan0024@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2] drm/panel: Add driver for Novatek NT37703 based
+ panels
+Message-ID: <answxKBHSJNR-bua@monoceros>
+References: <20260811-nt37703-bup-v1-0-34ad42b064a3@proton.me>
+ <20260811-nt37703-bup-v1-2-34ad42b064a3@proton.me>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mdziawi5h7yhrhrs"
 Content-Disposition: inline
-In-Reply-To: <20260801-pp-pro-camera-v1-1-7b4d90788f9f@ixit.cz>
+In-Reply-To: <20260811-nt37703-bup-v1-2-34ad42b064a3@proton.me>
 
 
-On Sat, 01 Aug 2026 02:35:20 +0200, David Heidelberg wrote:
-> The datasheet says VDD should be between 2.3 to 4.3V, usually around
-> 2.8V. Correct to prevent confusion and extend description.
-> 
-> Fixes: 2a96b40f366a ("media: dt-bindings: dongwoon,dw9714: convert to dtschema")
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
+--mdziawi5h7yhrhrs
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH 2/2] drm/panel: Add driver for Novatek NT37703 based
+ panels
+MIME-Version: 1.0
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Hello,
 
+On Tue, Aug 11, 2026 at 01:52:34AM -0400, Esteban Urrutia wrote:
+> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt37703.c b/drivers/gpu/drm/panel/panel-novatek-nt37703.c
+> new file mode 100644
+> index 000000000000..5858bf12a310
+> --- /dev/null
+> +++ b/drivers/gpu/drm/panel/panel-novatek-nt37703.c
+> @@ -0,0 +1,467 @@
+> [...]
+> +#include <linux/backlight.h>
+> +#include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/regulator/consumer.h>
+> +
+> +#include <video/mipi_display.h>
+> +
+> +#include <drm/display/drm_dsc.h>
+> +#include <drm/display/drm_dsc_helper.h>
+> +#include <drm/drm_mipi_dsi.h>
+> +#include <drm/drm_modes.h>
+> +#include <drm/drm_panel.h>
+> +#include <drm/drm_probe_helper.h>
+
+Please rely on <drm/drm_mipi_dsi.h> to provide the definition of
+of_device_id and drop explicit inclusion of <linux/mod_devicetable.h> as
+this will go away soon.
+
+> [...]
+> +static const struct of_device_id nt37703_of_match[] = {
+> +	{
+> +		.compatible = "motorola,bronco-tianma-v2-nt37703",
+> +		.data = &bronco_tianma_v2_desc,
+> +	},
+> +	{ /* sentinel */ },
+
+No trailing comma after the list terminator please.
+
+> +};
+> +MODULE_DEVICE_TABLE(of, nt37703_of_match);
+
+Best regards
+Uwe
+
+--mdziawi5h7yhrhrs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmp7MYsACgkQj4D7WH0S
+/k4ptQgAioC+Rr2A/Y5d45JoMyxiVG0O3RuWg9gDYCChFxXDJuKOWL12djmbG2Mm
++06Qy0mRg7Mf2XwORLM24txg92KtS9FWg454A4qeINt7TvZ1/FupspVlrxBKWwgr
+jUs5ua3a1C3VIeM0safbs7w3tNhy7oo4o1xS/ACn4e4U70YZNxqooS2dpdcrx5qr
+ObEH/mpbsEseluUZtEF8I5R+SbniO+25spM9TZXM30YGcoFiMKhHAoYzPQEbwKPE
+RYsXTMMReO+5alsUjkAUfkQWzErZe05Sl7YdX3uMaxOAP9gSYa1sgToQU4nijg/c
+RYsE/7R7AZASm+U0u+KySpmqyhqXMA==
+=HQGs
+-----END PGP SIGNATURE-----
+
+--mdziawi5h7yhrhrs--
