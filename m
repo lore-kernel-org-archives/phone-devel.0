@@ -1,134 +1,168 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76585285CA2
-	for <phone-devel@vger.kernel.org>; Tue, 11 Aug 2026 04:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F2C2BD11;
+	Tue, 11 Aug 2026 05:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786422775; cv=none; b=qbXZ5ExIcjJLcUukv97gEA+7rjf4OnKKLaRaozxR+cUkQsSJqeE+O8GttpS2WpgL8Unh6bBne+Rv/B0m/bL3aUx5P8u8LUAjQsSn+8T9S+a1jBoTpI2oDJ3gbbl6iZtikkVDbh6TECJmvYKEOPNHtYFeuAf2hfZVDzSfTpcBsLc=
+	t=1786427561; cv=none; b=ngI/1RW+6yRs9DDMY4AC0bFMns4HF23n5lkFIn1BgyHKiU7jXwBF/sRgA0JdE9yDJ+d1BEIJd2HHtWK4XhO+s+RUGkGPZcud+4/1xsg7fgyBzeRXIHP8OA1qX333yzib6McstDsfKmuEuR6zbL2NoMoNNoua3MRm+A9ebHH1d6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786422775; c=relaxed/simple;
-	bh=fJmU+BIwJkrdiLINGSNpueASUlZY1S3BdHncMRZDVgo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UVLHU5Oo515ypgmem8V//XUjiGfsz1No4ou+1PrKm4g9hJf6CzToyWZ9hMkGGRyII2jJOu8o7h5Hj8pLPE/HxkdNCdBapRouJzVxksyDKGips0Q6i1hvpwuLWqoI8SPkJvgxMi0b8Twgi8cmut0Ke+7ulY7DpyZj2Q/vY4385PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MqDk/kHM; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786427561; c=relaxed/simple;
+	bh=Dt9L8hiA2v10R3JFtof1MMpzP5ZmgCdM5hVqdr3gZvU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lGZWgbkYTXQizDdrT8nMlZjuEoUlmd/TBfKhUpFI6/qBfiZqQBt+eBmNu94+9j6+d2ORendvRla90FIkWqGqvMI6SDWZ+Z7QCmR/kSYlTp5VFFbYSuFKFsJ32T68lnPrcPpX0WOd6ZwZqsvJXeYJSTyIiLwi0tSWEky+2vhVPJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pIaBocpv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MqDk/kHM"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4955aa106b1so22880245e9.0
-        for <phone-devel@vger.kernel.org>; Mon, 10 Aug 2026 21:32:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786422771; x=1787027571; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uevAQqN80mKQhlZ8WcniYbzi6l/HLyUq4gvUDP8ovMo=;
-        b=MqDk/kHMTP5D7zgVlfvttc6Mqka0uuA5mJNIjnDcWLghQRgUKUi1Ik8+LM4YJtXSI/
-         kGFyikur818OYAyr1HI+XEczQXwmdGED48AdO9WC/AI99dBcJ5zlHQhAzyX5BFimml9z
-         7vwFQZeBe60LEGHjuXh8GvSNFCe+/mpqyyr66yP/2+x8ULTM6vHJ9GtbYgj4MvaLjQP+
-         qPIe0ckvCK51H6PVu2upSUo7Vc8XdCCtPl4FszM/3avS4QxFCqoFHP1AQL+7d2JszyRP
-         tN+bCT8LfSoriys+tkml8vWCOS+SFMMdOGS7IiQRgrMw9RgeDfjtZYXDTL7+pQPYQezb
-         u6Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786422771; x=1787027571;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uevAQqN80mKQhlZ8WcniYbzi6l/HLyUq4gvUDP8ovMo=;
-        b=NFOO0temkclWgt9ZNugZm/u7do+pOTC34MyjiyDijXq5TgS4h/B2cYx6xc+FJNb4Jw
-         riQOuULqyV+nRaN6V+F+1hfwaQHbi8HpqcZ7C+uQDa0K0jHlfAWRTgP1w+V6vC0cA/NN
-         ZN2gXEB/lg/mj99BL4b2HltOOqx4bPeq3vA3iICLTzZZe4t0S8lSAin1rOVM8f0LNFIX
-         xYPp1/kQpBQszGVlXUPiHeYHdMoEzo/imdKhbYOQyzSjZPTXreKBjVrujbZfwVe1z/Ig
-         cbisR+dSySbmdxm1WfZf/CQW/CTwZDM9YYBYG06AtrAMJxOnyncl92abFzNRFfsrMzue
-         UPkQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpE+NXb7zVJ+Tqng/vu6ArVOq4CHToU/2n6slajVKf7IbF35WwJs7nVcBIML7iDF4W2nAlq3QHd50Vang==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrH1Nfr/MYh+ng3BJ+wiYBhuURWqbtcHDE19W7vJ9qNb4HS/YQ
-	BePj4CmzoZqFWA6NLibNrOuRFs+1N/tidsuZrCCSvYs08j6xxRYKO2D7
-X-Gm-Gg: AR+sD13qC6iJzVf+gxfhZC531NGwe297q6A+g/lB59KFIgabIXojPdoZri6b304/fW6
-	DIvVVYLTErpe+rMTFuRytwb8CWbsMGi2oXa5NKPsHT5Hq9yBgLnkgVZ4+PkJzyD/O5bLkwNyXNE
-	7zqJ0I9yPhOPFR1J5t8/dRl1SjDegYh8Btmiuyv6ionPyrtLxDmUlAAaxsjysdzsotNpL6rbENP
-	50uBo8AuOn8HYd3MyJs78aBBIByhB8GeERICUM1VZEQQJj+nrGElE1uCC6sAKyP6NKfF1TVodtw
-	9sWVoSF0dXdl3z1g8luBqGY65Co3WykuPQsRrP7/LzND4IEkpMD3VSSQt5R867q4LEpfbrISmEr
-	BqYlNgFVGHG4AxwnYiyfHp1TY4y0it+Bwroon5H4BU0/PGqJw/BhuVYHJsyXzBjacf1fMKYaE3i
-	IFq/WSZNuiC1MtaD8lgClIaZzndIAYYMJ6lFzBbk4DFCyUyowh2qiP9NbQdNpwgAL8
-X-Received: by 2002:a05:6000:4a19:b0:47f:ec8a:214f with SMTP id ffacd0b85a97d-4814adc3281mr627184f8f.15.1786422770569;
-        Mon, 10 Aug 2026 21:32:50 -0700 (PDT)
-Received: from [192.168.0.104] ([88.223.153.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4814a6b2ea8sm1050589f8f.16.2026.08.10.21.32.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Aug 2026 21:32:50 -0700 (PDT)
-Message-ID: <71c1a0e4-73f5-4c22-a443-731be59d0d99@gmail.com>
-Date: Tue, 11 Aug 2026 07:32:48 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pIaBocpv"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 79502C2BCF7;
+	Tue, 11 Aug 2026 05:52:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786427561;
+	bh=Dt9L8hiA2v10R3JFtof1MMpzP5ZmgCdM5hVqdr3gZvU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=pIaBocpv5n3f+9Wn4yyrX5t6jXUvanAUzcVk9SLb6y+n5fNy294nYPyVVWtsT9z1M
+	 yy4epgj5JLxuS5tYoAyLVPkHqsvdgi38jyrM2zz/z4vYvhW5CyfwI7Nkqz7vV052zl
+	 RXRM/blv8wyU5C9Zm4lF7Hb5l/6Jhh3J8ZJfewZpgGFumixd/G748NfxY8yGkjCxw/
+	 PxPBIwkZyeiM533H/mzng7y8PKWTY4d/KZJaOh+dQdgv/zkaXZqeIwlCSsE5kfccPF
+	 auzky4du924v4hRx/AhmWkvnvEgdo6JNG75QtEbSjjf+Ff9BroR9DLbRDwnR3kD2FE
+	 FaBXdGgO6GAxw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59FF6C5B569;
+	Tue, 11 Aug 2026 05:52:41 +0000 (UTC)
+From: Esteban Urrutia via B4 Relay <devnull+esteuwu.proton.me@kernel.org>
+Date: Tue, 11 Aug 2026 01:52:33 -0400
+Subject: [PATCH 1/2] dt-bindings: display: panel: Add bindings for Novatek
+ NT37703
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: sm7125-samsung: add initial
- device tree
-To: David Heidelberg <david@ixit.cz>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Stefan Hansson <newbyte@postmarketos.org>,
- phone-devel@vger.kernel.org
-References: <20260705-sm7125-samsung-v2-0-d3b17005ecb3@gmail.com>
- <20260705-sm7125-samsung-v2-3-d3b17005ecb3@gmail.com>
- <a89e90e8-a1d3-4e70-8714-c9862044a62d@ixit.cz>
-Content-Language: en-US
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-In-Reply-To: <a89e90e8-a1d3-4e70-8714-c9862044a62d@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260811-nt37703-bup-v1-1-34ad42b064a3@proton.me>
+References: <20260811-nt37703-bup-v1-0-34ad42b064a3@proton.me>
+In-Reply-To: <20260811-nt37703-bup-v1-0-34ad42b064a3@proton.me>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Esteban Urrutia <esteuwu@proton.me>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786427559; l=2389;
+ i=esteuwu@proton.me; s=20260622; h=from:subject:message-id;
+ bh=wVUFKmF2iBpqMPBKlh1CrckDAlUx+1CZ7rLZO14pU3o=;
+ b=zDgmu5CjSC8v9Ywt8q27e1eyV15gl8TlNQUo7SIpUh/H++AOEjiAbFwAtsanUoFgC9Dgo7eF/
+ LhFoc8AV6LnD2W6ej0bo7Lt1rx1opy3lzfKBgRfHeVcNA0+zfm7sWfV
+X-Developer-Key: i=esteuwu@proton.me; a=ed25519;
+ pk=wToFt4mOAWkzbqb15Ye1hrhevI13vK9BcMUFiQ/me1M=
+X-Endpoint-Received: by B4 Relay for esteuwu@proton.me/20260622 with
+ auth_id=835
+X-Original-From: Esteban Urrutia <esteuwu@proton.me>
+Reply-To: esteuwu@proton.me
 
+From: Esteban Urrutia <esteuwu@proton.me>
 
+Add bindings for this display driver IC which is used to drive MIPI DSI
+panels.
 
-On 7/5/26 9:41 PM, David Heidelberg wrote:
-> On 05/07/2026 12:30, Erikas Bitovtas wrote:
->> Samsung Galaxy A52/A72 are devices released on atoll (SM7125) platform
->> in 2021. Add initial device tree for SM7125 Samsung platform with
->> support for:
->> - Framebuffer
->> - GPIO keys
->> - Hall sensor
->> - Vibrator
->> - Regulators
->> - Reset input
->> - Real-time clock
->> - SD card
->> - UFS
->> - USB
->>
->> Tested-by: Stefan Hansson <newbyte@postmarketos.org>
->> Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
->> ---
->>   arch/arm64/boot/dts/qcom/Makefile                  |   2 +
->>   arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts   |  20 +
->>   arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts   |  20 +
->>   .../arm64/boot/dts/qcom/sm7125-samsung-common.dtsi | 536 +++++++++++
->> ++++++++++
->>   4 files changed, 578 insertions(+)
->>
-> 
-> Nice,
-> 
-> Reviewed-by: David Heidelberg <david@ixit.cz>
-> 
-> small nitpick, the Copyright inside the files should be yours, at least
-> unless you giving up your contributions or you been paid by LF ;-) .
-> 
-I replaced LF copyright with mine in v3.
-I found this patch series from a developer who preferred to stay
-pseudonymous. They were licensed under GPLv2, and I got in touch with
-the developer and they permitted me to claim ownership for these patches.
-https://github.com/map220v/sm7125-mainline/blob/a72q-6.10/arch/arm64/boot/dts/qcom/sm7125-samsung-common.dtsi
-> David
+Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+---
+ .../bindings/display/panel/novatek,nt37703.yaml    | 78 ++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt37703.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt37703.yaml
+new file mode 100644
+index 000000000000..e1aeed5b978e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/novatek,nt37703.yaml
+@@ -0,0 +1,78 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/novatek,nt37703.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Novatek NT37703 display driver IC based panels
++
++maintainers:
++  - Esteban Urrutia <esteuwu@proton.me>
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - motorola,bronco-tianma-v2-nt37703
++      - const: novatek,nt37703
++
++  reg:
++    maxItems: 1
++
++  avdd-supply:
++    description: Analog power supply for panel
++
++  elvdd-supply:
++    description: Positive electroluminiscent (EL) power supply for panel
++
++  elvss-supply:
++    description: Negative electroluminiscent (EL) power supply for panel
++
++  vci-supply:
++    description: Analog power supply for DDIC
++
++  vdd-supply:
++    description: Digital power supply for DDIC
++
++  vddi-supply:
++    description: Digital I/O power supply for DDIC
++
++  reset-gpios:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - reset-gpios
++
++allOf:
++  - $ref: panel-common.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "motorola,bronco-tianma-v2-nt37703", "novatek,nt37703";
++            reg = <0>;
++
++            vci-supply = <&vreg_l13c_3p0>;
++            vdd-supply = <&vreg_l1d_1p25>;
++            vddi-supply = <&vreg_l12c_1p8>;
++            reset-gpios = <&tlmm 0 GPIO_ACTIVE_LOW>;
++
++            port {
++                panel_in: endpoint {
++                        remote-endpoint = <&dsi0_out>;
++                };
++            };
++        };
++    };
++
++...
+
+-- 
+2.55.0
+
 
