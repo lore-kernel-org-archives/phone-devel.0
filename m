@@ -1,116 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211123DA5CD;
-	Tue, 11 Aug 2026 09:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692CA42CAF3
+	for <phone-devel@vger.kernel.org>; Tue, 11 Aug 2026 09:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786439518; cv=none; b=OkK1lDLLXPMOC+pzWBCcGXE1HLa/O67fPB4mtghoc4oCnyKFKrBaz34i3TQYZzGK3aB5z2zk8bT66VshUSq0CiNQmro7mz1r6C7XooL6NmSrcfYnoci86rQgHvfkKGS4l/M4Jm/emj4GLeEOWT+y9ANeXMJNkj6xynBTODcB1Vg=
+	t=1786440686; cv=none; b=cWQQElUPpV32S9CJwKQ6+wYxaZHETefvBqSLJAbnEyuAgwOX6JCP0zUOlFOgqEvy8SPTFE0TXBFbJxImfxXUk3rxZ4ZozZ+8mqIlIHizLSHDiOoua/O0dkiXt4t8fLSkdHUEZbQjdvpwzVGBYlUoCupoM/zBq3Kch0fv1gvfJJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786439518; c=relaxed/simple;
-	bh=po5+wP0U2TBC+FVKr01XOHbmY3talVXqJp7KnmOCIQk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jjSPiszc8dICOQai1zX/efGqNiDGueOaQsJm0pb1oaGIR5MKCEVY8x1nqjz0NduEZyE0njDlaUEzNzfWIiHyXnw5rl8TMZ72R/qfnpl9OH9FgU5tDKu/U/JXGwdQLXne3CZLjgZsjp9Lt1o831VVV5/1h9PHS0YTBMny6H6e9dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=boRyG9hC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786440686; c=relaxed/simple;
+	bh=8QXwmcpvLOgS2HJEcrVuGl3PSKJiGBxtH2I13j0yeZA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=EH0z27A4DhFqSlZguzLn/22d/xFDTGZeCPbXeYGzZ1t8+7TudZATOuDxEUESUWilWvD+C4g6Cd8kEOsYjY8Vz1UtSM1IUWQc6+XM+ALaomiIoGRgpKG0bflWt20ld02lP8SH7XDHzTp/RJ8si+OA6atFxgHnhNYblsQFQH8FYds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lyk18MWH; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="boRyG9hC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91241F000E9;
-	Tue, 11 Aug 2026 09:11:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786439516;
-	bh=TrkFBbkecTCcsu/DhLu0OsB/6QF6n66HPvIjwvA7MZ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=boRyG9hC9kgOPMxjMOZOLPXwT+esiVW5sy8I+8n7pvS3iEeM3QZbE22pUBqVqxtBr
-	 wRbmWhIgtTp8k3PSHQ98PM8mWBHKdt2fpAY5xbD2Ox05UPYNPVbdQ7ot6PN5yfKFGM
-	 OpKM5FgcdBhb6LcV+wnM9zHOgx+S413HB0rFkppa1BsfvMWZnz/pP8FBfKpnV5ziT5
-	 mgcXKmLyCiV+ltSlgDMThnRNX6Dwr+qK8SEf4JiHOGhp2RnnNkmIQ3cruXacxrYz6C
-	 BUL/5ApiHXuUTbu8R1Gax2himWfaHeSznRep8zEPux/XxzrbCqNRWVHyDT0AhodD8i
-	 AleWurP3JPjYw==
-Date: Tue, 11 Aug 2026 11:11:52 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Esteban Urrutia <esteuwu@proton.me>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: usb: Add Parade PS5169 redriver
- bindings
-Message-ID: <20260811-watchful-turaco-of-opportunity-b8ddbf@quoll>
-References: <20260810-ps5169-bup-v3-0-a2178b2834d7@proton.me>
- <20260810-ps5169-bup-v3-1-a2178b2834d7@proton.me>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lyk18MWH"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cad8076b01so6679135ad.2
+        for <phone-devel@vger.kernel.org>; Tue, 11 Aug 2026 02:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786440685; x=1787045485; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:subject:references:cc:to:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=24lOYUM9cZxkUEGLRg6JPIJ8J7Sm+k+/AF/RPaqeH9Q=;
+        b=lyk18MWH3cpWuRrJa34S3ofIqp+Sfl4k2izTx9zDN4o0Tkx5V5kKXyAaUtxyKP7nf/
+         KSZlWbU2ZcxU3Uy8AmbXgYuUn5aK6HLDqyKrJROXvzwzgxlaEOphmZyR6InS+5JKd1uL
+         0mAyD2NfhFMEP8Jc/UdIh8LH0dcZwMIoI5vwFCjZW24bXZZ6znSVF6b8peNarhZ00Hng
+         J3o21LzWuQfo0IZcF6FqG9zCSBl5Z2lCYz0Hk/IROCNaA9QdiouqkQfEwgtHLNl1OJ8m
+         MjswBXSo45pACCZnkKE0DpHtOGexSZIvbZdBcHyg2PDBDUx7ao9nFLI0Vl4q/TGh7Gw4
+         1aKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786440685; x=1787045485;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:subject:references:cc:to:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=24lOYUM9cZxkUEGLRg6JPIJ8J7Sm+k+/AF/RPaqeH9Q=;
+        b=BugIFPGqOsx8OdcbVwRLZLZ9mg1WbeLH0ZNzTpEAdk1r4EP197/kpPkjsKNCogXMc1
+         lQVFmEeNBCawo0B3MSxKNMdP6oK9USjtAq2G/2DRHJi8D4THImb+Y0TaKIT+BSe45OKg
+         Bk1FTR0igzszn5CK09YRI15dG6nTrWeNa5w3fgmS6tIGowtlx5TKQK1CyT8DglvLwny2
+         SFph0LVdPaLq8662+JAjNHsyceqp14xbbKGv0Yo4pMaeHUCI/DcfvuBhuhGWuoTLlNh3
+         GLc/cmRKfLCfT6qj0f0FCBuFoE2rFS1mMgD7ORzCDKYjV8CkAcoXtek6I1nqdE/RffO4
+         3yXA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr20VgLAeHjpRB/OomCq/u9eu8+sJlnSfHtSBSAVRxNHf6pMB+wy2Yj7SzLRwAahY+7+Mr5kgzgbs/QkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ8eYEwzb6p58qiDxqYRil4FKsjLSc/9GQug1ADCgHwYmU7MgL
+	driDAwUTKcm1787wUsz4H/qyt+mMmy3EawZlmhFwLhVZ6w8T91Ulxs46
+X-Gm-Gg: AR+sD11OKv+P2Q3OfYOPKbZH6uftFenozfJfMD/qyIuakYC7Q+skI1ZvQJJNITiZuld
+	98HIEuAFeySsC/ptcEYIRefw+qibbyvp93bkPncCa81bsG8AxTiWDvLG72V6skMC5BwsOdPDqHk
+	2ni18fgvua28B3iLiONTvKBNyi3PZWZOqtigF2NeZF+UoAVJY/6Ywj8H853BB7KeGKGKFSl9y29
+	nDfl9GcxbLLnLSaq4L1EhnHBPj8+RQSweVCKKRcBV31eGSg5YRoHoZT8KdrvR1iGUlRFWhfXIAa
+	9vFfI1PW7LfYQmGrBu+B3rb1NwguEMD1SfNyvZyuzkwLl3AFVyxB2PfFyh1SH/afNwJydUU+Cw6
+	PEvlQhWLc9otRgRXto/qWpnlFtzcVCMP6XdRQL8gzvyxPZWKg5rbxH/x5YtNTV8FohRNxiwFnid
+	rgClyx27nqaAFGZsDNc18P60okpuq4nikhb4w6x/GHKIdJlaNm4GwKIUHKPCNePeDjx3RgK06zk
+	mLjY1meSxVHW70nfGTvZtfxvoA40nUGTF05vtdqpoM=
+X-Received: by 2002:a17:903:944:b0:2bf:9760:b94d with SMTP id d9443c01a7336-2d31792b495mr25426375ad.15.1786440684729;
+        Tue, 11 Aug 2026 02:31:24 -0700 (PDT)
+Received: from [192.168.68.65] (104-12-136-65.lightspeed.irvnca.sbcglobal.net. [104.12.136.65])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d315f3f33csm4781325ad.26.2026.08.11.02.31.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Aug 2026 02:31:24 -0700 (PDT)
+Message-ID: <73033a32-4efe-4ed2-9319-ffb205d28719@gmail.com>
+Date: Tue, 11 Aug 2026 02:31:22 -0700
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260810-ps5169-bup-v3-1-a2178b2834d7@proton.me>
+User-Agent: Mozilla Thunderbird
+To: devnull+guptarud.gmail.com@kernel.org
+Cc: andersson@kernel.org, broonie@kernel.org, conor+dt@kernel.org,
+ conor.dooley@microchip.com, david@ixit.cz, devicetree@vger.kernel.org,
+ guptarud@gmail.com, konrad.dybcio@oss.qualcomm.com, konradybcio@kernel.org,
+ krzk+dt@kernel.org, lee@kernel.org, lgirdwood@gmail.com, linusw@kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, pavel@kernel.org, phone-devel@vger.kernel.org,
+ robh@kernel.org
+References: <20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com>
+Subject: Re: [PATCH v6 0/3] Samsung Expressatt: Camera Flash
+Content-Language: en-US
+From: Rudraksha Gupta <guptarud@gmail.com>
+In-Reply-To: <20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 10, 2026 at 11:31:36PM -0400, Esteban Urrutia wrote:
+Hello,
 
-A nit, subject: drop second/last, redundant "bindings". The
-"dt-bindings" prefix is already stating that these are bindings.
-See also:
-https://elixir.bootlin.com/linux/v7.1-rc7/source/Documentation/devicetree/bindings/submitting-patches.rst#L23
 
-> +
-> +  parade,dp-eq-db:
-> +    description:
-> +      Equalization for DP channels.
-> +      For example, <6 5> denotes an equalization of 6.5 dB.
-> +    oneOf:
-> +      - items:
-> +          - enum: [ 2, 8, 10 ]
-> +          - const: 0
-> +      - items:
-> +          - enum: [ 5, 6, 7, 8, 9 ]
-> +          - const: 5
+https://lore.kernel.org/all/20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com/#t
 
-Eh, this is on me. I did not pay attention that values are fractional.
-You should not be a list, but expressed as a single value, which is not
-possible with int32. This might be the only ever practical use of mB :),
-but I doubt that any engineer would find that readable, so let's go to
-your previous code - direct register values - for all three properties.
+This series seems to have fallen in between the cracks. Should I resend 
+this patch series?
 
-Sorry for the mess.
 
-> +
-> +  parade,usb-rx-eq-db:
-> +    description:
-> +      Equalization for USB receive channels.
-> +      For example, <5 2> denotes an equalization of 5.2 dB.
-> +    oneOf:
-> +      - items:
-> +          - enum: [ 5, 11 ]
-> +          - const: 2
-> +      - items:
-> +          - enum: [ 6, 7, 8 ]
-> +          - const: 0
-> +      - items:
-> +          - const: 8
-> +          - const: 8
-> +      - items:
-> +          - const: 9
-> +          - const: 6
-> +      - items:
-> +          - const: 10
-> +          - const: 4
-> +
-> +  parade,usb-tx-eq-db:
-> +    description:
-> +      Equalization for USB transmit channels.
-> +      For example, <6 5> denotes an equalization of 6.5 dB.
-> +    oneOf:
-> +      - items:
-> +          - enum: [ 2, 8, 10 ]
-> +          - const: 0
-> +      - items:
-> +          - enum: [ 5, 6, 7, 8, 9 ]
-> +          - const: 5
+Thanks,
 
-Best regards,
-Krzysztof
+Rudraksha
 
