@@ -1,68 +1,39 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [84.42.129.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692CA42CAF3
-	for <phone-devel@vger.kernel.org>; Tue, 11 Aug 2026 09:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6D943C7BD;
+	Tue, 11 Aug 2026 13:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786440686; cv=none; b=cWQQElUPpV32S9CJwKQ6+wYxaZHETefvBqSLJAbnEyuAgwOX6JCP0zUOlFOgqEvy8SPTFE0TXBFbJxImfxXUk3rxZ4ZozZ+8mqIlIHizLSHDiOoua/O0dkiXt4t8fLSkdHUEZbQjdvpwzVGBYlUoCupoM/zBq3Kch0fv1gvfJJY=
+	t=1786453566; cv=none; b=adzFVjno9Fn5/gQqYRv50WiGroazfUSnwlRmd4+jw05NiJ4vLIXs2W7I/ujp+LM3Q5ATDhpIkN3mgRdUiiNDQozqWEPa3csKRaLdkLj7M93nlc3WsEKc1X+oPYYVq8R1cT5ZYwIShTW8kt+4l86rP+9MF9o84cVtLIPKs/1WKMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786440686; c=relaxed/simple;
-	bh=8QXwmcpvLOgS2HJEcrVuGl3PSKJiGBxtH2I13j0yeZA=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=EH0z27A4DhFqSlZguzLn/22d/xFDTGZeCPbXeYGzZ1t8+7TudZATOuDxEUESUWilWvD+C4g6Cd8kEOsYjY8Vz1UtSM1IUWQc6+XM+ALaomiIoGRgpKG0bflWt20ld02lP8SH7XDHzTp/RJ8si+OA6atFxgHnhNYblsQFQH8FYds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lyk18MWH; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786453566; c=relaxed/simple;
+	bh=/iF1DNppywoekFpkQF2qqABcVyYannhS3WtAcq3n6bs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h5fcxAwLi35FDtqnVL009Ly8NqQ88iDtdg1I85/oSl7qQQVgs7lNNdRsDlFkcccaCztRtiBJL0zVDzEfpX5/nuyz2EGatb4GIY+8ZDeGqDHxxReRKEE7CbGIanEY3t0CDG+cZ4OaNLxlmVs+pyLWap9XKkwQ0A9TLSkpfQFZyBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=bTPXaAGS; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lyk18MWH"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cad8076b01so6679135ad.2
-        for <phone-devel@vger.kernel.org>; Tue, 11 Aug 2026 02:31:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786440685; x=1787045485; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:subject:references:cc:to:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=24lOYUM9cZxkUEGLRg6JPIJ8J7Sm+k+/AF/RPaqeH9Q=;
-        b=lyk18MWH3cpWuRrJa34S3ofIqp+Sfl4k2izTx9zDN4o0Tkx5V5kKXyAaUtxyKP7nf/
-         KSZlWbU2ZcxU3Uy8AmbXgYuUn5aK6HLDqyKrJROXvzwzgxlaEOphmZyR6InS+5JKd1uL
-         0mAyD2NfhFMEP8Jc/UdIh8LH0dcZwMIoI5vwFCjZW24bXZZ6znSVF6b8peNarhZ00Hng
-         J3o21LzWuQfo0IZcF6FqG9zCSBl5Z2lCYz0Hk/IROCNaA9QdiouqkQfEwgtHLNl1OJ8m
-         MjswBXSo45pACCZnkKE0DpHtOGexSZIvbZdBcHyg2PDBDUx7ao9nFLI0Vl4q/TGh7Gw4
-         1aKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786440685; x=1787045485;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:subject:references:cc:to:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=24lOYUM9cZxkUEGLRg6JPIJ8J7Sm+k+/AF/RPaqeH9Q=;
-        b=BugIFPGqOsx8OdcbVwRLZLZ9mg1WbeLH0ZNzTpEAdk1r4EP197/kpPkjsKNCogXMc1
-         lQVFmEeNBCawo0B3MSxKNMdP6oK9USjtAq2G/2DRHJi8D4THImb+Y0TaKIT+BSe45OKg
-         Bk1FTR0igzszn5CK09YRI15dG6nTrWeNa5w3fgmS6tIGowtlx5TKQK1CyT8DglvLwny2
-         SFph0LVdPaLq8662+JAjNHsyceqp14xbbKGv0Yo4pMaeHUCI/DcfvuBhuhGWuoTLlNh3
-         GLc/cmRKfLCfT6qj0f0FCBuFoE2rFS1mMgD7ORzCDKYjV8CkAcoXtek6I1nqdE/RffO4
-         3yXA==
-X-Forwarded-Encrypted: i=1; AHgh+Rr20VgLAeHjpRB/OomCq/u9eu8+sJlnSfHtSBSAVRxNHf6pMB+wy2Yj7SzLRwAahY+7+Mr5kgzgbs/QkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ8eYEwzb6p58qiDxqYRil4FKsjLSc/9GQug1ADCgHwYmU7MgL
-	driDAwUTKcm1787wUsz4H/qyt+mMmy3EawZlmhFwLhVZ6w8T91Ulxs46
-X-Gm-Gg: AR+sD11OKv+P2Q3OfYOPKbZH6uftFenozfJfMD/qyIuakYC7Q+skI1ZvQJJNITiZuld
-	98HIEuAFeySsC/ptcEYIRefw+qibbyvp93bkPncCa81bsG8AxTiWDvLG72V6skMC5BwsOdPDqHk
-	2ni18fgvua28B3iLiONTvKBNyi3PZWZOqtigF2NeZF+UoAVJY/6Ywj8H853BB7KeGKGKFSl9y29
-	nDfl9GcxbLLnLSaq4L1EhnHBPj8+RQSweVCKKRcBV31eGSg5YRoHoZT8KdrvR1iGUlRFWhfXIAa
-	9vFfI1PW7LfYQmGrBu+B3rb1NwguEMD1SfNyvZyuzkwLl3AFVyxB2PfFyh1SH/afNwJydUU+Cw6
-	PEvlQhWLc9otRgRXto/qWpnlFtzcVCMP6XdRQL8gzvyxPZWKg5rbxH/x5YtNTV8FohRNxiwFnid
-	rgClyx27nqaAFGZsDNc18P60okpuq4nikhb4w6x/GHKIdJlaNm4GwKIUHKPCNePeDjx3RgK06zk
-	mLjY1meSxVHW70nfGTvZtfxvoA40nUGTF05vtdqpoM=
-X-Received: by 2002:a17:903:944:b0:2bf:9760:b94d with SMTP id d9443c01a7336-2d31792b495mr25426375ad.15.1786440684729;
-        Tue, 11 Aug 2026 02:31:24 -0700 (PDT)
-Received: from [192.168.68.65] (104-12-136-65.lightspeed.irvnca.sbcglobal.net. [104.12.136.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d315f3f33csm4781325ad.26.2026.08.11.02.31.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Aug 2026 02:31:24 -0700 (PDT)
-Message-ID: <73033a32-4efe-4ed2-9319-ffb205d28719@gmail.com>
-Date: Tue, 11 Aug 2026 02:31:22 -0700
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="bTPXaAGS"
+Received: from [10.0.0.152] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id DB8085340A5F;
+	Tue, 11 Aug 2026 15:05:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1786453556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7kj6+gNTfJEQ/43BkZEK0OeHjYvFlCc5cLV5gjCYGSU=;
+	b=bTPXaAGSZNP+BXw/+pw7GCWYM9rG+SYRBa7SsV6Xh3KgCKMviVN1UY8gzTW8rK7YrMkZJ5
+	zuUQ6RncDKOHBqeXjUVQclfChFEskTi9I8dZqrlkanYqFWI3DEX48aP/9axxbF5DC6eUQc
+	SDhgDTVqGtq3qYYgDqVNXBwGcQ+DySk=
+Message-ID: <8c3e9384-7964-4d03-a3a9-de15d26de822@ixit.cz>
+Date: Tue, 11 Aug 2026 15:05:55 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,32 +41,177 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: devnull+guptarud.gmail.com@kernel.org
-Cc: andersson@kernel.org, broonie@kernel.org, conor+dt@kernel.org,
- conor.dooley@microchip.com, david@ixit.cz, devicetree@vger.kernel.org,
- guptarud@gmail.com, konrad.dybcio@oss.qualcomm.com, konradybcio@kernel.org,
- krzk+dt@kernel.org, lee@kernel.org, lgirdwood@gmail.com, linusw@kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-leds@vger.kernel.org, pavel@kernel.org, phone-devel@vger.kernel.org,
- robh@kernel.org
-References: <20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com>
-Subject: Re: [PATCH v6 0/3] Samsung Expressatt: Camera Flash
+Subject: Re: [PATCH 1/2] dt-bindings: display: panel: Add bindings for Novatek
+ NT37703
+To: esteuwu@proton.me, Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260811-nt37703-bup-v1-0-34ad42b064a3@proton.me>
+ <20260811-nt37703-bup-v1-1-34ad42b064a3@proton.me>
 Content-Language: en-US
-From: Rudraksha Gupta <guptarud@gmail.com>
-In-Reply-To: <20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com>
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
+ 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
+ lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
+ 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
+ dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
+ F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
+ NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
+ 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
+ AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
+ k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
+ ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
+ AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
+ AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
+ afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
+ loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
+ jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
+ ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
+ VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
+ W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
+ zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
+ QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
+ UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
+ zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
+ 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
+ IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
+ jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
+ FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
+ aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
+ NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
+ AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
+ hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
+ rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
+ qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
+ 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
+ 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
+ 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
+ NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
+ GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
+ yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
+ zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
+ fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
+ ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
+In-Reply-To: <20260811-nt37703-bup-v1-1-34ad42b064a3@proton.me>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hello,
+On 11/08/2026 07:52, Esteban Urrutia via B4 Relay wrote:
+> From: Esteban Urrutia <esteuwu@proton.me>
+> 
+> Add bindings for this display driver IC which is used to drive MIPI DSI
+> panels.
+> 
+> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+> ---
+>   .../bindings/display/panel/novatek,nt37703.yaml    | 78 ++++++++++++++++++++++
+>   1 file changed, 78 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt37703.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt37703.yaml
+> new file mode 100644
+> index 000000000000..e1aeed5b978e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt37703.yaml
+> @@ -0,0 +1,78 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/novatek,nt37703.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Novatek NT37703 display driver IC based panels
+> +
+> +maintainers:
+> +  - Esteban Urrutia <esteuwu@proton.me>
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - motorola,bronco-tianma-v2-nt37703
+> +      - const: novatek,nt37703
 
+Hi Esteban,
 
-https://lore.kernel.org/all/20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com/#t
+Usually the used pattern is vendor,ddic+panel-model
 
-This series seems to have fallen in between the cracks. Should I resend 
-this patch series?
+novatek,nt37703-motorola-bronco
 
+...but motorola bronco isn't the model of the panel.
 
-Thanks,
+My recommendation - look at some video of screen replacement, stop at moment 
+when FLEX cable from panel is visible and that's where the panel model usually is.
 
-Rudraksha
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  avdd-supply:
+> +    description: Analog power supply for panel
+> +
+> +  elvdd-supply:
+> +    description: Positive electroluminiscent (EL) power supply for panel
+> +
+> +  elvss-supply:
+> +    description: Negative electroluminiscent (EL) power supply for panel
+> +
+> +  vci-supply:
+> +    description: Analog power supply for DDIC
+> +
+> +  vdd-supply:
+> +    description: Digital power supply for DDIC
+> +
+> +  vddi-supply:
+> +    description: Digital I/O power supply for DDIC
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reset-gpios
+> +
+> +allOf:
+> +  - $ref: panel-common.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    dsi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        panel@0 {
+> +            compatible = "motorola,bronco-tianma-v2-nt37703", "novatek,nt37703";
+> +            reg = <0>;
+> +
+> +            vci-supply = <&vreg_l13c_3p0>;
+> +            vdd-supply = <&vreg_l1d_1p25>;
+> +            vddi-supply = <&vreg_l12c_1p8>;
+> +            reset-gpios = <&tlmm 0 GPIO_ACTIVE_LOW>;
+> +
+> +            port {
+> +                panel_in: endpoint {
+> +                        remote-endpoint = <&dsi0_out>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
+> 
+
+-- 
+David Heidelberg
 
