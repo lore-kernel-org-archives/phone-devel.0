@@ -1,68 +1,68 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0387043934B
-	for <phone-devel@vger.kernel.org>; Wed, 12 Aug 2026 11:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6069E41A504
+	for <phone-devel@vger.kernel.org>; Wed, 12 Aug 2026 11:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786535571; cv=none; b=U5fO0zGsyWOjdRj2gncRVvscGDt4x5s1Qex6aDCtOugI5rJXBeZDSfkv7QVKWXXfF8UEOi06FpLaDMCRxdeIVcRns2ySewi45aUn2C7eXKyXiRYHpkUFtMtm4tl9T+3pIXzzx1hSgxt+51bBA8aeFPw9450LemBKeM5s7JEgGw8=
+	t=1786535746; cv=none; b=GSlBB0sXdcDmdrjGrb4fiRpuhSWEOcl7c0+m5p4soPxflQ1e6u4Zvog5AN8P046eg78ND+wYpGUnD6gGJj76PCWDMzXa3ay+0lProQfOYsskt43hnFmqrLHUapqj5p8DuYSNuci4cpeACYO/V6vfvCmJ9qlvvWy4D/W/fYoscGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786535571; c=relaxed/simple;
-	bh=OWi/1VVq3ptM1gRr5+NajLFbIv98jFNSkf0y0944f3o=;
+	s=arc-20240116; t=1786535746; c=relaxed/simple;
+	bh=Jh8UJek3goLdZLe0RfBMJBo8nWQtOCHT82HxbarnyF4=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=PtmjbNcZoKnwHhiHyms2Qf9ICB/w/clqKt2gCUL4YrGbMNXpPHPGrczuwrgkeU03ZqIPHK8ZtDTzWpS9FoD5OhHOb1Qp3pH0u+vXvzuh8aI6nj8iKGdpILsVH9qutoTbQnfEzycTF5d2nXy+Z1RRFbnjdv3ys13P+bNR8I0+qtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YSPO8Weh; arc=none smtp.client-ip=209.85.128.41
+	 In-Reply-To:Content-Type; b=QYPOjbAwSbjw72lg2plViGSR6XZjLqYFOnJLEKYG7pb7u645Q6AKxpp+IoWBnFpyvLrBYTCPujrH47C7XHewa+9Qfe8/t/+efnKfi2ObN6H4ssSb2RH5yi7hw3lUzoSwGvMJ7ZfRf0tAXxriPV2HflOKgGo7KuxhFJb0aXpoL8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=d73Cqzti; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YSPO8Weh"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-495437bb891so7808145e9.1
-        for <phone-devel@vger.kernel.org>; Wed, 12 Aug 2026 04:52:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d73Cqzti"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4799b3f7c83so550209f8f.2
+        for <phone-devel@vger.kernel.org>; Wed, 12 Aug 2026 04:55:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1786535565; x=1787140365; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1786535742; x=1787140542; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :autocrypt:content-language:references:cc:to:subject:reply-to:from
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mryJFKNp9U/j2vl+1/90AHsRvVjI17dKCWsj626BK1E=;
-        b=YSPO8WehVIs2GOJNeYOA8kgAQptAX7r3IongfAJ459xuqHOu1Ls0WRmD/8bVc8AndZ
-         svOWodn01G3MUjO1zbpHSf8s9XWz57rS7J7gPF/DkeAD3mp6QzjW4tTESKVLdM4yLBJz
-         csY6NAAqD5GG82Ya5jBhnaLwlyPSKhBfymZzHWixO0n1tbF86YC2xtS71RBbpj8SQ3u1
-         dkG2fHjRXmViXKtVN4/7kYbkcfHRbSsdN84ixs1c71bDqjraCG1aF+UvznFJQZKRLixu
-         IlmbRxfKfdbuFPr7BAoDWiUrx9+pfrQ6DuP6dIRVQqQZJc4ThcP6fw+cTq9WZ2awxbOl
-         bKfg==
+        bh=xBQ6+uOQL37M+U6oTKIHCjMa+hz/qamwAGt4gMYVnhc=;
+        b=d73Cqztiyv1oASx/Dn9hLEzNAzs8bTCGG48S/9ESQY+lTL0riLa8H5Yep0WIfg035V
+         jnp5XNhK27wTOI8+zwMro8jEY4Jfm/nPb+pvOzbPWhuS7L+/0ZAfwVrIDCUWZzEaVaeY
+         AaQ1BbrCvnnHyV/RorQJf8Si25GVMdjrxuAnE6/O9rke2vODbHKpuyNJqiQUTghug8rn
+         PpOC2LKOz5/KztHg4Q8q2nZVnbhcyXSkVK3bjNgNFtbUlL+7oY7tOZyZaWVcHAFl9zph
+         fyZG825D3XpC4cDUNkE6Y3KVAmSJ5+GNcBSKQ6em1T9f7bWTOlImaGlttz/WivqPmfkR
+         U3kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786535565; x=1787140365;
+        d=1e100.net; s=20251104; t=1786535742; x=1787140542;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :autocrypt:content-language:references:cc:to:subject:reply-to:from
          :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mryJFKNp9U/j2vl+1/90AHsRvVjI17dKCWsj626BK1E=;
-        b=JjWw9YGwNMx3c9BgdGl2FpeFw+BovaCs8yAGovvcuB9HmvTuQccxmrS3dGQY5zNo5Z
-         wm5KksRZbXZS1r7eFWvZQSGuZ3JRubE/dcohD7ul1bXj4wO5oSFEK6D4VZ8hGJxcb4fd
-         wQwS8uVHWkLmqwzmbmAAmySvAJlWnxyfldqWvD96uKVxh2oP6Fa0Eo03DMZOlXFoRSkp
-         6pEjC8JTReV9qEVqNO0UvLAuqHhQarz++sdSvHX5naJnx2yEqdQngELkDALfYJDk03cg
-         +IMPFZuZdMxUU4uwMb7/ktrZI05hTJRgPJ0UTyjCUcQnwDT7eMHa7MG2UkPhgQ49LLXw
-         gU4g==
-X-Forwarded-Encrypted: i=1; AHgh+RqE6oKw0SE4kFv59WpsLsqUu3AlWb85CxuUtWib3ehF/A72c769LYPlzTZ6vbPOWwWnXwAXqZvujxqDPA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8MYpGmbWUzmFK5UqsutJNyoxQTilrisqFr+0GLH1jbOCx/ggT
-	+H2DPT4uQ19iheJdJ8QzQyXwfoLt749hzNuo3OrdAGliFXz9HJDF3AvDqUGJG23Q6Js=
-X-Gm-Gg: AR+sD122bvJEj7sQWpCkzwMbBvJLFUhGWyzmV31f2hsFim766gby+FbsUmM4l2rtWfI
-	mWVE3tPHlD1fflQMwHNX5k3YU6ymDhdNf8ZK2LCw/30GoxW4emKyJ7Dd8hhkCNkZdhMjVqEQ8Yz
-	7s+9fl0FP6v9vyMYcrmVcfqptossjHtrFvHe9p2Nzzm/s8RBkBwxTfy7U2Vh8oZ5rFV+BLGOlCc
-	JqgP/AHxjb921MhxoEGA4Hbi/+7yFkUF4t2y6bghtb5DW8U9E+ny158gGBzmD29TrrP3eCiU/d5
-	vX+lN7dcdakwQz7mkzOMzFwrIp2i70FziiPW7GOyNI/dXgseL0mUY+s3OUXosE1KIayeiXAXd4Z
-	8y6sXej398jZpy1C2AUIz5Q8Rf0C9i1hdwz4TULBt606L35slPQ/ax5E8ozDXMy7CfzQ6PhnP56
-	7Dzvfp0UOaD53SCZhqFgveWOFKXyDT1x3+fjs5EihL6VK51RS/TFNgWNUx+gfKWPDMZyGuwgh16
-	2hFhl65ODCCsKC7ShKq2lpRBWvTpYIzmx8kdaSocnFgLCQuTAmS8oTo
-X-Received: by 2002:a05:600c:37ce:b0:495:58fe:88e5 with SMTP id 5b1f17b1804b1-4997ac86c84mr97794675e9.2.1786535564943;
-        Wed, 12 Aug 2026 04:52:44 -0700 (PDT)
+        bh=xBQ6+uOQL37M+U6oTKIHCjMa+hz/qamwAGt4gMYVnhc=;
+        b=S4hgp/gzX8YHsUF2jttajqGZO55QRiyzAmslA0wBwuedEPTY38zN6urtusAQSdeJNO
+         JlEzZljktacP1X5IceLX4ZTX8rTDQhxFR8nul1bHAuHn+plf7kuyW11op0ncy8ZygB2+
+         Gc/03maJhzHdi25mpbTGFId5LwWTPbNDo0iszx84OhLK/FSb3Tekcdh3X1+LgQlzQTMb
+         PXWmRk4kcJsMyYXkksuMdr/R+t48M2+bzSaHYF5vGvEhazPJn8DasKUIY5nM0LeNRdPh
+         BSrJAlwHVc+3iNuDVjSXwLTKiBJdBdFBFBtFJ1uaOZsLhEyJFX2mDlsi6rVXHeonIpzi
+         0uaA==
+X-Forwarded-Encrypted: i=1; AHgh+RpoS8ohs0PZKqeCmd43t20ldR+wPJ640oTqrLh03vRo15p8HAxIrGRAdVfu0bAZljQBF9xnVpYwYX9PEg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YymhI0gIshhhsgwSr9kCKDpDiBPPEz3+7j1AQnYSdur1a8xs3Pb
+	WQJDvYanm9cDKZV0Sq8PvrZEV9N0I9PI4al1oYTqEQUF+kEL7PgSQ7hGAD5mKCpfYn8=
+X-Gm-Gg: AR+sD12pZH7X0joCOPHUYfzoPOPjTSDDcB8Hk6wscD/Mt8Z3jI1rf70QD7rOGnOGWRe
+	Zcf/lW0LJky7MiboZNNgGb85yC68kyvmmIt7+CgNms+JZ0CdKhJeFH9p/fXezNcI7jzQlRi+XZH
+	Gq3pq2isAk08Xg1S/OjRnYOUjLgA1683GXfpMOiUaqaqFa8RBAKwP9u4Rsz7eSGBmIOSVUbqwul
+	dfVSJJ2dQDhaoR9+V6uq3/2RJEyjhFXrHNnvh44j9ESSHcE2UgY6lQ1j9GivxNAnPo7ByXTm7ve
+	O4sx9LPYEmTTs22QfIKjd5UNUEm4KA4nu4sAzPfgU4qnmvGWaHnepe9QdAD+JZkAFnkoaNuunNO
+	ajU9wDKsXi1PpHNGA6EuTDUZm10od6sJFmBC/wGVywV+DZfDuik9ckncubnn2yqGZc+x4foO4Se
+	/PJOWAc701O2CfbT7VfVnwWMl9nltJsXI0/5VHSzayrd/k+MmxbfSOtEvOBylGHQPvynTnEKjrH
+	6mOq5sctpm9fhhDuFYmkhIboGuT0+dtj2+BvK8aeDCW
+X-Received: by 2002:a05:6000:1867:b0:480:ca53:280f with SMTP id ffacd0b85a97d-481528b2208mr6442306f8f.2.1786535742332;
+        Wed, 12 Aug 2026 04:55:42 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:106d:1080:405d:735d:801e:de34? ([2a01:e0a:106d:1080:405d:735d:801e:de34])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48150d5eb2csm6558329f8f.30.2026.08.12.04.52.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48150c08982sm6169373f8f.14.2026.08.12.04.55.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Aug 2026 04:52:44 -0700 (PDT)
-Message-ID: <05d2ad33-a681-41e4-87f7-e3aaeb5428a8@linaro.org>
-Date: Wed, 12 Aug 2026 13:52:43 +0200
+        Wed, 12 Aug 2026 04:55:41 -0700 (PDT)
+Message-ID: <7757da0a-ef3a-44b0-99c2-af9af3e21a0b@linaro.org>
+Date: Wed, 12 Aug 2026 13:55:40 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -72,10 +72,9 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 1/2] dt-bindings: display: panel: Add bindings for Novatek
- NT37703
-To: David Heidelberg <david@ixit.cz>, Esteban Urrutia <esteuwu@proton.me>,
- Jessica Zhang <jesszhan0024@gmail.com>,
+Subject: Re: [PATCH 2/2] drm/panel: Add driver for Novatek NT37703 based
+ panels
+To: esteuwu@proton.me, Jessica Zhang <jesszhan0024@gmail.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
@@ -84,10 +83,7 @@ To: David Heidelberg <david@ixit.cz>, Esteban Urrutia <esteuwu@proton.me>,
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
 References: <20260811-nt37703-bup-v1-0-34ad42b064a3@proton.me>
- <20260811-nt37703-bup-v1-1-34ad42b064a3@proton.me>
- <8c3e9384-7964-4d03-a3a9-de15d26de822@ixit.cz>
- <58d7ddd4-1488-4c34-be85-6345138aa238@proton.me>
- <7097b617-90be-492d-9637-4a2a101379e0@ixit.cz>
+ <20260811-nt37703-bup-v1-2-34ad42b064a3@proton.me>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -114,65 +110,568 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <7097b617-90be-492d-9637-4a2a101379e0@ixit.cz>
+In-Reply-To: <20260811-nt37703-bup-v1-2-34ad42b064a3@proton.me>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 8/12/26 10:46, David Heidelberg wrote:
-> On 12/08/2026 07:21, Esteban Urrutia wrote:
->> On 8/11/26 9:05 AM, David Heidelberg wrote:
->>> Hi Esteban,
->>>
->>> Usually the used pattern is vendor,ddic+panel-model
->>>
->>> novatek,nt37703-motorola-bronco
->>>
->>> ...but motorola bronco isn't the model of the panel.
->>>
->>> My recommendation - look at some video of screen replacement, stop at moment
->>> when FLEX cable from panel is visible and that's where the panel model usually is.
->>
->>
->> I somewhat doubt the panel model would be located in the FPC cable.
->> I did search anyway but didn't find anything of interest. And I'm not
->> willing to risk damaging the display flex or the battery of my
->> development device just for a possibility either.
+On 8/11/26 07:52, Esteban Urrutia via B4 Relay wrote:
+> From: Esteban Urrutia <esteuwu@proton.me>
 > 
-> No-one asks you to disassemble the device :)
-> Sadly, I haven't found any video doing display replacement either.
-> In worst case such as this I assume it make sense keep the phone model in the compatible until panel codename is found.
+> Add driver for panels based on this DDIC.
+> Initial support is added for the Tianma "v2" panel (no panel model) found
+> in the Motorola ThinkPhone by motorola.
 > 
->> For the compatible pattern I used the implemented pattern for the
->> NT36523 TDDI, which is also used for other ICs such as the RM69380.
->>
->> So, I believe it should be okay to leave the compatible as is.
+> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+> ---
+>   MAINTAINERS                                   |   6 +
+>   drivers/gpu/drm/panel/Kconfig                 |  13 +
+>   drivers/gpu/drm/panel/Makefile                |   1 +
+>   drivers/gpu/drm/panel/panel-novatek-nt37703.c | 467 ++++++++++++++++++++++++++
+>   4 files changed, 487 insertions(+)
 > 
-> I would like to hear a word from Neil first. In similar cases like this would make sense to have one way defining these compatible strings used in phones.
-> 
-> 
-> bit I missed in the review the part:
-> 
-> +            compatible = "motorola,bronco-tianma-v2-nt37703", "novatek,nt37703";
-> 
-> Unless the driver is able to auto-detect the connected panel (unlikely), novatek,nt37703 doesn't make sense. The DDIC without the panel is useless.
-> 
-> For example, in sdm845-oneplus-fajita and enchilada, we have the generic compatible because it was introduced before, so it's kept for compatibility reasons. There is no need to do that here.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index da14a58df9e8..e2bb50a8b1af 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -8339,6 +8339,12 @@ T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
+>   F:	Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
+>   F:	drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+>   
+> +DRM DRIVER FOR NOVATEK NT37703 PANELS
+> +M:	Esteban Urrutia <esteuwu@proton.me>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/display/panel/novatek,nt37703.yaml
+> +F:	drivers/gpu/drm/panel/panel-novatek-nt37703.c
+> +
+>   DRM DRIVER FOR NOVATEK NT37801 PANELS
+>   M:	Krzysztof Kozlowski <krzk@kernel.org>
+>   S:	Maintained
+> diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+> index cbdf7b8f7f7a..9cd74ceef44e 100644
+> --- a/drivers/gpu/drm/panel/Kconfig
+> +++ b/drivers/gpu/drm/panel/Kconfig
+> @@ -706,6 +706,19 @@ config DRM_PANEL_NOVATEK_NT37700F
+>   	  Say Y here if you want to enable support for Novatek NT37700F DSI
+>   	  panel module. The panel has a resolution of 1080x2160.
+>   
+> +config DRM_PANEL_NOVATEK_NT37703
+> +	tristate "Novatek NT37703 DSI panel"
+> +	depends on OF
+> +	depends on DRM_MIPI_DSI
+> +	depends on BACKLIGHT_CLASS_DEVICE
+> +	select DRM_DISPLAY_DSC_HELPER
+> +	select DRM_DISPLAY_HELPER
+> +	help
+> +	  Say Y or M here if you want to enable support for panels based
+> +	  on the Novatek NT37703 display driver IC, such as Tianma
+> +	  panels found in some units of the Motorola ThinkPhone by
+> +	  motorola.
+> +
+>   config DRM_PANEL_NOVATEK_NT37801
+>   	tristate "Novatek NT37801/NT37810 AMOLED DSI panel"
+>   	depends on OF
+> diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
+> index 3b523cf37833..4a69b2657c5b 100644
+> --- a/drivers/gpu/drm/panel/Makefile
+> +++ b/drivers/gpu/drm/panel/Makefile
+> @@ -68,6 +68,7 @@ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36536) += panel-novatek-nt36536.o
+>   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672A) += panel-novatek-nt36672a.o
+>   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672E) += panel-novatek-nt36672e.o
+>   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37700F) += panel-novatek-nt37700f.o
+> +obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37703) += panel-novatek-nt37703.o
+>   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT37801) += panel-novatek-nt37801.o
+>   obj-$(CONFIG_DRM_PANEL_NOVATEK_NT39016) += panel-novatek-nt39016.o
+>   obj-$(CONFIG_DRM_PANEL_MANTIX_MLAF057WE51) += panel-mantix-mlaf057we51.o
+> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt37703.c b/drivers/gpu/drm/panel/panel-novatek-nt37703.c
+> new file mode 100644
+> index 000000000000..5858bf12a310
+> --- /dev/null
+> +++ b/drivers/gpu/drm/panel/panel-novatek-nt37703.c
+> @@ -0,0 +1,467 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Driver for Novatek NT37703 based MIPI DSI panels
+> + *
+> + * Multiple panel support based on Novatek NT36523 driver
+> + * Per panel DSC support based on Ilitek ILI9882T driver
+> + *
+> + * Copyright (c) 2026 Esteban Urrutia <esteuwu@proton.me>
+> + */
+> +
+> +#include <linux/backlight.h>
+> +#include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/regulator/consumer.h>
+> +
+> +#include <video/mipi_display.h>
+> +
+> +#include <drm/display/drm_dsc.h>
+> +#include <drm/display/drm_dsc_helper.h>
+> +#include <drm/drm_mipi_dsi.h>
+> +#include <drm/drm_modes.h>
+> +#include <drm/drm_panel.h>
+> +#include <drm/drm_probe_helper.h>
+> +
+> +#define DSC_BPG_OFFSET(x)		((u8) ((x) & DSC_RANGE_BPG_OFFSET_MASK))
+> +#define NT37703_DCS_SWITCH_PAGE		0xf0
+> +
+> +#define nt37703_cmd_test_on(ctx)	mipi_dsi_dcs_write_seq_multi((ctx), 0xff, 0xaa, 0x55, \
+> +								     0xa5, 0x80)
+> +#define nt37703_switch_page(ctx, page)	mipi_dsi_dcs_write_seq_multi((ctx), \
+> +								     NT37703_DCS_SWITCH_PAGE, \
+> +								     0x55, 0xaa, 0x52, 0x08, (page))
+> +
+> +struct panel_info {
+> +	struct drm_panel panel;
+> +	const struct panel_desc *desc;
+> +	struct mipi_dsi_device *dsi;
+> +	struct drm_dsc_config dsc;
+> +	struct regulator_bulk_data *supplies;
+> +	struct gpio_desc *reset_gpio;
+> +};
+> +
+> +struct panel_desc {
+> +	unsigned int width_mm;
+> +	unsigned int height_mm;
+> +
+> +	unsigned int lanes;
+> +	unsigned long mode_flags;
+> +	enum mipi_dsi_pixel_format format;
+> +
+> +	const struct drm_display_mode *modes;
+> +	unsigned int num_modes;
+> +	int (*init_sequence)(struct panel_info *pinfo);
+> +	const struct drm_dsc_config *dsc;
+> +};
+> +
+> +/*
+> + * These parameters are applied when using DSC 1.1 and when the DSC configuration specifies 10 b.p.c
+> + * and 8 b.p.p
+> + */
+> +static const struct drm_dsc_rc_range_parameters nt37703_rc_range_params[DSC_NUM_BUF_RANGES] = {
+> +	{ 0,  8,  DSC_BPG_OFFSET(2)   },
+> +	{ 4,  8,  DSC_BPG_OFFSET(0)   },
+> +	{ 5,  9,  DSC_BPG_OFFSET(0)   },
+> +	{ 5,  10, DSC_BPG_OFFSET(-2)  },
+> +	{ 7,  11, DSC_BPG_OFFSET(-4)  },
+> +	{ 7,  11, DSC_BPG_OFFSET(-6)  },
+> +	{ 7,  11, DSC_BPG_OFFSET(-8)  },
+> +	{ 7,  12, DSC_BPG_OFFSET(-8)  },
+> +	{ 7,  13, DSC_BPG_OFFSET(-8)  },
+> +	{ 8,  14, DSC_BPG_OFFSET(-10) },
+> +	{ 9,  14, DSC_BPG_OFFSET(-10) },
+> +	{ 9,  15, DSC_BPG_OFFSET(-10) },
+> +	{ 9,  15, DSC_BPG_OFFSET(-12) },
+> +	{ 12, 16, DSC_BPG_OFFSET(-12) },
+> +	{ 16, 17, DSC_BPG_OFFSET(-12) },
+> +};
+> +
+> +static const struct regulator_bulk_data nt37703_supplies[] = {
+> +	{ .supply = "avdd"  },
+> +	{ .supply = "elvdd" },
+> +	{ .supply = "elvss" },
+> +	{ .supply = "vci"   },
+> +	{ .supply = "vdd"   },
+> +	{ .supply = "vddi"  },
+> +};
+> +
+> +static inline struct panel_info *to_panel_info(struct drm_panel *panel)
+> +{
+> +	return container_of_const(panel, struct panel_info, panel);
+> +}
+> +
+> +static void nt37703_reset(struct panel_info *pinfo)
+> +{
+> +	gpiod_set_value_cansleep(pinfo->reset_gpio, 0);
+> +	usleep_range(1000, 2000);
+> +	gpiod_set_value_cansleep(pinfo->reset_gpio, 1);
+> +	usleep_range(1000, 2000);
+> +	gpiod_set_value_cansleep(pinfo->reset_gpio, 0);
+> +	usleep_range(10000, 11000);
+> +}
+> +
+> +static int nt37703_off(struct panel_info *pinfo)
+> +{
+> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = pinfo->dsi };
+> +
+> +	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+> +	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+> +	mipi_dsi_msleep(&dsi_ctx, 120);
+> +
+> +	return dsi_ctx.accum_err;
+> +}
+> +
+> +static int nt37703_prepare(struct drm_panel *panel)
+> +{
+> +	struct panel_info *pinfo = to_panel_info(panel);
+> +	struct device *dev = &pinfo->dsi->dev;
+> +	struct drm_dsc_picture_parameter_set pps;
+> +	int ret;
+> +	int i;
+> +
+> +	ret = regulator_bulk_enable(ARRAY_SIZE(nt37703_supplies), pinfo->supplies);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to enable regulators: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	nt37703_reset(pinfo);
+> +
+> +	ret = pinfo->desc->init_sequence(pinfo);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to initialize panel: %d\n", ret);
+> +		gpiod_set_value_cansleep(pinfo->reset_gpio, 1);
+> +		regulator_bulk_disable(ARRAY_SIZE(nt37703_supplies), pinfo->supplies);
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * For some reason this DDIC uses different parameters for the RC ranges under certain DSC
+> +	 * configurations.
+> +	 * Not applying them results in heavy visual glitches, so do so if all conditions are met.
+> +	 */
+> +	if (pinfo->dsc.dsc_version_major == 1 && pinfo->dsc.dsc_version_minor == 1 &&
+> +	    pinfo->dsc.bits_per_component == 10 && pinfo->dsc.bits_per_pixel == 8 << 4) {
+> +		for (i = 0; i < DSC_NUM_BUF_RANGES; i++) {
+> +			pinfo->dsc.rc_range_params[i].range_min_qp =
+> +				nt37703_rc_range_params[i].range_min_qp;
+> +			pinfo->dsc.rc_range_params[i].range_max_qp =
+> +				nt37703_rc_range_params[i].range_max_qp;
+> +			pinfo->dsc.rc_range_params[i].range_bpg_offset =
+> +				nt37703_rc_range_params[i].range_bpg_offset;
+> +		}
+> +	}
+> +
+> +	/*
+> +	 * Given drm_dsc_setup_rc_params() inconditionally overrides certain members in pinfo->dsc
+> +	 * that may have been set in pinfo->desc->dsc, override these members once more with what's
+> +	 * found in pinfo->desc->dsc.
+> +	 */
+> +	if (pinfo->desc->dsc->first_line_bpg_offset)
+> +		pinfo->dsc.first_line_bpg_offset = pinfo->desc->dsc->first_line_bpg_offset;
+> +
+> +	drm_dsc_pps_payload_pack(&pps, &pinfo->dsc);
+> +
+> +	ret = mipi_dsi_picture_parameter_set(pinfo->dsi, &pps);
+> +	if (ret < 0) {
+> +		dev_err(panel->dev, "Failed to transmit PPS: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = mipi_dsi_compression_mode(pinfo->dsi, true);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to enable compression mode: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	msleep(28);
+> +
+> +	return 0;
+> +}
+> +
+> +static int nt37703_unprepare(struct drm_panel *panel)
+> +{
+> +	struct panel_info *pinfo = to_panel_info(panel);
+> +	struct device *dev = &pinfo->dsi->dev;
+> +	int ret;
+> +
+> +	ret = nt37703_off(pinfo);
+> +	if (ret < 0)
+> +		dev_err(dev, "Failed to un-initialize panel: %d\n", ret);
+> +
+> +	gpiod_set_value_cansleep(pinfo->reset_gpio, 1);
+> +	regulator_bulk_disable(ARRAY_SIZE(nt37703_supplies), pinfo->supplies);
+> +
+> +	return 0;
+> +}
+> +
+> +static int nt37703_get_modes(struct drm_panel *panel, struct drm_connector *connector)
+> +{
+> +	struct panel_info *pinfo = to_panel_info(panel);
+> +	int i;
+> +
+> +	for (i = 0; i < pinfo->desc->num_modes; i++) {
+> +		const struct drm_display_mode *m = &pinfo->desc->modes[i];
+> +		struct drm_display_mode *mode;
+> +
+> +		mode = drm_mode_duplicate(connector->dev, m);
+> +		if (!mode) {
+> +			dev_err(panel->dev, "Failed to add mode %ux%u@%u\n", m->hdisplay,
+> +				m->vdisplay, drm_mode_vrefresh(m));
+> +			return -ENOMEM;
+> +		}
+> +
+> +		mode->type = DRM_MODE_TYPE_DRIVER;
+> +		if (i == 0)
+> +			mode->type |= DRM_MODE_TYPE_PREFERRED;
+> +
+> +		drm_mode_set_name(mode);
+> +		drm_mode_probed_add(connector, mode);
+> +	}
+> +
+> +	connector->display_info.width_mm = pinfo->desc->width_mm;
+> +	connector->display_info.height_mm = pinfo->desc->height_mm;
+> +
+> +	return pinfo->desc->num_modes;
 
-Yeah today the norm is to add the ddic as second compatible entry so the first compatible just describes the pane, so here it should be:
+The only supported panel only supports a single mode, just support
+a single mode for now and drop this open coded support for multiple modes.
 
-compatible = "motorola,bronco-tianma-v2", "novatek,nt37703";
+You can add it later if somehow you need multiple modes.
 
+> +}
+> +
+> +static const struct drm_panel_funcs nt37703_panel_funcs = {
+> +	.prepare = nt37703_prepare,
+> +	.unprepare = nt37703_unprepare,
+> +	.get_modes = nt37703_get_modes,
+> +};
+> +
+> +static int nt37703_bl_update_status(struct backlight_device *bl)
+> +{
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	u16 brightness = backlight_get_brightness(bl);
+> +	int ret;
+> +
+> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+> +
+> +	ret = mipi_dsi_dcs_set_display_brightness_large(dsi, brightness);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +
+> +	return 0;
+> +}
+> +
+> +static int nt37703_bl_get_brightness(struct backlight_device *bl)
+> +{
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	u16 brightness;
+> +	int ret;
+> +
+> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+> +
+> +	ret = mipi_dsi_dcs_get_display_brightness_large(dsi, &brightness);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+> +
+> +	return brightness;
+> +}
+> +
+> +static const struct backlight_ops nt37703_bl_ops = {
+> +	.update_status = nt37703_bl_update_status,
+> +	.get_brightness = nt37703_bl_get_brightness,
+> +};
+> +
+> +static struct backlight_device *nt37703_create_backlight(struct mipi_dsi_device *dsi)
+> +{
+> +	struct device *dev = &dsi->dev;
+> +	const struct backlight_properties props = {
+> +		.type = BACKLIGHT_RAW,
+> +		.brightness = 2047,
+> +		.max_brightness = 4095,
+> +	};
+> +
+> +	return devm_backlight_device_register(dev, dev_name(dev), dev, dsi, &nt37703_bl_ops,
+> +					      &props);
+> +}
+> +
+> +static const struct drm_display_mode bronco_tianma_modes[] = {
+> +	{
+> +		.clock = (1080 + 16 + 4 + 16) * (2400 + 44 + 2 + 14) * 144 / 1000,
+> +		.hdisplay = 1080,
+> +		.hsync_start = 1080 + 16,
+> +		.hsync_end = 1080 + 16 + 4,
+> +		.htotal = 1080 + 16 + 4 + 16,
+> +		.vdisplay = 2400,
+> +		.vsync_start = 2400 + 44,
+> +		.vsync_end = 2400 + 44 + 2,
+> +		.vtotal = 2400 + 44 + 2 + 14,
+> +	},
+> +};
+> +
+> +static int bronco_tianma_v2_init_sequence(struct panel_info *pinfo)
+> +{
+> +	struct mipi_dsi_multi_context dsi_ctx = { .dsi = pinfo->dsi };
+> +
+> +	nt37703_switch_page(&dsi_ctx, 0x00);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x06);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb5, 0x29);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x07);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb5, 0x2b, 0x1b, 0x00, 0x32);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x88, 0x01, 0x02, 0x1b, 0x08, 0x77);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x87, 0x20);
+> +	mipi_dsi_dcs_set_column_address_multi(&dsi_ctx, 0, 1080 - 1);
+> +	mipi_dsi_dcs_set_page_address_multi(&dsi_ctx, 0, 2400 - 1);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x90, 0x03, 0x03);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY, 0x20);
+> +	nt37703_cmd_test_on(&dsi_ctx);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x15);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf8, 0x01, 0xe1);
+> +	nt37703_cmd_test_on(&dsi_ctx);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x17);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf4, 0x02);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0xaa, 0x55, 0xa5, 0x81);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x13);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf9, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0xaa, 0x55, 0xa5, 0x81);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x3c);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xf5, 0x81);
+> +	mipi_dsi_dcs_set_tear_on_multi(&dsi_ctx, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
+> +	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x0000);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x00);
+> +	nt37703_switch_page(&dsi_ctx, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x03);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc7, 0x47);
+> +	nt37703_switch_page(&dsi_ctx, 0x00);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0xc4);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xb2, 0x09, 0x84, 0x09, 0x84, 0x09, 0x84, 0x16,
+> +				     0xd6);
+> +	nt37703_switch_page(&dsi_ctx, 0x03);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x33);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xc6, 0x00, 0x18, 0x00, 0x18, 0x00, 0x18, 0x00,
+> +				     0x18);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x6f, 0x01);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x2f, 0x83);
+> +	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x8b, 0x00, 0x00);
+> +	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
+> +	mipi_dsi_msleep(&dsi_ctx, 120);
+> +	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
+> +
+> +	return dsi_ctx.accum_err;
+> +}
+> +
+> +static const struct drm_dsc_config bronco_tianma_dsc = {
+> +	.dsc_version_major = 1,
+> +	.dsc_version_minor = 1,
+> +	.slice_height = 20,
+> +	.slice_width = 540,
+> +	.slice_count = 2,		/* 1080 / slice_width */
+> +	.bits_per_component = 10,
+> +	.bits_per_pixel = 8 << 4,	/* 4 fractional bits  */
+> +	.block_pred_enable = true,
+> +	.first_line_bpg_offset = 13,
+> +};
+> +
+> +static const struct panel_desc bronco_tianma_v2_desc = {
+> +	.modes = bronco_tianma_modes,
+> +	.num_modes = ARRAY_SIZE(bronco_tianma_modes),
+> +	.width_mm = 68,
+> +	.height_mm = 152,
+> +	.lanes = 4,
+> +	.format = MIPI_DSI_FMT_RGB101010,
+> +	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_NO_EOT_PACKET |
+> +		      MIPI_DSI_CLOCK_NON_CONTINUOUS | MIPI_DSI_MODE_LPM |
+> +		      MIPI_DSI_MODE_DSC_ALL_SLICES_IN_PKT;
+> +	.init_sequence = bronco_tianma_v2_init_sequence,
+> +	.dsc = &bronco_tianma_dsc,
+> +};
+> +
+> +static int nt37703_probe(struct mipi_dsi_device *dsi)
+> +{
+> +	struct device *dev = &dsi->dev;
+> +	struct panel_info *pinfo;
+> +	int ret;
+> +
+> +	pinfo = devm_drm_panel_alloc(dev, struct panel_info, panel, &nt37703_panel_funcs,
+> +				     DRM_MODE_CONNECTOR_DSI);
+> +	if (IS_ERR(pinfo))
+> +		return PTR_ERR(pinfo);
+> +
+> +	pinfo->desc = of_device_get_match_data(dev);
+> +	if (IS_ERR(pinfo->desc))
+> +		return PTR_ERR(pinfo->desc);
+> +
+> +	ret = devm_regulator_bulk_get_const(dev, ARRAY_SIZE(nt37703_supplies), nt37703_supplies,
+> +					    &pinfo->supplies);
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to get regulators\n");
+> +
+> +	pinfo->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(pinfo->reset_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(pinfo->reset_gpio),
+> +				     "Failed to get reset-gpios\n");
+> +
+> +	pinfo->dsi = dsi;
+> +	mipi_dsi_set_drvdata(dsi, pinfo);
+> +
+> +	dsi->lanes = pinfo->desc->lanes;
+> +	dsi->format = pinfo->desc->format;
+> +	dsi->mode_flags = pinfo->desc->mode_flags;
+> +
+> +	pinfo->panel.prepare_prev_first = true;
+> +
+> +	pinfo->panel.backlight = nt37703_create_backlight(dsi);
+> +	if (IS_ERR(pinfo->panel.backlight))
+> +		return dev_err_probe(dev, PTR_ERR(pinfo->panel.backlight),
+> +				     "Failed to create backlight\n");
+> +
+> +	drm_panel_add(&pinfo->panel);
+
+Use devm_ variant
+
+> +
+> +	/* This panel only supports DSC; unconditionally enable it */
+> +	pinfo->dsc = *(pinfo->desc->dsc);
+> +	dsi->dsc = &pinfo->dsc;
+> +
+> +	ret = mipi_dsi_attach(dsi);
+
+Use devm_ variant
+
+> +	if (ret < 0) {
+> +		drm_panel_remove(&pinfo->panel);
+> +		return dev_err_probe(dev, ret, "Failed to attach to DSI host\n");
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void nt37703_remove(struct mipi_dsi_device *dsi)
+> +{
+> +	struct panel_info *pinfo = mipi_dsi_get_drvdata(dsi);
+> +	int ret;
+> +
+> +	ret = mipi_dsi_detach(dsi);
+> +	if (ret < 0)
+> +		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
+> +
+> +	drm_panel_remove(&pinfo->panel);
+> +}
+
+And drop the remove()
+
+Thanks.
 Neil
 
+> +
+> +static const struct of_device_id nt37703_of_match[] = {
+> +	{
+> +		.compatible = "motorola,bronco-tianma-v2-nt37703",
+> +		.data = &bronco_tianma_v2_desc,
+> +	},
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, nt37703_of_match);
+> +
+> +static struct mipi_dsi_driver nt37703_driver = {
+> +	.probe = nt37703_probe,
+> +	.remove = nt37703_remove,
+> +	.driver = {
+> +		.name = "panel-novatek-nt37703",
+> +		.of_match_table = nt37703_of_match,
+> +	},
+> +};
+> +module_mipi_dsi_driver(nt37703_driver);
+> +
+> +MODULE_AUTHOR("Esteban Urrutia <esteuwu@proton.me>");
+> +MODULE_DESCRIPTION("DRM driver for Novatek NT37703 based MIPI DSI panels");
+> +MODULE_LICENSE("GPL");
 > 
-> Thanks
-> David
-> 
->>
->>> David Heidelberg
->>
->>
->> Regards,
->> Esteban
->>
 
