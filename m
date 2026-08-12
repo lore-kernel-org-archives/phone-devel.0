@@ -1,43 +1,43 @@
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA0C35200B;
-	Wed, 12 Aug 2026 20:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABB036D4F1
+	for <phone-devel@vger.kernel.org>; Wed, 12 Aug 2026 20:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786565150; cv=none; b=h1iI+BupUo0G+R3Z1E9RREeL5b4GDHXPRfOvs9Czxl6SXEKZ2xHJk9KZQm/1AwRXH+pLzbt7F9cJu4tI7hQfSnXV0y4E8BtEGZa0KarauWLi+YN+HiMqS2YmR2/ONqWASsSPyAKfa9UyHofTyFmeElP6/UacKhcaucxtYG0Zp5s=
+	t=1786565459; cv=none; b=cjQx54a2XPPaw/1SYzYPbxmoAA+38d8U9XFbs+1NZCfqfMLB9Ydo/vZE7xJDNJ5LEqKXhvr0JkWxxWuOZDeZyHlIkteQTwF9mhL8AzgMSYh4XPThAC6vXt4oXXHBeTIfnIl4F0v0WeD4x3htddUNDoYxZSSjq01cjy2LWMJj95Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786565150; c=relaxed/simple;
-	bh=V6aoz6K6lZS6Bmbf9DFYnYYVDYEmbzaCaZiR+AdGgQw=;
+	s=arc-20240116; t=1786565459; c=relaxed/simple;
+	bh=zAb+/UlTEKpjblLRtzLovZ71X6BemvJ/aPgIQNATy+E=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OQP1v60jm29eTO0Ur3IePYjxgPGk90/97dD0BfSAMWdxJYeZ45JokHVIr9WS58Fp4vVVTRbWJAPK1iiXT9FvwTjxHDE6ZrL9MWOIojXXBDQD/jODElHURyeIkP31CF/uLWLuHy9A0gAeOTqRjgqYCzsB146hKo/ES1ogGnA4zLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CsFqwGVi; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=CJUeMr9qXPAv0cs09MvVZlGO68EessLu51iNz8NDRvtr89Wl/7kBw3TV4JoUFN7bs8ehoW7t6Hhi2JWXqM3kW63HgUqf2A18WjPubZCeESsJOqN82tz0tP3iI3d9WHpUhsVqox49sfe6i7QhdZFrOhc1uQgegakWns1I+8sCADA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=lUmGZq+s; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CsFqwGVi"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lUmGZq+s"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1786565136; x=1786824336;
-	bh=x5OEyYc0In7xqxAI/atX6wyDHKDcVDmPSMTIy6wnqKc=;
+	s=protonmail; t=1786565451; x=1786824651;
+	bh=zAb+/UlTEKpjblLRtzLovZ71X6BemvJ/aPgIQNATy+E=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=CsFqwGVikvTRySpnAMiEtKmXdsRgVnQMIJ1EcBGuzXka6qdEJ9K0uvHfv3sbUhGW1
-	 m/3NtsKwdhPFrF77kC3wQT43cLE0YspCJAzF5qEGrI3v6yHFxU5SlLsCfM7iswSI58
-	 mC5uwWx3adMqWEVvpEiPwsJlGXaHA0ZVOLOlmEIdCz5EdprPpzxkJ4Yhy/XCuR/hZG
-	 6XCuwppBVqXM+XUjLAxT+HDeSDbjp0hcTFJ1iE+nZr1n1/yrqCgHJfblNP/rZakrnH
-	 s3snm0rMkR6aTKUTgsKTX8VWAT/9urFyvteBy9FE98nk+Z5fYWgeKKH6nMqMfre5Gt
-	 yvG2viqc/jswA==
-Date: Wed, 12 Aug 2026 20:05:30 +0000
-To: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+	b=lUmGZq+soiASuXFrIJu7o/hPdEVMGPnDX4MvLJhHHh0EQkf4q5p4aLPRETkrCJB9G
+	 ULgVXqaBy+KX//cgIbqdbzKF4Esn7A/RZuhzsrUzx9hfDG+CAWS8qeEEYEUEbEwQ0P
+	 1tNSgSWgp0FmIBpl7IlnjDlY/7guuuys3sjn3i/RgD2u3yagn+ExGIWajviCnrQA6u
+	 Lb8AGY+vg7m4VAWHPE1QdtEd8etZssQwHICE936bW6XSgt2Yqxh52yAJ2XZ65H2bjk
+	 4mbufYQXSxCX4Lh61vhINZueEfSZQvaaw1AYlsyQnodrIxWasRVQqDcF0ZTVlBcAdJ
+	 yTZijBDZ9dKgA==
+Date: Wed, 12 Aug 2026 20:10:48 +0000
+To: Neil Armstrong <neil.armstrong@linaro.org>, David Heidelberg <david@ixit.cz>, Jessica Zhang <jesszhan0024@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
 From: Esteban Urrutia <esteuwu@proton.me>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 2/2] drm/panel: Add driver for Novatek NT37703 based panels
-Message-ID: <d74f4f83-b7a3-413b-8c12-e52d90914ada@proton.me>
-In-Reply-To: <7757da0a-ef3a-44b0-99c2-af9af3e21a0b@linaro.org>
-References: <20260811-nt37703-bup-v1-0-34ad42b064a3@proton.me> <20260811-nt37703-bup-v1-2-34ad42b064a3@proton.me> <7757da0a-ef3a-44b0-99c2-af9af3e21a0b@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: display: panel: Add bindings for Novatek NT37703
+Message-ID: <318b749e-26db-4d74-b910-a368a9e51013@proton.me>
+In-Reply-To: <05d2ad33-a681-41e4-87f7-e3aaeb5428a8@linaro.org>
+References: <20260811-nt37703-bup-v1-0-34ad42b064a3@proton.me> <20260811-nt37703-bup-v1-1-34ad42b064a3@proton.me> <8c3e9384-7964-4d03-a3a9-de15d26de822@ixit.cz> <58d7ddd4-1488-4c34-be85-6345138aa238@proton.me> <7097b617-90be-492d-9637-4a2a101379e0@ixit.cz> <05d2ad33-a681-41e4-87f7-e3aaeb5428a8@linaro.org>
 Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: fbcc33b88767e0c67c075d124abede96708e5937
+X-Pm-Message-ID: 8c128edce5c560b4767a5a3dae3ebf4c21f13b51
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -47,145 +47,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 8/12/26 7:55 AM, Neil Armstrong wrote:
->> +static int nt37703_get_modes(struct drm_panel *panel, struct drm_connec=
-tor *connector)
->> +{
->> +=09struct panel_info *pinfo =3D to_panel_info(panel);
->> +=09int i;
->> +
->> +=09for (i =3D 0; i < pinfo->desc->num_modes; i++) {
->> +=09=09const struct drm_display_mode *m =3D &pinfo->desc->modes[i];
->> +=09=09struct drm_display_mode *mode;
->> +
->> +=09=09mode =3D drm_mode_duplicate(connector->dev, m);
->> +=09=09if (!mode) {
->> +=09=09=09dev_err(panel->dev, "Failed to add mode %ux%u@%u\n", m->hdispl=
-ay,
->> +=09=09=09=09m->vdisplay, drm_mode_vrefresh(m));
->> +=09=09=09return -ENOMEM;
->> +=09=09}
->> +
->> +=09=09mode->type =3D DRM_MODE_TYPE_DRIVER;
->> +=09=09if (i =3D=3D 0)
->> +=09=09=09mode->type |=3D DRM_MODE_TYPE_PREFERRED;
->> +
->> +=09=09drm_mode_set_name(mode);
->> +=09=09drm_mode_probed_add(connector, mode);
->> +=09}
->> +
->> +=09connector->display_info.width_mm =3D pinfo->desc->width_mm;
->> +=09connector->display_info.height_mm =3D pinfo->desc->height_mm;
->> +
->> +=09return pinfo->desc->num_modes;
+On 8/12/26 7:52 AM, Neil Armstrong wrote:
+> On 8/12/26 10:46, David Heidelberg wrote:
+>> bit I missed in the review the part:
+>>
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 comp=
+atible =3D "motorola,bronco-tianma-v2-nt37703", "novatek,nt37703";
+>>
+>> Unless the driver is able to auto-detect the connected panel (unlikely),=
+ novatek,nt37703 doesn't make sense. The DDIC without the panel is useless.
+>>
+>> For example, in sdm845-oneplus-fajita and enchilada, we have the generic=
+ compatible because it was introduced before, so it's kept for compatibilit=
+y reasons. There is no need to do that here.
 >=20
-> The only supported panel only supports a single mode, just support
-> a single mode for now and drop this open coded support for multiple modes=
-.
+> Yeah today the norm is to add the ddic as second compatible entry so the =
+first compatible just describes the pane, so here it should be:
 >=20
-> You can add it later if somehow you need multiple modes.
+> compatible =3D "motorola,bronco-tianma-v2", "novatek,nt37703";
+In that case first compatible string should be
+"tianma,motorola-bronco-v2" since Tianma is the panel maker and this
+"v2" panel is only used in motorola-bronco.
 
-
-The idea is that for each new panel, instead of modifying the driver,
-only these structures are added:
-- (panel)_modes[]
-- (panel)_init_sequence()
-- struct drm_dsc_config (panel)_dsc
-- (panel)_desc
-And modifying the of_device_id table afterwards.
-
-So dropping only the modes would mean getting rid of all these
-altogether, otherwise the only supported mode would be hardcoded which
-renders these structures useless.
-
-[...]
-
->> +static int nt37703_probe(struct mipi_dsi_device *dsi)
->> +{
->> +=09struct device *dev =3D &dsi->dev;
->> +=09struct panel_info *pinfo;
->> +=09int ret;
->> +
->> +=09pinfo =3D devm_drm_panel_alloc(dev, struct panel_info, panel, &nt377=
-03_panel_funcs,
->> +=09=09=09=09     DRM_MODE_CONNECTOR_DSI);
->> +=09if (IS_ERR(pinfo))
->> +=09=09return PTR_ERR(pinfo);
->> +
->> +=09pinfo->desc =3D of_device_get_match_data(dev);
->> +=09if (IS_ERR(pinfo->desc))
->> +=09=09return PTR_ERR(pinfo->desc);
->> +
->> +=09ret =3D devm_regulator_bulk_get_const(dev, ARRAY_SIZE(nt37703_suppli=
-es), nt37703_supplies,
->> +=09=09=09=09=09    &pinfo->supplies);
->> +=09if (ret < 0)
->> +=09=09return dev_err_probe(dev, ret, "Failed to get regulators\n");
->> +
->> +=09pinfo->reset_gpio =3D devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
->> +=09if (IS_ERR(pinfo->reset_gpio))
->> +=09=09return dev_err_probe(dev, PTR_ERR(pinfo->reset_gpio),
->> +=09=09=09=09     "Failed to get reset-gpios\n");
->> +
->> +=09pinfo->dsi =3D dsi;
->> +=09mipi_dsi_set_drvdata(dsi, pinfo);
->> +
->> +=09dsi->lanes =3D pinfo->desc->lanes;
->> +=09dsi->format =3D pinfo->desc->format;
->> +=09dsi->mode_flags =3D pinfo->desc->mode_flags;
->> +
->> +=09pinfo->panel.prepare_prev_first =3D true;
->> +
->> +=09pinfo->panel.backlight =3D nt37703_create_backlight(dsi);
->> +=09if (IS_ERR(pinfo->panel.backlight))
->> +=09=09return dev_err_probe(dev, PTR_ERR(pinfo->panel.backlight),
->> +=09=09=09=09     "Failed to create backlight\n");
->> +
->> +=09drm_panel_add(&pinfo->panel);
->=20
-> Use devm_ variant
-
-
-Ack
-
->> +
->> +=09/* This panel only supports DSC; unconditionally enable it */
->> +=09pinfo->dsc =3D *(pinfo->desc->dsc);
->> +=09dsi->dsc =3D &pinfo->dsc;
->> +
->> +=09ret =3D mipi_dsi_attach(dsi);
->=20
-> Use devm_ variant
-
-Ack
-
-
->> +=09if (ret < 0) {
->> +=09=09drm_panel_remove(&pinfo->panel);
->> +=09=09return dev_err_probe(dev, ret, "Failed to attach to DSI host\n");
->> +=09}
->> +
->> +=09return 0;
->> +}
->> +
->> +static void nt37703_remove(struct mipi_dsi_device *dsi)
->> +{
->> +=09struct panel_info *pinfo =3D mipi_dsi_get_drvdata(dsi);
->> +=09int ret;
->> +
->> +=09ret =3D mipi_dsi_detach(dsi);
->> +=09if (ret < 0)
->> +=09=09dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
->> +
->> +=09drm_panel_remove(&pinfo->panel);
->> +}
->=20
-> And drop the remove()
-
-
-Ack
-
-Thanks for reviewing.
 Regards,
 Esteban
 
