@@ -1,62 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8EE3DF000;
-	Thu, 13 Aug 2026 21:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92937361966;
+	Fri, 14 Aug 2026 10:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786655733; cv=none; b=QCywOKa85o6/q7nAl23XctN5WlHOHWrrnQ6N5UO1Rm2G9y5U8n07qBXgz3/wVVhZehZUThOVMTe2Q4cjeHFMXD/3FGUIvCwLoBvyQw1dXomZxr/pn/1mx2YBnvVwIs4JfIvDePoeRUKkS9wSQnbLUBx79ndX+iMNrryBx3L7s4M=
+	t=1786703483; cv=none; b=IZJSgi+liF6Z+YEY5OiXXV0At7mMOmrPZ0TiO/jrNpe5t/gt2n/JnlHCuM2FIedg06lb5e37gGLrv8/BUrJlk+CjuVjsyQ56td9WBWdoYCMLuFagxukwmdgP3mwPSoFW3HvKXuTojAVb61j8ne1Cirx9UoUmSmy25np7G77NDgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786655733; c=relaxed/simple;
-	bh=brUVEV2YYPn4O/fRobquBV2mYMEjl7eMOR6CFz0kQFc=;
+	s=arc-20240116; t=1786703483; c=relaxed/simple;
+	bh=x184bNmNwLs9tj1ULAmrZbwCOx8XgicDUHsToUTZ/0I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RR4HY6R6QqZ0KzpqsurFzwG4iuPF1ty9FzTW5P3KQcOE62I9VKWXp4HE4rI6cXyheq/UzsG4+Oq3NaF5X+7TxjKLImgsNhX6LpqTtzWB1+rBcDoZLoxVcqR3ZAsr5eiCu4qCzfvBw2xEzXbnaxJwMxv1BENCsl+oSjmEWlNt6aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FHzOe1Ks; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=D4WD4Bsys9qQffuhWzeyPgixKEVDihTXoqO99qHqFZtIl1HoTDQzzcGn01/7e3Vh61Oi11+dsUySGeiwATYwm/wIipPzo64SW2vA399uLjKTGp2Q6dgyCRCCHGhBcO8519hRwvLuF3oSpYTH4G22OYc+BkkeZFPGmIR/oAB7XWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CsZinVx9; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FHzOe1Ks"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CsZinVx9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786655731; x=1818191731;
+  t=1786703475; x=1818239475;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=brUVEV2YYPn4O/fRobquBV2mYMEjl7eMOR6CFz0kQFc=;
-  b=FHzOe1KsI0YgbHAxDYHBk3rVEnWng9vGfgFrG8nixhL0oSS/KsS7ggqO
-   he45PKzgGvSWgRV5FwDU8e+UjrCoY27NgevVZe2HuvoTpO7FhqJrSTYo6
-   q39UNNv3SABt6yiULL14ERac9g1+HNaxepNePOCr3iMQcdJV6FuEFCXCp
-   HrLY5iexyWGg67qCB5VlQza8QPmZamFRD/adN+2m87nPvvsXMb0lunAR8
-   Gk31UYiqQhm+DHL33XJ/A9eHi/BFXMoTRXrME3raV6vSTiVj55FyQiBbH
-   3kcUjd6w2mqfo80dcRcp8I27st+0Zar9/mt2zqFrZxMlCrx9zyfZyEJw6
-   A==;
-X-CSE-ConnectionGUID: Bzi7YsVaQnmOrYPGAByWMg==
-X-CSE-MsgGUID: jukUK3ypSGadibyfH22s7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="87000917"
+  bh=x184bNmNwLs9tj1ULAmrZbwCOx8XgicDUHsToUTZ/0I=;
+  b=CsZinVx9u58uRmpBIqxwQAJ2EhW6OZA9BGqudcddDjGHsV6576PCGLXz
+   DCjo9IACVsGvfmKDTUvrTjlLtO68B5BXpcFJfvg+VBoCuw2qbeifAa+Xo
+   /ufSFPHOKKqmg0W6s/sGZyxcvFboV3//9r9cLv8q/ohRLQrAgJBHieIHF
+   Zo+PPBzScTXmuY8IBTdAJp//3UDmtYqFSFUQAsXJse/+a8z2SwLl/A/O4
+   l/9qtTg7kiBGjBJHg02MoKjibVIcuwd4zsBtZKikNulCFI2azKPq2YS8+
+   o5SNZDqLgL1cIfwVeErHZxXeXXsuLUEjNLR3vJud78NBkxbEWGB9ZF/Ek
+   g==;
+X-CSE-ConnectionGUID: brtVBYqgRRqMr4RPwc41ig==
+X-CSE-MsgGUID: LEFUEBmiRgWPtK/wueaIhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="98795713"
 X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="87000917"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 14:15:28 -0700
-X-CSE-ConnectionGUID: LgE5J6FKQQqklkRfqT5m9Q==
-X-CSE-MsgGUID: SCoPT7ClRsGipqENgJbesg==
+   d="scan'208";a="98795713"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 03:31:06 -0700
+X-CSE-ConnectionGUID: XcXKS50nQ9KJEFgicerPFg==
+X-CSE-MsgGUID: 0BjiolWjQVKzgTBDSN6vEA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,222,1779174000"; 
-   d="scan'208";a="261407574"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 13 Aug 2026 14:15:26 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wucln-00000000Wfq-1gLl;
-	Thu, 13 Aug 2026 21:15:23 +0000
-Date: Fri, 14 Aug 2026 05:15:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Stefan Hansson <newbie13xd@gmail.com>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht
-Cc: oe-kbuild-all@lists.linux.dev,
-	Stefan Hansson <newbyte@postmarketos.org>
-Subject: Re: [PATCH] wifi: rsi: Fix types to appease CFI
-Message-ID: <202608140519.Tt0pjFLu-lkp@intel.com>
-References: <20260802-rsi-cfi-fix-v1-1-5821d2cb54ee@postmarketos.org>
+   d="scan'208";a="263753970"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa008.jf.intel.com with ESMTP; 14 Aug 2026 03:31:03 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id 4D03D99; Fri, 14 Aug 2026 12:31:02 +0200 (CEST)
+Date: Fri, 14 Aug 2026 12:31:02 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: esteuwu@proton.me
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] usb: typec: Add support for Parade PS5169 USB
+ Type-C redriver
+Message-ID: <an7uZqb31GoZy65d@black.igk.intel.com>
+References: <20260810-ps5169-bup-v3-0-a2178b2834d7@proton.me>
+ <20260810-ps5169-bup-v3-2-a2178b2834d7@proton.me>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -65,34 +67,50 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260802-rsi-cfi-fix-v1-1-5821d2cb54ee@postmarketos.org>
+In-Reply-To: <20260810-ps5169-bup-v3-2-a2178b2834d7@proton.me>
 
-Hi Stefan,
+Hi Esteban,
 
-kernel test robot noticed the following build warnings:
+On Mon, Aug 10, 2026 at 11:31:37PM -0400, Esteban Urrutia via B4 Relay wrote:
+> From: Esteban Urrutia <esteuwu@proton.me>
+> 
+> Add driver for the Parade PS5169, an USB Type-C redriver capable of
+> handling 10Gb/s USB signals and 8.1Gb/s DP signals.
+> 
+> Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
+> ---
+>  MAINTAINERS                    |   7 +
+>  drivers/usb/typec/mux/Kconfig  |  10 +
+>  drivers/usb/typec/mux/Makefile |   1 +
+>  drivers/usb/typec/mux/ps5169.c | 592 +++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 610 insertions(+)
 
-[auto build test WARNING on 95d6a9ccef99117115e41e9adb271243bd5e985b]
+This does not compile...
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Hansson/wifi-rsi-Fix-types-to-appease-CFI/20260814-020048
-base:   95d6a9ccef99117115e41e9adb271243bd5e985b
-patch link:    https://lore.kernel.org/r/20260802-rsi-cfi-fix-v1-1-5821d2cb54ee%40postmarketos.org
-patch subject: [PATCH] wifi: rsi: Fix types to appease CFI
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260814/202608140519.Tt0pjFLu-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 16.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260814/202608140519.Tt0pjFLu-lkp@intel.com/reproduce)
+> diff --git a/drivers/usb/typec/mux/ps5169.c b/drivers/usb/typec/mux/ps5169.c
+> new file mode 100644
+> index 000000000000..5fbc452249d0
+> --- /dev/null
+> +++ b/drivers/usb/typec/mux/ps5169.c
+> @@ -0,0 +1,592 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Driver for Parade PS5169 USB Type-C linear redriver
+> + * Registers and bits decoded from downstream drivers
+> + *
+> + * Copyright (c) 2026 Esteban Urrutia <esteuwu@proton.me>
+> + */
+> +
+> +#include <drm/bridge/aux-bridge.h>
+> +
+> +#include <linux/i2c.h>
+> +#include <linux/regmap.h>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608140519.Tt0pjFLu-lkp@intel.com/
+You are missing a lot of headers here. Please include everything that
+you are using - don't rely on nested includes. I think that's the rule
+nowadays.
 
-All warnings (new ones prefixed by >>):
+Thanks,
 
->> Warning: drivers/net/wireless/rsi/rsi_91x_usb_ops.c:28 function parameter 'data' not described in 'rsi_usb_rx_thread'
->> Warning: drivers/net/wireless/rsi/rsi_91x_usb_ops.c:28 Excess function parameter 'common' description in 'rsi_usb_rx_thread'
->> Warning: drivers/net/wireless/rsi/rsi_91x_usb_ops.c:28 function parameter 'data' not described in 'rsi_usb_rx_thread'
->> Warning: drivers/net/wireless/rsi/rsi_91x_usb_ops.c:28 Excess function parameter 'common' description in 'rsi_usb_rx_thread'
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+heikki
