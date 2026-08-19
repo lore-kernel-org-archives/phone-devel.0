@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A38476698;
-	Wed, 19 Aug 2026 13:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37942D6E6C;
+	Wed, 19 Aug 2026 13:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787147218; cv=none; b=tNdWd2qFRHrJRLSyR3YhxDmvQbdfpMekBZgeMi3AWgK+K+MgLNxeGhOV6vEHaxvJAy8hce8EBTx3Cg9A949cfWReKhrBRTRI3Mad7vYNJrX0laTWlaVKEbAT8yCPxXaldXqpdwIEE4OynQeRwYBqSAatD4+eQudi+k4SUZH9hvc=
+	t=1787147349; cv=none; b=tiaWFZI+eQK20elpZ2/pZ36UnqrLLzsF+prVEqmMJdiVITxHOUozoygH57r7H1jsVIknYPsFUfR98F4U3ih0xM9oUPNVy5Dgq19chKuS4vDuw1Bhi4hKLvg/r0CR15yicueWxQj25sp6buTcPV1xRxBYgpfo8Cu+hBSS4jT9Tik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787147218; c=relaxed/simple;
-	bh=/0vGNRVy55jyan4zG8BD8bNkuBbvTvizL2WnMPepYBs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ehXPXjKurYJDjPl2X/rEz7s7WPpEvmpT/xhKcGam3UzzkIaXBrDHZfeQyc2UTF6em7p1YLLJh7UY7s8ogDZI0MMQP4fUwfRVjYDwuRoxcOK+3QsXsPfMz5GsoGqRcswMIo5m0/10NNIecOPkhi187PIlXWxj4PySeBBirgTKNpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q6RZIHd2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1787147349; c=relaxed/simple;
+	bh=Qo1W8qYU8L8LZ7GvSNrPNsNmBCQ6COGvzQHSG3eAuI4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PibeekxvSZKaKuMNq0v29FoJ0BVFbFWHttbd33sytymQVEsfvHfo/v0iQn3wZB638fGbOph8pjVOsCCbji++0MfitF0RV/wOFBTgiXIVrPZAhCN/ieccNpWzSynkjJ1r9wztTovxexKYtsPmFq0QIyllvqjV/nPQ/SRgaUpIE/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMyGGuvn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q6RZIHd2"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5EAFDC19425;
-	Wed, 19 Aug 2026 13:46:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMyGGuvn"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4EE69C19425;
+	Wed, 19 Aug 2026 13:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787147217;
-	bh=/0vGNRVy55jyan4zG8BD8bNkuBbvTvizL2WnMPepYBs=;
+	s=k20201202; t=1787147349;
+	bh=Qo1W8qYU8L8LZ7GvSNrPNsNmBCQ6COGvzQHSG3eAuI4=;
 	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=q6RZIHd2f5B5hH6L/eo9pIacsSI2MjLKUAW847UWH/OzQuInVYIa1+lIr6c/EImbH
-	 eT1zioenhLpMNsjbJtp6gHPOJt4fCQ44qmdZwlKLud4/Hc8tBcqwfn3K6dSe97FjP+
-	 AvhlcGlhMjzYyC1D5RRZxbf2SoeGsCU/1myX8nT9Q4SF+UVI0yB2DY4a/TvGBCKXTU
-	 veBggsxRBTkOewrxHojQUmagcQll3de7ESljxEjfwt+GTPWhdj1LhdjnqriFmEhPcZ
-	 Hla8U3Jld0Zv7QI/O6obA7moCKGIHHK9jmLpq1mgFab4/gJ3Rllv+0A56B85n4IEuD
-	 h+HOPJ/AYZcYQ==
+	b=SMyGGuvnCc6rkamsK+FDMr1wsmiD9dNibXlMsujlUoYzpZX15J6Rqu3DsFUznhTis
+	 nESAHqZdnkAZXE5MLzHi4HplvJdDPhjf26qpf2bl87bp7ycqa2ojvyXPd8yt520gUV
+	 mYe4Bl6uq7kCnLU4rPPNUngE8mA8fDfiWSMBVO0HHSdjkDFZHNjCWVQoRag2Czetqq
+	 fSAT7jX5EY5akrum1oQSHarlTEGuddoPnjX7oNHicxwcMJ+wjcmiBWnAKJhRLdPNge
+	 FrUMbhF0lvUkdp/F3QUmBVEwp4fAOcP6ZM54vBp/7R5xNDtIJu3efrpfxgvydqWBBA
+	 KrlfWRHwmCU4Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39D63C5B572;
-	Wed, 19 Aug 2026 13:46:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 283A7C5DF6D;
+	Wed, 19 Aug 2026 13:49:09 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 19 Aug 2026 15:46:54 +0200
-Subject: [PATCH v2] media: dt-bindings: dongwoon,dw9714: Fix example
+Date: Wed, 19 Aug 2026 15:49:05 +0200
+Subject: [PATCH v3] media: dt-bindings: dongwoon,dw9714: Fix example
  implying 1.8V
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -40,11 +40,11 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260819-pp-pro-camera-v2-1-c21652dd388d@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNQQ6CMBBFr0Jm7ZgWiRRX3sOwKO1UxkRoWiQo4
- e62uHb5kvffXyFSYIpwKVYINHPkcUhQHgowvR7uhGwTQynKs1BCovfow4hGPylo1LKyUrtKnYy
- FtPGBHC9779b+OL66B5kpR7LRc5zG8N4PZ5m9f+1ZosC6q2wjaqVc46688HQ0H2i3bfsCrLFtn
- LoAAAA=
+Message-Id: <20260819-pp-pro-camera-v3-1-5b669a2ba899@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQ6CMBAFf4X07JpuQSie/A/jobRF1kRpWmxQw
+ r9L8aAx8TjJm3kTC9aTDWyfTczbSIH62wL5JmO6U7ezBTILM8FFySVHcA6c70Grq/UKFBYGVVv
+ IXBu2OM7blsa1dzy9Odybi9VDiqRFR2Ho/WM9jJh2/9oRgUPVFKbmlZRt3R5opGGrnyyVo/hys
+ f51BSBogeVOGJNLaT7uPM8vVYfb3fYAAAA=
 X-Change-ID: 20260801-pp-pro-camera-a14d1af483cd
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -57,21 +57,21 @@ Cc: Krzysztof Kozlowski <krzk@kernel.org>,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1798; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1971; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=WEz/pz57pQGwTSB/NZ0X/QE1xaXHsRApbxIBxFTqjKk=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqhbPQMqzPiKbvO2zm5Y25Q1FChZvbD4ycOMRlw
- qreCnstAv2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaoWz0AAKCRBgAj/E00kg
- cph7EADFujxDmvz4QUJ/nDfMlv+cHBpuMmsb3VBF0efv/N5Tj3rbzfRnVtu1y9h0iztGRpf7dIt
- MMnY9s6dLeTqG2H7dKN601hn6ZQkHsYTnXutP8cJR6FoED2GSczi3cSDTt/kCNi5+71dTdktqGb
- IwzlRcZxGoXid2bNtWvI3rnhLJZoQX03ntlkRgPndYL/R1gqf0PG37VLfMLiiw2qmy+4gt+Os5W
- xU/hxWjng309iYlTNMU9emVVe97I/WpzBDAWjOMifN1WbjAnFnSg2IhfryhQpggzXPR3NJMFxr0
- MCFGNc4zpPZjzKLPtVDTAYzOd1pxJc6Jms1BJ70oNPlI5ma3MITPI/Wpb8OFOHzb4j7Wriszj0e
- 2QkZ1ibo7YTTqD08nhR7cWar460VUFIs8DGiWf9wtE4mFSgVObGoan60TAm3bO4r5Bn5HpzXtIk
- eJAE9zzzrxwOny8mgdUZYx0iHrn2LdckM8E0pbkNso3BrIL1shh0xc/fbHL3jWTeAoSFkePyIeF
- MG/glKm26c2NLMD7AxHG2HZUE5PbjbDSSVZxia+uHDCdxHxvCtzNY+GzAem5MuFQm1zedYHADID
- KOpLOjhw9YX9ozE9NyhBPVvQuEt6d7y2SNRTRX3rJGulYHzm8rcnBN2lq7tKXh3bCbQQTgAzLuX
- eOXKIeFIFCKYqsA==
+ bh=wXaWf0FZiUfHyVgUjQSi9vHdfwd5hd8hKQ6POghja+U=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqhbRUmxsSfnnRYEDqMfknoHRKdh0SwjhRtZZlG
+ BFwOmYHASaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaoW0VAAKCRBgAj/E00kg
+ cts/D/9sg86dS3xB86qmIQ3O20aL5UHA9BJBD8xzmXRwFizV4CTmRbIQBWftFo7NQLhqAYXEMus
+ OhTcLfXFJklcofBG3i1A2IO/YdQ78PqhuHT/TJpyuk8AzihU8lnmikjNxWkx90MJNJ1gTlA4SvG
+ S32Lk/jGWOmbR8qoqzbfA4YuYQMCm5hZpZkauKxuh+WZGGKDzVAD8p94z2zBNJEkirE2Fesa13v
+ 1ag3owZYsJ3aZ5V7te6mIFMeu4cTBE1lS3W7ptlUT/JyyrPixr0oVvhmhBFAxCwP72dXhnDBpGD
+ FGm+LFHfX4h5mnbDTYF4VBSGEjaW3gE1ET9Rma+YdI3svPL61EeOqu3PsDCKQzasRBpZ+m/OJES
+ g7THZCzvAGUhZ7RDp589uyiYPFBsyIwsWAUn5lItc9Qa48RBQgHIQTRlAi3Z96PQcnyf3CFW2Ua
+ lU1dI7J6451CnsiCwqeAkFntIvY1uRmPaKOChdJ3FrF7jXPwn9wg9ffs0T9tvkJyvmgd4iCxi6I
+ JYL3lC7wRdMW+qJQGt2Cg4GTUkAdElgRyNzXprBqqpigupqmIBZjmYfJhydAyEgPsoC69wr1E6/
+ 5ogTQaGAJxSB3B9XEmxuQjueKSkmZCYjImutOC4lzapo3SvihNaoBslPSAeIMADor36yh5jfLfS
+ /IcjlZY0OUkwcww==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -84,10 +84,15 @@ The datasheet says VDD should be between 2.3 to 4.3V, usually around
 2.8V. Correct to prevent confusion and extend description.
 
 Fixes: 2a96b40f366a ("media: dt-bindings: dongwoon,dw9714: convert to dtschema")
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
 The example implies incorrect voltage, fix it.
 ---
+Changes in v3:
+- Missed Rob A-b.
+- Link to v2: https://patch.msgid.link/20260819-pp-pro-camera-v2-1-c21652dd388d@ixit.cz
+
 Changes in v2:
 - Dropped the devices fixes, needs HW owners to address issues or
   document state to be understandable.
