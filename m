@@ -1,161 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F269418373;
-	Wed, 19 Aug 2026 13:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73363AF66E
+	for <phone-devel@vger.kernel.org>; Wed, 19 Aug 2026 14:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787147801; cv=none; b=V/id9dd1u0r12DQG2lmBQ5b+jkkQubPeRSgU4NjYPjQeN9MCkO05idBG9L2HJ8GirYTFF5GHN15a1qK1oGnyZXUjp0c0468/6O6WbfBi0Bnzp4AJp2b08aWvPK+UO4WW4PQHVHaum4CCWylak27Ta7fPsA4DBPonqyGWONAB6bE=
+	t=1787150474; cv=none; b=MrfGxYM8X/DhaWGt7/Q0entGXKi9WDLdfG0jBuYZLaERVensCXMOPXhmKudXOWOz9ltEGVYxZHAcd9JrSO5Qz3Imi6ivFR8Owdkz38x2qLYiKjVNQ64Euuy+Y8u05fUWjFVCGlI9gThAE+CR6KC7r+FJpvsO6U7E+aF/lTFJxNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787147801; c=relaxed/simple;
-	bh=A7g1v1sO+v0lXCVUR28VH8pRHZHsFZIQvyrD9K0GTD4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cHTqh0ROguCcWA1hYFFJcoF6bauDGGqv2wkC6g/8rh40YbcU2TvcVAduzEydP7Lo9x+nj0dvpu+KjuHYE59JMn6loH+Oj4h+gMbZc9nWNJuF1yphHCAxc8/8bvopboOW91gjTXScOaJuRQF0Rt93uZbf5XgX3gGJ7rJ5LO/tZXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lkpYVPg3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1787150474; c=relaxed/simple;
+	bh=uP1Vm39mGXJ/9f4RTFIjWj5GN267Chxo03KGXfMZxLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y66EDFnbc7ES7DDFyOkRDJ70KJ7hz876hXvyNAdjKqIbBZFjE0E0lL3TOLTRnWbPkuBShUJDt6odXsBpBQ8EL9YeRCKKBBZAO+Ni8rxdh5IYs3q4FWvvPWz0jGaKnMmyptB4emBnKgzpiEOLK7AdaMrMaM3KpdCWNp7lybJe8nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IWaHMneY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=HJygEiMN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lkpYVPg3"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F08F6C2BCFB;
-	Wed, 19 Aug 2026 13:56:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787147801;
-	bh=A7g1v1sO+v0lXCVUR28VH8pRHZHsFZIQvyrD9K0GTD4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lkpYVPg3xicuzcndnX27jGIzvkkyQm4jTMICtyVRTX0KSJMsBUGy4XYQA9F0X/Pcs
-	 5Wm3A/cq+CYp94WMfdYTnwUBgyov1R7rm/9awhq5BgSFBWNlmC3UNivqDx5bkV1p1g
-	 ZPLCgu2598/C4kqbhA9FJDzdZ1tdFCova9Clia7FHdzFWkan22v5BR3DhiBpXfd7sA
-	 HigwD18bJVtF3QxecbvIUDXAc6Dx5w82xlwtRl1wTgL7niapprpNCXcpqo/XQQdgnl
-	 NOiMvCGrNiW6xdaVxpSbAVmKMZTw+SVTry1BsJIElI4WPKVCARQDvFOEv6TBMTzbj7
-	 5ULZcJjOch8Ng==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1F20C5DF88;
-	Wed, 19 Aug 2026 13:56:40 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 19 Aug 2026 15:56:40 +0200
-Subject: [PATCH 2/2] arm64: dts: qcom: sdm845-oneplus: Define touchscreen
- in the detail
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IWaHMneY";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="HJygEiMN"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JEbWT0566975
+	for <phone-devel@vger.kernel.org>; Wed, 19 Aug 2026 14:41:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	et6FsqPMKm7fed5oniWthllmYXZYgRzS1qcnjI8OPWo=; b=IWaHMneY/cxAQvPP
+	wDJR4ArWk5uMeAvO/SffF+oCpqZeLZ01tE0GPKcSAUnCQlqIEUcoqu5baZ9l9yJI
+	+TXz0q3MEgjaEXAekIHwZCDWU8wpX5A4aZGnL7IU3cOK1olAqZ7o4T1BsMkCKvoI
+	3mIoNIf0AQye+MiuwV1TBw3TwKdwAlVZQHGvRKdRmM256HdZUXlhFgfEIN+p/foi
+	Qb/wUDNFk6Ug7YO3ZxDoXAksQbWMTSaE4woKKQGuJ0OXREuwJTawOKFDUHuWQ8St
+	DWl8G6LmDVuRrfQZbB2AV1ISC6JQ1W5isBnwqHEs4FddqQraHpdeEs+dQvmfbzmI
+	mmKu/g==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g5daa0c2b-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 19 Aug 2026 14:41:13 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-52b4e315000so3638901cf.1
+        for <phone-devel@vger.kernel.org>; Wed, 19 Aug 2026 07:41:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1787150472; x=1787755272; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=et6FsqPMKm7fed5oniWthllmYXZYgRzS1qcnjI8OPWo=;
+        b=HJygEiMNayTuCeL1TQSOEZmQIzH79GdQdVFantqGXKQzaTdX1gyp0KaFarv3roNLTQ
+         2EMJoc+cKaDzFVql4ZQUvGc4oGOkMwg5hz/yFrCe6Mu8erlCwHG0aUhmu9ZYlDqE2q6m
+         iyz+3IBdwrDyUaUpOYpjDR6Pu0iLkrbBXmFfKRDADkdVwTKjR1h/4/oYZkZ8dK4GxcjK
+         eNHKIRiHGAxio+fSKi2zFTPLrK52RW486TmeAuhdggqKpOdaOh2gMUyehsKdEEVH9ZR1
+         g4g/OqQdE+1zrEQXYTr8v+h9qP56yhlwhAw3fX03DtboETZLgqaBD5IDHSJO0XTSYKUS
+         ERnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787150472; x=1787755272;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=et6FsqPMKm7fed5oniWthllmYXZYgRzS1qcnjI8OPWo=;
+        b=fEHx2b4CQxz24dv8KwpqXvUvFK9BZS6gJrUIWncxRACZ7RkkjLtTJTgf3EjC8oj2lW
+         Msyc5RWamQ/KKcx0/Fl9gVD2CVjiQH3CgLh5F2OBPrznl3X+wutqARUDLGcDyWloEjQw
+         CBKZJ2mkJf0tgubEKAwG1MjR//8QUPC/FsWgkc+omQEtn7DI0ga3AjklJ/PiMPc3VzNB
+         10/78WG3D8wDwR0nzClicBEQ878JWq9V3e1zwUgBvMDgX4aodqXcb4RHM+WSnqeL/qG/
+         od6j1ky0oXMcnbKaPQAL0j1b55qzxBx3GVa6tcW9OOzjg8GJt/G/tywFoQHJg4hDgVQe
+         +9lw==
+X-Forwarded-Encrypted: i=1; AHgh+RqVu8p/DEGt+XpFk1OKYVsjwDSg2LsbfWt7xqY5buN0+019jfjmEkm/FDd84nJx0FSNg1OhK4Q5Wlpe/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyolBxFCxdIP0gb97qH+4U3t789iLtDJA9O6+1dloTBUkIvWQqN
+	op3S99puICAaNVwoRhg6K1nAR5AXqGPCdZpaddn1e80wZzgp5Abj6mHplxaxiYq1LSBLrw3voyZ
+	MOpMJYIeqxNqBTXf4/C8WALGBe4H4RV2FMJOWyQ86Sl8Y+i1bci2XJEwNtRm8P2R8iw==
+X-Gm-Gg: AR+sD112khqP16LTmEvefJQsfi5ddeuM+aG0mKiHUdOCDWtTnkMMNEXaEfTT7S74B/k
+	wAdCy9LWlQiGEC1joZufx2qA9Dtc78dvlaFjs+pbIkcsINS9CKJXFpRoowV7kMvsWnitISdRrNv
+	/nL79JD23qDLPw8oBn7oPoUoVy5B1hRBqFwA0iBqkQyL1DACmglMJ+wpe5lYB8uqBY4JG/x/PA0
+	gfvFq104SRL4ZPXMKazJYRLF5mI4X21aYT1B0o/rLdUIvN2NprqKQZpJNBH3mZXJxGng2CwLD2D
+	sEh3AJe/MzA7KLcIOhLWzcyRt5tDvKqj4EMtVBqZ67RYFmkggs7IA/NCSdLUncc4fI+IrMfq0sz
+	MCvr1FTrFrsUKjKCzMySFJZmt
+X-Received: by 2002:a05:622a:2d4:b0:51c:2324:666 with SMTP id d75a77b69052e-52dd5e287c9mr36596081cf.3.1787150472056;
+        Wed, 19 Aug 2026 07:41:12 -0700 (PDT)
+X-Received: by 2002:a05:622a:2d4:b0:51c:2324:666 with SMTP id d75a77b69052e-52dd5e287c9mr36595551cf.3.1787150471535;
+        Wed, 19 Aug 2026 07:41:11 -0700 (PDT)
+Received: from [192.168.120.193] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c244b6a5277sm18028766b.36.2026.08.19.07.41.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Aug 2026 07:41:10 -0700 (PDT)
+Message-ID: <67a37c6e-ff13-406b-8897-1faac3ec9f27@oss.qualcomm.com>
+Date: Wed, 19 Aug 2026 16:41:08 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260819-oneplus-ts-quirk-v1-2-0cdbcea195a2@ixit.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: sdm845-oneplus: Move touchscreen
+ y-axis to the right place
+To: david@ixit.cz, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Marcus Ramberg <marcus@means.no>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
 References: <20260819-oneplus-ts-quirk-v1-0-0cdbcea195a2@ixit.cz>
-In-Reply-To: <20260819-oneplus-ts-quirk-v1-0-0cdbcea195a2@ixit.cz>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Marcus Ramberg <marcus@means.no>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2582; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=RZY4dkp9L4vG2YEomAXZZWWwCLxe2KNXm/xHA0DScVU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqhbYXFlxsXQQ7VPvnnXgi1kNweny7uhqCPCLWR
- aev2tEbH3uJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaoW2FwAKCRBgAj/E00kg
- co42EAC4/045CoKchklXgBWQA5SUhNiPac+6/WZtTVxR5UsZBUl3g3b7s9SAMJbdmBaLNtC5QnH
- imwSHB2O1yelxO9zJK84sh5rT6bFqeHbEWdwfbIFju5BVFWSX569dMJcZq0qKJ1/XsuBzh6uMa7
- 0sDTmv9x9mrfujCOu3z3w5/AUQBmTmhQzSy5Jpi2V2eUuBojAR85a6N8pv78MGWzJY4cWdZPuPt
- VitCLMAP0Kn2GrN6Z74hGDwGkcb5Jh7H7iROQ+ozBFA3W1ZOVnqjemG0yI+fvD0zUy6Kev1bkbJ
- AMBzalRhziRmUupUyv0SJCv1kx2Qnq5nplBID74QjBt8oBZ7oZ+9TZwpxEQn903wNnGMC/M4fvk
- mHEqQOolotn19w7/sWsLZpI33WtJsrkq4I71YQXOG91Pw+B65jH9g3usHkWoBWO3fxOBMcKlquD
- 8mv6UJMUYJtsbzb7pdIAhcLfvn76cVJ/I4KNgPfpxek5M8TrgKrkxDSZPSk25VrmD08Lx4Fji8D
- js5eoKZMmZ7FJD7+S6nGeqtDojZdy2Jq7YwP2Zr+065o0foO9Io/ZRTEaAK79bOlWi+Ejl6WCF3
- wmu3N6ooWjMTnrzY4dVirs3Xea3FLd3n/AAG3WI8PB6wJ/0sXMwGlgj6H5UFThoR/HNzeTwVoVD
- uHTQdDX878G+Dlg==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+ <20260819-oneplus-ts-quirk-v1-1-0cdbcea195a2@ixit.cz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260819-oneplus-ts-quirk-v1-1-0cdbcea195a2@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=fv3sol4f c=1 sm=1 tr=0 ts=6a85c089 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=3R9UXOM9zR6sg_fn3_IA:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-GUID: E0muw9OoycWuLGBPctk--mV3m2Bfht6n
+X-Proofpoint-ORIG-GUID: E0muw9OoycWuLGBPctk--mV3m2Bfht6n
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDExNCBTYWx0ZWRfX/gt9rMn2CJhw
+ Hjo8neEettB2CP0zF8BY9Ho0bn03QRAV0f1yb+BFDnhzEGIUEG+PLZkhaeZymuNCtvX83KyQG4r
+ Pfaavov+L4MpU8XBP01fwCJJWnpI2cE=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDExNCBTYWx0ZWRfX4qu8njHp+DBI
+ xUpueeb19YaCUhsWqBdC/9lMQm0SY99W0Xo91Q8XvIvYnTUTXKAbzAN+P13tTnb2sgWlSKGM7tc
+ E6pyk6Ay4ATr9fyP1VGMP8FsYKGCseLDf0JSlUXqQKBqyZ0dMFUjyJjqF33jgojC35YaTEzSwbM
+ QJVkQBnIAgEfYJqcwPvMDItpfKlGDIqBVdxcntzrJ7NIHclcRV94Tj1D6aJLDee8liq2Q13Ckht
+ iyRdL2ARTkgZjG/HyRMw1pGMdDkZh3z40A6XQCYBXvzT7julU9YoSK3Yjzvx+CXW04EaG7uY7JS
+ ZPDWag2Tm8PHJSKALwT3rsp4pIbozoB0DvIMDsHSr3IB5F/HyNbobRw2PH2i+TYSGCz+h/xXhPv
+ HT5N+U9m/j1tBEc1/f5K/TqSZ+d0IGX+ZmOvxEMujGLoLcQN0CweaveFHZgpnxmUYVy+tPDYp/z
+ +oBNSBoyACm/dnES1IA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_04,2026-08-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 spamscore=0 adultscore=0 suspectscore=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608190114
 
-From: David Heidelberg <david@ixit.cz>
+On 8/19/26 3:56 PM, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> This value belongs only to enchilada, fajita sets it's own (as the width
+> / y-axis differs).
+> 
+> No functional change.
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
 
-Once probing, aftermarket touchscreens report touch over 0..65535
-which is unusable. Be explicit in device-tree to avoid this issue.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-This change should be irrelevant for original touchscreens, which
-reports proper values.
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi   | 1 +
- arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts | 1 +
- arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts    | 1 +
- 3 files changed, 3 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index fead66d60e58d..4e65c2368c728 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -538,16 +538,17 @@ synaptics-rmi4-i2c@20 {
- 		rmi4-f01@1 {
- 			reg = <0x01>;
- 			syna,nosleep-mode = <1>;
- 		};
- 
- 		rmi4_f12: rmi4-f12@12 {
- 			reg = <0x12>;
- 			touchscreen-x-mm = <68>;
-+			syna,clip-x-high = <1079>;
- 			syna,sensor-type = <1>;
- 			syna,rezero-wait-ms = <200>;
- 		};
- 	};
- };
- 
- &ipa {
- 	firmware-name = "qcom/sdm845/OnePlus/enchilada/ipa_fws.mbn";
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-index be346286e19b3..276217f7216b5 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-@@ -92,16 +92,17 @@ led@5 {
- 			reg = <5>;
- 			color = <LED_COLOR_ID_RED>;
- 		};
- 	};
- };
- 
- &rmi4_f12 {
- 	touchscreen-y-mm = <144>;
-+	syna,clip-y-high = <2279>;
- };
- 
- &sound {
- 	model = "OnePlus 6";
- 	audio-routing = "RX_BIAS", "MCLK",
- 			"AMIC2", "MIC BIAS2",
- 			"AMIC3", "MIC BIAS4",
- 			"AMIC4", "MIC BIAS1",
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
-index 0542333a83579..e9d1a1c6ac596 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
-@@ -65,16 +65,17 @@ &pmi8998_charger {
-  * The TFA9894 codec is currently unsupported.
-  * We need to delete the node to allow the soundcard
-  * to probe for headphones/earpiece.
-  */
- /delete-node/ &speaker_playback_dai;
- 
- &rmi4_f12 {
- 	touchscreen-y-mm = <148>;
-+	syna,clip-y-high = <2339>;
- };
- 
- &wcd9340 {
- 	qcom,micbias1-microvolt = <2700000>;
- 	qcom,micbias2-microvolt = <2700000>;
- 	qcom,micbias3-microvolt = <2700000>;
- 	qcom,micbias4-microvolt = <2700000>;
- };
-
--- 
-2.55.0
-
-
+Konrad
