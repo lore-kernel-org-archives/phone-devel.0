@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2845B2BEC5E;
-	Sat, 22 Aug 2026 02:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6AF25B099;
+	Sat, 22 Aug 2026 05:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787365529; cv=none; b=qUlvmtL2nhEG+Dgl6H+EA11YzZOAxQHHmEIaqYHebaAwIug0FQkuOd8xH7WX14C/h09tI4YSVAsyX3Bx8bpS15P/nrQL50twOr3NDRQqRQ4llExi8Aa1KvUEQCVH/gBbxTWCHgyW3BVjQvGOtaZpmutGJWJxk5IEZsKKFcHgQMU=
+	t=1787375744; cv=none; b=RswxtLJ3jTMNsdFU4VgFRX70yPNIUoxZ07/hkrmppbQ0JGQV04sOHWuWiYAKCh8sB25zUu+5/ECz6alRjIKM8rb1kyCuXC5hweSSKwTmU/7ogOZtPmhTqBE4DJT3cbBgHu1F4h14MFHCGKYMLoTcwiVrFPoJzCN/XLc1wvoxLPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787365529; c=relaxed/simple;
-	bh=gxM5H/NgHn7xMpjWvEs/K7X74h5vRMWcdyngUYGNxqs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=b2bqUabvs6F8LEj0vlMFZeaL4FqVtW5XyHE3DoxJxWXns4afUOoF/izLJxwh3lJOotmWsvvS7afWJ5bxSuoJc49KCBzKYGkMJjEJknPjo6NcXYKQaBd301OC6FuqSNllDagJop0z5FC95AxIa1M/7jki7kZjF4i+Wy4hcLc+jxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQl+SD1R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1787375744; c=relaxed/simple;
+	bh=TrdLOVS+kkSe+xLM9w5zf9ng53kF2srwRIVlxkVKxM0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=uvzc4BIXare8xmZzGBmv3M8v9YDl0R/U3hU0F4yRfe8MiOPyy/bI6il2aqOGjRg12lkn3rtQz+32dwVqM8U0jzGEOozMYf8Zihw+tz3sDyvj2QU968ikv50oC986S6LY7fua+7OYEx3+xwxDFgV3ylOSTZS7I9DLko+bipMkf28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pr7VoOG/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQl+SD1R"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 96A0AC19425;
-	Sat, 22 Aug 2026 02:25:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pr7VoOG/"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9D3BAC2BCF6;
+	Sat, 22 Aug 2026 05:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787365528;
-	bh=gxM5H/NgHn7xMpjWvEs/K7X74h5vRMWcdyngUYGNxqs=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=iQl+SD1RuPO9HUF/9UX+y0CBxd0PjogiMi1ydRoBNEswuocUZy1ItCFOhHMR0o2BD
-	 INggr82YvCYYRtwhau6XXm3ixc5ibxyRDYW6owfel3Bm0HZ1VMB6W5pwIZh9jHZJT/
-	 Zt8xZwbkXX0RFLoq7cR/CAGtPxG447Q05r5XKp0dCStJFcj4xDoyQN/U1QnmV5qxNE
-	 JM2LIoyKKD7xfwIFqauFtsbE81czBMuzJOo+Q8zzW/VfHDaYd0tlSm0MlhjfruVOgL
-	 Omp6ZQUYzaQoT/Y9F+pjnP4jTnvm0LEf5m8IBvCdETxLYjYnsYVIO8VD9EEN4+sA0D
-	 LfQf6DevEQvVg==
+	s=k20201202; t=1787375743;
+	bh=TrdLOVS+kkSe+xLM9w5zf9ng53kF2srwRIVlxkVKxM0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Pr7VoOG/lWHvnorq6lBHfL6E75q3fInpocu427fM+AfSyvZ9GmpxoMeOdZb/DgFWe
+	 vOaK0CRnm87sroWqilFST+4WSn1p6tAo+niYlMk4xjdtOTVSwSK2oj/FiwBrb4R71D
+	 JOg/NLfHfvecV8Oqk6DUnQP9Bfz5m72I/zbL9duj2MtaaeOrEMu4M0hn2Cyj17NYJs
+	 SEX9Mgw2YnaFnjZl72seIWgfXfNf6bx1klfo3mdSRzEmOA0c40An4/Z8Au2/07dbRr
+	 ZcdujToeVCdQPKm74uhAdjvbik5pf8MerQnDczp6Z8zPedhWLoKDyKdXt8Tk0o9E1O
+	 vmt1KNBeC4sUA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D329C5DF97;
-	Sat, 22 Aug 2026 02:25:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C00DC5DF8C;
+	Sat, 22 Aug 2026 05:15:43 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sat, 22 Aug 2026 04:25:24 +0200
-Subject: [PATCH] clk: qcom: camcc-sdm845/670: Raise CSIPHY timer clock
- limit
+Date: Sat, 22 Aug 2026 07:15:16 +0200
+Subject: [PATCH v5 1/3] dt-bindings: media: i2c: dongwoon,dw9714: Document
+ DW9714A and V variant
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,38 +41,36 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260822-csiphy-sdm845-limits-v1-1-d360bf7cd38f@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMSQqEMBBA0atIrbtA40DwKtILk5Ra4kTKbhTx7
- kZdvsX/Bwh5JoEyOsDTn4XnKSD5RGC7emoJ2QWDilURa6XQCi/djuJGneU48MiroEkodaZucpd
- qCOniqeHt2Vbf1/IzPdn1fsF5XqAI/A14AAAA
-X-Change-ID: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
-To: Bjorn Andersson <andersson@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
- Brian Masney <bmasney+clk@redhat.com>, 
- Jerome Brunet <jbrunet+clk@baylibre.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+Message-Id: <20260822-dw9714v-v5-1-502bc7f43b8f@ixit.cz>
+References: <20260822-dw9714v-v5-0-502bc7f43b8f@ixit.cz>
+In-Reply-To: <20260822-dw9714v-v5-0-502bc7f43b8f@ixit.cz>
+To: Alexander Martinz <amartinz@shiftphones.com>, 
+ Bjorn Andersson <andersson@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-media@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5946; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2393; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=DYQKHB8AunZw7f/1fW2n+DYOf95ExVe+TTy2tBTvI1Q=;
- b=kA0DAAgBYAI/xNNJIHIByyZiAGqJCJWjGJGYquDI9eAI1VgPj41qzj2+T/sbzqxfO18UYVgEg
- IkCMwQAAQgAHRYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJqiQiVAAoJEGACP8TTSSBymGoQAL4z
- /9+pDXWW6rn2EaAPVVhf6SvOk18a4gNEbEELXCqsAMhF3Rqgre878k85Q9eO3tnNyG0P9JWeXn/
- xDJbrtP2W1EsV+lWZRKwiaKelkeB7VLKndYdoUlXJwJjK+D2WOxXmnOamRFDeU9WWY5zGu62OrK
- qZp11Ch4Fi7NbQfc1ui6TzYy2DVSj0DYK3lxDF/ChxHbZz05mvfrcXW0zXQCX7Px532P2Eu9PAT
- xf10lEIpLyLgyf/JMfgn5jJ/x6B5eL85nvBbOzfp06CgHXkxas2PMrvT26dvkwnXFUVSViSIsym
- lyb2KkWhGQB9A0u+tGQICNuy+TYazu5oj/sTKZ3PT9HxJgXehFa6zydaq+DbVSl2aEG3vbOtd6P
- 2JcsA25eZEHuMVEI5UNz1jS0q4u7CaLYO2R/QoIq4uyE2QjDQF8iLbhjYQcPatEC7LXFGZYqgF2
- pBmq584YxUr3mllKrL5lm9TXnxNLsKZN1hwnb39cORkWPFiIdoK9LDqK6j4aEL+7TxWkEfWuQOL
- vKSOnixIdpQD1PPy0cO7lo11XtIk9beb5I1I/AIgBPfmIEYe7gShR/n/+WPnsNLpzoA+zZORLB/
- 1iNJJvYaNgWKvvgHhYb9BjpcrpHK+30AyJ6Kn2E7Lq6lcx2pPiSCDupCKwPSX8MlgIO4lqJ/Jxm
- wJQy5
+ bh=MctnB/YBUlKBkfY6HkmVWzrj67EeGRulizfUpQ/8RY4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqiTB9j6/jFLwCxqgYxpUH8LT2DL2zrUTvujR2N
+ Tabh7AIxweJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaokwfQAKCRBgAj/E00kg
+ cvQyD/9xiCxwFXfRvXj4cqKxdIirjmF73HdbonOQJN/aQQhoCDpLx1vIeV0GALyCQlAtJUpx+wL
+ BXKHCteBgM9lnzKdoBr7z3uTKlOxiNORXh4b6Low1s9yM+DLM892ew1eS9HXOiEH7+srYuTwVnH
+ 6h1S6WJkMse4qeo5sQ5UOHRIiuhthaEOMCHFv8sFjJ9y9BpAeg1f3cBvmb3IuWxJylYMn/e/e8A
+ Xvq0KfQ7jZLDHFpL/6WiiSWWSiqBX5ePKXf3Aq5vX5N+wWtEzO8ofRT0WQGgIYIuGeYUEUX/i3F
+ YMZoTTM5uipANkKgsZrfKq9jUT0ZRtpKcYxFEBZM9/0UxokfswGXvwznmp0aPPEVcXXi+C8sUB3
+ yYWW7WnoXeRzRH53A7juUuP6eCJKbF6Bm9Ez4QRr5qm0q3DbGcQz28MWw0iPRIiP0dvUL0OEHsV
+ MXEQkJ/nTIyWZoige7DKcKaSkan+EM4YDv6zuC5YQB/T+geNVxA1O+/4AGNbsxnUpz3oqrIF6e9
+ 83WOOJhui8USKTUF9yp3tpkdeIeyXRJ29u7rjynSHwR4XuMMBx+1LhyM6ElQobFdfPRekPBdt/p
+ ELhwbYlxkVdP6CIDjWo2U7YV0NLecGZw54vjxbHeua1icupQReMD0pe++TmZGDjmJwVEscKkpxH
+ 5T2n1lehH3Ax/ZQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -80,193 +79,67 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-The sdm845 CSIPHY timer clock only listed up to 269.33 MHz, capping the
-supported CSI link frequency at roughly 1.07 GHz
-(CSIPHY timer = link_freq / 4). The Samsung S5K2X7SP camera runs at a
-1.15 GHz link frequency, so camss rejected powering up the
-pipeline with 'Pixel clock is too high for CSIPHY'.
+DW9714A is a successor of DW9714 and DW9714V is a successor of DW9714A.
 
-Add a 288 MHz entry to the shared camcc CSIPHY timer frequency table
-(PLL1 VCO 1152 MHz, well within range) and add a 400 MHz entry to the
-sdm845 CSIPHY timer clock_rate tables. The camss min_rate check now
-passes and the timer clock rounds to 288 MHz, matching the ~287.5 MHz
-required by the 1.15 GHz link.
+All three are compatible in their normal mode: a 10-bit DAC with the same
+Direct/LSC/DLC slew rate control. DW9714V additionally has an "advanced
+mode", which exposes Smart Actuator Control (SAC2/SAC3/SAC3.5/SLSC) and
+soft start/landing. Out of reset the DW9714V comes up in normal mode
+with ringing control disabled, i.e. behaving as a plain DW9714,
+so nothing has to be configured for it to work today.
 
-Assisted-by: tencent:hy3
+Should SAC support be added later, it is board data rather than a userspace
+knob: the mode and the vibration period (SAC_CFG/PRESC/SACT) have to match
+the mechanical tVIB of the actuator and lens assembly of the given camera
+module. Those properties are left out until there is driver support and
+measured values.
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Tested on SHIFT 6MQ with next-20260820.
----
- drivers/clk/qcom/camcc-sdm845.c           |  1 +
- drivers/media/platform/qcom/camss/camss.c | 14 +++++++-------
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ .../devicetree/bindings/media/i2c/dongwoon,dw9714.yaml     | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/camcc-sdm845.c b/drivers/clk/qcom/camcc-sdm845.c
-index 534dc56fc13ca..77bb783b4ef0a 100644
---- a/drivers/clk/qcom/camcc-sdm845.c
-+++ b/drivers/clk/qcom/camcc-sdm845.c
-@@ -250,16 +250,17 @@ static struct clk_rcg2 cam_cc_cphy_rx_clk_src = {
- 		.ops = &clk_rcg2_ops,
- 	},
- };
+diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+index 66229a3dc05d6..7c2769e6c4880 100644
+--- a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+@@ -5,22 +5,30 @@ $id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9714.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
  
- static const struct freq_tbl ftbl_cam_cc_csi0phytimer_clk_src[] = {
- 	F(19200000, P_BI_TCXO, 1, 0, 0),
- 	F(240000000, P_CAM_CC_PLL2_OUT_EVEN, 2, 0, 0),
- 	F(269333333, P_CAM_CC_PLL1_OUT_EVEN, 3, 0, 0),
-+	F(288000000, P_CAM_CC_PLL1_OUT_EVEN, 2, 0, 0),
- 	{ }
- };
+ title: Dongwoon Anatech DW9714 camera voice coil lens driver
  
- static struct clk_rcg2 cam_cc_csi0phytimer_clk_src = {
- 	.cmd_rcgr = 0x5004,
- 	.mnd_width = 0,
- 	.hid_width = 5,
- 	.parent_map = cam_cc_parent_map_0,
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index 2123f6388e3d7..e1bf828cf7af2 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1070,17 +1070,17 @@ static const struct camss_subdev_resources csiphy_res_670[] = {
- 			{ .supply = "vdda-phy", .init_load_uA = 42800 },
- 			{ .supply = "vdda-pll", .init_load_uA = 13900 }
- 		},
- 		.clock = { "soc_ahb", "cpas_ahb",
- 			   "csiphy0", "csiphy0_timer" },
- 		.clock_rate = { { 0 },
- 				{ 0 },
- 				{ 0 },
--				{ 19200000, 240000000, 269333333 } },
-+				{ 19200000, 240000000, 269333333, 400000000 } },
- 		.reg = { "csiphy0" },
- 		.interrupt = { "csiphy0" },
- 		.csiphy = {
- 			.id = 0,
- 			.hw_ops = &csiphy_ops_3ph_1_0,
- 			.formats = &csiphy_formats_sdm845
- 		}
- 	},
-@@ -1091,17 +1091,17 @@ static const struct camss_subdev_resources csiphy_res_670[] = {
- 			{ .supply = "vdda-phy", .init_load_uA = 42800 },
- 			{ .supply = "vdda-pll", .init_load_uA = 13900 }
- 		},
- 		.clock = { "soc_ahb", "cpas_ahb",
- 			   "csiphy1", "csiphy1_timer" },
- 		.clock_rate = { { 0 },
- 				{ 0 },
- 				{ 0 },
--				{ 19200000, 240000000, 269333333 } },
-+				{ 19200000, 240000000, 269333333, 400000000 } },
- 		.reg = { "csiphy1" },
- 		.interrupt = { "csiphy1" },
- 		.csiphy = {
- 			.id = 1,
- 			.hw_ops = &csiphy_ops_3ph_1_0,
- 			.formats = &csiphy_formats_sdm845
- 		}
- 	},
-@@ -1112,17 +1112,17 @@ static const struct camss_subdev_resources csiphy_res_670[] = {
- 			{ .supply = "vdda-phy", .init_load_uA = 42800 },
- 			{ .supply = "vdda-pll", .init_load_uA = 13900 }
- 		},
- 		.clock = { "soc_ahb", "cpas_ahb",
- 			   "csiphy2", "csiphy2_timer" },
- 		.clock_rate = { { 0 },
- 				{ 0 },
- 				{ 0 },
--				{ 19200000, 240000000, 269333333 } },
-+				{ 19200000, 240000000, 269333333, 400000000 } },
- 		.reg = { "csiphy2" },
- 		.interrupt = { "csiphy2" },
- 		.csiphy = {
- 			.id = 2,
- 			.hw_ops = &csiphy_ops_3ph_1_0,
- 			.formats = &csiphy_formats_sdm845
- 		}
- 	}
-@@ -1263,17 +1263,17 @@ static const struct camss_subdev_resources csiphy_res_845[] = {
- 				"csiphy0_timer_src", "csiphy0_timer" },
- 		.clock_rate = { { 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
--				{ 19200000, 240000000, 269333333 } },
-+				{ 19200000, 240000000, 269333333, 400000000 } },
- 		.reg = { "csiphy0" },
- 		.interrupt = { "csiphy0" },
- 		.csiphy = {
- 			.id = 0,
- 			.hw_ops = &csiphy_ops_3ph_1_0,
- 			.formats = &csiphy_formats_sdm845
- 		}
- 	},
-@@ -1286,17 +1286,17 @@ static const struct camss_subdev_resources csiphy_res_845[] = {
- 				"csiphy1_timer_src", "csiphy1_timer" },
- 		.clock_rate = { { 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
--				{ 19200000, 240000000, 269333333 } },
-+				{ 19200000, 240000000, 269333333, 400000000 } },
- 		.reg = { "csiphy1" },
- 		.interrupt = { "csiphy1" },
- 		.csiphy = {
- 			.id = 1,
- 			.hw_ops = &csiphy_ops_3ph_1_0,
- 			.formats = &csiphy_formats_sdm845
- 		}
- 	},
-@@ -1309,17 +1309,17 @@ static const struct camss_subdev_resources csiphy_res_845[] = {
- 				"csiphy2_timer_src", "csiphy2_timer" },
- 		.clock_rate = { { 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
--				{ 19200000, 240000000, 269333333 } },
-+				{ 19200000, 240000000, 269333333, 400000000 } },
- 		.reg = { "csiphy2" },
- 		.interrupt = { "csiphy2" },
- 		.csiphy = {
- 			.id = 2,
- 			.hw_ops = &csiphy_ops_3ph_1_0,
- 			.formats = &csiphy_formats_sdm845
- 		}
- 	},
-@@ -1332,17 +1332,17 @@ static const struct camss_subdev_resources csiphy_res_845[] = {
- 				"csiphy3_timer_src", "csiphy3_timer" },
- 		.clock_rate = { { 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
- 				{ 0 },
--				{ 19200000, 240000000, 269333333 } },
-+				{ 19200000, 240000000, 269333333, 400000000 } },
- 		.reg = { "csiphy3" },
- 		.interrupt = { "csiphy3" },
- 		.csiphy = {
- 			.id = 3,
- 			.hw_ops = &csiphy_ops_3ph_1_0,
- 			.formats = &csiphy_formats_sdm845
- 		}
- 	}
+ maintainers:
+   - Krzysztof Kozlowski <krzk@kernel.org>
+ 
+ description:
+-  DW9174 is a 10-bit DAC with current sink capability. It is intended for
+-  driving voice coil lenses in camera modules.
++  10-bit DAC with current sink capability. It is intended for driving
++  voice coil lenses in camera modules.
+ 
+ properties:
+   compatible:
+-    const: dongwoon,dw9714
++    oneOf:
++      - items:
++          - const: dongwoon,dw9714v
++          - const: dongwoon,dw9714a
++          - const: dongwoon,dw9714
++      - items:
++          - const: dongwoon,dw9714a
++          - const: dongwoon,dw9714
++      - const: dongwoon,dw9714
+ 
+   reg:
+     maxItems: 1
+ 
+   powerdown-gpios:
+     description:
+       XSD pin for shutdown (active low)
+ 
 
----
-base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-change-id: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+-- 
+2.55.0
 
 
