@@ -1,162 +1,272 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44181DDC37;
-	Fri, 21 Aug 2026 12:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2845B2BEC5E;
+	Sat, 22 Aug 2026 02:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787316117; cv=none; b=t6ctHKX5Z3tROoixSNTGvN8BcIJR8T5dmo4+Ao4ROCoAUdKOAvPBSuChCD3uVdIodBifmV4rr7ZYOpswmSrS1azPA3MBEJ0XR3y3i78A+sm6BSb346P86wy1bJMHyzhlO0SpMMMVsXuK9SC0UFVhGmkDE0uPkiO3jXgHkvee3a0=
+	t=1787365529; cv=none; b=qUlvmtL2nhEG+Dgl6H+EA11YzZOAxQHHmEIaqYHebaAwIug0FQkuOd8xH7WX14C/h09tI4YSVAsyX3Bx8bpS15P/nrQL50twOr3NDRQqRQ4llExi8Aa1KvUEQCVH/gBbxTWCHgyW3BVjQvGOtaZpmutGJWJxk5IEZsKKFcHgQMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787316117; c=relaxed/simple;
-	bh=ItdycJ0ClGLmGAAxgcnNOFaBBg4+WVmTrXEZmhqOJa4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sV8MUNu/ACBR0KUgHp/QKsWhOTtRNuvxvyaGpPjsLX2qJAOuub7S4JSqn4OXq+ko5/S3hGW8xymTKRiZ64gp5sGbVOEg9WAR2JA0GZkDyWfjk2q900pyVwXbog+tyCkawpPO/myXBh0XsFQRfeaiGQtQDv9HRsIx47BHDnmDYOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=m0iFc3kw; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1787365529; c=relaxed/simple;
+	bh=gxM5H/NgHn7xMpjWvEs/K7X74h5vRMWcdyngUYGNxqs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=b2bqUabvs6F8LEj0vlMFZeaL4FqVtW5XyHE3DoxJxWXns4afUOoF/izLJxwh3lJOotmWsvvS7afWJ5bxSuoJc49KCBzKYGkMJjEJknPjo6NcXYKQaBd301OC6FuqSNllDagJop0z5FC95AxIa1M/7jki7kZjF4i+Wy4hcLc+jxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQl+SD1R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="m0iFc3kw"
-Received: from [172.16.124.192] (ip-78-44-13-22.bb.vodafone.cz [78.44.13.22])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 9F6A253401CE;
-	Fri, 21 Aug 2026 14:41:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1787316107;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=opLLXtL6IndG/zAcxQ0YK5eXgU6TXGyQYECW5sFzucE=;
-	b=m0iFc3kwOK0vrh5GavBCd2/xCO86rdkW6iqtm8XHHl4wNPdWRSiY7OV8LuvTJ79GU0Go0b
-	/rO4jF02GT+IBPECDu6dxpR3uq16YRf4BczMMeWbM32T0MjroCSY1zs7b31vbBZZvvQjA5
-	DcCNecUdo/dIbitfW2l1pJ+yElFuEvE=
-Message-ID: <e01a7430-1670-4aed-bb2d-3e505218d07a@ixit.cz>
-Date: Fri, 21 Aug 2026 14:41:46 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQl+SD1R"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 96A0AC19425;
+	Sat, 22 Aug 2026 02:25:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787365528;
+	bh=gxM5H/NgHn7xMpjWvEs/K7X74h5vRMWcdyngUYGNxqs=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=iQl+SD1RuPO9HUF/9UX+y0CBxd0PjogiMi1ydRoBNEswuocUZy1ItCFOhHMR0o2BD
+	 INggr82YvCYYRtwhau6XXm3ixc5ibxyRDYW6owfel3Bm0HZ1VMB6W5pwIZh9jHZJT/
+	 Zt8xZwbkXX0RFLoq7cR/CAGtPxG447Q05r5XKp0dCStJFcj4xDoyQN/U1QnmV5qxNE
+	 JM2LIoyKKD7xfwIFqauFtsbE81czBMuzJOo+Q8zzW/VfHDaYd0tlSm0MlhjfruVOgL
+	 Omp6ZQUYzaQoT/Y9F+pjnP4jTnvm0LEf5m8IBvCdETxLYjYnsYVIO8VD9EEN4+sA0D
+	 LfQf6DevEQvVg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D329C5DF97;
+	Sat, 22 Aug 2026 02:25:28 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sat, 22 Aug 2026 04:25:24 +0200
+Subject: [PATCH] clk: qcom: camcc-sdm845/670: Raise CSIPHY timer clock
+ limit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: sm7225-fairphone-fp4: Enable
- touchscreen
-To: Luca Weiss <luca.weiss@fairphone.com>, Job Noorman <job@noorman.info>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: phone-devel@vger.kernel.org, linux-input@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org
-References: <20260821-fp4-hx83112a-v1-0-474941bd8860@fairphone.com>
- <20260821-fp4-hx83112a-v1-3-474941bd8860@fairphone.com>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260821-fp4-hx83112a-v1-3-474941bd8860@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260822-csiphy-sdm845-limits-v1-1-d360bf7cd38f@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMSQqEMBBA0atIrbtA40DwKtILk5Ra4kTKbhTx7
+ kZdvsX/Bwh5JoEyOsDTn4XnKSD5RGC7emoJ2QWDilURa6XQCi/djuJGneU48MiroEkodaZucpd
+ qCOniqeHt2Vbf1/IzPdn1fsF5XqAI/A14AAAA
+X-Change-ID: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
+To: Bjorn Andersson <andersson@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+ Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5946; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=DYQKHB8AunZw7f/1fW2n+DYOf95ExVe+TTy2tBTvI1Q=;
+ b=kA0DAAgBYAI/xNNJIHIByyZiAGqJCJWjGJGYquDI9eAI1VgPj41qzj2+T/sbzqxfO18UYVgEg
+ IkCMwQAAQgAHRYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJqiQiVAAoJEGACP8TTSSBymGoQAL4z
+ /9+pDXWW6rn2EaAPVVhf6SvOk18a4gNEbEELXCqsAMhF3Rqgre878k85Q9eO3tnNyG0P9JWeXn/
+ xDJbrtP2W1EsV+lWZRKwiaKelkeB7VLKndYdoUlXJwJjK+D2WOxXmnOamRFDeU9WWY5zGu62OrK
+ qZp11Ch4Fi7NbQfc1ui6TzYy2DVSj0DYK3lxDF/ChxHbZz05mvfrcXW0zXQCX7Px532P2Eu9PAT
+ xf10lEIpLyLgyf/JMfgn5jJ/x6B5eL85nvBbOzfp06CgHXkxas2PMrvT26dvkwnXFUVSViSIsym
+ lyb2KkWhGQB9A0u+tGQICNuy+TYazu5oj/sTKZ3PT9HxJgXehFa6zydaq+DbVSl2aEG3vbOtd6P
+ 2JcsA25eZEHuMVEI5UNz1jS0q4u7CaLYO2R/QoIq4uyE2QjDQF8iLbhjYQcPatEC7LXFGZYqgF2
+ pBmq584YxUr3mllKrL5lm9TXnxNLsKZN1hwnb39cORkWPFiIdoK9LDqK6j4aEL+7TxWkEfWuQOL
+ vKSOnixIdpQD1PPy0cO7lo11XtIk9beb5I1I/AIgBPfmIEYe7gShR/n/+WPnsNLpzoA+zZORLB/
+ 1iNJJvYaNgWKvvgHhYb9BjpcrpHK+30AyJ6Kn2E7Lq6lcx2pPiSCDupCKwPSX8MlgIO4lqJ/Jxm
+ wJQy5
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 21/08/2026 09:12, Luca Weiss wrote:
-> Add a node and pinctrl for the Himax HX83112A touchscreen found on this
-> phone.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->   arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 21 ++++++++++++++++++++-
->   1 file changed, 20 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> index 23f950067a08..ff609f7e1796 100644
-> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> @@ -626,7 +626,19 @@ &i2c8 {
->   	clock-frequency = <400000>;
->   	status = "okay";
->   
-> -	/* HX83112A touchscreen @ 48 */
-> +	touchscreen@48 {
-> +		compatible = "himax,hx83112a";
-> +		reg = <0x48>;
-> +
-> +		interrupts-extended = <&tlmm 22 IRQ_TYPE_EDGE_FALLING>;
-> +		reset-gpios = <&tlmm 21 GPIO_ACTIVE_LOW>;
-> +
-> +		touchscreen-size-x = <1080>;
-> +		touchscreen-size-y = <2340>;
-> +
-> +		pinctrl-0 = <&touchscreen_default>;
-> +		pinctrl-names = "default";
-> +	};
->   };
->   
->   &i2c10 {
-> @@ -1117,6 +1129,13 @@ platform {
->   &tlmm {
->   	gpio-reserved-ranges = <13 4>, <56 2>;
->   
-> +	touchscreen_default: touchscreen-default-state {
-> +		pins = "gpio21", "gpio22";
+From: David Heidelberg <david@ixit.cz>
 
-I guess you could use here irq-pins {}, reset-pins {},
+The sdm845 CSIPHY timer clock only listed up to 269.33 MHz, capping the
+supported CSI link frequency at roughly 1.07 GHz
+(CSIPHY timer = link_freq / 4). The Samsung S5K2X7SP camera runs at a
+1.15 GHz link frequency, so camss rejected powering up the
+pipeline with 'Pixel clock is too high for CSIPHY'.
 
-but with or without change,
+Add a 288 MHz entry to the shared camcc CSIPHY timer frequency table
+(PLL1 VCO 1152 MHz, well within range) and add a 400 MHz entry to the
+sdm845 CSIPHY timer clock_rate tables. The camss min_rate check now
+passes and the timer clock rounds to 288 MHz, matching the ~287.5 MHz
+required by the 1.15 GHz link.
 
-Reviewed-by: David Heidelberg <david@ixit.cz>
+Assisted-by: tencent:hy3
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Tested on SHIFT 6MQ with next-20260820.
+---
+ drivers/clk/qcom/camcc-sdm845.c           |  1 +
+ drivers/media/platform/qcom/camss/camss.c | 14 +++++++-------
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-> +		function = "gpio";
-> +		drive-strength = <8>;
-> +		bias-pull-up;
-> +	};
-> +
->   	qup_uart1_sleep_cts: qup-uart1-sleep-cts-state {
->   		pins = "gpio61";
->   		function = "gpio";
-> 
+diff --git a/drivers/clk/qcom/camcc-sdm845.c b/drivers/clk/qcom/camcc-sdm845.c
+index 534dc56fc13ca..77bb783b4ef0a 100644
+--- a/drivers/clk/qcom/camcc-sdm845.c
++++ b/drivers/clk/qcom/camcc-sdm845.c
+@@ -250,16 +250,17 @@ static struct clk_rcg2 cam_cc_cphy_rx_clk_src = {
+ 		.ops = &clk_rcg2_ops,
+ 	},
+ };
+ 
+ static const struct freq_tbl ftbl_cam_cc_csi0phytimer_clk_src[] = {
+ 	F(19200000, P_BI_TCXO, 1, 0, 0),
+ 	F(240000000, P_CAM_CC_PLL2_OUT_EVEN, 2, 0, 0),
+ 	F(269333333, P_CAM_CC_PLL1_OUT_EVEN, 3, 0, 0),
++	F(288000000, P_CAM_CC_PLL1_OUT_EVEN, 2, 0, 0),
+ 	{ }
+ };
+ 
+ static struct clk_rcg2 cam_cc_csi0phytimer_clk_src = {
+ 	.cmd_rcgr = 0x5004,
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+ 	.parent_map = cam_cc_parent_map_0,
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index 2123f6388e3d7..e1bf828cf7af2 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1070,17 +1070,17 @@ static const struct camss_subdev_resources csiphy_res_670[] = {
+ 			{ .supply = "vdda-phy", .init_load_uA = 42800 },
+ 			{ .supply = "vdda-pll", .init_load_uA = 13900 }
+ 		},
+ 		.clock = { "soc_ahb", "cpas_ahb",
+ 			   "csiphy0", "csiphy0_timer" },
+ 		.clock_rate = { { 0 },
+ 				{ 0 },
+ 				{ 0 },
+-				{ 19200000, 240000000, 269333333 } },
++				{ 19200000, 240000000, 269333333, 400000000 } },
+ 		.reg = { "csiphy0" },
+ 		.interrupt = { "csiphy0" },
+ 		.csiphy = {
+ 			.id = 0,
+ 			.hw_ops = &csiphy_ops_3ph_1_0,
+ 			.formats = &csiphy_formats_sdm845
+ 		}
+ 	},
+@@ -1091,17 +1091,17 @@ static const struct camss_subdev_resources csiphy_res_670[] = {
+ 			{ .supply = "vdda-phy", .init_load_uA = 42800 },
+ 			{ .supply = "vdda-pll", .init_load_uA = 13900 }
+ 		},
+ 		.clock = { "soc_ahb", "cpas_ahb",
+ 			   "csiphy1", "csiphy1_timer" },
+ 		.clock_rate = { { 0 },
+ 				{ 0 },
+ 				{ 0 },
+-				{ 19200000, 240000000, 269333333 } },
++				{ 19200000, 240000000, 269333333, 400000000 } },
+ 		.reg = { "csiphy1" },
+ 		.interrupt = { "csiphy1" },
+ 		.csiphy = {
+ 			.id = 1,
+ 			.hw_ops = &csiphy_ops_3ph_1_0,
+ 			.formats = &csiphy_formats_sdm845
+ 		}
+ 	},
+@@ -1112,17 +1112,17 @@ static const struct camss_subdev_resources csiphy_res_670[] = {
+ 			{ .supply = "vdda-phy", .init_load_uA = 42800 },
+ 			{ .supply = "vdda-pll", .init_load_uA = 13900 }
+ 		},
+ 		.clock = { "soc_ahb", "cpas_ahb",
+ 			   "csiphy2", "csiphy2_timer" },
+ 		.clock_rate = { { 0 },
+ 				{ 0 },
+ 				{ 0 },
+-				{ 19200000, 240000000, 269333333 } },
++				{ 19200000, 240000000, 269333333, 400000000 } },
+ 		.reg = { "csiphy2" },
+ 		.interrupt = { "csiphy2" },
+ 		.csiphy = {
+ 			.id = 2,
+ 			.hw_ops = &csiphy_ops_3ph_1_0,
+ 			.formats = &csiphy_formats_sdm845
+ 		}
+ 	}
+@@ -1263,17 +1263,17 @@ static const struct camss_subdev_resources csiphy_res_845[] = {
+ 				"csiphy0_timer_src", "csiphy0_timer" },
+ 		.clock_rate = { { 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+-				{ 19200000, 240000000, 269333333 } },
++				{ 19200000, 240000000, 269333333, 400000000 } },
+ 		.reg = { "csiphy0" },
+ 		.interrupt = { "csiphy0" },
+ 		.csiphy = {
+ 			.id = 0,
+ 			.hw_ops = &csiphy_ops_3ph_1_0,
+ 			.formats = &csiphy_formats_sdm845
+ 		}
+ 	},
+@@ -1286,17 +1286,17 @@ static const struct camss_subdev_resources csiphy_res_845[] = {
+ 				"csiphy1_timer_src", "csiphy1_timer" },
+ 		.clock_rate = { { 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+-				{ 19200000, 240000000, 269333333 } },
++				{ 19200000, 240000000, 269333333, 400000000 } },
+ 		.reg = { "csiphy1" },
+ 		.interrupt = { "csiphy1" },
+ 		.csiphy = {
+ 			.id = 1,
+ 			.hw_ops = &csiphy_ops_3ph_1_0,
+ 			.formats = &csiphy_formats_sdm845
+ 		}
+ 	},
+@@ -1309,17 +1309,17 @@ static const struct camss_subdev_resources csiphy_res_845[] = {
+ 				"csiphy2_timer_src", "csiphy2_timer" },
+ 		.clock_rate = { { 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+-				{ 19200000, 240000000, 269333333 } },
++				{ 19200000, 240000000, 269333333, 400000000 } },
+ 		.reg = { "csiphy2" },
+ 		.interrupt = { "csiphy2" },
+ 		.csiphy = {
+ 			.id = 2,
+ 			.hw_ops = &csiphy_ops_3ph_1_0,
+ 			.formats = &csiphy_formats_sdm845
+ 		}
+ 	},
+@@ -1332,17 +1332,17 @@ static const struct camss_subdev_resources csiphy_res_845[] = {
+ 				"csiphy3_timer_src", "csiphy3_timer" },
+ 		.clock_rate = { { 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+ 				{ 0 },
+-				{ 19200000, 240000000, 269333333 } },
++				{ 19200000, 240000000, 269333333, 400000000 } },
+ 		.reg = { "csiphy3" },
+ 		.interrupt = { "csiphy3" },
+ 		.csiphy = {
+ 			.id = 3,
+ 			.hw_ops = &csiphy_ops_3ph_1_0,
+ 			.formats = &csiphy_formats_sdm845
+ 		}
+ 	}
+
+---
+base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
+change-id: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
+
+Best regards,
+--  
+David Heidelberg <david@ixit.cz>
+
 
