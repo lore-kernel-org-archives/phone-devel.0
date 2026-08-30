@@ -1,87 +1,148 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56993812E1
-	for <phone-devel@vger.kernel.org>; Sun, 30 Aug 2026 07:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682B241686;
+	Sun, 30 Aug 2026 07:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788075437; cv=none; b=Tg7s0vx0oj6vLmwNCVkBb0IuaWHVkj6oUYnLkOTRzNbnB/ghaY0A/wrIOTaIC6Op6+lSvK86l+jBI2dntrWnl2reaujBClD4Oue69wUJjteoBtEZOSRbNK56ZPH3VN7qv8WFuZ1QtT59CFBXO74tMU0O2L0HDs26CfR6MU320GE=
+	t=1788076427; cv=none; b=BfucmmpxnzVSKKuvAAB4iDfdYBCGdQsRRkCgIT8KizNxA1mWQSMIhm8x7/eNZHwUye3lchEsGfDTIQXnKuX0WHqgLYVCUjcoSEwl8LENS179fWkmeAbU8S/9xw9ySb8NEAPGpCDh3dRf/izLYGAqIMXqNMFA8yFG3RUbGQKuzRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788075437; c=relaxed/simple;
-	bh=ASrGp8zTgurRcysp4W2GZweU1AMnNyJvAleGf5hP4hA=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=AZH/Cb58IYmLWCKX18hJXGAL8GD8J0tfHzaUG2kMhkfnx4xs3stDP9Ea+quwl8Bs/eC8zeVU4kR/OR89lh7qwYV/d9/0ks3HP2l9kItgC8yA6kWS8ukcbxtrbkw9P93YCgWvi9L3e7VkD9N0Q7GbOmAJ1P6XEgILpzEwVlLhrXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rkwh9Goa; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788076427; c=relaxed/simple;
+	bh=VUeMPa9FyohwrkfRiF8kZfcIyZuYgy4EnQo7t/6sN0c=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=r23jYpNN2bdI+sH8PEtPmyLO1FJbeP9l7TDdQ/c4q23f83HAkqzd/YRn0mwHuFtppPqMOnZyG7fswU5DMf/Te2qiWpTxvi5NuVGb5lBPLLEuTNb2ynsbuFw3Ryo5oJbzN6AfPdXN4+PwefD3inSdrqv37fdBJVodcejbTkoD+A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr; spf=pass smtp.mailfrom=alex-min.fr; dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b=c34t1fWR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=C3XBqeOx; arc=none smtp.client-ip=202.12.124.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alex-min.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rkwh9Goa"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d7195706f1so23878105ad.0
-        for <phone-devel@vger.kernel.org>; Sun, 30 Aug 2026 00:37:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788075435; x=1788680235; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:subject:references:cc:to:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ASrGp8zTgurRcysp4W2GZweU1AMnNyJvAleGf5hP4hA=;
-        b=Rkwh9GoaBrwMxLrMfUsl7S+1x6p2Bwz1AeKPE/4rr29GaMBwPpV51logrpAE6tHP5S
-         Oi7bGjH3qMdEuyjed6hvp4Ge7KsLQePC1MuZ6W5ac5ZZ1acqmxfgTqXG2U2pt2p2vaH5
-         +wDhwCSqzEsQxYLwtZ7NubB0srAFh15SCG+UkqN3+UINEWYAB4OUe1mH8TFapv/KlJC/
-         A6XTlwUAymM7gLQDtTKjZgZV7wxBTsg6UekgBLg7mkrMV39G0nd486M0d+1LD9FaYt2K
-         c+RViA3V1aeENSnqqNW7zguXV02dMmnLY81b5/DY/4l/DjMGNoxtLID8U9WGaQIwyKwk
-         XoQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788075435; x=1788680235;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:subject:references:cc:to:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ASrGp8zTgurRcysp4W2GZweU1AMnNyJvAleGf5hP4hA=;
-        b=Rxfpv0ZutpAAEkyS/CiekATOGV4r3eDOWV7//QtB/8eni7DjFnuEIC9W03wDVaYgjm
-         POfUcttZeW+5u/+TdkvU2F9dHjd7PMlQmD8dQF0BEFND+JnHQxxdYwitJHhZNbXghcSf
-         b2X4aH29OMUi9ZFdG4gwr4WoPw5jAPlWYt9t1hxN1iGJ97qGEkV7GJ4Bnei22gHtFXvo
-         ipKkH1+qS6ddhVPxRmqJm+AJA61x0YbZjXSbZDVkoK8vQjnTmOyPN/0coquUVdxriaQU
-         6jjOmV8UalEwYw+LhLHKQHZ+vRINyMbHz510xuVDjkfKPWPtGUUTrMDDm9Uy+1l+o+JT
-         9gCw==
-X-Forwarded-Encrypted: i=1; AHgh+RqooPS1uVcXKRLLafDURIv9qNLuvTt3ikDc7swOQ+TAxbRHuww9hnF/xySFK5DIime6cebCTxiGRgaAlw==@vger.kernel.org
-X-Gm-Message-State: AFuF++lvYffNZvQvGx353lCeQQn1xAwVjyYpxvqB83P+w/RFqh5Ck/4/
-	IdHH6qNcmSh1MxJNrb4zVxWwSXY6q1MaKI7kBWX9phDGR20g4OILlwbV
-X-Gm-Gg: AYBFou1Bnp4Yj7nCY4MSBiCCkqVb1XhQhBjov9nYWewC20v7Co0o51illQmQ6bg/bIH
-	qkQRipcX3W4tUOkn5z59MsBws1bSaFxeQazyO3kx4X4pdEHFne9lksxptuEjS54hBt+muDtDAzr
-	UzSJt9+RelUdCAjrnndmHgGWSV36AdCvjrxCfVCgVrAzxDpjMBGca8yls0bTofH8RUIK26RH0pQ
-	jbVCFLIwuMlzVKOInoIKezBsxpWe9D7aSCxTrg4cFnME1YuHa9vaCiZZL7LwNaosFxSYUOroMV9
-	BCCPbVjBCEKkdtcvBj18thaDHlGkHBTLKD5c61OH2jEPmlnBf+b3Fzr7fa/qyv3zxGPI4EfL8Lz
-	VzGzKD1bOF+V32pu/QSF1D3GEFt96dTVE2ZF6jAHGTuvZ3wRm1lGozsMJeBznekICA1O4W59umt
-	PD8JMdf+t3ZS9pU4tBt4x8tZpyMOLzGShbUi79/O/7c7nzJDHj7mYPKIByenimpOWLcx8SRgere
-	dX3zOEYAz9bt/j7BtHV+5ZXDrtPEpchAXs0SBuFx5Q=
-X-Received: by 2002:a17:903:1a2d:b0:2d8:d4cc:be64 with SMTP id d9443c01a7336-2d8d4ccc92amr160990335ad.17.1788075435070;
-        Sun, 30 Aug 2026 00:37:15 -0700 (PDT)
-Received: from [192.168.68.67] (104-12-136-65.lightspeed.irvnca.sbcglobal.net. [104.12.136.65])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3286f9e3cf8sm22814491eec.24.2026.08.30.00.37.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Aug 2026 00:37:14 -0700 (PDT)
-Message-ID: <edb89cda-3c2f-4e1f-a545-2f2fe52c8b5a@gmail.com>
-Date: Sun, 30 Aug 2026 00:37:14 -0700
+	dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b="c34t1fWR";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="C3XBqeOx"
+Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
+	by mailflow.stl.internal (Postfix) with ESMTP id 1B924130008B;
+	Sun, 30 Aug 2026 03:53:41 -0400 (EDT)
+Received: from ams-imap-13 ([10.64.2.33])
+  by ams-compute-01.internal (MEProxy); Sun, 30 Aug 2026 03:53:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alex-min.fr; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1788076420;
+	 x=1788083620; bh=G6epI7ZnNZNtzgn1RABkpJmt/w3yGfJEmW6rZAtvt00=; b=
+	c34t1fWRfSKkN5Ew3E/Qk0zgGPUMsOIL0LWR5uE3fiYaTyjC0V94EOk7YNNoyZKL
+	Znm0PnFNnMLH5O6Vmz6zzD2e33T/mHB8MgWhIZtRvAgD9F8INgRfPb8/SeSBU3YT
+	9MaollBk5QjfdlwvmNMiPhx7rCyLCbxsu3KQKS8SoIIVSz8SZ7iKw9/TPVaIHZXm
+	2BIsHWo/QEeutDMozCrb4mF56rwcr3D7Okf3njbNk7sJXSmrkrcBHs0iGFlk2juA
+	NKzUJBpXITWETNe36ts8PZij5NBDFULMk8oCGq5oaLkFtRumNZpDAKZKuYU3wb7x
+	X8JCAgArA6+Umvma/OOXQQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788076420; x=
+	1788083620; bh=G6epI7ZnNZNtzgn1RABkpJmt/w3yGfJEmW6rZAtvt00=; b=C
+	3XBqeOxJwcG043QAJE4U4KwBZSLgsxjO6+14VTnE7epHGCvZAu1gsvQ++Td/OVZP
+	OSeRe4MDnJwdgAhufMxxugN99LSUgw0W+tEwgy3cdmoodWK47GFlOK2AHt/t77ot
+	+mdfnlWsI4gpDwC17TTIPBTtQ/t3nU3vKAr6REkdHZqVDIs0XZjp0MJE+J+oJEH3
+	lPbP/tL4d57IBVACMAlGQ6ynlj7rJ6fdDpVxF0yPsxyAAGlrEuPFjX/2/PohRRYV
+	qYA/fDPYY83Pu3fDKJdR+OPM18MzWEiyJxEigix9ACiTGj5zdt1Am5O33lE9jp8H
+	JQFaTr9CXomA5pFgisujg==
+X-ME-Sender: <xms:feGTarNxjiwMV2-BklVkP7KSisV1P37KLV4TsRDfHXRx3pZKvM5QrA>
+    <xme:feGTagwPYNmceLMi_kXJJ6ZadIXv9zD7-A8Kwd-WtIaj-jVHDUVoxyn3yrrJ6sJBp
+    M7Cajw7ZVZ0Ic6yuzpiaA1BhC5RYpU0dUhZAfZ1q5XH31mKqc5OAUE>
+X-ME-Proxy-Cause: dmFkZTE0775jnaewL4xvj4WmD/nTrN0QHquMU/dRaSE6eNZxMPyVt4nSOBfXeJJ7KFzcKz
+    Jgrgv2hpwlUjonO7MKfTdnDYbb1IHjk+chT1pM0ODsnsCEpRmCFJeXjnBwV5pxcek4e0O3
+    r5g4pJ+yoqE7umYaW6OcJt5lYnZW0hXJtAlwAjVWQUWc87l5I+E1yS4TUdlulBhJaapS6d
+    JVKt9ZBaf8E6fcovY9lwRVQAC4lHwBTYuhfD0JI4uEHWpXaWcml3QZPD3k+I/2xOOChHTp
+    dZrfGDIzAUaFitPY+uC9pmKgdZm64z0VyG8U5BQw0NML2evsyMGO0TwmQx3wk8w5pUdckP
+    q/BsVvDPlcGbozpeTQlg7FeR4M+/5Sn0sVuv7FBkORCkA6SV4oyrbwm6rVl9Id9i0Dw+qE
+    Wqvn3MbKnlEO/e7BBAZBGJM9aiU6qGVDlJ9F2tXPz1LOGtWatT0ZT1u/Cj2MMRCo4tqSnt
+    9sJgx9uu12sA55vX/hbNbMfS6pUZybg4lCg5S+B+7J5X42HhYhikrRSWgGN+rkC0LGznpM
+    l4kOXe6PuRd9wsIItzD7SjdCXggIypQbseaefz30auVhdf40poN65ZafGaFqc/0aTWE/9n
+    22wF9OAwwK0xRh19WxzVQRGzAn7JixlRfoVWo8pBQNYRUvt6tHFhUKT0HF/Q
+X-ME-Proxy: <xmx:gOGTaoPQ84IUY2_cxNno87X-iuTH3O5CWG2nerRQL7PU58Uun0zrtw>
+    <xmx:gOGTaj1tOqTY0taiF2aJmBHliR5B1z8dWXLtKZZqRMncNyL_d9gwUA>
+    <xmx:gOGTas1hbV2QSNc5euuRGOQfXJAhv-Dv_Tnu0_RuUSS9cX7mdfPVOQ>
+    <xmx:gOGTaiyiDwmr9IrCXdE5hiTqIGxs6y7huPz39eqIU0paCMnhToPfsw>
+    <xmx:hOGTaqOTpQopY5N2P1O-eXHbftKN_hs5d7Wy1ciI6BUJwfgQKwZHoz1z>
+Feedback-ID: i72694427:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 51157F8007E; Sun, 30 Aug 2026 03:53:33 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: devnull+muzafferkadir.mainlining.org@kernel.org
-Cc: git@luigi311.com, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, mchehab@kernel.org, megi@xff.cz,
- muzafferkadir@mainlining.org, pavel@ucw.cz, phone-devel@vger.kernel.org,
- sakari.ailus@linux.intel.com, tomm.merciai@gmail.com
-References: <20260829-imx258-add-reset-gpio-patch-v2-2-bfd27891e225@mainlining.org>
-Subject: Re: [PATCH v2 2/2] media: i2c: imx258: Add reset-gpio support
-Content-Language: en-US
-From: Rudraksha Gupta <guptarud@gmail.com>
-In-Reply-To: <20260829-imx258-add-reset-gpio-patch-v2-2-bfd27891e225@mainlining.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-ThreadId: AXMGWqqIHK9F
+Date: Sun, 30 Aug 2026 09:52:50 +0200
+From: "MINETTE Alexandre" <contact@alex-min.fr>
+To: "Bartosz Golaszewski" <brgl@kernel.org>
+Cc: 
+ "Alexandre MINETTE via B4 Relay" <devnull+contact.alex-min.fr@kernel.org>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+ phone-devel@vger.kernel.org,
+ "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>,
+ "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>,
+ "MyungJoo Ham" <myungjoo.ham@samsung.com>,
+ "Chanwoo Choi" <cw00.choi@samsung.com>,
+ "Guru Das Srinagesh" <linux@gurudas.dev>,
+ "Linus Walleij" <linusw@kernel.org>,
+ "Rob Clark" <robin.clark@oss.qualcomm.com>, "Kees Cook" <kees@kernel.org>,
+ "Tony Luck" <tony.luck@intel.com>,
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, "Lee Jones" <lee@kernel.org>
+Message-Id: <b6a6d425-c981-438e-9309-5aa00bc23c43@app.fastmail.com>
+In-Reply-To: 
+ <CAMRc=MdKYW_NQpqBES5UcyNqBJd_t1cHiLA3av0wWSWwFgOH-g@mail.gmail.com>
+References: <20260804-mainline-send-v1-sending-v5-0-149dd4372ac8@alex-min.fr>
+ <20260804-mainline-send-v1-sending-v5-2-149dd4372ac8@alex-min.fr>
+ <CAMRc=MdKYW_NQpqBES5UcyNqBJd_t1cHiLA3av0wWSWwFgOH-g@mail.gmail.com>
+Subject: Re: [PATCH v5 2/6] pinctrl: qcom: Register functions before enabling pinctrl
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Rudraksha Gupta <guptarud@gmail.com>
+Hi Bartosz,
 
+It seems the patch has already been applied to linux-next with commit 98=
+1aefd53b3cdafae0e45332a1023b80d67f52be, so there's nothing to do, sorry =
+for the confusion
+--=20
+  MINETTE Alexandre
+  contact@alex-min.fr
+
+Lun 10 ao=C3=BBt 2026, =C3=A0 13:09, Bartosz Golaszewski a =C3=A9crit=E2=
+=80=AF:
+> On Tue, 4 Aug 2026 08:34:27 +0200, Alexandre MINETTE via B4 Relay
+> <devnull+contact.alex-min.fr@kernel.org> said:
+>> From: Alexandre MINETTE <contact@alex-min.fr>
+>>
+>> pinctrl consumers can request states while the pinctrl core enables t=
+he
+>> controller. On Qualcomm pinctrl drivers this can happen before the SoC
+>> function list has been registered, which leaves the function table
+>> incomplete during state lookup.
+>>
+>> On APQ8064 this can fail while claiming pinctrl hogs:
+>>
+>>    apq8064-pinctrl 800000.pinctrl: invalid function ps_hold in map ta=
+ble
+>>    apq8064-pinctrl 800000.pinctrl: error claiming hogs: -22
+>>    apq8064-pinctrl 800000.pinctrl: could not claim hogs: -22
+>>
+>> Register Qualcomm pinctrl with devm_pinctrl_register_and_init(), add =
+the
+>> SoC pin functions, and only then enable the pinctrl device.
+>>
+>> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>> Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
+>> ---
+>
+> This doesn't apply on top of current linux-next. Can you rebase, resen=
+d this
+> as a separate patch and add the Cc: stable and Fixes: tags?
+>
+> Bart
