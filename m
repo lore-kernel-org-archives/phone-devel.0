@@ -1,72 +1,72 @@
-Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682B241686;
-	Sun, 30 Aug 2026 07:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B384C26E71F;
+	Sun, 30 Aug 2026 20:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788076427; cv=none; b=BfucmmpxnzVSKKuvAAB4iDfdYBCGdQsRRkCgIT8KizNxA1mWQSMIhm8x7/eNZHwUye3lchEsGfDTIQXnKuX0WHqgLYVCUjcoSEwl8LENS179fWkmeAbU8S/9xw9ySb8NEAPGpCDh3dRf/izLYGAqIMXqNMFA8yFG3RUbGQKuzRk=
+	t=1788121163; cv=none; b=bJmcSd8ZrY0pyrnSfTxLtoYdEUvbtBEc1kUptD62GCNup5/LAZiGVplb29XkijjNpG3y7Vxm/4ONHCBaq00xU7DRoZ2Obs1e7/y9KowrlmM4uAczBZmG38NnvHXhPGyn0cXtZJT82u7GWESo8l2uqJXzZ70pfkPp8L+9CKnr4GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788076427; c=relaxed/simple;
-	bh=VUeMPa9FyohwrkfRiF8kZfcIyZuYgy4EnQo7t/6sN0c=;
+	s=arc-20240116; t=1788121163; c=relaxed/simple;
+	bh=BFFD9Cpn6dGprHkealy6+wEvBEyqfrHGYbkXE5B6SX8=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=r23jYpNN2bdI+sH8PEtPmyLO1FJbeP9l7TDdQ/c4q23f83HAkqzd/YRn0mwHuFtppPqMOnZyG7fswU5DMf/Te2qiWpTxvi5NuVGb5lBPLLEuTNb2ynsbuFw3Ryo5oJbzN6AfPdXN4+PwefD3inSdrqv37fdBJVodcejbTkoD+A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr; spf=pass smtp.mailfrom=alex-min.fr; dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b=c34t1fWR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=C3XBqeOx; arc=none smtp.client-ip=202.12.124.136
+	 Subject:Content-Type; b=eAjToAuXa82O1OlQQ+s12tzky/0BAASFdg8B1eddxM2VeI5aj1I4VPhuSSBknESn0m26q7FKqL4mW2oWA/p+/ox49ZVT2mh9vmG9cb0e53wKOSLFVtzWSw0DQeShT9WkHXlrcS/rPRliHQnC5PUKeAzwmEp0Pb5lEZW2u6MMkjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr; spf=pass smtp.mailfrom=alex-min.fr; dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b=HPDHU44V; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eE8PV9Bf; arc=none smtp.client-ip=202.12.124.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alex-min.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alex-min.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b="c34t1fWR";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="C3XBqeOx"
+	dkim=pass (2048-bit key) header.d=alex-min.fr header.i=@alex-min.fr header.b="HPDHU44V";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eE8PV9Bf"
 Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailflow.stl.internal (Postfix) with ESMTP id 1B924130008B;
-	Sun, 30 Aug 2026 03:53:41 -0400 (EDT)
+	by mailfout.stl.internal (Postfix) with ESMTP id DBB671D00056;
+	Sun, 30 Aug 2026 16:19:17 -0400 (EDT)
 Received: from ams-imap-13 ([10.64.2.33])
-  by ams-compute-01.internal (MEProxy); Sun, 30 Aug 2026 03:53:43 -0400
+  by ams-compute-01.internal (MEProxy); Sun, 30 Aug 2026 16:19:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alex-min.fr; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1788076420;
-	 x=1788083620; bh=G6epI7ZnNZNtzgn1RABkpJmt/w3yGfJEmW6rZAtvt00=; b=
-	c34t1fWRfSKkN5Ew3E/Qk0zgGPUMsOIL0LWR5uE3fiYaTyjC0V94EOk7YNNoyZKL
-	Znm0PnFNnMLH5O6Vmz6zzD2e33T/mHB8MgWhIZtRvAgD9F8INgRfPb8/SeSBU3YT
-	9MaollBk5QjfdlwvmNMiPhx7rCyLCbxsu3KQKS8SoIIVSz8SZ7iKw9/TPVaIHZXm
-	2BIsHWo/QEeutDMozCrb4mF56rwcr3D7Okf3njbNk7sJXSmrkrcBHs0iGFlk2juA
-	NKzUJBpXITWETNe36ts8PZij5NBDFULMk8oCGq5oaLkFtRumNZpDAKZKuYU3wb7x
-	X8JCAgArA6+Umvma/OOXQQ==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1788121156;
+	 x=1788207556; bh=h7uEa2ZH2PBqpx2CmwL56hO/aLIkIoIJnw3l3vrAw10=; b=
+	HPDHU44Vl+t8w3B3N94/6ZTYgNI845qYLqf3xrrcWF/YKuxMmJLo8+gq7/jxp22/
+	q/T100wiHXqaJpzInbcvavpQAtYGL4u9pp4ioYEgnvqUK+ftHXWpWR/DR8zch6TK
+	S1Yx2Ah8NsEX1VfV/QAEr2gTkOagH/o2LPkppG6QWfHEEL7BLk+vjHz3TxEGVprZ
+	gPLUJ3aUxlM172UdAYDFgw7chjCB4jjDErUCepEzRKyr9TqcTY8/5SrmQsUyO+40
+	xiy7V8z2A9yC+IsZVETEpM8Xrzx89y5jMAOzColT8Uyk8rBk8AyuVRo+7yB1hIv4
+	mQ1qPqHyQPtdNvEGYija7g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788076420; x=
-	1788083620; bh=G6epI7ZnNZNtzgn1RABkpJmt/w3yGfJEmW6rZAtvt00=; b=C
-	3XBqeOxJwcG043QAJE4U4KwBZSLgsxjO6+14VTnE7epHGCvZAu1gsvQ++Td/OVZP
-	OSeRe4MDnJwdgAhufMxxugN99LSUgw0W+tEwgy3cdmoodWK47GFlOK2AHt/t77ot
-	+mdfnlWsI4gpDwC17TTIPBTtQ/t3nU3vKAr6REkdHZqVDIs0XZjp0MJE+J+oJEH3
-	lPbP/tL4d57IBVACMAlGQ6ynlj7rJ6fdDpVxF0yPsxyAAGlrEuPFjX/2/PohRRYV
-	qYA/fDPYY83Pu3fDKJdR+OPM18MzWEiyJxEigix9ACiTGj5zdt1Am5O33lE9jp8H
-	JQFaTr9CXomA5pFgisujg==
-X-ME-Sender: <xms:feGTarNxjiwMV2-BklVkP7KSisV1P37KLV4TsRDfHXRx3pZKvM5QrA>
-    <xme:feGTagwPYNmceLMi_kXJJ6ZadIXv9zD7-A8Kwd-WtIaj-jVHDUVoxyn3yrrJ6sJBp
-    M7Cajw7ZVZ0Ic6yuzpiaA1BhC5RYpU0dUhZAfZ1q5XH31mKqc5OAUE>
-X-ME-Proxy-Cause: dmFkZTE0775jnaewL4xvj4WmD/nTrN0QHquMU/dRaSE6eNZxMPyVt4nSOBfXeJJ7KFzcKz
-    Jgrgv2hpwlUjonO7MKfTdnDYbb1IHjk+chT1pM0ODsnsCEpRmCFJeXjnBwV5pxcek4e0O3
-    r5g4pJ+yoqE7umYaW6OcJt5lYnZW0hXJtAlwAjVWQUWc87l5I+E1yS4TUdlulBhJaapS6d
-    JVKt9ZBaf8E6fcovY9lwRVQAC4lHwBTYuhfD0JI4uEHWpXaWcml3QZPD3k+I/2xOOChHTp
-    dZrfGDIzAUaFitPY+uC9pmKgdZm64z0VyG8U5BQw0NML2evsyMGO0TwmQx3wk8w5pUdckP
-    q/BsVvDPlcGbozpeTQlg7FeR4M+/5Sn0sVuv7FBkORCkA6SV4oyrbwm6rVl9Id9i0Dw+qE
-    Wqvn3MbKnlEO/e7BBAZBGJM9aiU6qGVDlJ9F2tXPz1LOGtWatT0ZT1u/Cj2MMRCo4tqSnt
-    9sJgx9uu12sA55vX/hbNbMfS6pUZybg4lCg5S+B+7J5X42HhYhikrRSWgGN+rkC0LGznpM
-    l4kOXe6PuRd9wsIItzD7SjdCXggIypQbseaefz30auVhdf40poN65ZafGaFqc/0aTWE/9n
-    22wF9OAwwK0xRh19WxzVQRGzAn7JixlRfoVWo8pBQNYRUvt6tHFhUKT0HF/Q
-X-ME-Proxy: <xmx:gOGTaoPQ84IUY2_cxNno87X-iuTH3O5CWG2nerRQL7PU58Uun0zrtw>
-    <xmx:gOGTaj1tOqTY0taiF2aJmBHliR5B1z8dWXLtKZZqRMncNyL_d9gwUA>
-    <xmx:gOGTas1hbV2QSNc5euuRGOQfXJAhv-Dv_Tnu0_RuUSS9cX7mdfPVOQ>
-    <xmx:gOGTaiyiDwmr9IrCXdE5hiTqIGxs6y7huPz39eqIU0paCMnhToPfsw>
-    <xmx:hOGTaqOTpQopY5N2P1O-eXHbftKN_hs5d7Wy1ciI6BUJwfgQKwZHoz1z>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1788121156; x=
+	1788207556; bh=h7uEa2ZH2PBqpx2CmwL56hO/aLIkIoIJnw3l3vrAw10=; b=e
+	E8PV9BfyDCnVMYyfHX0sy3oipPF/CXruTpKF6B2LxGzHb4chtqjB2K8HhZOWYUwX
+	oxV/IurZc5/+Ou8tXbCDHQMwvPGPKdslKehlGbQyIRy0HZV66aBB0ouI34BvSjq7
+	LcsalgC9e/aD5ERcloMi+YiI9gDVH4tr8cs7JtFtsvM0G53gBq2DZlZLVLM6oJJx
+	YxMJQxFvYyi5gvKDc3HGJPpzg8wPyOvNJ08asnKB8O3BVH9Ma7M+6+k5SauNQ2Pa
+	QLBaYuZFfOYoyHrdTeHfBdIDyPRWi72PGAyrnkwDc78Ob6GaYCqMgWNqzel2KyOu
+	ZcrjNntF1VuxwFI9T4mZg==
+X-ME-Sender: <xms:PpCUag3Ak6H8D_IMFpS7Hq91j_xFGOaW14RwAKtGmXCHrZpvd3pWcA>
+    <xme:PpCUal5H_7c5M_mPLEZOdOdHkgSJKu_MdpaeIjWKa1OJ6-6cbZUx0XIcBU3KTeoO-
+    t8RAByzS4KB5c_EsiDyUS95aj9DYEryVhulhCH2ZDoyaFTVbfkHMw>
+X-ME-Proxy-Cause: dmFkZTGfqbIh8kNJ8aifZ5SmZDO7eReAEmkJJ3OIMaED0VINmHQNvvMBqReqC933QT0t+P
+    XB1BDplBL20p5BqFiI4k7V6NHrwBDteWQ45FW9D+1L2e6/M2EI9G5VYv6c8NsOIrGsHEVy
+    quTWIf8YYUwQwrnKsVxzs1jnnN3uyvplZNydLZBA+BgiVqo8x90rn107KHZZgnjDWpratE
+    uJqmAzVeg6rhwzdwXrCTR/oOnG+fS6DwZtjDPLHBiW4rpTRseB8kqLCh2f2q7GlpA5WSlj
+    K3aD5FdkQM4qCBfA1QgyQJIWLBQODRBzBN1LyvwvuJSjrX6BCn/+1Hd+iVM7Tw2U+gNVtB
+    nkQdtNn1u/S7FvTCXSduEHtowi+1QnDCzBSp2VslJZOVdpUWMcOm3zRdYgu63juKphHqdo
+    ce98WB9Z4I5axV/dVH8+/hwqbeuN/kqZWG3fhI+Gt1P4CIquCwt3We3amZxkMbtJyNQJHE
+    Unlwb3eQ6pPtPaZNnrxDo1D9hUjgMLdWByMcR7nt6hUCPvimZEmNghv4K4TlMaLf5b5uKZ
+    vIk3ohUYVfsoLTdmlmzPlV6kDt2xmZ1+UTFQ+6kH2sXa6o/J1AcQs2CrDdnz9zaDZgO91f
+    ApyjRhfkMcw0qjphSgBLkBVYi2TO7BuAh2b+oqE7IWrgHswkJLN3hYBhPxIA
+X-ME-Proxy: <xmx:QZCUaqeVwbEedS5NTnRGEborcLipwcyb-QW4YRyonK4KzSyOBXs32g>
+    <xmx:QZCUah6p6GwTWsbLmd4W_ooWn6CE-OmiGMdzKYTOaoeY446p452r7Q>
+    <xmx:QZCUatTfG6bOKT_UmljhY98_tsfIQnJGgfBjKE6FvAswF09K-eCGNg>
+    <xmx:QZCUakd-0m8xHS6lOdoYkqVPMigbAq3qTucNrf7FJBx5bcWuCWeVfg>
+    <xmx:RJCUauTfBTtCKcKTCSkuFerjsHdTRsIaaDebBQ9azVk-e22K3YtSwBkJ>
 Feedback-ID: i72694427:Fastmail
 Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 51157F8007E; Sun, 30 Aug 2026 03:53:33 -0400 (EDT)
+	id 999ADF80082; Sun, 30 Aug 2026 16:19:10 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -74,17 +74,11 @@ List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AXMGWqqIHK9F
-Date: Sun, 30 Aug 2026 09:52:50 +0200
+X-ThreadId: A4oK29WmcCJJ
+Date: Sun, 30 Aug 2026 22:18:50 +0200
 From: "MINETTE Alexandre" <contact@alex-min.fr>
-To: "Bartosz Golaszewski" <brgl@kernel.org>
-Cc: 
- "Alexandre MINETTE via B4 Relay" <devnull+contact.alex-min.fr@kernel.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- phone-devel@vger.kernel.org,
- "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>,
- "Bjorn Andersson" <andersson@kernel.org>,
+To: "Lee Jones" <lee@kernel.org>
+Cc: "Bjorn Andersson" <andersson@kernel.org>,
  "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
  "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
  "Conor Dooley" <conor+dt@kernel.org>,
@@ -94,55 +88,216 @@ Cc:
  "Linus Walleij" <linusw@kernel.org>,
  "Rob Clark" <robin.clark@oss.qualcomm.com>, "Kees Cook" <kees@kernel.org>,
  "Tony Luck" <tony.luck@intel.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, "Lee Jones" <lee@kernel.org>
-Message-Id: <b6a6d425-c981-438e-9309-5aa00bc23c43@app.fastmail.com>
-In-Reply-To: 
- <CAMRc=MdKYW_NQpqBES5UcyNqBJd_t1cHiLA3av0wWSWwFgOH-g@mail.gmail.com>
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, phone-devel@vger.kernel.org
+Message-Id: <646d46b1-7c59-4d73-b033-f4afaf19bdd7@app.fastmail.com>
+In-Reply-To: <20260812122900.GQ1072730@google.com>
 References: <20260804-mainline-send-v1-sending-v5-0-149dd4372ac8@alex-min.fr>
- <20260804-mainline-send-v1-sending-v5-2-149dd4372ac8@alex-min.fr>
- <CAMRc=MdKYW_NQpqBES5UcyNqBJd_t1cHiLA3av0wWSWwFgOH-g@mail.gmail.com>
-Subject: Re: [PATCH v5 2/6] pinctrl: qcom: Register functions before enabling pinctrl
+ <20260804-mainline-send-v1-sending-v5-4-149dd4372ac8@alex-min.fr>
+ <20260812122900.GQ1072730@google.com>
+Subject: Re: [PATCH v5 4/6] mfd: qcom-pm8xxx: register PM8921 USB ID extcon
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Bartosz,
+Hi Lee,=20
 
-It seems the patch has already been applied to linux-next with commit 98=
-1aefd53b3cdafae0e45332a1023b80d67f52be, so there's nothing to do, sorry =
-for the confusion
+Thanks for the feedback!
+
+For the v6 series, I'll add a proper define for the 49 IRQ and use the d=
+evm api indeed.
+
+About using the MFD api: I looked at it, but devm_mfd_add_devices() =20
+doesn't seem to let me reuse the parent firmware node, which I need here=
+ =20
+because the DT consumer uses extcon =3D <&pm8921>.=20
+So I kept  platform_device_register_full().
+Let me know if I missed something here.
+
+Thanks,
+Alexandre
 --=20
   MINETTE Alexandre
   contact@alex-min.fr
 
-Lun 10 ao=C3=BBt 2026, =C3=A0 13:09, Bartosz Golaszewski a =C3=A9crit=E2=
-=80=AF:
-> On Tue, 4 Aug 2026 08:34:27 +0200, Alexandre MINETTE via B4 Relay
-> <devnull+contact.alex-min.fr@kernel.org> said:
+Mer 12 ao=C3=BBt 2026, =C3=A0 14:29, Lee Jones a =C3=A9crit=E2=80=AF:
+> On Tue, 04 Aug 2026, Alexandre MINETTE via B4 Relay wrote:
+>
 >> From: Alexandre MINETTE <contact@alex-min.fr>
->>
->> pinctrl consumers can request states while the pinctrl core enables t=
-he
->> controller. On Qualcomm pinctrl drivers this can happen before the SoC
->> function list has been registered, which leaves the function table
->> incomplete during state lookup.
->>
->> On APQ8064 this can fail while claiming pinctrl hogs:
->>
->>    apq8064-pinctrl 800000.pinctrl: invalid function ps_hold in map ta=
-ble
->>    apq8064-pinctrl 800000.pinctrl: error claiming hogs: -22
->>    apq8064-pinctrl 800000.pinctrl: could not claim hogs: -22
->>
->> Register Qualcomm pinctrl with devm_pinctrl_register_and_init(), add =
-the
->> SoC pin functions, and only then enable the pinctrl device.
->>
->> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>>=20
+>> PM8921 reports the USB ID pin through interrupt 49 of its interrupt
+>> controller. Unlike PM8941, this path has no separate addressable misc
+>> block to represent as a devicetree child node.
+>>=20
+>> Register a child platform device for the existing Qualcomm USB extcon
+>> driver after creating the PMIC IRQ domain. Pass the USB ID interrupt =
+as
+>> a named resource and reuse the PM8921 firmware node, allowing consume=
+rs
+>> to reference the PMIC node directly as their extcon provider.
+>>=20
+>> Unregister the child device and dispose of the IRQ mapping when the
+>> PMIC is removed or probing fails.
+>>=20
 >> Signed-off-by: Alexandre MINETTE <contact@alex-min.fr>
 >> ---
+>>  drivers/mfd/qcom-pm8xxx.c | 78 +++++++++++++++++++++++++++++++++++++=
+++++++++--
+>>  1 file changed, 76 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/drivers/mfd/qcom-pm8xxx.c b/drivers/mfd/qcom-pm8xxx.c
+>> index 0cf374c015ce..884fc99a1488 100644
+>> --- dangerously/mfd/qcom-pm8xxx.c
+>> +++ b/drivers/mfd/qcom-pm8xxx.c
+>> @@ -7,6 +7,7 @@
+>> =20
+>>  #include <linux/kernel.h>
+>>  #include <linux/interrupt.h>
+>> +#include <linux/ioport.h>
+>>  #include <linux/irqchip/chained_irq.h>
+>>  #include <linux/irq.h>
+>>  #include <linux/irqdomain.h>
+>> @@ -64,12 +65,15 @@
+>> =20
+>>  struct pm_irq_data {
+>>  	int num_irqs;
+>> +	int usb_id_irq;
+>>  	struct irq_chip *irq_chip;
+>>  	irq_handler_t irq_handler;
+>>  };
+>> =20
+>>  struct pm_irq_chip {
+>>  	struct regmap		*regmap;
+>> +	struct platform_device	*usb_extcon;
+>> +	unsigned int		usb_id_irq;
+>>  	spinlock_t		pm_irq_lock;
+>>  	struct irq_domain	*irqdomain;
+>>  	unsigned int		num_blocks;
+>> @@ -492,6 +496,13 @@ static const struct pm_irq_data pm8xxx_data =3D {
+>>  	.irq_handler =3D pm8xxx_irq_handler,
+>>  };
+>> =20
+>> +static const struct pm_irq_data pm8921_data =3D {
+>> +	.num_irqs =3D PM8XXX_NR_IRQS,
+>> +	.usb_id_irq =3D 49,
 >
-> This doesn't apply on top of current linux-next. Can you rebase, resen=
-d this
-> as a separate patch and add the Cc: stable and Fixes: tags?
+> Magic numbers should be defined.
 >
-> Bart
+>> +	.irq_chip =3D &pm8xxx_irq_chip,
+>> +	.irq_handler =3D pm8xxx_irq_handler,
+>> +};
+>> +
+>>  static const struct pm_irq_data pm8821_data =3D {
+>>  	.num_irqs =3D PM8821_NR_IRQS,
+>>  	.irq_chip =3D &pm8821_irq_chip,
+>> @@ -501,11 +512,60 @@ static const struct pm_irq_data pm8821_data =3D=
+ {
+>>  static const struct of_device_id pm8xxx_id_table[] =3D {
+>>  	{ .compatible =3D "qcom,pm8058", .data =3D &pm8xxx_data},
+>>  	{ .compatible =3D "qcom,pm8821", .data =3D &pm8821_data},
+>> -	{ .compatible =3D "qcom,pm8921", .data =3D &pm8xxx_data},
+>> +	{ .compatible =3D "qcom,pm8921", .data =3D &pm8921_data},
+>>  	{ }
+>>  };
+>>  MODULE_DEVICE_TABLE(of, pm8xxx_id_table);
+>> =20
+>> +static int pm8xxx_add_usb_extcon(struct platform_device *pdev,
+>> +				 struct pm_irq_chip *chip,
+>> +				 unsigned int hwirq)
+>> +{
+>> +	struct irq_fwspec fwspec =3D {
+>> +		.fwnode =3D dev_fwnode(&pdev->dev),
+>> +		.param_count =3D 2,
+>> +		.param =3D { hwirq, IRQ_TYPE_EDGE_BOTH },
+>> +	};
+>> +	struct platform_device_info pdevinfo =3D {
+>> +		.parent =3D &pdev->dev,
+>> +		.fwnode =3D dev_fwnode(&pdev->dev),
+>> +		.of_node_reused =3D true,
+>> +		.name =3D "qcom-pm8xxx-usb-id",
+>> +		.id =3D PLATFORM_DEVID_NONE,
+>> +	};
+>> +	struct resource resource;
+>> +
+>> +	chip->usb_id_irq =3D irq_create_fwspec_mapping(&fwspec);
+>> +	if (!chip->usb_id_irq)
+>> +		return -ENXIO;
+>> +
+>> +	resource =3D DEFINE_RES_IRQ_NAMED(chip->usb_id_irq, "usb_id");
+>> +	pdevinfo.res =3D &resource;
+>> +	pdevinfo.num_res =3D 1;
+>> +
+>> +	chip->usb_extcon =3D platform_device_register_full(&pdevinfo);
+>
+> Why aren't you using the MFD API for this?
+>
+>> +	if (IS_ERR(chip->usb_extcon)) {
+>> +		int ret =3D PTR_ERR(chip->usb_extcon);
+>> +
+>> +		chip->usb_extcon =3D NULL;
+>> +		irq_dispose_mapping(chip->usb_id_irq);
+>> +		chip->usb_id_irq =3D 0;
+>> +
+>> +		return ret;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void pm8xxx_remove_usb_extcon(struct pm_irq_chip *chip)
+>> +{
+>> +	if (chip->usb_extcon)
+>> +		platform_device_unregister(chip->usb_extcon);
+>> +
+>> +	if (chip->usb_id_irq)
+>> +		irq_dispose_mapping(chip->usb_id_irq);
+>> +}
+>
+> Why not devm_*
+>
+>>  static int pm8xxx_probe(struct platform_device *pdev)
+>>  {
+>>  	const struct pm_irq_data *data;
+>> @@ -570,9 +630,22 @@ static int pm8xxx_probe(struct platform_device *=
+pdev)
+>> =20
+>>  	irq_set_irq_wake(irq, 1);
+>> =20
+>> +	if (data->usb_id_irq) {
+>> +		rc =3D pm8xxx_add_usb_extcon(pdev, chip, data->usb_id_irq);
+>> +		if (rc)
+>> +			goto err_domain;
+>> +	}
+>> +
+>>  	rc =3D of_platform_populate(pdev->dev.of_node, NULL, NULL, &pdev->d=
+ev);
+>>  	if (rc)
+>> -		irq_domain_remove(chip->irqdomain);
+>> +		goto err_extcon;
+>> +
+>> +	return 0;
+>> +
+>> +err_extcon:
+>> +	pm8xxx_remove_usb_extcon(chip);
+>> +err_domain:
+>> +	irq_domain_remove(chip->irqdomain);
+>> =20
+>>  	return rc;
+>>  }
+>> @@ -582,6 +655,7 @@ static void pm8xxx_remove(struct platform_device =
+*pdev)
+>>  	struct pm_irq_chip *chip =3D platform_get_drvdata(pdev);
+>> =20
+>>  	of_platform_depopulate(&pdev->dev);
+>> +	pm8xxx_remove_usb_extcon(chip);
+>>  	irq_domain_remove(chip->irqdomain);
+>>  }
+>> =20
+>>=20
+>> --=20
+>> 2.43.0
+>>=20
+>>=20
+>
+> --=20
+> Lee Jones
