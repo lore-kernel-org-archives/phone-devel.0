@@ -1,67 +1,66 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9E347ACFB
-	for <phone-devel@vger.kernel.org>; Tue,  1 Sep 2026 09:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27B6470EA4
+	for <phone-devel@vger.kernel.org>; Tue,  1 Sep 2026 09:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788254463; cv=none; b=N2uEJXCGmdUgCbhE6DM10uf63CfkycFVRzZBiyMfz3j4EsQZt2OV0xAg/IVjEbRgKDsu+sTPfg8/9Yutr78nT4fP+Y+pC9q6HDGI/9vV2Z9gB9CbdMa0P05bxWVmXDg3S9xOHb/0YEEdmUWwkl1Tyb8pp0R7LzrceeHybncrx0s=
+	t=1788255860; cv=none; b=TDklyxoWTbLD5FGFANtnzpaNjXwvFDyHEM4SCOGeLjVrDrpkob5kRyeHJteelA1+rCZtrkR/Xjzh2aSA50gIgM9f5YjAod1wHnE8UM/l0AV+3wnLAYNCoxEH/3/yHbp/Cwd/z3E8qjdpBP3JFmqGetYExi3va5kCNwZsppsnPRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788254463; c=relaxed/simple;
-	bh=aO2eMioyOB/VcOtG8g2Q5/E7T79qL376zs9BEmEPMe0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pHD3jMc4aTeUj9B1GoDOlx2aWWh9pzcOfhcvZzsQdLjG6K5LHgb0bKLnbFSWPXY09q3qfZPdh3rB/9VBTh6emNLlAQQltvoiKi+vOH06mr8FE9oNUY+CwQdjTtzOKTvDbDu9Lmxw4X3MeFNCoW6JcLx+PAOr1KTRBMlv20RyqE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=zJktN61h; arc=none smtp.client-ip=209.85.218.42
+	s=arc-20240116; t=1788255860; c=relaxed/simple;
+	bh=xgVMG0SVcPGU0ZyZOfm9OGPf1h8shzUtnSv3tuK8vrE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pshiTY7VRnpAKCT6ebKsqtf6eSAEBTYQsPDJrju319/N95+N+qIHsaZVS0kijp+h/IGMwhJX/xGZl5h0SB484uiBdM2fJ0bSHk884U0JAYSZ3/pJp9nrAIwZN1bBAk1FcqQipmYpy9N2oj03AUUkx7/JStEyCGxiNxijuonKc+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=tVNB+OCm; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="zJktN61h"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c250c6a6a6eso79513766b.0
-        for <phone-devel@vger.kernel.org>; Tue, 01 Sep 2026 02:21:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="tVNB+OCm"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6a173ad7cf4so7073337a12.3
+        for <phone-devel@vger.kernel.org>; Tue, 01 Sep 2026 02:44:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1788254458; x=1788859258; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1788255856; x=1788860656; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:content-type
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=du2ocNQni28qqCR806uGIh11ko8Tpsyo/Ip5FqU2z6w=;
-        b=zJktN61h0U58NfXcn9q70izN5hre6+wjwiiLYA9ki3Ic71SyDG4xhmipQWa4gjtWEo
-         jebaLKjLIwJY+NrkiIU2WmT6U1XwHDQK7RKVULObIm8NQrBNjf2744ODFGUQ0cNAqayP
-         Al5LY83GEyw/eE+vOEVbXkM/gYCsKUcAdnz6sik7eC0oq2LsodKp9OzVClMvFByaMboo
-         9kwh5/gZ0QJGCDOj3ANtU/ot7c9GafWEKUL/ubGJYttUx8GPZcWK2NdpOrDLiOOvgV7x
-         yvRW7EXUfGifH+YObHC2lXHYoyn+UEAgYPqhjRzdF6crI2vNU2k41SDgkCIP3IpXIaqi
-         hBHw==
+        bh=m3NIEcCH2+3ln1/z5awDZRx9pH91BoZ8DFY10uLNtuo=;
+        b=tVNB+OCmOzIF4a5Tx6UNkAyvym/N2zsOVUIn8AodHn70exPjwUUFREEyK24S4edq+m
+         up86OqXAo20JTlWkwFJnM4BJNmmidr18RZtcu/nFprGlKcXzKgJQSNfAXLhg8kxcSx5o
+         bW4ImM5sYA1yDO12rR9PvvOJLCZGiZ2XNdzrFLhCByAM7mf1TMG0Q522ERLTa1W2oTU2
+         cFaztWQI5K1/XrvbzaHUmdWmYm2YJ175waoUKHMjzIcz4nO/UYKDupUSLRFixeX/WRhE
+         u7fhrWxtcRU2R5orqRVQEMK5mIzNEKJAsrmpLLCsXzWEmMTIFg754YPpDdljUOkXu3Np
+         G3xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788254458; x=1788859258;
+        d=1e100.net; s=20251104; t=1788255856; x=1788860656;
         h=cc:to:message-id:content-transfer-encoding:content-type
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=du2ocNQni28qqCR806uGIh11ko8Tpsyo/Ip5FqU2z6w=;
-        b=sNpElMja8RZpwl5RZoE+0/6gSVxgiyCr2w6UBE8RIbJNFElKLkxnOspQYCbRE1omAD
-         NnNdn3B6fFMM9kMMrjst89NWlW+DK7L8Ol7EsIBFXXO0U2ZVyOtC+qd/aZBYOjOgcJnD
-         CtBI36kZc3AJbTp1VentvfcpPX05W9YW5GI1x8y3k43WxeozWHR6CkDlwTZtXe+X60zr
-         qSocTQruzsywwsdPkOPES1jOfroxAgTz1QbTOfRdhQUD6eX6xwIPUbduMmsuOz9aKafc
-         jcLGBEqRO5QQqzhjq85zFKbUx+3N8VX7I7aAB82Do0y0HmmNFkHn+8ToAtux+A7ZUs/I
-         t7xA==
-X-Forwarded-Encrypted: i=1; AHgh+RqvPm7Np9+CtOthMl9nXEiUxNNWxgPqi0SCI7St91dIEPYFZRyQ9qQbpR0tUwLwgiJ4l2NFUHk0o4vx2A==@vger.kernel.org
-X-Gm-Message-State: AFuF++mH/Zp3VOi+hgQLysydwP1SiADs/iMM2CbJo0NRCf8JdCcZUm8F
-	skvdqTUvVNDX2ozQMdn74GhhqUba3RY08LyA2Ha7eZJCd8kUFHKUoP+MhqjwbvR192U=
-X-Gm-Gg: AR+sD114HS3B86dE5DrGUbA6VxI5USVqF81Lq9hg762jnY141x13SnnE2xnDTLDfeI0
-	yNKRQskeHy69PAFBHuZbWCt9vgw9x9OC1ucvbkX2IHhIV/MOZeSUOBEXYShhYA/BB9D8Nr1dLgX
-	yV1Ek64WqA5lvyhp5i1t2YPWPBbG4HJ0W1Z6cf4YdTZXsFPY6SWvLq7VCB84wSMZ65epk/H19QX
-	KTrUNSzokPr6Q2EWYLs72xgu9Z33n6Rp0E4O/SaL11bZ35zgOjNO1bcoWY5uqA1OrP7vat80uV2
-	ZO9pZ5iS2+evFQDqLj95yh1U6N6ajgf7+4z3QGqovgh0ujRihftP0EWXZeUyRYXSSQvCsV4GK3V
-	9rpOUTTNPmcqHl/Ccl6I37PRr5LxWRpVppy0KW/UDIrEGqFwS6R9698QM0av+y+xYfz6lZ+y4GP
-	QxFiaOZrbp4FrnHZLccx9ruIc1i/eN3A5fBNWRw4Hc/5AsV5Z7EqSsGfOXonWTf6x5SRccvJnx3
-	jkSZ6baUplH67YIIopGUZXAFS0h9eUqi9f1qTA3f+k=
-X-Received: by 2002:a17:907:60cf:b0:c16:26c7:6ba8 with SMTP id a640c23a62f3a-c2556bfba7fmr2070373766b.6.1788254458608;
-        Tue, 01 Sep 2026 02:20:58 -0700 (PDT)
+        bh=m3NIEcCH2+3ln1/z5awDZRx9pH91BoZ8DFY10uLNtuo=;
+        b=eTqLAGBmmaAh5xPYSxAwVtOXk//bLS15WGhpfCKg1cU3iSiHUTVhU0AfcNgYedYdll
+         Msupdfv1SDZ2SD5ENxtZHBgsce+kjj1lYKM40hRiqNmJ7/ZRhR8HeE2uGcBjm6j5hPKQ
+         IWR0IhIMj1FJJpUAsCluh6F/KCB0rDfd0Db+SfMgeaS2SFcME7/Aj7nFyWwrgJWHz3w/
+         1COzdfT5mKWrkIg8DHwx5tugdt89N4MPttjKnIuSSLQKJkGYOjMbWTbFTi4HAlfed2v+
+         ITmzAd60Sf+x7lE08ozxmott1pL0t7pR+2DJW9kVUUtosuggNIZDe8rHNYGrnK5zsllW
+         ZKDA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5P6mOPplsabt1M5HfRhncSezsVeJin/kCC4+DV2M/2JJK8VrKkEr2vyhHiUD1n3kBZEgWB67BLokTVw==@vger.kernel.org
+X-Gm-Message-State: AFuF++mBYZIlChaasgskwyhQJn2lBVtTO5OqiG+DQiLQgBiw9Q1/J5ii
+	HifSVJEP4T3Y+wkE/zwMvfMUtHK0jr9VJXpP6+6uUGiVDugiknpJtiIsGR/RDMVvx/0=
+X-Gm-Gg: AR+sD11BWMqdsfdiK4GSMrk1mnod2Yh/VNUSRuXbN3zseTzA8iJr5lnIIi4mVwnApO7
+	CGpVyD28z0/pJ0uPPcG3T+8Zy27roogVaxef3eoaKs2JUoRGfxidbVwyFR8Fp1Gvr+ZswryeQ33
+	CjPEEEo7u1AMjZfAHtVy7Tc4I9p/w/AoqWVgpQQYjhE4c5UnfalJXplwwvL6NdNbZJpiADvq6NN
+	7hvO7MjFf6v+unKnqdIdRAPv06lYhXqmj8YEUyPdj/zFL53aKxQKwzsGh6Htl17jGx6gQjRnrtv
+	YoHrnp1mdP3qGYjSN0/jj1tNmd9YpIM0yqL4nlsk0q9l7iHWgcjLSwCVzhk3k4VNCSNtAUO+drC
+	e4Rdl6kuR9P+DnUeMr5JE0l0Aa0t+Q6/wPDScu7VJXimtMPYccGEKzCGoi9ofNOzgyVyfEOMsb+
+	+tx02Sd4aDwdYdUO20v0gSQUIljJqiMWCcfpvF0LdjVFSbgSG627UevsHDOyG8LYEo1nv0fqocS
+	cRTAyDj0q+mHhRo6XTJ6Ql3Qds/fDGdaAwqodGP/AA=
+X-Received: by 2002:a17:907:3e28:b0:c25:192:99ee with SMTP id a640c23a62f3a-c2557203984mr1970760566b.19.1788255855908;
+        Tue, 01 Sep 2026 02:44:15 -0700 (PDT)
 Received: from [172.16.220.101] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f249468sm544122966b.56.2026.09.01.02.20.58
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c255f1b2917sm547215666b.30.2026.09.01.02.44.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2026 02:20:58 -0700 (PDT)
+        Tue, 01 Sep 2026 02:44:15 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Tue, 01 Sep 2026 11:20:56 +0200
-Subject: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add parent supply
- for regulators
+Date: Tue, 01 Sep 2026 11:44:09 +0200
+Subject: [PATCH v5] arm64: dts: qcom: sm6350: Add CAMSS node
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -70,159 +69,321 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260901-fp5-regulator-supply-v1-1-189fee0c1dba@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQrCMAyA4VcZORtow5TVVxEPtWYzMraSrEMZe
- 3erHr/D/29grMIG52YD5VVM5qnCHxpIjzgNjHKvBnJ0csF57PMRlYcyxmVWtJLz+MZI1HXBt6k
- NBDXNyr28ftvL9W8rtyen5fuCff8AS3Yg5HgAAAA=
-X-Change-ID: 20260901-fp5-regulator-supply-a2288914c492
+Message-Id: <20260901-sm6350-camss-v5-1-49020da3bf35@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23OwU7EIBAG4FdpOIsBBmi7J9/DeABmsBzarlCbN
+ Zu+u9iN0TQ9/pP83z93VignKuzS3FmmNZU0TzWYp4aFwU3vxBPWzJRQRgqleRktGMGDG0vhfdB
+ C+9iHiMhq5ZopptvOvb49cqaPz6oujyPzrhAP8zim5dJMdFt4la3oQLKfwpDKMuev/Z1V7o3z5
+ VVywS2gVdZC5xBfokv5OswTPVd+x1b1B0h5BFQFUMZoW3QA3p4B8AtYoSQcAKgACNdp44VvQzg
+ D9H/AHgBdAd9jBBO7ltAfgW3bvgG4t6YfoAEAAA==
+X-Change-ID: 20251024-sm6350-camss-9c404bf9cfdd
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+ linux-kernel@vger.kernel.org, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788254458; l=3901;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788255855; l=8930;
  i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=aO2eMioyOB/VcOtG8g2Q5/E7T79qL376zs9BEmEPMe0=;
- b=dqe9PVIolixAt/+8bKDii8RBAm2SBzQx4An5Hy/u5Mhmd1UmtydEG8tKvdyEyiRyliY7IJRN5
- gSpMggRi5I0BYeBi6mUWq13j1GVYKIFsjyn/jdKz0HJ4MR9xvS42WFd
+ bh=xgVMG0SVcPGU0ZyZOfm9OGPf1h8shzUtnSv3tuK8vrE=;
+ b=ZtUa0doXiUKDEFcBgaJMBiKILKhaAqbMdSjpKBDwfnm0WAObmcmY/MlhvOBM2RCN54CM950sb
+ 4Pnx5rtizMRC14Nz/KBjkdX6+Yz5M/EFVYFxjH7rAe1SHpFv55ODVX3
 X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
  pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Add the vdd-*-supply properties to the rpmh-regulators nodes, so that
-the parent regulators can be enabled when needed.
+Add a node for the CAMSS on the SM6350 SoC.
 
-PM7325's l3 and l5 are supplied by vreg_s2b ("ebi.lvl"), however since
-that regulator is not modelled as regulator, skip the -supply
-properties for those two LDOs.
-
-And document what the "missing" regulators are used for.
-
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 54 ++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+Changes in v5:
+- Drop applied patches
+- Pick up tags
+- Link to v4: https://lore.kernel.org/r/20260216-sm6350-camss-v4-0-b9df35f87edb@fairphone.com
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index f41ad446a39e..e9bf2faf6628 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -196,6 +196,17 @@ vreg_usb_redrive_1v8: regulator-usb-redrive-1v8 {
- 		pinctrl-names = "default";
- 	};
- 
-+	vph_pwr: regulator-vph-pwr {
-+		compatible = "regulator-fixed";
-+
-+		regulator-name = "vph_pwr";
-+		regulator-min-microvolt = <3700000>;
-+		regulator-max-microvolt = <3700000>;
-+
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+
- 	vreg_vtof_ldo_2p8: regulator-vtof-ldo-2p8 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "VTOF_LDO_2P8";
-@@ -372,6 +383,18 @@ active-config0 {
- &apps_rsc {
- 	regulators-0 {
- 		compatible = "qcom,pm7325-rpmh-regulators";
-+
-+		vdd-l1-l4-l12-l15-supply = <&vreg_s7b>;
-+		vdd-l2-l7-supply = <&vreg_bob>;
-+		vdd-l6-l9-l10-supply = <&vreg_s8b>;
-+		vdd-l8-supply = <&vreg_s7b>;
-+		vdd-l11-l17-l18-l19-supply = <&vreg_s1b>;
-+		vdd-l13-supply = <&vreg_s7b>;
-+		vdd-l14-l16-supply = <&vreg_s8b>;
-+		vdd-s1-supply = <&vph_pwr>;
-+		vdd-s7-supply = <&vph_pwr>;
-+		vdd-s8-supply = <&vph_pwr>;
-+
- 		qcom,pmic-id = "b";
- 
- 		vreg_s1b: smps1 {
-@@ -380,6 +403,12 @@ vreg_s1b: smps1 {
- 			regulator-max-microvolt = <2040000>;
+Changes in v4:
+- Update power-domain-names order (Krzysztof)
+- Make hex numbers lower case in init seq (David)
+- Pick up tags
+- Link to v3: https://lore.kernel.org/r/20260213-sm6350-camss-v3-0-30a845b0b7cc@fairphone.com
+
+Changes in v3:
+- Update dt-bindings to include everything related to camss
+- Update regulator names
+- Remove slow_ahb_src
+- Link to v2: https://lore.kernel.org/r/20251114-sm6350-camss-v2-0-d1ff67da33b6@fairphone.com
+
+Changes in v2:
+- Remove prefix from interconnect-names
+- Move 'top' power-domain to the top of list
+- Update regulator supply names
+- Link to v1: https://lore.kernel.org/r/20251024-sm6350-camss-v1-0-63d626638add@fairphone.com
+
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht
+Cc: phone-devel@vger.kernel.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 233 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 233 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 15d38b7e803c..57773c181f16 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -2242,6 +2242,239 @@ cci1_i2c0: i2c-bus@0 {
+ 			/* SM6350 seems to have cci1_i2c1 on gpio2 & gpio3 but unused downstream */
  		};
  
-+		/*
-+		 * s2b (smps2) is ebi.lvl
-+		 * s3b-s4b-s5b (smps3-smps4-smps5) is VDD_APC1
-+		 * s6b (smps6) is VDD_APC0
-+		 */
++		camss: isp@acb3000 {
++			compatible = "qcom,sm6350-camss";
 +
- 		vreg_s7b: smps7 {
- 			regulator-name = "vreg_s7b";
- 			regulator-min-microvolt = <535000>;
-@@ -414,6 +443,11 @@ vreg_l3b: ldo3 {
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
-+		/*
-+		 * l4b (ldo4) is lmx.lvl
-+		 * l5b (ldo5) is lcx.lvl
-+		 */
++			reg = <0x0 0x0acb3000 0x0 0x1000>,
++			      <0x0 0x0acba000 0x0 0x1000>,
++			      <0x0 0x0acc1000 0x0 0x1000>,
++			      <0x0 0x0acc8000 0x0 0x1000>,
++			      <0x0 0x0ac65000 0x0 0x1000>,
++			      <0x0 0x0ac66000 0x0 0x1000>,
++			      <0x0 0x0ac67000 0x0 0x1000>,
++			      <0x0 0x0ac68000 0x0 0x1000>,
++			      <0x0 0x0acaf000 0x0 0x4000>,
++			      <0x0 0x0acb6000 0x0 0x4000>,
++			      <0x0 0x0acbd000 0x0 0x4000>,
++			      <0x0 0x0acc4000 0x0 0x4000>,
++			      <0x0 0x0ac18000 0x0 0x3000>,
++			      <0x0 0x0ac00000 0x0 0x6000>,
++			      <0x0 0x0ac10000 0x0 0x8000>,
++			      <0x0 0x0ac6f000 0x0 0x8000>,
++			      <0x0 0x0ac42000 0x0 0x4600>,
++			      <0x0 0x01fc0000 0x0 0x40000>,
++			      <0x0 0x0ac48000 0x0 0x1000>,
++			      <0x0 0x0ac40000 0x0 0x1000>,
++			      <0x0 0x0ac87000 0x0 0xa000>,
++			      <0x0 0x0ac52000 0x0 0x4000>,
++			      <0x0 0x0ac4e000 0x0 0x4000>,
++			      <0x0 0x0ac6b000 0x0 0xa00>;
++			reg-names = "csid0",
++				    "csid1",
++				    "csid2",
++				    "csid_lite",
++				    "csiphy0",
++				    "csiphy1",
++				    "csiphy2",
++				    "csiphy3",
++				    "vfe0",
++				    "vfe1",
++				    "vfe2",
++				    "vfe_lite",
++				    "a5_csr",
++				    "a5_qgic",
++				    "a5_sierra",
++				    "bps",
++				    "camnoc",
++				    "core_top_csr_tcsr",
++				    "cpas_cdm",
++				    "cpas_top",
++				    "ipe",
++				    "jpeg_dma",
++				    "jpeg_enc",
++				    "lrme";
 +
- 		vreg_l6b: ldo6 {
- 			regulator-name = "vreg_l6b";
- 			regulator-min-microvolt = <1140000>;
-@@ -443,6 +477,8 @@ vreg_l9b: ldo9 {
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
-+		/* l10b (ldo10) is PMK7325 VDD_ACTIVE */
++			clocks = <&gcc GCC_CAMERA_AXI_CLK>,
++				 <&camcc CAMCC_SOC_AHB_CLK>,
++				 <&camcc CAMCC_CAMNOC_AXI_CLK>,
++				 <&camcc CAMCC_CORE_AHB_CLK>,
++				 <&camcc CAMCC_CPAS_AHB_CLK>,
++				 <&camcc CAMCC_CSIPHY0_CLK>,
++				 <&camcc CAMCC_CSI0PHYTIMER_CLK>,
++				 <&camcc CAMCC_CSIPHY1_CLK>,
++				 <&camcc CAMCC_CSI1PHYTIMER_CLK>,
++				 <&camcc CAMCC_CSIPHY2_CLK>,
++				 <&camcc CAMCC_CSI2PHYTIMER_CLK>,
++				 <&camcc CAMCC_CSIPHY3_CLK>,
++				 <&camcc CAMCC_CSI3PHYTIMER_CLK>,
++				 <&camcc CAMCC_IFE_0_AXI_CLK>,
++				 <&camcc CAMCC_IFE_0_CLK>,
++				 <&camcc CAMCC_IFE_0_CPHY_RX_CLK>,
++				 <&camcc CAMCC_IFE_0_CSID_CLK>,
++				 <&camcc CAMCC_IFE_1_AXI_CLK>,
++				 <&camcc CAMCC_IFE_1_CLK>,
++				 <&camcc CAMCC_IFE_1_CPHY_RX_CLK>,
++				 <&camcc CAMCC_IFE_1_CSID_CLK>,
++				 <&camcc CAMCC_IFE_2_AXI_CLK>,
++				 <&camcc CAMCC_IFE_2_CLK>,
++				 <&camcc CAMCC_IFE_2_CPHY_RX_CLK>,
++				 <&camcc CAMCC_IFE_2_CSID_CLK>,
++				 <&camcc CAMCC_IFE_LITE_CLK>,
++				 <&camcc CAMCC_IFE_LITE_CPHY_RX_CLK>,
++				 <&camcc CAMCC_IFE_LITE_CSID_CLK>,
++				 <&camcc CAMCC_BPS_CLK>,
++				 <&camcc CAMCC_BPS_AHB_CLK>,
++				 <&camcc CAMCC_BPS_AREG_CLK>,
++				 <&camcc CAMCC_BPS_AXI_CLK>,
++				 <&camcc CAMCC_ICP_CLK>,
++				 <&camcc CAMCC_IPE_0_CLK>,
++				 <&camcc CAMCC_IPE_0_AHB_CLK>,
++				 <&camcc CAMCC_IPE_0_AREG_CLK>,
++				 <&camcc CAMCC_IPE_0_AXI_CLK>,
++				 <&camcc CAMCC_JPEG_CLK>,
++				 <&camcc CAMCC_LRME_CLK>;
++			clock-names = "cam_axi",
++				      "soc_ahb",
++				      "camnoc_axi",
++				      "core_ahb",
++				      "cpas_ahb",
++				      "csiphy0",
++				      "csiphy0_timer",
++				      "csiphy1",
++				      "csiphy1_timer",
++				      "csiphy2",
++				      "csiphy2_timer",
++				      "csiphy3",
++				      "csiphy3_timer",
++				      "vfe0_axi",
++				      "vfe0",
++				      "vfe0_cphy_rx",
++				      "vfe0_csid",
++				      "vfe1_axi",
++				      "vfe1",
++				      "vfe1_cphy_rx",
++				      "vfe1_csid",
++				      "vfe2_axi",
++				      "vfe2",
++				      "vfe2_cphy_rx",
++				      "vfe2_csid",
++				      "vfe_lite",
++				      "vfe_lite_cphy_rx",
++				      "vfe_lite_csid",
++				      "bps",
++				      "bps_ahb",
++				      "bps_areg",
++				      "bps_axi",
++				      "icp",
++				      "ipe0",
++				      "ipe0_ahb",
++				      "ipe0_areg",
++				      "ipe0_axi",
++				      "jpeg",
++				      "lrme";
 +
- 		vreg_l11b: ldo11 {
- 			regulator-name = "vreg_l11b";
- 			regulator-min-microvolt = <1504000>;
-@@ -509,6 +545,16 @@ vreg_l19b: ldo19 {
- 
- 	regulators-1 {
- 		compatible = "qcom,pm8350c-rpmh-regulators";
++			interrupts = <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 717 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 473 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 461 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 718 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 472 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 463 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 459 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 469 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 475 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 474 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 476 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "csid0",
++					  "csid1",
++					  "csid2",
++					  "csid_lite",
++					  "csiphy0",
++					  "csiphy1",
++					  "csiphy2",
++					  "csiphy3",
++					  "vfe0",
++					  "vfe1",
++					  "vfe2",
++					  "vfe_lite",
++					  "a5",
++					  "cpas",
++					  "cpas_cdm",
++					  "jpeg_dma",
++					  "jpeg_enc",
++					  "lrme";
 +
-+		vdd-bob-supply = <&vph_pwr>;
-+		vdd-l1-l12-supply = <&vreg_s1b>;
-+		vdd-l2-l8-supply = <&vreg_s1b>;
-+		vdd-l3-l4-l5-l7-l13-supply = <&vreg_bob>;
-+		vdd-l6-l9-l11-supply = <&vreg_bob>;
-+		vdd-l10-supply = <&vreg_s7b>;
-+		vdd-s1-supply = <&vph_pwr>;
-+		vdd-s9-supply = <&vph_pwr>;
++			interconnects = <&gem_noc MASTER_AMPSS_M0 QCOM_ICC_TAG_ACTIVE_ONLY
++					 &config_noc SLAVE_CAMERA_CFG QCOM_ICC_TAG_ACTIVE_ONLY>,
++					<&mmss_noc MASTER_CAMNOC_HF QCOM_ICC_TAG_ALWAYS
++					 &clk_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>,
++					<&mmss_noc MASTER_CAMNOC_SF QCOM_ICC_TAG_ALWAYS
++					 &clk_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>,
++					<&mmss_noc MASTER_CAMNOC_ICP QCOM_ICC_TAG_ALWAYS
++					 &clk_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
++			interconnect-names = "ahb",
++					     "hf_mnoc",
++					     "sf_mnoc",
++					     "sf_icp_mnoc";
 +
- 		qcom,pmic-id = "c";
- 
- 		vreg_s1c: smps1 {
-@@ -518,6 +564,12 @@ vreg_s1c: smps1 {
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
-+		/*
-+		 * s2c-s3c-s4c (smps2-smps3-smps4) is cx.lvl
-+		 * s5c-s6c (smps5-smps6) is mss.lvl
-+		 * s7c-s8c (smps7-smps8) is gfx.lvl
-+		 */
++			iommus = <&apps_smmu 0x820 0xc0>,
++				 <&apps_smmu 0x840 0x0>,
++				 <&apps_smmu 0x860 0xc0>,
++				 <&apps_smmu 0x880 0x0>,
++				 <&apps_smmu 0xc40 0x20>,
++				 <&apps_smmu 0xc60 0x20>,
++				 <&apps_smmu 0xc80 0x0>,
++				 <&apps_smmu 0xca2 0x0>,
++				 <&apps_smmu 0xcc0 0x20>,
++				 <&apps_smmu 0xce0 0x20>,
++				 <&apps_smmu 0xd00 0x20>,
++				 <&apps_smmu 0xd20 0x20>,
++				 <&apps_smmu 0xd40 0x20>,
++				 <&apps_smmu 0xd60 0x20>;
 +
- 		vreg_s9c: smps9 {
- 			regulator-name = "vreg_s9c";
- 			regulator-min-microvolt = <1010000>;
-@@ -525,6 +577,8 @@ vreg_s9c: smps9 {
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
-+		/* s10c (smps10) is mx.lvl */
++			power-domains = <&camcc IFE_0_GDSC>,
++					<&camcc IFE_1_GDSC>,
++					<&camcc IFE_2_GDSC>,
++					<&camcc TITAN_TOP_GDSC>,
++					<&camcc BPS_GDSC>,
++					<&camcc IPE_0_GDSC>;
++			power-domain-names = "ife0",
++					     "ife1",
++					     "ife2",
++					     "top",
++					     "bps",
++					     "ipe";
 +
- 		vreg_l1c: ldo1 {
- 			regulator-name = "vreg_l1c";
- 			regulator-min-microvolt = <1800000>;
++			status = "disabled";
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				port@0 {
++					reg = <0>;
++				};
++
++				port@1 {
++					reg = <1>;
++				};
++
++				port@2 {
++					reg = <2>;
++				};
++
++				port@3 {
++					reg = <3>;
++				};
++			};
++		};
++
+ 		camcc: clock-controller@ad00000 {
+ 			compatible = "qcom,sm6350-camcc";
+ 			reg = <0x0 0x0ad00000 0x0 0x16000>;
 
 ---
-base-commit: 89c07d98716a13454ec3fd9f97689e812cc71bd4
-change-id: 20260901-fp5-regulator-supply-a2288914c492
+base-commit: c7507e07687010738e5f16926078f78ac0d6509d
+change-id: 20251024-sm6350-camss-9c404bf9cfdd
 
 Best regards,
 --  
