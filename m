@@ -1,122 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6C547208F;
-	Thu,  3 Sep 2026 12:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB9439FCE;
+	Thu,  3 Sep 2026 13:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788439785; cv=none; b=giBn4DS2UDtenB2BpEYApXr7Uq0IILoDajDYhoLL/onix+tSlJBd11CJ/jQ6gGYbiR7UzLuFnBjzscjaa3R8AOg/BPVe8ww76u24taCfSnwABgnTULlVBVXN9t5pm5oQDO1pTrTx4QEQXzY7yKE9t3w3St2et0/wGNfZZ+bABjQ=
+	t=1788442426; cv=none; b=s2lnL9BpDo5MXw1UE/6h2jxhiS7RAD3rqwPKWa/idrnqPRQT5KgP7a/tSE1mSa2syboqb13HULQ4+t+bpBMNkQvHLOAinAOCgKNYTwOkgphHdZko8H+CqB+OXMNNKBtC1pYBQpl5hHnqgK9ihKYsfg7du/lmInT9gyvHM5M0ajg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788439785; c=relaxed/simple;
-	bh=eBLWZdRUCJQkpc4ABvRVrT7yaZb3i/iKB43u0BEa12U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GgLm2esbjszTa89g4Xltf2p7gmHVkJaAFGEnwFho959iuStFbOtksiCc90Z+GcYcN2IKvn88cel2SpPRnBpC7sWIPKZ3fIyShveaH0TCDYs8ISCxjTQCEG4EuwVOBbJFCRPsfZAM1Vp1+r1dV4U+NYl0MtDCDbFwXfUVRBF2r8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPdvRydi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788442426; c=relaxed/simple;
+	bh=vUplqmmBl8DDu0WsRE+E6Yosb7enN7XGEu8R8AG2S1w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qvDpjWcQjGjfHwGhlzI0Oc0ntWwTqu2TnpxkjtdK/w8Px3MvLHe0/bSpEN70s9Nc44JLda2NZQZrav+AaCrmtICdh8NU83cB+fCrSLDCgm0zsA/+MIFSqai7z1RhOCBCKAN5cw1JL+YNZrzw2J7OfNjTIZHgR9ciyLLj4bn7YZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dy4qdFNu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPdvRydi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17131F000E9;
-	Thu,  3 Sep 2026 12:49:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dy4qdFNu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4CA1F000E9;
+	Thu,  3 Sep 2026 13:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788439784;
-	bh=F2FrWcK0uvS3ll2oLYKWcdBOi4hjBzbOPy6uKBeL6EY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JPdvRydiv7M1DbZfJlF8/3lB/fClXPoZxOG6nvJr+SLEr0gfx6T7waiky4YVEPXrU
-	 fejuyY9QilQiduOUvBiCCYFQTG4dYTKP57kS0fVHKuWksBdCpc6yOSYWPDJFIQmMd2
-	 owBafAhkUHwFb+Cc/zFMJKcp2uxF+uEqH7nCEMTR1U7kSkJYIIeCZToWMzqUNZUs50
-	 rHKE3cwzxHHR/CPViGpO/Iyr6eSKpF8KQpPi87auKUC9OfbrVwQdDuxjQfHXWBzEEf
-	 KVndEppzPJHflv+yjPx+Z+tsqYoYdRLmJqZn9EkTR1nlxNbTJJPRIEDN4LDhzjPTiY
-	 tI9jNnn+uNfaQ==
-Date: Thu, 3 Sep 2026 13:49:39 +0100
+	s=k20260515; t=1788442405;
+	bh=MACAtVctW5iZm8XXwPgIOFDVMcJxiwLDfYCcCLd5nLU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=dy4qdFNudPT0hbVj3b2iMmDQ0w9szmPe8IpLFubyDg2BA9DcXZVxxAOZ7G5d222xC
+	 xOElZBOExrsTswu2VJE9YwIpqFLcFEXQ/oqv/NisCqMa0/bvbmT3Dj1zLTfACwEebO
+	 1a6LZKlTcBh/xHnNykpaWdgyf+tj2+EnceM29OSO7dhPFbDM6WgY9YP/A8bU+bn5dX
+	 TzE6gQ4/FpEtVhhe5OtOEiC5heYhH4i2nd4JL0lAvu1Ij7AuDCACQDiK8PIl/5O02R
+	 IgZEXejX63Y0/jqTfcfHR33tyj7TMVVLjoCbgOnEyo/ny8ypKBF+J2A/R0y1o2eaIF
+	 S77KiBjPyZljQ==
 From: Lee Jones <lee@kernel.org>
-To: david@ixit.cz
-Cc: Thomas Tai <thomas.tai@oracle.com>,
-	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, mfd@lists.linux.dev,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mfd: wcd934x: set DMA mask on parent to silence "DMA
- mask not set"
-Message-ID: <20260903124939.GT2133376@google.com>
-References: <20260823-wcd-dma-v1-1-95e44a315ccf@ixit.cz>
+To: Lee Jones <lee@kernel.org>, Dzmitry Sankouski <dsankouski@gmail.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, David Heidelberg <david@ixit.cz>
+Cc: mfd@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20260827-deps-reg-max77705-v1-1-c83a74d3d428@ixit.cz>
+References: <20260827-deps-reg-max77705-v1-1-c83a74d3d428@ixit.cz>
+Subject: Re: (subset) [PATCH] mfd: Fix MAX77705 dependency on regmap
+Message-Id: <178844240388.2660845.15478416914610328412.b4-ty@b4>
+Date: Thu, 03 Sep 2026 14:33:23 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260823-wcd-dma-v1-1-95e44a315ccf@ixit.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.16-dev-ad80c
 
-On Sun, 23 Aug 2026, David Heidelberg via B4 Relay wrote:
+On Thu, 27 Aug 2026 16:27:41 +0200, David Heidelberg wrote:
+> The max77705 uses devm_regmap_add_irq_chip(), so add REGMAP_IRQ
+> and REGMAP_I2C to what the core driver selects in order to provide
+> thise APIs.
+> This fixes a build error:
+> 
+> drivers/mfd/max77705.o: in function `max77705_i2c_probe':
+> max77705.c:(.text+0x250): undefined reference to `devm_regmap_add_irq_chip'
+> 
+> [...]
 
-> From: David Heidelberg <david@ixit.cz>
-> 
-> The wcd934x MFD parent (a slim_device) never initializes its
-> dma_mask/coherent_dma_mask. When the DT-aware children pass through
-> of_dma_configure() this triggers the "DMA mask not set" warning for
-> each child.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: f959dcd6ddfd ("dma-direct: Fix potential NULL pointer dereference")
-> Assisted-by: tencent:hy3
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  drivers/mfd/wcd934x.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/mfd/wcd934x.c b/drivers/mfd/wcd934x.c
-> index 3c3080e8c8cf7..70ee13791d52b 100644
-> --- a/drivers/mfd/wcd934x.c
-> +++ b/drivers/mfd/wcd934x.c
-> @@ -1,12 +1,13 @@
->  // SPDX-License-Identifier: GPL-2.0
->  // Copyright (c) 2019, Linaro Limited
->  
->  #include <linux/clk.h>
-> +#include <linux/dma-mapping.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/interrupt.h>
->  #include <linux/kernel.h>
->  #include <linux/mfd/core.h>
->  #include <linux/mfd/wcd934x/registers.h>
->  #include <linux/mfd/wcd934x/wcd934x.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> @@ -212,16 +213,21 @@ static int wcd934x_slim_status(struct slim_device *sdev,
->  static int wcd934x_slim_probe(struct slim_device *sdev)
->  {
->  	struct device *dev = &sdev->dev;
->  	struct device_node *np = dev->of_node;
->  	struct wcd934x_ddata *ddata;
->  	struct gpio_desc *reset_gpio;
->  	int ret;
->  
-> +	if (!dev->dma_mask) {
-> +		dev->dma_mask = &dev->coherent_dma_mask;
-> +		dev->coherent_dma_mask = DMA_BIT_MASK(32);
-> +	}
-> +
+Applied, thanks!
 
-Any reason not to use dma_coerce_mask_and_coherent()?
+[1/1] mfd: Fix MAX77705 dependency on regmap
+      commit: b07adc1a304c7ca9ac25a01051561538757363c9
 
->  	ddata = devm_kzalloc(dev, sizeof(*ddata), GFP_KERNEL);
->  	if (!ddata)
->  		return	-ENOMEM;
->  
->  	ddata->irq = of_irq_get(np, 0);
->  	if (ddata->irq < 0)
->  		return dev_err_probe(ddata->dev, ddata->irq,
->  				     "Failed to get IRQ\n");
-> 
-> ---
-> base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-> change-id: 20260823-wcd-dma-bd621ee39887
-> 
-> Best regards,
-> --  
-> David Heidelberg <david@ixit.cz>
-> 
-> 
+--
+Lee Jones [李琼斯]
 
--- 
-Lee Jones
