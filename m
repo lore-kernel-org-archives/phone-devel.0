@@ -1,37 +1,38 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-199.mta1.migadu.com [95.215.58.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0CF3FA5FA;
-	Wed,  2 Sep 2026 20:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE43331A63
+	for <phone-devel@vger.kernel.org>; Thu,  3 Sep 2026 02:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788382760; cv=none; b=eoD0WgeM1SFF0XCHAJZkZxFon9LRw4dcdqRMUNxQM+9l0lTXOCOMHymzGnR9Y1unx8L0zyMunCE9vmn5OkmZ6rub+/lrqM9K59wVhj1uPicX0RaXTREgGWBzA5zREW9TCNSS3Xqko67IlJPPj0kcTmw7iXK9dpNazYLq38O9EGo=
+	t=1788401009; cv=none; b=npzw32k1kVV78jYaI6XqF+4EUc5ecGWk35pqhwwDQuQam6+FLpd7b0clI2qs/Owgj6VcI1HiI9qq5ePAgzNSWm59K16aAKBMahF8ykqb3qo0Sb5BTF9x3h4n22nJd2CkCaVqTeO7welJ/3Tq8+xTs76CdElITQcru3aFrzvXbRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788382760; c=relaxed/simple;
-	bh=8xHUeYDbEoNscvr8B8iXVxMzxcKa4oLLTTVc6hIKl+w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Z3vi5hY6aQTEYMtwT71la8FJ7ISCZGuAG073mmbYsgFpY5Z4GMR/XSoC/TDBWE7yXij2NTQYKgMzmCl+d9p6wFSQuR1XRDB2juwXBMOZm3n2dnVgxkxj54dCbeCq5XeX3kYexsQUWI7OpsotVRQ0I0VvHVe+6CmmaAKJk6leiRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkgjQnS0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1788401009; c=relaxed/simple;
+	bh=fMhzI8X3Hok8lOxj6VX1r6zGfn4fks2SS0FP4mBh2DU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gEpvJ0PyucW6K55EmVmIarY5bCdxkfIjDWJ4bUOJK2PF3k5wDvTwkgTq1jXv1TQuBvcau4V6RxewCnlBr0iB+kcD7A8HJleCVvpq4dNAoVFRR7EZFAmvJmLb4/PTdjTxOaQKqzTfLN6qJSlfqW4rHNtSwHhcNMyXtD2tCMPMesw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=Rm1NSdWW; arc=none smtp.client-ip=95.215.58.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkgjQnS0"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 36109C2BD04;
-	Wed,  2 Sep 2026 20:59:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1788382759;
-	bh=8xHUeYDbEoNscvr8B8iXVxMzxcKa4oLLTTVc6hIKl+w=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=IkgjQnS0yBo3LyMtq762PTS27svjrB6+d/ePPL4gf1sgrOT3GLK7lYxBIWtI9CcO+
-	 9jaTfxuPez1lysE1CHB2RSYPlZ2YdsFJx+kEb8FWN3j2XyAAS08Ug2FI2KyLZp+ARP
-	 0u0aEOAK8OSQpDZb3gVla3xZ3/f7EIWpvjbI8JEHoD2WtzbCC6+0iZ6qODLm5u5hyw
-	 txAKnhsLOR3oXPvB/9Fy66BDWiQ1l6fL4RzZ2IAU1+3TJ/fl0QZn1lLeqGJdUj1os+
-	 cMJpOtgf7ANmZZO+aHSDeBz4FBlwINhooSuBWPhxEqDrGT6zF8J7oCn/c+DEGVmP2p
-	 6BIdUAc5hdQ4Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18A79C624DB;
-	Wed,  2 Sep 2026 20:59:19 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 02 Sep 2026 22:59:14 +0200
-Subject: [PATCH 3/3] arm64: dts: qcom: sdm670-google: Add NFC support
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="Rm1NSdWW"
+X-Envelope-To: phone-devel@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=fMhzI8X3Hok8lOxj6VX1r6zGfn4fks2SS0FP4mBh2DU=;
+ c=simple/simple; d=postmarketos.org;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788401004; v=1; x=1789005804;
+ b=Rm1NSdWWuYi8h02xvSc3+x4Wtl/F7vu1G7YDGirMIwkDIzzwfAaaX35l0XP6/jZTRXeuQpTH
+ oNz+gpCxUkNOYoL8gWGxJEAncSjTeNLZDNfbiMLXV7WgOVRTtZZTA0jXbtLV5PLwAwQpBhXEoT3
+ 0a3qu/PNy3RET582JxmDLhUifd+beyaCrZ4jqKUCBI6JX/i1aLoTByisS+YExkJA/LnYkReJ0oQ
+ lx/+JFDjBoHdJDK1J/QxMcQ0Ktp/5LDMXXqB224+CHazR0HnHaa+6Hocwy85k8mIRdy8YZOQJhA
+ n5j1b9HjAJgq/9+sLiqzL3VDgV+a2q3TNygDEeRhUSTsw==
+X-Envelope-To: phone-devel@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c2330e0bba2a5027;
+	Thu, 03 Sep 2026 02:03:14 +0000
+X-Mizu-Trace-ID: c2330e0bba2a5027
+X-Migadu-Flow: FLOW_OUT
+From: Paul Sajna <sajattack@postmarketos.org>
+Date: Wed, 02 Sep 2026 19:03:06 -0700
+Subject: [PATCH] arm64: dts: qcom: sdm845-lg: Enable NFC
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,134 +41,100 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260902-sdm670-sargo-nfc-v1-3-bed1cbbffc46@ixit.cz>
-References: <20260902-sdm670-sargo-nfc-v1-0-bed1cbbffc46@ixit.cz>
-In-Reply-To: <20260902-sdm670-sargo-nfc-v1-0-bed1cbbffc46@ixit.cz>
+Message-Id: <20260902-sdm845-lg-judy-nfc-v1-1-282173900569@postmarketos.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQ5AMBBA0avIrE1SpairiIXolBFK2hAi7q6xf
+ Iv/HwjkmQI0yQOeTg68uYgsTWCYejcSsokGKWQptJAYzFoXCpcR58Pc6OyAympSVaVynRuI4e7
+ J8vVP2+59P5VL3rpkAAAA
+X-Change-ID: 20260902-sdm845-lg-judy-nfc-5f9e5775393d
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Richard Acayan <mailingradian@gmail.com>
-Cc: Marco Mattiolo <marco.mattiolo@hotmail.it>, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2123; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=nLoRLzWSD9I8QjZocCX1KJtlPxdBkqwCM/C1ynX9oYU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqmI4lAGgep8wCBGzhi2XmUy1eTpd8/Zc4BltUq
- VVVEFJB3t2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCapiOJQAKCRBgAj/E00kg
- cmINEACG77+AleMKMB6rN/hKly9BtOeMUj9oRTl0d2+0na6z7eZHh/ihzDX9SpiA6pAFYS2dEqy
- fbAvi8Wd5/0ILeH3UBAT60VfQPkkcKF2AI8GPXuM/eiWb2ERpiEwp01ztoxbWWlV8XGGIA0Q8d9
- z728nkurL7iRPObbQ709ae18JWQJrhMwPks48Pz0YS7uaD09F6hyAj/ggmFPC6hDegIc/K5sst8
- r81ssdbscKNdwmkY6LWMOGCNez4yfuh0DDMBER+7v7WZjoZSkX1gkFtNCFzvBavqEo7YblRZ3WO
- h/MI3jitl909G45vDKSDSiULcIHdnDvdbDH8vI0ElnJY27F34In8BNA8l6efldyztYvT8DWdzRv
- Fwda6uRjnOnlUpr692y0Xkx5slvTXYT7Tq8DjZcBM5+/pXHiZGNiRt/V+zu4AY3QwPzdk9zFom9
- pYIlNqEBJRLNZ/dPkNTnsS972JwGVueHBBUo8BFJkEObHSboXIMFzET59ALPqDSsYiptI3mBgsI
- cYdIiz9oQqExslxtu2KgtNTC2vB+hject/SvVQmGmIMVUv236/7kHwHZf7GU7a3vFjZYAf+49iN
- W6fekChjwbJEV1XBPF9m7v+8dlq7FMj1iA7b1KjaTelq6uzcQsl35Rts9JeorzDgwjsS7NRu/ip
- E7ZnTx7keLk/PSA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+ Conor Dooley <conor+dt@kernel.org>
+Cc: David Heidelberg <david@ixit.cz>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Paul Sajna <sajattack@postmarketos.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788400991; l=1832;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=fMhzI8X3Hok8lOxj6VX1r6zGfn4fks2SS0FP4mBh2DU=;
+ b=dutbgdT4lcSahJt3rMyBn9aPC1+A80dpRLeYOfrWAPlvWDFQ+Wavm9pHgsSmwkBKReAa7WtAF
+ HhJxRkM5c7yCbEOweP8Q6cf//AjBi1CXysJPRWZw/e4YSmTZohuxMZr
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 
-From: Richard Acayan <mailingradian@gmail.com>
+Add the i2c and tlmm nodes to support the NXP PN547 NFC chip
 
-The NFC driver can detect and read an NFC tag.
+Downstream dtsi for reference:
+https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/lge/sdm845-judy/sdm845-judyln_lao_com/sdm845-judyln_lao_com-nfc.dtsi
 
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-Co-developed-by: David Heidelberg <david@ixit.cz>
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
- arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi | 42 ++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 31 ++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
-index b4854801a5f5e..5c2613e53679c 100644
---- a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
-@@ -485,16 +485,35 @@ &gpi_dma1 {
- &gpu {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+index b030a10009c5..069d1cf3dead 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
+@@ -471,6 +471,25 @@ &gpu {
  	status = "okay";
  };
  
- &gpu_zap_shader {
- 	firmware-name = "qcom/sdm670/sargo/a615_zap.mbn";
- };
- 
 +&i2c3 {
-+	clock-frequency = <400000>;
++	clock-frequency = <1000000>;
 +
 +	status = "okay";
 +
 +	nfc@28 {
-+		compatible = "nxp,pn557", "nxp,nxp-nci-i2c";
++		compatible = "nxp,pn547", "nxp,nxp-nci-i2c";
 +		reg = <0x28>;
 +
-+		interrupts-extended = <&tlmm 44 IRQ_TYPE_EDGE_RISING>;
++		interrupts-extended = <&tlmm 63 IRQ_TYPE_EDGE_RISING>;
 +
 +		enable-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
-+		firmware-gpios = <&tlmm 43 GPIO_ACTIVE_HIGH>;
++		firmware-gpios = <&tlmm 62 GPIO_ACTIVE_HIGH>;
 +
 +		pinctrl-0 = <&nfc_default>;
 +		pinctrl-names = "default";
 +	};
 +};
 +
- &i2c9 {
- 	clock-frequency = <100000>;
+ &ipa {
  	status = "okay";
+ };
+@@ -551,6 +570,11 @@ &qupv3_id_1 {
+ 	status = "okay";
+ };
  
- 	synaptics-rmi4-i2c@20 {
- 		compatible = "syna,rmi4-i2c";
- 		reg = <0x20>;
- 		interrupts-extended = <&tlmm 125 IRQ_TYPE_EDGE_FALLING>;
-@@ -686,16 +705,39 @@ ts-irq-pins {
- 		ts-switch-pins {
- 			pins = "gpio135";
- 			function = "gpio";
- 			drive-strength = <2>;
- 			bias-disable;
- 			output-low;
- 		};
++&qup_i2c3_default {
++	drive-strength = <2>;
++	bias-disable;
++};
++
+ &qup_uart9_rx {
+ 	drive-strength = <2>;
+ 	bias-pull-up;
+@@ -609,6 +633,13 @@ sd_card_det_n: sd-card-det-n-state {
+ 		function = "gpio";
+ 		bias-pull-up;
  	};
 +
 +	nfc_default: nfc-default-state {
-+		enable-pins {
-+			pins = "gpio12";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+
-+		firmware-pins {
-+			pins = "gpio43";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+
-+		irq-pins {
-+			pins = "gpio44";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
++		pins = "gpio12", "gpio62", "gpio63";
++		function = "gpio";
++		drive-strength = <6>;
++		bias-pull-up;
 +	};
  };
  
- &usb_1_hsphy {
- 	vdd-supply = <&vreg_l1b_0p925>;
- 	vdda-pll-supply = <&vreg_l10a_1p8>;
- 	vdda-phy-dpdm-supply = <&vreg_l7b_3p125>;
- 
- 	status = "okay";
+ &uart6 {
 
+---
+base-commit: 32b6ef9a5d0eca44f9cd91f52f4faa89f145a0de
+change-id: 20260902-sdm845-lg-judy-nfc-5f9e5775393d
+
+Best regards,
 -- 
-2.55.0
-
+Paul Sajna <sajattack@postmarketos.org>
 
