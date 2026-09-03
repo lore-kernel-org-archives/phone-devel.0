@@ -1,170 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD974C681C;
-	Thu,  3 Sep 2026 15:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756D44D8DA1;
+	Thu,  3 Sep 2026 15:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788447708; cv=none; b=joCWnjheFa8OAvmyUV39/xjGBG4CWdExnBEWa15mDLhDEsfLtmw7GxAVVuFccL+5Sa7cMBhzUf9CIKW+MR5ez7O9foqdIa/fOEpF5XcO3fyUH62d0XUzPZzu+/FmdoxQeFLKOQOYjqHI1ayngEaHwSXzJWgQlHkJwnBqOiUC5yk=
+	t=1788448904; cv=none; b=Ur97aV5I/LDnMzZ3w786WnyEks1zbb3AnX6lmMVeeB07RqyAes3eSARXsdX9HvMGvg1JHneSX/VqA8vI+Ukbh9qaSTrYR2Hz3C1cCd/mV1ix/yjkvjg5RRFKsfd5qZX/SfFUNETQDFeDgntg1HNvWcnkWiNkXxHWt7dwg1NjEbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788447708; c=relaxed/simple;
-	bh=YcfeFDNO0Y5VfaPsx59OQeI0g2enu4ZxgxDoVbgIHhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VsGAKDeBJh+pUQO5oZxB8Jpjm/0H4Qjtm0NaDMI7VrJuFzvXyAZVsf2PCKnrtYtG+4tMxbzXEEst3ROGFa9iSHY+LAkgAWWBehsTWhsg4F4f58ncgZPjY8C4UQeTDhMeXN9IeYCHZr1oCQHsWOWHRYMGoH+nYQxf5WCLSbJnWwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KscKu99S; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788448904; c=relaxed/simple;
+	bh=vykZ2grde6xxUCKjF8SZuF7N5SRlRgYnRvKt4HsKLN0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=EyaHJkCouTE/7719XG03IW/b8lKlaksSjKwWkuZsjfgLCg2nq2GmW8g1sgGLmJkVp4ExzCmWO+qen6T+QRYtzYfj1MST5TD5TM1wrpZBua8Ak2o9QRqY7r0bBbBlUIaSjnC6YFl8BjOzHJG+VSxrKw+fkuSW4F7CRjSKiFkbEoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uR0Ohz4B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KscKu99S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9E11F000E9;
-	Thu,  3 Sep 2026 15:01:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788447706;
-	bh=2sEPcsksdfxmQZhCNsW8OtFfleaAGT/TwUXbEEQQtjI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KscKu99ShQiwCg6Oxyu8AGSgaypsdwNSsFGlNFGhUyfhgOOnYNhkxMsyBskOvPQeW
-	 j+uTwOaekHqZ4xjDI7WMyIX3251JEcApRjJoZccWJDIcLWB68Wt72toIYzzLC8xT9v
-	 tzWRvp3F2fW7aK4EoMth1554Gv70oZwPr+5JGUyyQlP7skvLuV8+2f8Jd4ZXQyJ6Bf
-	 SjsQiUwL7CgllMo5C9E71ymIDEv2t9h7MhzEEqW99d7A6BP6KUCVKQKoT08UqIn4rc
-	 4lR6egDHQmtJq4k3MGPPFmPCYANULMqZSdQ64V/1pBjuHQT0c6HHDIONdY2kkm5tTb
-	 yb65+2X+H0mTQ==
-Date: Thu, 3 Sep 2026 10:01:42 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/4] arm64: dts: qcom: sm7225-fairphone-fp4: Add parent
- supply for regulators
-Message-ID: <apmLYmMgGZVhqU8o@baldur>
-References: <20260901-fp4-regulator-supply-v1-0-68288ab70aee@fairphone.com>
- <20260901-fp4-regulator-supply-v1-4-68288ab70aee@fairphone.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uR0Ohz4B"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1F855C2BCFA;
+	Thu,  3 Sep 2026 15:21:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788448904;
+	bh=vykZ2grde6xxUCKjF8SZuF7N5SRlRgYnRvKt4HsKLN0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=uR0Ohz4Bqj5gM/vmnVSBA4WfenWQQUCXdbDOunzHk4VNUDdQtxDFeTcgHBVVilaKt
+	 KL9drltpaPGQxuoLhnH9yQYtFcTab05y9sj2OvmXkf0hiDDSee4/aSVAZzCgOQU2Ns
+	 F2elx9hrMqS4zN4QUWnCNPg8+vxrxJ0u4IR7T4ebuNJp9XNkPpLkTsjyttr29Z/Mkp
+	 mk7u4ODc+1Vp3wKMajs6oRgTMnNbgaHbuj98KWQAQofz09f+frViw52XIt8+qTgNMt
+	 lcx3PdR13DriT37e86pE6GC959Wkg4xlPjSre+stbbtqas0Jl8baS6Kq8NQQFjBtDc
+	 8hKOoJcVdptIw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1AEBC624D6;
+	Thu,  3 Sep 2026 15:21:43 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Thu, 03 Sep 2026 17:21:42 +0200
+Subject: [PATCH v3 1/2] mfd: wcd934x: Fix NULL pointer dereference on IRQ
+ probe deferral
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901-fp4-regulator-supply-v1-4-68288ab70aee@fairphone.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260903-wcd-dma-v3-1-d3920c6563c4@ixit.cz>
+References: <20260903-wcd-dma-v3-0-d3920c6563c4@ixit.cz>
+In-Reply-To: <20260903-wcd-dma-v3-0-d3920c6563c4@ixit.cz>
+To: Lee Jones <lee@kernel.org>, Thomas Tai <thomas.tai@oracle.com>, 
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: mfd@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
+ stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1653; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=VU4vkCCqWQAD3UTvE2YpWnadOlQKw+33pNCRUeftoV0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqmZCGhwMASsnSM+8t5MAsRgjVHLop/57TOI64h
+ WI1V4q6fAaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCapmQhgAKCRBgAj/E00kg
+ coPnEAC1Px2HkZLmtRmIHu9hIipFEDgWLidgYxi1KZr576tJQGtw/9aEaKWPkCPlKy0D3AWKKOq
+ sNUlIyEVWwO/4EHjAHv+7qyodwjoRNB64Uf02m7ROxJO4ocV7GsagVe56yt6v1LhoBD9bQkEmPl
+ 52N87NlJIO0yhaxdLnAFq9XYnRNXEnpSn8n3EAU0M4POaf8j2TqonGq0nGAMfLVJ1CPsGdBTaQt
+ oVftq8QvEDQFRYEMxLQue6ZKvu8Xs/oj7oza9HUex9DdbVwvXnUx/W9QQtd/Xq5Oe5slG/iPU71
+ ctWo3S5eFv4vkaLPgeDjsJt585iwxkgoeJhWSk0NALwFhBiGTHUxiE9clFMWVZcsqXE/IH0tJzQ
+ fOmO6eGVCvQlP7ojqeX1slIRgzuUsmjiCaqOOAWZp0ojKnL8eQLZT/OqMvvIzQ69u0xdoSDrr7x
+ 6eI/KL/gPQgJ5v+z3UEwDuXOCnUQp40tnCW/0UYV7w+DrEamiuHZWmSzjEyKEjzn6DaozHWoH9C
+ NPYT6R7LXgSmTVRIloXlp7CfKy2TXSkmViZEr8tKe/9cJZcEOlRIhgEtJwJLPOQaY5CAxCPPw/S
+ FfgECH26z6JU8+aCCZZGVbnM+fNTgezxcLQpIid8eAnwjEfn8AZhEiODrwKgxmZ0g9ULx3n9grN
+ ovw1ocL3n3xkvlw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Tue, Sep 01, 2026 at 10:58:59AM +0200, Luca Weiss wrote:
-> Add the vdd-*-supply properties to the rpmh-regulators nodes, so that
-> the parent regulators can be enabled when needed.
-> 
+From: David Heidelberg <david@ixit.cz>
 
-https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
-starts with "Describe your problem.". Is there an actual problem observed?
+ddata->dev is only assigned at the end of wcd934x_slim_probe(), but the
+of_irq_get() error path has passed it to the error print since the
+driver was added, while it is still NULL.
 
-I've been told that rpmh will have your back here, so you should not
-need to explicitly vote for these resources from Linux.
+This used to be harmless with dev_err(), which copes with a NULL device
+and was skipped on -EPROBE_DEFER. Since the switch to dev_err_probe(), a
+deferred IRQ reaches device_set_deferred_probe_reason() ->
+dev_driver_string(), which dereferences the NULL pointer and crashes
+during probe. Use dev, which is already valid at this point.
 
-Regards,
-Bjorn
+Cc: stable@vger.kernel.org
+Fixes: 0f1b1b899521 ("mfd: wcd934x: Simplify with dev_err_probe()")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/mfd/20260903145651.AC1311F00ACA@smtp.kernel.org/
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ drivers/mfd/wcd934x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> The regulators s4a and s6a are a bit special. They feed back into
-> PM6350, but are not modelled as regulators (or anything else?), so they
-> also can't be added as vdd-*-supply. It would seem to be possible to add
-> them with their "Default on booting voltage" from the PM6350 Data Sheet
-> in the dts, but I'm not sure this is desired.
-> 
-> And document what the "missing" regulators are used for.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 46 +++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> index 5d20ad93b0c5..a1556d802a8b 100644
-> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> @@ -78,6 +78,17 @@ lcdb_dummy: regulator-lcdb-dummy {
->  		regulator-max-microvolt = <5500000>;
->  	};
->  
-> +	vph_pwr: regulator-vph-pwr {
-> +		compatible = "regulator-fixed";
-> +
-> +		regulator-name = "vph_pwr";
-> +		regulator-min-microvolt = <3700000>;
-> +		regulator-max-microvolt = <3700000>;
-> +
-> +		regulator-always-on;
-> +		regulator-boot-on;
-> +	};
-> +
->  	reserved-memory {
->  		/*
->  		 * The rmtfs memory region in downstream is 'dynamically allocated'
-> @@ -296,6 +307,15 @@ &adsp {
->  &apps_rsc {
->  	regulators-0 {
->  		compatible = "qcom,pm6350-rpmh-regulators";
-> +
-> +		vdd-l2-l5-l7-supply = <&vreg_s2a>;
-> +		vdd-l3-l6-l8-l9-l10-supply = <&vreg_bob>;
-> +		vdd-l11-supply = <&vreg_s2a>;
-> +		vdd-l12-l14-supply = <&vreg_s2a>;
-> +		vdd-l15-l19-l22-supply = <&vreg_s8e>;
-> +		vdd-s1-supply = <&vph_pwr>;
-> +		vdd-s2-supply = <&vph_pwr>;
-> +
->  		qcom,pmic-id = "a";
->  
->  		vreg_s1a: smps1 {
-> @@ -310,6 +330,14 @@ vreg_s2a: smps2 {
->  			regulator-max-microvolt = <2048000>;
->  		};
->  
-> +		/*
-> +		 * s3a (smps3) is gfx.lvl
-> +		 * s4a (smps4) is supply for vdd-l4 & vdd-l13
-> +		 * s5a (smps5) is mx.lvl
-> +		 * s6a (smps6) is supply for vdd-l16 & vdd-l18-l20-l21
-> +		 * l1a (ldo1) is lcx.lvl
-> +		 */
-> +
->  		vreg_l2a: ldo2 {
->  			regulator-name = "vreg_l2a";
->  			regulator-min-microvolt = <1503000>;
-> @@ -408,6 +436,8 @@ vreg_l16a: ldo16 {
->  			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
->  		};
->  
-> +		/* l17a (ldo17) is lmx.lvl */
-> +
->  		vreg_l18a: ldo18 {
->  			regulator-name = "vreg_l18a";
->  			regulator-min-microvolt = <788000>;
-> @@ -446,8 +476,24 @@ vreg_l22a: ldo22 {
->  
->  	regulators-1 {
->  		compatible = "qcom,pm6150l-rpmh-regulators";
-> +
-> +		vdd-bob-supply = <&vph_pwr>;
-> +		vdd-l1-l8-supply = <&vreg_s2a>;
-> +		vdd-l2-l3-supply = <&vreg_s8e>;
-> +		vdd-l4-l5-l6-supply = <&vreg_bob>;
-> +		vdd-l7-l11-supply = <&vreg_bob>;
-> +		vdd-l9-l10-supply = <&vreg_bob>;
-> +		vdd-s8-supply = <&vph_pwr>;
-> +
->  		qcom,pmic-id = "e";
->  
-> +		/*
-> +		 * s1e-s2e (smps1-smps2) is cx.lvl
-> +		 * s3e-s4e (smps3-smps4) is VDD_APC1
-> +		 * s5e (smps5) is VDD_APC0
-> +		 * s6e-s7e (smps6-smps7) is mss.lvl
-> +		 */
-> +
->  		vreg_s8e: smps8 {
->  			regulator-name = "vreg_s8e";
->  			regulator-min-microvolt = <313000>;
-> 
-> -- 
-> 2.55.0
-> 
+diff --git a/drivers/mfd/wcd934x.c b/drivers/mfd/wcd934x.c
+index 3c3080e8c8cf7..3a939e7ad3da5 100644
+--- a/drivers/mfd/wcd934x.c
++++ b/drivers/mfd/wcd934x.c
+@@ -218,17 +218,17 @@ static int wcd934x_slim_probe(struct slim_device *sdev)
+ 	int ret;
+ 
+ 	ddata = devm_kzalloc(dev, sizeof(*ddata), GFP_KERNEL);
+ 	if (!ddata)
+ 		return	-ENOMEM;
+ 
+ 	ddata->irq = of_irq_get(np, 0);
+ 	if (ddata->irq < 0)
+-		return dev_err_probe(ddata->dev, ddata->irq,
++		return dev_err_probe(dev, ddata->irq,
+ 				     "Failed to get IRQ\n");
+ 
+ 	ddata->extclk = devm_clk_get(dev, "extclk");
+ 	if (IS_ERR(ddata->extclk))
+ 		return dev_err_probe(dev, PTR_ERR(ddata->extclk),
+ 				     "Failed to get extclk");
+ 
+ 	ddata->supplies[0].supply = "vdd-buck";
+
+-- 
+2.55.0
+
+
