@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67D9396588;
-	Thu,  3 Sep 2026 18:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B8A4FECD8;
+	Thu,  3 Sep 2026 18:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788460003; cv=none; b=Mugiv5vfBGNFEb9R8SzUUTeceO0nh1IQEgRX0i1U6PrYkv1sQI0Zj/g9aOEGlFVXMkqoNxprV01ZCLCtLDw0tO1M1ZPNqUKFiFOTs57IHS2MMEBjZXnY9utoAPUaMbgbWG8ljnCJztEcyPY3170Wj1+YuYnFrQqt+tfPZwYj1mQ=
+	t=1788460004; cv=none; b=Ru7b93hXby1wHuVQ+N7F4wg2vpAR0TgmSCrTEJ2HEEhj+jBrOcGaZ4fyLu9QMNItTrHjYt+g2q8nBKE9n3FZxlN1pZiuze7YvxA6/0mdEJAFiymLSpzwdr2i1p+GKtUzBx8ETXQuHvYGT4IeyfhMw35g4p4940mL0ZRXnWagt8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788460003; c=relaxed/simple;
-	bh=swhrbSD3HdK0AP2/e4RRVmalQc9TAXTMchmltY6AmDY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=B4o28eDSbtbcBlfq9P2wyO9kZBaW41LHxneEE0gLUSaItAgLQd3cOm5jI/9E+u2IvGCI2Cq7dd+E+icAfdT7hpn73jNcc+aT3fA4nm91VeKIjfANhcIO/DuFjuSDk4wSxXCqWCnKUUBpFjAWpQPovqTF4CfquRZpBvHBGATcLV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKXCoBHD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1788460004; c=relaxed/simple;
+	bh=k/neC56RleN9fmV8C1kKi07iQq6i9gc6kvB3c7MVENY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IbAhckyXXzj36ldKKV0POZ9d4RZgD67g6/zwBlqh6eBRLthoctYVGThFR5oDQ2rLwn9kLd7iBIn15xZ6nA1bsThOXHClmu21T7l8iONdFjThMVm6d4azjmBVcVWKWMo60x+1FkpYGIf8kFR/uxuioH4S17h4DmKVeKuJ7L0ZfKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sR7JSRN4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKXCoBHD"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 34B9EC2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sR7JSRN4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9958DC4AF48;
 	Thu,  3 Sep 2026 18:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788460003;
-	bh=swhrbSD3HdK0AP2/e4RRVmalQc9TAXTMchmltY6AmDY=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=jKXCoBHDJSko6qcgcbrH8NtDrGN9EaH5vDA9cV9WmYECWTt9PdqDfz2lMImVNw0I8
-	 VLvjp5rQ5yxQNCMYcR32lX7McYLsKn79JmmHUslCBgKtW45JcjbtuteYIoggWIoPzW
-	 oUyvYhVbvIUrk+bmkkXpaEkgmtq3MdGJrbbcqY4FlnlSnd5gFkwLInjFKJmv1oDo7n
-	 a0h3c3yeswHckvmogD/OZ4IrOBRPTSJVREXYesLQkRk9a878L/tyBCP6o44//ng2XH
-	 yQGujoCn7sAgj6DVs/UsLAEMqEgoExSPbB6aaA2SWlut7rMVayu0KAnTWjr/Sw2FU9
-	 puHTioxaaiStQ==
+	bh=k/neC56RleN9fmV8C1kKi07iQq6i9gc6kvB3c7MVENY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=sR7JSRN4+vBOyeislHAsfsKHqVvQxxhJ5JEfAdqMVITaxsvUpyMnw63o6Z0dJYDH8
+	 R3+V1rNazSh7rmn/iZ2JncoSkroc//ZKiAVjy3mjL1m3T9zEpk0Vp2P++H5amFnN8D
+	 yBjEEnJHDktoudAk6MDOP/s5LK0ymy56H2C527ho94mlA5W8XQCZ8O5jrA9rD3nXPI
+	 6K7Ghmw9/AzR/Aubj3WnCeAEmMrUrcC2IuA5LOqe2tEsQP7hjov9+d64WNRlw126c7
+	 SepV7yVOwHWtTfaczLVqT46ng2ayyYPSvpg4tyQTAFN9wiTG/TTz1Kf2jy/2AYhfjp
+	 R0DjNy/7sUCxQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07FD1C624D7;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82B3FC624DB;
 	Thu,  3 Sep 2026 18:26:43 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH RFC v2 0/6] Speakers for Pixel 3 / 3 XL
-Date: Thu, 03 Sep 2026 20:26:36 +0200
-Message-Id: <20260903-pixel3-audio-v2-0-7c22ed915291@ixit.cz>
+Date: Thu, 03 Sep 2026 20:26:41 +0200
+Subject: [PATCH RFC v2 5/6] ASoC: cs35l36: Implement set_tdm_slot to
+ program RX and TX slots
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,11 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1WNSw6CMBCGr0JmbU1LpYArExMP4NawoDCVSQxgC
- wQlvbsFVi7/57eAQ0vo4BwtYHEiR10bRHyIoGrK9omM6qAh5rHiSkjW04wvycqxpo7pWht9yjH
- jMoUw6S2akK93D7jfrlDspsX3GK6HPVnNhtzQ2c/GncTW3xApT/4Rk2CcSa2UkTJLciMuNNNwr
- L5QeO9/GIJ0KMAAAAA=
-X-Change-ID: 20260613-pixel3-audio-bdbfb49e8037
+Message-Id: <20260903-pixel3-audio-v2-5-7c22ed915291@ixit.cz>
+References: <20260903-pixel3-audio-v2-0-7c22ed915291@ixit.cz>
+In-Reply-To: <20260903-pixel3-audio-v2-0-7c22ed915291@ixit.cz>
 To: Srinivas Kandagatla <srini@kernel.org>, 
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
  Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
@@ -60,75 +59,119 @@ Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1964; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2990; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=swhrbSD3HdK0AP2/e4RRVmalQc9TAXTMchmltY6AmDY=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqmbvhftd5/BDYBefz6ncuVCrJMR4oiHkZymA2Y
- rhYtGPVMhOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCapm74QAKCRBgAj/E00kg
- csJyD/9g2iBXVdmahUfPlV2YCq+X8+YMg4Kx9IpFkCAj5FPbRy+irB570MhZZ3CY7OZyYkp8KzZ
- 9mnkOSzziuzrxGk1QQshe1sCxdnJ4SI+KUQkPaPmwUMIO9pLS1wdV/32+A9jSWmvQwVpiinN10R
- 9suoCgEqM6b7VS9yFdPGHtYlfoxfO9YsbyGHgcyOCAPaVexup9C0m+mD9aZ0//PjzAn3qiL1q45
- Uow9oxLCfmgy9NOYoC646l65WsS9uon1EU89FFNYhaDwpjYOxbfcNUoTP5gBjo6Bk7m04Ltbx24
- +qSG4WJxwDGzK8lpvVzJENr87SYs1+vyuoy5a/eCR7U6iBFg5j4hwRxtn1AbhWHRHdevoUVRTu8
- 9oCO9Gqvb5pS7SKVqTEzg2BHwEE2xeetR4qRmLLpEIvSqIUN2by+puo4Sd8yYCKQeixZvH3bozZ
- agmvaYIZ7nyGdkbs/Xlo1Ued9ZIQUFK6Sb7EWkAdX8hCoj5hnm563sT62NuGJkVP0xxH45aDdP3
- +kFV1S5kRtCepS0gDWgL/5hWKx1hynbTMxn1f/W81quT15eyKfHTWtl5CCLtMAF2vjC0zkT24Z5
- SZkQv2Qv13i1StKvYCYLtDbH6ypuAXSxkRPGox1sQv6ktdpplQ/2U6dH3KhdqgcRy7wC6FOGhvp
- mXaO/T/wg8x4bIQ==
+ bh=ym0/FZGn+mYbakmqUH1BRKBz1D0NS99SfJsNBeHBZQs=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqmbvhWz/gfsv85ZCKgoKangayDG05Zi49SJDpn
+ sE/h/EP9kmJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCapm74QAKCRBgAj/E00kg
+ cunzD/4tamaMGNQ9rjorRT9oA7X0iaUYI7EcCyocbR0HWK24zuIOYIMOWiTMOsnPtt5bsSwC3NK
+ ooXk5VSSJiAEDl8DHtzcDynx2kYfY7pu2XQlb6WqoqvIAXcjPc7mVMsFrbZK09/H/Q1V8oOL7Cf
+ ugluLr0nwXNQeKc3Ipg/P9H1VrhRrubvBCAAYzvPLeQNzJTZX+G183ETaJTc08KaJI8/xSnoWtm
+ sxUyZyQqQz/SpKQWni9OZu98gwi/YainoTeYYiRK0BTYA22Fp2UGjlc+EzQ2Ki8Pa7Gwv0N/a6U
+ w1LEWbVyBfUdmHEqZRcy8if17gwwiVST1JQ6srL9E6UNYtiuCAWhjtwAfyve1iw77PaqlzxYfdx
+ vokQuC2N8Ho//3F4sc5VIgz02Yd0NpCPtxNMb86RplSKv89pn4QTAAKjoObEBx5qAyQsfOKU00u
+ j/Vhx65v4kkccdLdglqmBVpKxVpVt/SQLRJHQmIL9E0/1IZmRqzNkPcem7vJtNgdPts3dpkVw4u
+ 9DOkQBJXaBpezF7Vb2Mb+JzhvzoJHUX5u2kamXh64TfOi7psMM8oxvn5gQbBPvl6VCL6CewlQzQ
+ cWFoYsKlyFYxgQ+c7e3yuRGw4S4od3ITr8JoQfx9rTOW3nh+m+Drd803eqPcfEoEkIEyRsbytuQ
+ TOFDnIohNw5P7mA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-This series address:
+From: David Heidelberg <david@ixit.cz>
 
-0. demistify the hex to BIT() macro and add left/right rx spk
-1. most likely wrongly set DSP_B in sdm845.c
-   my guess this is because TDM was never used in the mainline with
-   sdm845
-2. applying correct mask to left/right speaker for the TDM in sdm845.c,
-   so both speakers can work simultaneusly
-3. setting sysclk at startups, which some codecs need (such as cs35l36)
-4. setting proper tdm slot in the cs35l36 driver
-5. device-tree wiring for Pixel 3 / 3 XL
+Program the ASP RX and TX slot registers from the TDM masks passed by
+the machine driver. Each set bit in a mask names a slot; codec channels
+are assigned to those slots in order, ASPRX1 taking the first RX slot
+and ASPTX1..TX8 the first eight TX slots, with a warning if the mask
+names more slots than the device has channels.
 
-Consider my knowledge here limited, thus sending RFC. Some parts we're
-heavily assisted by LLM.
+Passing slots == 0 or an empty mask restores the hardware defaults,
+ASPRX1 in slot 0 and ASPTX1..TX8 in slots 0..7.
 
-David
+This lets a machine driver with several amplifiers on one bus, such as
+sdm845 with two CS35L36, put each amplifier on its own RX slot and keep
+their TX slots from colliding.
 
+Assisted-by: Claude:claude-4.6-opus
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v2:
-- Device-tree name sorting, with exception keeping mm1-dai-link in it's
-  place. (Konrad)
-- Make set_tdm_slot cleaner and less leveled. (Konrad)
-- Added TDM MIC defines in sdm845.c.
-  Should we in capture use speaker mask?
-- Renamed model from 'Google Pixel 3' to 'blueline', I would love to
-  hear feedback on this one.
-- Link to v1: https://lore.kernel.org/r/20260705-pixel3-audio-v1-0-3b66f33859f1@ixit.cz
+ sound/soc/codecs/cs35l36.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
----
-David Heidelberg (6):
-      ASoC: qcom: sdm845: Demystify TDM masks a bit
-      ASoC: qcom: sdm845: use DSP_A format for TDM codec DAIs
-      ASoC: qcom: sdm845: Use per-speaker RX masks for TDM slot assignment
-      ASoC: qcom: sdm845: Set codec dai and component sysclk during startup
-      ASoC: cs35l36: Implement set_tdm_slot to program RX and TX slots
-      arm64: dts: qcom: sdm845-google: Add basic audio support
+diff --git a/sound/soc/codecs/cs35l36.c b/sound/soc/codecs/cs35l36.c
+index 89645327945f1..4d35ca6291548 100644
+--- a/sound/soc/codecs/cs35l36.c
++++ b/sound/soc/codecs/cs35l36.c
+@@ -942,20 +942,64 @@ static const struct cs35l36_pll_config *cs35l36_get_clk_config(
+ 	for (i = 0; i < ARRAY_SIZE(cs35l36_pll_sysclk); i++) {
+ 		if (cs35l36_pll_sysclk[i].freq == freq)
+ 			return &cs35l36_pll_sysclk[i];
+ 	}
+ 
+ 	return NULL;
+ }
+ 
++static void cs35l36_mask_to_slots(struct cs35l36_private *cs35l36,
++				  unsigned long mask, unsigned int base_reg,
++				  unsigned int nchan)
++{
++	unsigned int chan = 0, shift;
++	int slot;
++
++	/* Two 6-bit slot fields per register, at bits 0 and 16 */
++	for_each_set_bit(slot, &mask, BITS_PER_TYPE(mask)) {
++		if (chan == nchan) {
++			dev_warn(cs35l36->dev,
++				 "Too many slots in TDM mask: %lx\n", mask);
++			return;
++		}
++
++		shift = (chan % 2) * CS35L36_ASP_TX2_SLOT_SHIFT;
++		regmap_update_bits(cs35l36->regmap, base_reg + (chan / 2) * 4,
++				   CS35L36_ASP_RX1_SLOT_MASK << shift,
++				   slot << shift);
++		chan++;
++	}
++}
++
++static int cs35l36_set_tdm_slot(struct snd_soc_dai *dai,
++				unsigned int tx_mask, unsigned int rx_mask,
++				int slots, int slot_width)
++{
++	struct cs35l36_private *cs35l36 =
++			snd_soc_component_get_drvdata(dai->component);
++
++	/* Note: rx/tx is from point of view of the CPU end */
++	if (!slots || !rx_mask)
++		rx_mask = BIT(0);		/* ASPRX1 in slot 0 */
++
++	if (!slots || !tx_mask)
++		tx_mask = GENMASK(7, 0);	/* ASPTX1..8 in slots 0..7 */
++
++	cs35l36_mask_to_slots(cs35l36, rx_mask, CS35L36_ASP_RX1_SLOT, 1);
++	cs35l36_mask_to_slots(cs35l36, tx_mask, CS35L36_ASP_TX1_TX2_SLOT, 8);
++
++	return 0;
++}
++
+ static const struct snd_soc_dai_ops cs35l36_ops = {
+ 	.set_fmt = cs35l36_set_dai_fmt,
+ 	.hw_params = cs35l36_pcm_hw_params,
+ 	.set_sysclk = cs35l36_dai_set_sysclk,
++	.set_tdm_slot = cs35l36_set_tdm_slot,
+ };
+ 
+ #define CS35L36_RATES (		    \
+ 	SNDRV_PCM_RATE_8000_48000 | \
+ 	SNDRV_PCM_RATE_12000 |	    \
+ 	SNDRV_PCM_RATE_24000 |	    \
+ 	SNDRV_PCM_RATE_88200 |	    \
+ 	SNDRV_PCM_RATE_96000 |	    \
 
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 132 ++++++++++++++++++++-
- sound/soc/codecs/cs35l36.c                         |  44 +++++++
- sound/soc/qcom/sdm845.c                            |  49 ++++++--
- 3 files changed, 213 insertions(+), 12 deletions(-)
----
-base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-change-id: 20260613-pixel3-audio-bdbfb49e8037
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+-- 
+2.55.0
 
 
