@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFB640928C;
-	Thu,  3 Sep 2026 14:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23674B66F6;
+	Thu,  3 Sep 2026 14:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788446123; cv=none; b=cwbrttFMMbM31Ftl5Cc5pMKZ3yuK1c3Xiyg03M8zKEvO4jeumHMLPWWOFFgB/BtRVsP90cmsRshu0MsMDN2u3EP2jh5jJpNZdjxE4kEgnFTIp0mH80xBayEzH2aS4eocFEy+xSUg1qnBIQIxjeol7wL9UAxgtfzICfHFzKQlhDA=
+	t=1788446460; cv=none; b=WUsBI3IunWBdbttfYEmR7CFethnsdA2TpAk0ht8hdKw05QdFyYXdkCWBJvjybecWgbWEw+jQoURZUHbQzXm8DqOTrBVBwsMyhF+o40/c+j765lL8OwJAp87VUJka7ejHG9Mfg0XOOEftY5Jn0LB2WG8vKRVOc0Jx2ekO26RuH4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788446123; c=relaxed/simple;
-	bh=vkHtOBeqJKuWcc0Hcp4YMAdXb99vMRmxPJnYZQagXaQ=;
+	s=arc-20240116; t=1788446460; c=relaxed/simple;
+	bh=4naB7UIPaDXCcNDksCUuirSZuL4IKfdjox4HXLjJDI0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eu4KdTHZic+0tYWL8x4e0wGC3UIi6Q5dPxPA6/dJZ4VAmY1ZOZ89mLwjkbcc8fXTUg0aCqUHooJ34DTn9HVxkXvPjAqatrm24tB+ffsCpijQLhYekgGgZIDbl1FQz0Joz17glwIc4/0tdy/p7VoX4HRM4ccn4dJZAwdvUWBqKJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=uLMvKxzL; arc=none smtp.client-ip=84.42.129.46
+	 In-Reply-To:Content-Type; b=j5xzorvGWHJ4tFDspsuZIK7RwggVa0Mn/Wadi6FuNjmXbxq3BmxyHr1GPGYeT2ESVEUAfU+Yq4dRN+pwsnwY4Ib3u8SNOKpnmvLbL269newqoVoYId6OHnoVW0qn5AI5qo67Y/ul9abOCAqrYqxt++Nh6+w7WmZViJRhnjxy3rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=HBTWuTmz; arc=none smtp.client-ip=84.42.129.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="uLMvKxzL"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="HBTWuTmz"
 Received: from [10.0.0.152] (unknown [10.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 8D18A53405FD;
-	Thu, 03 Sep 2026 16:35:09 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 2382253401F6;
+	Thu, 03 Sep 2026 16:40:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1788446109;
+	t=1788446445;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Q5rOd/Qktib1iQtBnsgey0ILDazMjdhik5E1O2hY1ro=;
-	b=uLMvKxzLjt5vT5r4g2tOrTLKmJtUdqtmFDBbpxjR4ByP9TM1lXcSdScRqzAMWxwP39bPic
-	jH5Jdt5FFuOaRAxtJSYpteXijG2ZXFDphhXOhzi6VyZP/rWNvBOz5d4khi5UhNrKmw5WyV
-	WRQj/SwOLKOZZULZCCrJx7iFXewKZVk=
-Message-ID: <a1038b46-1d37-4563-a51c-f4432b557de1@ixit.cz>
-Date: Thu, 3 Sep 2026 16:35:09 +0200
+	bh=ozigZcNd1R53uOOyPgHz9kIrV8jED5fHr5sryjLmFzc=;
+	b=HBTWuTmzT13Y7VOAjc6IG2hB4+5maIPoHG0xJd58BuLMRoQqejE3KaRbXiDEEQ7I6orgvw
+	rpSlBrm9GR9M4Agx3kZZ+xw4k3ebSxaH57vk+n8Jr2ezAh07Jdv0u5XqCgcI1pOBI8zIQ/
+	AYze+VFui2F6UKX8qSwrJk9JS9uRK+8=
+Message-ID: <ff2ee3c5-c0fc-4aa6-b64a-c77e4a2242e2@ixit.cz>
+Date: Thu, 3 Sep 2026 16:40:44 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,15 +41,15 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-lg: Enable NFC
-To: Paul Sajna <sajattack@postmarketos.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+Subject: Re: [PATCH] mfd: wcd934x: set DMA mask on parent to silence "DMA mask
+ not set"
+To: Lee Jones <lee@kernel.org>
+Cc: Thomas Tai <thomas.tai@oracle.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, mfd@lists.linux.dev,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20260902-sdm845-lg-judy-nfc-v1-1-282173900569@postmarketos.org>
+ stable@vger.kernel.org
+References: <20260823-wcd-dma-v1-1-95e44a315ccf@ixit.cz>
+ <20260903124939.GT2133376@google.com>
 Content-Language: en-US, cs-CZ
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -95,90 +95,63 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260902-sdm845-lg-judy-nfc-v1-1-282173900569@postmarketos.org>
+In-Reply-To: <20260903124939.GT2133376@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 03/09/2026 04:03, Paul Sajna wrote:
-> Add the i2c and tlmm nodes to support the NXP PN547 NFC chip
+On 03/09/2026 14:49, Lee Jones wrote:
+> On Sun, 23 Aug 2026, David Heidelberg via B4 Relay wrote:
 > 
-> Downstream dtsi for reference:
-> https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/lge/sdm845-judy/sdm845-judyln_lao_com/sdm845-judyln_lao_com-nfc.dtsi
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> The wcd934x MFD parent (a slim_device) never initializes its
+>> dma_mask/coherent_dma_mask. When the DT-aware children pass through
+>> of_dma_configure() this triggers the "DMA mask not set" warning for
+>> each child.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: f959dcd6ddfd ("dma-direct: Fix potential NULL pointer dereference")
+>> Assisted-by: tencent:hy3
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   drivers/mfd/wcd934x.c | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/drivers/mfd/wcd934x.c b/drivers/mfd/wcd934x.c
+>> index 3c3080e8c8cf7..70ee13791d52b 100644
+>> --- a/drivers/mfd/wcd934x.c
+>> +++ b/drivers/mfd/wcd934x.c
+>> @@ -1,12 +1,13 @@
+>>   // SPDX-License-Identifier: GPL-2.0
+>>   // Copyright (c) 2019, Linaro Limited
+>>   
+>>   #include <linux/clk.h>
+>> +#include <linux/dma-mapping.h>
+>>   #include <linux/gpio/consumer.h>
+>>   #include <linux/interrupt.h>
+>>   #include <linux/kernel.h>
+>>   #include <linux/mfd/core.h>
+>>   #include <linux/mfd/wcd934x/registers.h>
+>>   #include <linux/mfd/wcd934x/wcd934x.h>
+>>   #include <linux/module.h>
+>>   #include <linux/of.h>
+>> @@ -212,16 +213,21 @@ static int wcd934x_slim_status(struct slim_device *sdev,
+>>   static int wcd934x_slim_probe(struct slim_device *sdev)
+>>   {
+>>   	struct device *dev = &sdev->dev;
+>>   	struct device_node *np = dev->of_node;
+>>   	struct wcd934x_ddata *ddata;
+>>   	struct gpio_desc *reset_gpio;
+>>   	int ret;
+>>   
+>> +	if (!dev->dma_mask) {
+>> +		dev->dma_mask = &dev->coherent_dma_mask;
+>> +		dev->coherent_dma_mask = DMA_BIT_MASK(32);
+>> +	}
+>> +
 > 
-> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-> ---
->   arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 31 ++++++++++++++++++++++++++
->   1 file changed, 31 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> index b030a10009c5..069d1cf3dead 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> @@ -471,6 +471,25 @@ &gpu {
->   	status = "okay";
->   };
->   
-> +&i2c3 {
-> +	clock-frequency = <1000000>;
-> +
-> +	status = "okay";
-> +
-> +	nfc@28 {
-> +		compatible = "nxp,pn547", "nxp,nxp-nci-i2c";
-> +		reg = <0x28>;
-> +
-> +		interrupts-extended = <&tlmm 63 IRQ_TYPE_EDGE_RISING>;
-> +
-> +		enable-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
-> +		firmware-gpios = <&tlmm 62 GPIO_ACTIVE_HIGH>;
-> +
-> +		pinctrl-0 = <&nfc_default>;
-> +		pinctrl-names = "default";
-> +	};
-> +};
-> +
->   &ipa {
->   	status = "okay";
->   };
-> @@ -551,6 +570,11 @@ &qupv3_id_1 {
->   	status = "okay";
->   };
->   
-> +&qup_i2c3_default {
-> +	drive-strength = <2>;
-> +	bias-disable;
-> +};
-> +
->   &qup_uart9_rx {
->   	drive-strength = <2>;
->   	bias-pull-up;
-> @@ -609,6 +633,13 @@ sd_card_det_n: sd-card-det-n-state {
->   		function = "gpio";
->   		bias-pull-up;
->   	};
-> +
-> +	nfc_default: nfc-default-state {
-> +		pins = "gpio12", "gpio62", "gpio63";
+> Any reason not to use dma_coerce_mask_and_coherent()?
 
-if you want to, you could make it more descriptive with -pins,
-
-see
-
-https://lore.kernel.org/all/20260902-sdm670-sargo-nfc-v1-2-bed1cbbffc46@ixit.cz/
+Didn't knew about it. Sending v2.
 
 David
-
-> +		function = "gpio";
-> +		drive-strength = <6>;
-> +		bias-pull-up;
-> +	};
->   };
->   
->   &uart6 {
-> 
-> ---
-> base-commit: 32b6ef9a5d0eca44f9cd91f52f4faa89f145a0de
-> change-id: 20260902-sdm845-lg-judy-nfc-5f9e5775393d
-> 
-> Best regards,
-
