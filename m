@@ -1,136 +1,116 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADE430C160
-	for <phone-devel@vger.kernel.org>; Thu,  3 Sep 2026 12:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6C547208F;
+	Thu,  3 Sep 2026 12:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788438479; cv=none; b=knC/OfRKj9NwcySHUCSXF4CFvTOMXAcJVpX2zflcHNKicUIHxhezVXjjy83arWSVGGKBIJ7Xg0Naui/NxYU0DaE0LhipkrUslnJjxgI4kptbNe6Wihs5bsLJ4x8hqKEQ+30HiClg65wzl5vgSf7SuMrqLsz57dn0hdQYPqictfE=
+	t=1788439785; cv=none; b=giBn4DS2UDtenB2BpEYApXr7Uq0IILoDajDYhoLL/onix+tSlJBd11CJ/jQ6gGYbiR7UzLuFnBjzscjaa3R8AOg/BPVe8ww76u24taCfSnwABgnTULlVBVXN9t5pm5oQDO1pTrTx4QEQXzY7yKE9t3w3St2et0/wGNfZZ+bABjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788438479; c=relaxed/simple;
-	bh=yBREPNQ+9TvG0tnPlYi3yjHjFlrkdvizj9rCb9Izb/A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GMX0BuTHPie18TGny8lttxSoFF/tEom2NWusbU8tqTQyoHn06hbAsXI2DGbQnMH8Eb+EQfr/GoDPUIm61ynkh0TyxvFkUHjHq9txwDBbuaXYAIGjGOiWooAZKVlM6MkIuajCGQj+Fkwp4dwfiej7QXWuEezyJxHWw3FlJ8NZbtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xOstzSe4; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1788439785; c=relaxed/simple;
+	bh=eBLWZdRUCJQkpc4ABvRVrT7yaZb3i/iKB43u0BEa12U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GgLm2esbjszTa89g4Xltf2p7gmHVkJaAFGEnwFho959iuStFbOtksiCc90Z+GcYcN2IKvn88cel2SpPRnBpC7sWIPKZ3fIyShveaH0TCDYs8ISCxjTQCEG4EuwVOBbJFCRPsfZAM1Vp1+r1dV4U+NYl0MtDCDbFwXfUVRBF2r8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPdvRydi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xOstzSe4"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-484362f5c4aso2355588f8f.3
-        for <phone-devel@vger.kernel.org>; Thu, 03 Sep 2026 05:27:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1788438473; x=1789043273; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Tw+G2VuS/9mcJ8+kFfuQYOqB5Sl8sLmu4WySFKMDMUI=;
-        b=xOstzSe4d7U/Btk3P4nY1RWJMBIgClUPTkoVrqM+o5UxOK7SkNnyerK8Eq3drbbEoO
-         fYkriZklGCRWbO7NC9mXE/LA2/XjdEdoXADVYuZDNmW+5Z03EudFK23vkYriMWtstz5n
-         nL954RVtV21cpraqT7AlXlWvom7B5bvkpq3TLgFn2DpW+QLopH2WKQkmA4V2EmAISAix
-         LD6ttRNpHCMof3dYk3C81sNRVad3rzDrhwUGYQH3HsP5m1XRm0jsATu9L0H9jA/88UDz
-         B2PVS9tmBefNPbCuRuqqHL58XBbX0obZdRAVuA3B4AonXifzaCTvK76UDU8DgyAE6pjZ
-         bXtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788438473; x=1789043273;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Tw+G2VuS/9mcJ8+kFfuQYOqB5Sl8sLmu4WySFKMDMUI=;
-        b=rPJeZfqGFBEJ+U6SN9LdNF/SudfYectyii70zh5VHts+0gtsRxc9UULYLSRojzE6DD
-         jD7gDbJcXlPMUtY+Z6/Xea5JT2AmZ9sAgFNNGbJQx39VxU7DMAU7geKvB6rcsH+ZKagK
-         l1p7Rvz5Gt69IlwjNLWfPsHfitPtOnpRdurplz3+IveQWuHv5QqvCo8dkBixSXb2HFay
-         GTaGmzdrJ/I5GU+3Emf4TgBiUWOWF203OVY0ZmWMje9RQ1cxqnt8oBe6bVyid3cKmHyt
-         b3qHiJVV6/srtZjCIgvZLt5G562DzD05zT8IRl7efxn0rLDgCY2JG8tInEL8G6RWecvq
-         3Eww==
-X-Forwarded-Encrypted: i=1; AKwUvBymVUtyOUsM9+Xc2bERym4bgyAlMxlXur93HdAnQTNO/Buyio1iECOxakJM9PqurHil2yaErfun66mPbA==@vger.kernel.org
-X-Gm-Message-State: AFuF++kqexR3lxye4G+Jfd4I08dGRs25Tm1tvNjtvyKzUuaOQe3llPtv
-	96K5QS90ip1DlViME/ZmVq2imbtSXZkGtqYeIcQWMxs+MM83lzVnBLSVrMaqdU3/xeo=
-X-Gm-Gg: AYBFou0RfZBxTJ3laYRYOTSu0TdMDHofP56mcj8xZrsNOt09Z/LZk5Uj3Qx9BL/Zf1I
-	FcQao6vwFnxVjYGZHHlW/jFNM2K3/9Bj+3170y16bJNAQ4fhJ17OppXN+Z/XmNI5ace8NnQ3o5D
-	h7M2DRpS4UxxZk4tWoHherTSyevlhlpwLVGtCsQe/0ay2Tibb/eKWm10N5XZI2ugSmZLlig/qwK
-	YGiEcw4tkzOZTlBF5FlRDf7h2ZeDYhTYktMBnpGUMnUi7l2OPP36d05J/fD7YDL2vaAsRO9yG7X
-	b7HHwxzDfBrLpObRdNK0cVJmpny+N34oohLPVkpu7Ih8VdNV+oAhH3eaorIO6IB6qwpQYfcjmnZ
-	cditph9EUouVF1SAwtq7o6zOFRQ79C6HThJRYlmgQIkVnvBbCaSgzcJ9ml+TicPalJNtaVnl/d7
-	Az5N7GLdxI63eIKCmnYgGmEVyvzA37kjlHnPr/372Qwz5nH9bJAzxv1uFw5otZXRstvDJ13JDgR
-	vshVPwk3NCDW84W4G4mCluWoizGw0cswmaY
-X-Received: by 2002:a05:600c:a47:b0:499:7a15:fcec with SMTP id 5b1f17b1804b1-49ce5844d77mr182853165e9.13.1788438472750;
-        Thu, 03 Sep 2026 05:27:52 -0700 (PDT)
-Received: from [192.168.1.37] (p549d4d01.dip0.t-ipconnect.de. [84.157.77.1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5dead1sm66930425e9.11.2026.09.03.05.27.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 05:27:51 -0700 (PDT)
-Message-ID: <2bc4b565-94cf-4c9b-8aff-7b6f13a08cfe@linaro.org>
-Date: Thu, 3 Sep 2026 14:27:50 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPdvRydi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17131F000E9;
+	Thu,  3 Sep 2026 12:49:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788439784;
+	bh=F2FrWcK0uvS3ll2oLYKWcdBOi4hjBzbOPy6uKBeL6EY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JPdvRydiv7M1DbZfJlF8/3lB/fClXPoZxOG6nvJr+SLEr0gfx6T7waiky4YVEPXrU
+	 fejuyY9QilQiduOUvBiCCYFQTG4dYTKP57kS0fVHKuWksBdCpc6yOSYWPDJFIQmMd2
+	 owBafAhkUHwFb+Cc/zFMJKcp2uxF+uEqH7nCEMTR1U7kSkJYIIeCZToWMzqUNZUs50
+	 rHKE3cwzxHHR/CPViGpO/Iyr6eSKpF8KQpPi87auKUC9OfbrVwQdDuxjQfHXWBzEEf
+	 KVndEppzPJHflv+yjPx+Z+tsqYoYdRLmJqZn9EkTR1nlxNbTJJPRIEDN4LDhzjPTiY
+	 tI9jNnn+uNfaQ==
+Date: Thu, 3 Sep 2026 13:49:39 +0100
+From: Lee Jones <lee@kernel.org>
+To: david@ixit.cz
+Cc: Thomas Tai <thomas.tai@oracle.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, mfd@lists.linux.dev,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mfd: wcd934x: set DMA mask on parent to silence "DMA
+ mask not set"
+Message-ID: <20260903124939.GT2133376@google.com>
+References: <20260823-wcd-dma-v1-1-95e44a315ccf@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] sdm845: Configure USB3/DP combo properly
-Content-Language: en-US
-To: david@ixit.cz, Sumit Garg <sumit.garg@kernel.org>, u-boot-qcom@groups.io,
- u-boot@lists.denx.de
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Tom Rini
- <trini@konsulko.com>,
- Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>,
- Balaji Selvanathan <balaji.selvanathan@oss.qualcomm.com>,
- Jaehoon Chung <jh80.chung@samsung.com>, Peng Fan <peng.fan@nxp.com>,
- Luca Weiss <luca.weiss@fairphone.com>,
- Aswin Murugan <aswin.murugan@oss.qualcomm.com>,
- Federico Amedeo Izzo <federico@izzo.pro>,
- Marek Vasut <marek.vasut+renesas@mailbox.org>,
- Quentin Schulz <quentin.schulz@cherry.de>, phone-devel@vger.kernel.org
-References: <20260830-b4-sdm845-usb-gadget-v1-0-9f20e842d628@ixit.cz>
-From: Casey Connolly <casey.connolly@linaro.org>
-In-Reply-To: <20260830-b4-sdm845-usb-gadget-v1-0-9f20e842d628@ixit.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260823-wcd-dma-v1-1-95e44a315ccf@ixit.cz>
 
-Hi David,
+On Sun, 23 Aug 2026, David Heidelberg via B4 Relay wrote:
 
-On 30/08/2026 00:23, David Heidelberg via B4 Relay wrote:
-> USB gadget mode nor serial console does not work on some sdm845 boards:
+> From: David Heidelberg <david@ixit.cz>
 > 
->   dwc3-generic-peripheral usb@a600000: failed to enable ep0out
+> The wcd934x MFD parent (a slim_device) never initializes its
+> dma_mask/coherent_dma_mask. When the DT-aware children pass through
+> of_dma_configure() this triggers the "DMA mask not set" warning for
+> each child.
 > 
-> with exception of the first boot.
+> Cc: stable@vger.kernel.org
+> Fixes: f959dcd6ddfd ("dma-direct: Fix potential NULL pointer dereference")
+> Assisted-by: tencent:hy3
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  drivers/mfd/wcd934x.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> This series implements "qcom,sdm845-qmp-usb3-dp-phy", so the USB3/DP combo
-> PHY is never bound, GCC_USB3_PRIM_PHY_PIPE_CLK has no source and stays off,
-> and the DWC3 endpoint command times out. It can be masked by an earlier
-> boot stage having left the PHY initialised, which is why this only shows
-> up on some boots.
-> 
-> Add SDM845 to the combo PHY driver, plus the two things needed to make
-> it usable: PM8998 regulators, without which the PHY cannot get its
-> supplies, and the defconfig symbol, without which the driver is left out
-> of the build entirely.
+> diff --git a/drivers/mfd/wcd934x.c b/drivers/mfd/wcd934x.c
+> index 3c3080e8c8cf7..70ee13791d52b 100644
+> --- a/drivers/mfd/wcd934x.c
+> +++ b/drivers/mfd/wcd934x.c
+> @@ -1,12 +1,13 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  // Copyright (c) 2019, Linaro Limited
+>  
+>  #include <linux/clk.h>
+> +#include <linux/dma-mapping.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/kernel.h>
+>  #include <linux/mfd/core.h>
+>  #include <linux/mfd/wcd934x/registers.h>
+>  #include <linux/mfd/wcd934x/wcd934x.h>
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+> @@ -212,16 +213,21 @@ static int wcd934x_slim_status(struct slim_device *sdev,
+>  static int wcd934x_slim_probe(struct slim_device *sdev)
+>  {
+>  	struct device *dev = &sdev->dev;
+>  	struct device_node *np = dev->of_node;
+>  	struct wcd934x_ddata *ddata;
+>  	struct gpio_desc *reset_gpio;
+>  	int ret;
+>  
+> +	if (!dev->dma_mask) {
+> +		dev->dma_mask = &dev->coherent_dma_mask;
+> +		dev->coherent_dma_mask = DMA_BIT_MASK(32);
+> +	}
+> +
 
-Thanks! Hopefully this will solve a lot of the unreliable USB issues on
-SDM845.
+Any reason not to use dma_coerce_mask_and_coherent()?
 
-Reviewed-by: Casey Connolly <casey.connolly@linaro.org>
-
-> 
-> Tested on Google Pixel 3 (blueline).
+>  	ddata = devm_kzalloc(dev, sizeof(*ddata), GFP_KERNEL);
+>  	if (!ddata)
+>  		return	-ENOMEM;
+>  
+>  	ddata->irq = of_irq_get(np, 0);
+>  	if (ddata->irq < 0)
+>  		return dev_err_probe(ddata->dev, ddata->irq,
+>  				     "Failed to get IRQ\n");
 > 
 > ---
-> David Heidelberg (4):
->       phy: qcom: qmp-combo: select PCS register offsets per version
->       phy: qcom: qmp-combo: add SDM845 support
->       power: regulator: qcom-rpmh: add PM8998 support
->       configs: qcom: enable QMP USB3-DP combo PHY
-> 
->  configs/qcom_defconfig                        |   1 +
->  drivers/phy/qcom/phy-qcom-qmp-combo.c         | 168 ++++++++++++++++++++++++--
->  drivers/power/regulator/qcom-rpmh-regulator.c | 137 +++++++++++++++++++++
->  3 files changed, 299 insertions(+), 7 deletions(-)
-> ---
-> base-commit: ece349ade2973e220f524ce59e59711cc919263f
-> change-id: 20260830-b4-sdm845-usb-gadget-c43be8cd094d
+> base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
+> change-id: 20260823-wcd-dma-bd621ee39887
 > 
 > Best regards,
 > --  
@@ -139,5 +119,4 @@ Reviewed-by: Casey Connolly <casey.connolly@linaro.org>
 > 
 
 -- 
-// Casey (she/her)
-
+Lee Jones
