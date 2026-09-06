@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087733D1CB5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086DA3D1AA6;
 	Sun,  6 Sep 2026 13:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788700754; cv=none; b=HKSKO6XoZsn1XH6AXn3aXGJGclkYNP/Z/ob7zUI0b8NV8cWeFpQQFXQlnJvC+WiLgRrkYbJLZZ3KcbDsUQ90ZG7sbBcAWPNaDy7GYKc5T56gxcpjvqCYJVw9XfCkAhR4mAI2M/C3/X+s1e+5vv7AC+SoJtAWvUv/dgMN2xnDZhc=
+	t=1788700754; cv=none; b=PFtNeVw10Cmc6O1vbvoBcVNsL9HjL/X4JfIaAJQpA0nI4ko38ya1VsS+cUiMccUkVxsPJR1O1GMORhmhrMiTdySTlNJPQkCex4yLTEy+VeP0Lqycwfld+SWNrDwf6jkB1zAvMv5lCQOOxydT3kS6/zyHVIUzf3Dqo+wsZliCr1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788700754; c=relaxed/simple;
-	bh=W8YOe2fo/FY8tQcyn3AaXI/DbctGrOF/V/GQL7T1bdk=;
+	bh=gbjy5RTDqdhCv6DILtDb7fYiIvaobCHJMRXApRCH1z0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EsOX4SBP7cF9nsrgdicPfA9T4VlRM3fGbFyZ8pKbSL3GyDZfMeo1IbOHA06LRMObdSRpmkYqiwZTaQzrtjUTEJ2orW5F5CrjM17JAzENYtpXYEEBDs/zjWq7vLQOSZr63FUF5AVvnYbRkK3B/9UapJe5csblFx0p8+rW3+1MZp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k+X8QwkZ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=LQ7goMnmXPmKV0ynlKkJ233eRVqlEuCBw3d1cDmOAosKS20X4KJgz90GayHwVkUF3JuavBAEr8y9NyEh2casU+J70G8/KNlkorQU6JWmyh970H4DmmORZ3h0JOn8j5a1C5oKAr97+a4dFl7JbhNvZa2mWg5atJX/7QU2PonON2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8wA+Ii1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k+X8QwkZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B5153C2BCFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8wA+Ii1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AD763C2BCFD;
 	Sun,  6 Sep 2026 13:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788700753;
-	bh=W8YOe2fo/FY8tQcyn3AaXI/DbctGrOF/V/GQL7T1bdk=;
+	bh=gbjy5RTDqdhCv6DILtDb7fYiIvaobCHJMRXApRCH1z0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=k+X8QwkZryQyOeRWzOnqsd/DBItTFsgJ+Be16voLpsHXzY2zIc5dUlGwNth3YxAOh
-	 gpB1PJqvUJJRn2gpo7HRqBm1Kgm+t7A52JpE9LP+fy/GRol0G4IVYpe8NqDNaasW9W
-	 gdAlqq8KQRM8CiFgTDtYvGs6dYzluGdNdMN//Bk3n69XJ/VckrYywA5H/HciLoC1t5
-	 QZzKXzrltsQy6RQ/OhGyOYkIO7OLaDHYQwmjBtKjVqIkap1oRXaRvohl2hGjO11j1y
-	 7A/ymBda7TJRXWVJCZlSNIzFqC94KN25UdcZIcUIbZoPrQn/WW3+8ZhImZllOLpAEm
-	 3frOMODs7Cfuw==
+	b=G8wA+Ii1SqM5ZEW9lgftcqJknYH9oOoIarL4SI7aYBCJFGXzJ4r7FVjNBK2iXniLf
+	 5eq0F8FmXN+55mllFo+OzDf2LMy/Zs86vmBSDipa7wYLJpDHKek1Z3HaLhhOsrdctH
+	 g/EFbOyMLSpNNUrZO0qbMEVZV2oMUcSGY5kaiXh/gRjXFp5AaMg8PbkA0RDtMpjcm/
+	 v3g31HzvsdQGXW9f1u+jWkdhZLrOx9cioz7ymE3d5lYbWnwOCeoECD2relGMcdq/Cv
+	 G02tlnWbR11oPLsHWOQ+vcqpvTcec2+pgze1gW7vVCRl/eloKFd5VS8XFj5wwazkFg
+	 OW82qW69EDvfg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EA3FC79F85;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 878F5C79FA0;
 	Sun,  6 Sep 2026 13:19:13 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 06 Sep 2026 15:19:04 +0200
-Subject: [PATCH 3/3] drm/panel: ebbg-ft8719: Split initialization into
- enable/disable fn
+Date: Sun, 06 Sep 2026 15:19:03 +0200
+Subject: [PATCH 2/3] drm/panel: ebbg-ft8719: Fix the MODULE_LICENSE()
+ string
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260906-ebbg-ft8719-fixups-v1-3-4e846510cad1@ixit.cz>
+Message-Id: <20260906-ebbg-ft8719-fixups-v1-2-4e846510cad1@ixit.cz>
 References: <20260906-ebbg-ft8719-fixups-v1-0-4e846510cad1@ixit.cz>
 In-Reply-To: <20260906-ebbg-ft8719-fixups-v1-0-4e846510cad1@ixit.cz>
 To: Joel Selvaraj <jo@jsfamily.in>, 
@@ -55,21 +55,21 @@ To: Joel Selvaraj <jo@jsfamily.in>,
 Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3544; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1192; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=p73JyBK1o/C+mzNNbgxiVSAcxnHLj7kGgIMlHReDhbk=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqnWhQKcmvi4k32WSvJMa+9RTRNnsJ3444kkldI
- UU8+0T300KJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCap1oUAAKCRBgAj/E00kg
- cmfJEADMw74MxiUc/eG+RdvFVRxScOnT/2Uk1muqQih/IgZrYeBDR02nIKGAIndxVVWLrz+HCCF
- RfC+ndb4uF/F5GIaerIr1X4jZaASuEz8tUVGpvJGJPJnd1Y5wxDDgf424BaVS2NaCF9ee1zqTe0
- 2C8C2XoAJo2W3zwKM06HcbskeHWHW4ajhk2BohJ/BBi7ii6PZnu64QiPAql7VVly7RXbad1b5s8
- G1I2FMVuI2X7ELCeBg04M71JzuHMkKB7wbTKhVaUIwmek0Q/2jZkZ6v/9jrgVDGx9/z1yKTtWCo
- 9uLfJwpjRBPmN/JFfAkg17KPxgem/RS+G5h3N0fXA/plDfY1ohkqnF81/pA6Rmr2GwIjV5pOfPy
- 4uin18T+D4Io/XXNxVB8wVgwqqdvDnPl4JHdj1oP4b0UI137/GyuTi4LWyPfADKu+U5mD35vUNs
- Q/7KcDDROCXZpCZauMzP3uviiEuHTb90wnR9FE9qUc5Xp03A7WF0rtjbV8HVnZa4wpC1Q92WziZ
- kTmDBqFpeOshhnONb0K6cStqNlNBkHy4eY7RvbnzzkezoSACSCoxBtqapbIrtJ4qE3NQ2cCOtNn
- tct4OV2wVskppsD02f17dh6eoqRChjm/Im7b5E/vz1RxVVBAYqHz4aUxSftJQNgM3RaG0SidxDv
- KmcqYW9U8UROOwg==
+ bh=K+6x5A7ftBFeZ8okSqt/u0WpvagsMUKZ/4i4XfBmirE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqnWhQKxw/18Yi3JTzGNeX5AKT86t+qacac3fYZ
+ YrXf92tobCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCap1oUAAKCRBgAj/E00kg
+ cqHbEACUzO5xpCO6DJHKL+wZE4cGM0+6FVzSI2CJiTlBmx7ivsSVlVTUm9VzMpRoGmMoPmep8mx
+ jk+g02tU1yTP1uoMxWxLsN1BGU6v42Yelh3j3h8t0T/Cwi/HsYSuZXE07fG9EErm1QZoe/lugHI
+ jf8WfnXlQy/2rcadTEYH5huYkCyFmQ6dHZ4kt2LBidufQ+P603p8b+tqX5IfkN/Zl2ZMJReyPev
+ 2D1RgK3VGbH0euiZXZPh9ukLP/kM5fVzAaYfbVGzNP5Hm7Tj5GL18ZUtMuPsgfToPSxwHIgagYR
+ COdrUowbB7a6aJHZ92j1b7G9bSz2UODSzPys2c02J705RWqU0/lCfQBL2wuvlO4hMVN79yAsHW+
+ jsynWFbsb0gWjkn6HLi3AEVGLtIQULjbCiQp7JIdcaRGput6HEp8+si02v8OJVGmR0d+mYHpFpt
+ eqyvezPNajC2GDVPFTNCPFpNy6VnZn0AcsYKs86cR4Xv6Vt8IzF/zyVceSHZ1Hf7gUs6cTUUuSI
+ Vpuj2srixPiX/6oWFubE0N1BzhClsJ7sTIgnmYGIbn7iNGPyk3qoPPwvjNPURDlgsFLOdZPboup
+ 7fFgqJ2duCnQZApnt+1sfIzL67YANFVfiMn/pkWq54ohlBO8JwUD2kRn0ttMWBMJVKZsPA/CFC4
+ zNaES1kh101L4AQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -78,114 +78,34 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Efficiently this already happens with prepare/unprepare calls.
-Remove unnecessary login and just use enable/disable functions.
+Replace the bogus "GPL v2" with "GPL" as MODULE_LICNSE() string. The
+value does not declare the module's exact license, but only lets the
+module loader test whether the module is Free Software or not.
+
+See commit bf7fbeeae6db ("module: Cure the MODULE_LICENSE "GPL" vs.
+"GPL v2" bogosity") in the details of the issue. The fix is to use
+"GPL" for all modules under any variant of the GPL.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-ebbg-ft8719.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/panel/panel-ebbg-ft8719.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-ebbg-ft8719.c b/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
-index 14982263a94f1..9965f46f1a316 100644
+index 1ab09c50a6306..14982263a94f1 100644
 --- a/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
 +++ b/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
-@@ -49,40 +49,42 @@ static void ebbg_ft8719_reset(struct ebbg_ft8719 *ctx)
- 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
- 	usleep_range(4000, 5000);
- 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
- 	usleep_range(1000, 2000);
- 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
- 	usleep_range(15000, 16000);
- }
- 
--static int ebbg_ft8719_on(struct ebbg_ft8719 *ctx)
-+static int ebbg_ft8719_enable(struct drm_panel *panel)
- {
-+	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
- 	struct mipi_dsi_device *dsi = ctx->dsi;
- 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
- 
- 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
- 
- 	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x00ff);
- 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY, 0x24);
- 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_POWER_SAVE, 0x00);
- 
- 	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
- 	mipi_dsi_msleep(&dsi_ctx, 90);
- 	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
- 
- 	return dsi_ctx.accum_err;
- }
- 
--static int ebbg_ft8719_off(struct ebbg_ft8719 *ctx)
-+static int ebbg_ft8719_disable(struct drm_panel *panel)
- {
-+	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
- 	struct mipi_dsi_device *dsi = ctx->dsi;
- 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
- 
--	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
- 
- 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
- 	mipi_dsi_usleep_range(&dsi_ctx, 10000, 11000);
- 	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
- 	mipi_dsi_msleep(&dsi_ctx, 90);
- 
- 	return dsi_ctx.accum_err;
- }
-@@ -93,30 +95,23 @@ static int ebbg_ft8719_prepare(struct drm_panel *panel)
- 	int ret;
- 
- 	ret = regulator_bulk_enable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
- 	if (ret < 0)
- 		return ret;
- 
- 	ebbg_ft8719_reset(ctx);
- 
--	ret = ebbg_ft8719_on(ctx);
--	if (ret < 0) {
--		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
--		return ret;
--	}
--
- 	return 0;
- }
- 
- static int ebbg_ft8719_unprepare(struct drm_panel *panel)
- {
- 	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
- 
--	ebbg_ft8719_off(ctx);
- 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
- 	regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
- 
- 	return 0;
- }
- 
- static const struct drm_display_mode ebbg_ft8719_mode = {
- 	.clock = (1080 + 28 + 4 + 16) * (2246 + 120 + 4 + 12) * 60 / 1000,
-@@ -148,16 +143,18 @@ static int ebbg_ft8719_get_modes(struct drm_panel *panel,
- 	connector->display_info.height_mm = mode->height_mm;
- 	drm_mode_probed_add(connector, mode);
- 
- 	return 1;
- }
- 
- static const struct drm_panel_funcs ebbg_ft8719_panel_funcs = {
- 	.prepare = ebbg_ft8719_prepare,
-+	.enable = ebbg_ft8719_enable,
-+	.disable = ebbg_ft8719_disable,
- 	.unprepare = ebbg_ft8719_unprepare,
- 	.get_modes = ebbg_ft8719_get_modes,
+@@ -241,9 +241,9 @@ static struct mipi_dsi_driver ebbg_ft8719_driver = {
+ 		.name = "panel-ebbg-ft8719",
+ 		.of_match_table = ebbg_ft8719_of_match,
+ 	},
  };
+ module_mipi_dsi_driver(ebbg_ft8719_driver);
  
- static int ebbg_ft8719_probe(struct mipi_dsi_device *dsi)
- {
- 	struct device *dev = &dsi->dev;
- 	struct ebbg_ft8719 *ctx;
+ MODULE_AUTHOR("Joel Selvaraj <jo@jsfamily.in>");
+ MODULE_DESCRIPTION("DRM driver for EBBG FT8719 video dsi panel");
+-MODULE_LICENSE("GPL v2");
++MODULE_LICENSE("GPL");
 
 -- 
 2.55.0
