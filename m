@@ -1,153 +1,365 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB74A485CE7
-	for <phone-devel@vger.kernel.org>; Mon,  7 Sep 2026 10:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2087F50AC28;
+	Mon,  7 Sep 2026 15:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788778694; cv=none; b=RUzCbIf7aO5W+L/DrX7zi/RCpNCcJ/NjWdnYoBlrIDo6SOEz9tNKzBbxaYN1UUb/OJa3z6prtW1Qf1BwmTm2z+0hgLvKbHbq6sw7kF1xqU+jWs1JE8g87h62v3R+2yG+I3+D3Ae+dDJlNts1lU4/gDhzoP29YcRvWqWX3El4Kvw=
+	t=1788796694; cv=none; b=cdHvNcIYTfHpMWplmlZKfQIOB31jHS5C340QgsrrJtvGfLXjJyucJxXzuiE6wRt2C59tDfQH0EPFQhr62UU9jqtmk7xk7rDHc0zOrCd3gdkM0ajk1z0UQpelwbuCmC2PeDFdPRX39cZ2Pk2gdyfCu1IIaxzmSCogmfKauOKfYhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788778694; c=relaxed/simple;
-	bh=226zFTrt61gC5bUJe6htzJbBh6DTMpofqMeezkvIwVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pTrhvbDnyumcN5NWhUcOWK7LzkvY0z+z6La9aVUQvq5nrNYoycb9gO0WJiE3MBr2PehPIUb3XvGApuTHDhUf4qJuVSUdE2kbbpNPmRUOw2RIfcZjuYAUCjuW6GZ3npCkZWthDIvef4/1ixpZqU8bHVeIU2Cfm+y6kRIPrLkWUJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dkvbUMDt; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GprQ5nRQ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788796694; c=relaxed/simple;
+	bh=0hYej3WLTyMDxf8JpB8eMXwgeGN5YHu49ukDX2p3k+E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QNKiw6XMIqUdYhDHaxSUiYZIuoBuTuu06FMww7HE140DugrfG7KTUOemqB3ngk5F/KqDCO1r9jy7h9AzwuQU7CaRVsLho4GRm9NwbGnoE4PiZwLP7pHDlGVN2EylDyEdGtbkdOVSdRWofii8MUXGTecTJ9MBnWI5kG1yUh5Svv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8CyDdMl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dkvbUMDt";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GprQ5nRQ"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687AnO173777603
-	for <phone-devel@vger.kernel.org>; Mon, 7 Sep 2026 10:58:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=rlgWTU4l5TU2Z3+onQ2BGvvK
-	P4C66DgncaDRweKJZts=; b=dkvbUMDt9tIZsDKDnW/qumgRf0QCoKn5DITnjLmh
-	09vpx1rYA6zQJtZew/7pgFSenXB/eCXeg6CNmQBsaURlD0X549nMthQPOWaVkRwR
-	clG0iVrhlcekgF2caXDAI3A1nipprDRsu9UaMTkpOHTVWN/r/4suIF+E/OjxFHw8
-	QZCH4vfnAUlU3aW9rcVs81J/P/FLmquBkGRldolZ4VJg6IVOq2BAaobr7FG975zG
-	i5zajboEKOrLseTmU42I6pXdkQHGPQcPcBPYm1V5Qa6/1aFvSN4AZc+4wJIVU2Zy
-	v1dvJzE/XKGO0aWY7t7Lq5yHKO4SksM6X9N7N5gkdBkWSw==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghsfygqww-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 07 Sep 2026 10:58:11 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90e8135d7eeso58350986d6.1
-        for <phone-devel@vger.kernel.org>; Mon, 07 Sep 2026 03:58:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788778691; x=1789383491; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rlgWTU4l5TU2Z3+onQ2BGvvKP4C66DgncaDRweKJZts=;
-        b=GprQ5nRQWl0kq61gpkpZiRJFz7cbahjbRSnDS9VCKXD3mRKZM8Z2a0ADsRqgVuPnbl
-         Bne3Shr4MLO0Hl1XtLYaUTkMPnfh/UPHq/msL4LPrZWtDNGCS+86teb6JHguyBJJBQQ7
-         FNr32RTiRZImgvqTu49Q13GbH7GyKANJMzMSio84xZSArwmAfxEo2zMKtF8ttruRWqMJ
-         ei738JA6YOXHuxoKRnN0MHfBZbr74MjPe+l6dAWBJM7SHNYLwx13X5w45TD1MlXD6GFM
-         7wWqyYGESGOOJWoxZniv3b8n8P4nr6Hfn5pEfaknL92bMmT+u034kgBD3jQ6WxTXsabN
-         nX9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788778691; x=1789383491;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rlgWTU4l5TU2Z3+onQ2BGvvKP4C66DgncaDRweKJZts=;
-        b=JQV0CAWHbOTe2B105Nw33nsbaPnldWhtutmM24v5trT0qTSuaeWBgJvhCpYnu1bJYX
-         2C4JUy+ApOJoYzcpVGM/N3Zzte34hkgh9EdoEseKSl1gv5l1bgacr4UGdXssVv3yoFJe
-         Wn/M71Qx8Kxb66cLYEhWZpyHa02n+ATwMYGRWqfAaC7GKnlP8X8IR8SdKLsJf5j9PQ0W
-         zxT5kuHVz3/dNOk1WNn4rHKjtXjixXaU+67YjYMzKbcP3yc4k8RQ/IcY/v0CaMz4ECPC
-         2QTHUKWJIrSpQCAVERJnGwbrnaix3v6W/GjIQrWRhNIFPkw8NKxDFgDQx6T2hwTaPKKn
-         1JNQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxAZ1jUZNBOxZFdRBXMpvJdbQNogGrmoZMDe0nuRnbWxELFG6isDFzcK7rU099iNENf/Nxd4Jd3pkDMcw==@vger.kernel.org
-X-Gm-Message-State: AFuF++mdm0wa5E/oD3wHKga93cv91jAk94j+5zniXUjKPKkZ7BHz07eN
-	6Wyw++Fzj3ikx/rKM2QFcW+uwKORTMVz4QOiNOSTt4Z0wHOdX53SWa3sj511hhI+8c1Vk41xxZF
-	n8SDvOcE6u/poFLeZ/LMZ5V+ZeSEp6x9+mf/iGtoq4RcXgRiLhcXWZZ3raoc4UHpHLg==
-X-Gm-Gg: AYBFou3VLj+uYCYbuN9gR2U2yGKhwivr3NZ23Oo+oK7zuWnHtBz/b1N/yqwMZlnkNJU
-	zPjUPiLT3ohNVymy1t1itSM13rsBK9+bAto+ey+q6vt8U/IIzs14mZxiQILSpuByssoAUo8ECS0
-	u10v67ldIl7h7mRqDy5iLLchR5hAGR2Nf6T9PigOzSniiOqyo0FbcSihaoCffcg+punhIUyWYC0
-	uRZ3zb6GVniZ2kFAFBjgBML/aat2nKlxC6/b8X62uv1iD9vTIujhD95LZ2pbSuCWpc7tUT5VR7O
-	qOiycUC0idkNqrn/pOLL8I/v0y3br2hpZnkxYq+fXkOEBH/0Xn6Z2zb2BwXCmjN8apCXBI/01jF
-	FZVGS/cMydUgu2A==
-X-Received: by 2002:a05:620a:a495:b0:936:883d:89c6 with SMTP id af79cd13be357-9398043579bmr1824665585a.28.1788778690568;
-        Mon, 07 Sep 2026 03:58:10 -0700 (PDT)
-X-Received: by 2002:a05:620a:a495:b0:936:883d:89c6 with SMTP id af79cd13be357-9398043579bmr1824659485a.28.1788778689899;
-        Mon, 07 Sep 2026 03:58:09 -0700 (PDT)
-Received: from oss.qualcomm.com ([86.121.170.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d0656e7bbsm200216825e9.10.2026.09.07.03.58.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 03:58:08 -0700 (PDT)
-Date: Mon, 7 Sep 2026 13:58:06 +0300
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: david@ixit.cz
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Henrik Rydberg <rydberg@bitmath.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: [PATCH v7 4/4] arm64: dts: qcom: sdm845-google: Add STM FTS
- touchscreen support
-Message-ID: <bif2vhuzfskrniqvp4acoxfjvpyypr533ulwpvo3f7pwkcods3@wa47jbyowcpr>
-References: <20260907-stmfts5-v7-0-4a53381cd038@ixit.cz>
- <20260907-stmfts5-v7-4-4a53381cd038@ixit.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8CyDdMl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B83ECC2BCFD;
+	Mon,  7 Sep 2026 15:58:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1788796693;
+	bh=0hYej3WLTyMDxf8JpB8eMXwgeGN5YHu49ukDX2p3k+E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=K8CyDdMlKQ6H6O2WRjtLZ/t5RF1Wd06b5mInPwkFjnSlqab0rOgisrx3QwaP4SQyZ
+	 cK+LUUYXOCo9ow/QwrJDkWgGjoUgQbYw0yP+Ssv4EYlSijSKnIU2ZB+mZG6xO0X7aR
+	 m2t2bOZODhxwvSq2rWa/pBd2zic+jqIUFEPmm3tEO6egullZUo1dO7OHbRYP7hIsw0
+	 EzIGNzFPjZ/1NJ3clAymECkMpBEnE/Kl9VVrM25zCPVp0T4/vteF5jAWgr7E2uNnUM
+	 RoK4A3dBH20atyNuQvRIOpeegQnE/klg0K4atNLgLdTNQKsOw5jiC6vqCBxlBLFaZG
+	 +RRPNwPji+Wdw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95B72C79FA1;
+	Mon,  7 Sep 2026 15:58:13 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Mon, 07 Sep 2026 17:58:09 +0200
+Subject: [PATCH v9 1/2] arm64: dts: qcom: sdm845-google: Add dual front
+ IMX355 cameras
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907-stmfts5-v7-4-4a53381cd038@ixit.cz>
-X-Proofpoint-ORIG-GUID: Hl4cGD-bgqUyLhB-CyUYa-g9t85X44Ma
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDEyMCBTYWx0ZWRfX6YejRQx2dmxy
- CxupsDnG1xH/VNafl5W4bEn0O99h21ba7ppqJtxZzZz30D0IVas6o1Kr8RHbUkwd1rXeiEGyXeD
- rZSx4vD1Hx9RbGmRJsdHXwKC13qOk4QkiLXrza8Cbiyo4GWuodzsoGNg6QaINpSGZxt5pNzrGda
- nJRh/yQDWOnCcnO6itYMM1V7BGDMvdwTouDE4k6ds6BgPpDVQK/gD58YaAtqH8KuLP7mlDLdRe/
- 0VXktJyff5QdqnWzwhws90EN/q8YFqb3UP7ZWLyfWryLGfiuksm7dUx6ujifwkE6lYE3fL5C+MM
- Oc7+Vd+mCDXVNIoTX7sMOUg5pvy2jMFw0VV85VGa+C64CpiyV69GOlHGB/eKmUAOJklIQSmypiW
- F7vmIEmaMQ2lR03KLzigEMxw/Bg3E1Htwj2GEU/Nx2l/Ch3NvgfsrB1U2aOeDc72zauViaVS3h8
- yzwywpSP/BFiOT/uFDg==
-X-Proofpoint-GUID: Hl4cGD-bgqUyLhB-CyUYa-g9t85X44Ma
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDEyMCBTYWx0ZWRfX9o8BCg/YaE51
- XxwcRwN5OYaxZzhONZ3ZQvVLSvW/TIkP50hujufB9lsJmGvmnxBtTF0YKyky/4IEjBzITxb4y8m
- rFvvMffF1qgA+sq6tpRSk7i/g1Jh0tM=
-X-Authority-Analysis: v=2.4 cv=AduB2XXG c=1 sm=1 tr=0 ts=6a9e98c3 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=q7XEBjOi5DRkXzmV0jSBjQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=sfOm8-O8AAAA:8 a=EUspDBNiAAAA:8 a=edXKPL0xb2b_iQIxsCMA:9 a=CjuIK1q_8ugA:10
- a=1HOtulTD9v-eNWfpl4qZ:22 a=TvTJqdcANYtsRzA46cdi:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_03,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 adultscore=0
- phishscore=0 clxscore=1015 suspectscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070120
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260907-pixel3-camera-v9-1-b1981f2d3291@ixit.cz>
+References: <20260907-pixel3-camera-v9-0-b1981f2d3291@ixit.cz>
+In-Reply-To: <20260907-pixel3-camera-v9-0-b1981f2d3291@ixit.cz>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Petr Hodina <petr.hodina@protonmail.com>, 
+ Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7030; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=R4ISCV1984zVBpQ0G4NYnhWXr1PI9aedSUvur/tKjJ0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqnt8TOEHvDKBQ247R6AVr/qfKJzBAYS3jv43XD
+ ascnVVI7MqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCap7fEwAKCRBgAj/E00kg
+ cmiAD/9vq1kwpZqDOcdJcq8wn7cdAf2oV6agrplZehqJ8tAWhYx+i9M714ZOsqGxGPzDS7UPaJ+
+ zxneYMg4hN/UV1xdgec07yEyxRHtZNFQOBR9mErtBaOiuR2+2GaCmHIsp7qDyJ/68n9iyPY8Dq8
+ lDjy3ATNbelbHuHV/45s6cYOUQ8QOe1eXHFjOYlcQG/w8QWzoaVDjX9qACQ1rmm565dCPrPwmHo
+ cZDuIiC9xqfIymcSIIzskqa2SUZ5mPsND+PYls2FjRYX2Dv4cVYvzrdmHITIs5JAcz+8T0szJyu
+ mf8dqt0ErCEq69HuuI3bA7vlbhZGxd6UQbsr017E1kxE7Ec1eW8qEUoDXRR9o9COhEv+dHmLqO1
+ MFWvw0R1/KABe1GK6EPT3x9NfU3uMppIjtszBT9ct57FqfZPK8RSna6KaMxm8sAQfz4853nPsSO
+ 7+M9XtvXU2d7Xubcxc4uIB6U2UoYnd9NaPUQFyE/Yp9F+2UXdOH7XXCqeuWdFEWhB4QBGG+mlH+
+ K9s2ub1RKFDZm16B2OpJAEiZLtNYpRIvmyuen87+6dv9V1AF8FJPAR7gbvjd3cuBNNA7HxnWYLX
+ WuattBtoT5+TqLIIbNUdNMKdaJRd0XqCQkjH7zbr5n02zBKwhNuLDOQO9Mgi/go3R227mdPEJBW
+ Bas3krSI4gaSTlw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 26-09-07 12:50:22, David Heidelberg via B4 Relay wrote:
-> From: Petr Hodina <petr.hodina@protonmail.com>
-> 
-> Basic touchscreen connected to second i2c bus.
-> 
-> Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Co-developed-by: David Heidelberg <david@ixit.cz>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+From: David Heidelberg <david@ixit.cz>
 
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+The Pixel 3 features two front-facing Sony IMX355 sensors with
+different focal lengths (standard and wide-angle).
+
+Sensors are connected via CSIPHY port 1 and 2 and controlled over CCI
+I2C1, using MCLK2 as the clock source.
+
+This enables support for the dual front camera configuration.
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 172 ++++++++++++++++++++-
+ 1 file changed, 171 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+index f1379857e2742..02a392fea7212 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+@@ -1,16 +1,18 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+ /dts-v1/;
+ 
+ #include <dt-bindings/arm/qcom,ids.h>
+ #include <dt-bindings/dma/qcom-gpi.h>
+ #include <dt-bindings/input/linux-event-codes.h>
+ #include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/media/video-interface-devices.h>
++#include <dt-bindings/media/video-interfaces.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ 
+ #include "sdm845.dtsi"
+ #include "pm8998.dtsi"
+ #include "pmi8998.dtsi"
+ 
+ /delete-node/ &mpss_region;
+ /delete-node/ &venus_mem;
+@@ -108,16 +110,48 @@ gpio-keys {
+ 		key-vol-up {
+ 			label = "Volume Up";
+ 			linux,code = <KEY_VOLUMEUP>;
+ 			gpios = <&pm8998_gpios 6 GPIO_ACTIVE_LOW>;
+ 			debounce-interval = <15>;
+ 		};
+ 	};
+ 
++	camera_front_avdd: regulator-front-cam-avdd {
++		compatible = "regulator-fixed";
++		regulator-name = "front_cam_avdd";
++
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
++
++		gpios = <&tlmm 8 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++
++		pinctrl-0 = <&cam_front_avdd_default>;
++		pinctrl-names = "default";
++
++		vin-supply = <&vreg_bob>;
++	};
++
++	camera_front_aux_avdd: regulator-front-cam-aux-avdd {
++		compatible = "regulator-fixed";
++		regulator-name = "front_cam_aux_avdd";
++
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
++
++		gpios = <&tlmm 14 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++
++		pinctrl-0 = <&cam_front_aux_avdd_default>;
++		pinctrl-names = "default";
++
++		vin-supply = <&vreg_bob>;
++	};
++
+ 	vph_pwr: regulator-vph-pwr {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vph_pwr";
+ 		regulator-min-microvolt = <3700000>;
+ 		regulator-max-microvolt = <3700000>;
+ 	};
+ 
+ 	vreg_s4a_1p8: regulator-vreg-s4a-1p8 {
+@@ -314,16 +348,21 @@ vreg_l28a_3p0: ldo28 {
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_LPM>;
+ 			regulator-boot-on;
+ 			/*
+ 			 * We can't properly bring the panel back if it gets turned off
+ 			 * so keep it's regulators always on for now.
+ 			 */
+ 			regulator-always-on;
+ 		};
++
++		vreg_lvs1_1p8: lvs1 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++		};
+ 	};
+ 
+ 	regulators-1 {
+ 		compatible = "qcom,pmi8998-rpmh-regulators";
+ 		qcom,pmic-id = "b";
+ 
+ 		vdd-bob-supply = <&vph_pwr>;
+ 
+@@ -346,24 +385,127 @@ regulators-2 {
+ 
+ 		vreg_s3c_0p6: smps3 {
+ 			regulator-min-microvolt = <600000>;
+ 			regulator-max-microvolt = <600000>;
+ 		};
+ 	};
+ };
+ 
++&camss {
++	vdda-phy-supply = <&vreg_l1a_0p875>;
++	vdda-pll-supply = <&vreg_l26a_1p2>;
++
++	/*
++	 * MCLK2 (GPIO15) is shared between both front camera sensors.
++	 * The clock is generated by CAMCC, therefore the pin is
++	 * configured here rather than in individual sensor nodes.
++	 */
++	pinctrl-0 = <&cam_mclk2_default>;
++	pinctrl-1 = <&cam_mclk2_sleep>;
++	pinctrl-names = "default", "sleep";
++
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@1 {
++			reg = <1>;
++
++			camss_endpoint1: endpoint {
++				bus-type = <MEDIA_BUS_TYPE_CSI2_DPHY>;
++				data-lanes = <0 1 2 3>;
++				remote-endpoint = <&cam_aux_front_endpoint>;
++			};
++		};
++
++		port@2 {
++			reg = <2>;
++
++			camss_endpoint2: endpoint {
++				bus-type = <MEDIA_BUS_TYPE_CSI2_DPHY>;
++				data-lanes = <0 1 2 3>;
++				remote-endpoint = <&cam_front_endpoint>;
++			};
++		};
++	};
++};
++
++&cci0_sleep {
++	/* bus has external pull-up */
++	/delete-property/ bias-pull-down;
++	bias-disable;
++};
++
+ &cci {
+ 	status = "okay";
+ };
+ 
+ &cci_i2c1 {
+ 	/* actuator @0c */
+ 
+-	/* front camera, imx355 @1a */
++	front_cam: camera@10 {
++		compatible = "sony,imx355";
++		reg = <0x10>;
++
++		clocks = <&clock_camcc CAM_CC_MCLK2_CLK>;
++		assigned-clocks = <&clock_camcc CAM_CC_MCLK2_CLK>;
++		assigned-clock-rates = <24000000>;
++
++		reset-gpios = <&tlmm 21 GPIO_ACTIVE_LOW>;
++
++		avdd-supply = <&camera_front_avdd>;
++		dvdd-supply = <&vreg_s3a_1p35>;
++		dovdd-supply = <&vreg_lvs1_1p8>;
++
++		pinctrl-0 = <&cam_front_reset_default>;
++		pinctrl-names = "default";
++
++		rotation = <270>;
++		orientation = <MEDIA_ORIENTATION_FRONT>;
++
++		port {
++			cam_front_endpoint: endpoint {
++				data-lanes = <1 2 3 4>;
++				link-frequencies = /bits/ 64 <360000000>;
++				remote-endpoint = <&camss_endpoint2>;
++			};
++		};
++	};
++
++	front_aux_cam: camera@1a {
++		compatible = "sony,imx355";
++		reg = <0x1a>;
++
++		clocks = <&clock_camcc CAM_CC_MCLK2_CLK>;
++		assigned-clocks = <&clock_camcc CAM_CC_MCLK2_CLK>;
++		assigned-clock-rates = <24000000>;
++
++		reset-gpios = <&tlmm 9 GPIO_ACTIVE_LOW>;
++
++		avdd-supply = <&camera_front_aux_avdd>;
++		dvdd-supply = <&vreg_s3a_1p35>;
++		dovdd-supply = <&vreg_lvs1_1p8>;
++
++		pinctrl-0 = <&cam_front_aux_reset_default>;
++		pinctrl-names = "default";
++
++		rotation = <270>;
++		orientation = <MEDIA_ORIENTATION_FRONT>;
++
++		port {
++			cam_aux_front_endpoint: endpoint {
++				data-lanes = <1 2 3 4>;
++				link-frequencies = /bits/ 64 <360000000>;
++				remote-endpoint = <&camss_endpoint1>;
++			};
++		};
++	};
+ 
+ 	/* eeprom @50, at24 driver says 8K */
+ };
+ 
+ &cdsp_pas {
+ 	firmware-name = "qcom/sdm845/Google/blueline/cdsp.mbn";
+ 
+ 	status = "okay";
+@@ -497,16 +639,44 @@ firmware-pins {
+ 			pins = "gpio79";
+ 			function = "gpio";
+ 			drive-strength = <2>;
+ 			bias-pull-down;
+ 		};
+ 
+ 	};
+ 
++	cam_front_avdd_default: cam-avdd-default-state {
++		pins = "gpio8";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
++	cam_front_aux_reset_default: cam-front-aux-reset-default-state {
++		pins = "gpio9";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
++	cam_front_aux_avdd_default: cam-avdd-aux-default-state {
++		pins = "gpio14";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
++	cam_front_reset_default: cam-front-reset-default-state {
++		pins = "gpio21";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
+ 	touchscreen_reset: ts-reset-state {
+ 		pins = "gpio99";
+ 		function = "gpio";
+ 		drive-strength = <8>;
+ 		bias-pull-up;
+ 	};
+ 
+ 	touchscreen_pins: ts-pins-gpio-state {
+
+-- 
+2.55.0
+
+
