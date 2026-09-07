@@ -1,39 +1,87 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD59346E43;
-	Sun,  6 Sep 2026 21:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC28A43F0B7
+	for <phone-devel@vger.kernel.org>; Mon,  7 Sep 2026 08:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788730334; cv=none; b=CYUKJOS00/OQk9CtVjUagGYqIT1eQRFyXTVn/wVvYKfyGX1PicaPkoQ9GsYCnU4IBGnYkudL+rIlVyNEGIQ7XkxoY+RCSBMmb+G7ZUDEG1acKUiIbt3LCVzrropxP4t7BKQw+yAhFid0b4cMMVtXDtbNdULjF7xo+YcVj4JdT3Y=
+	t=1788770182; cv=none; b=p23n4834a+xitlG5j8Wk6KHFH2aFq5ox2u9ks9a65FoVdliqlLhUU3AilKr7ijMjXDyedTXJy8vkZpe4btmxWLb6xD6YtTExTHAOMRm/g1WHk6h5yDxpw988HsXpCZI20uqKTp4VPziqt33EgbaIZnCzAGId1gqQg/Z1A2Jxja8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788730334; c=relaxed/simple;
-	bh=9xBCvEOIZEHDfq7VP9jQvArZps1bDFIyNj4XdifO+EU=;
+	s=arc-20240116; t=1788770182; c=relaxed/simple;
+	bh=EpBUO/pktu1LI8wvjTUn06mzyNUlC5RiWOtI6lhLAN0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SXv5bMXjTJdKVepw7shW2GO7TQiaLJJ7oIUsk9NRY1ryWfQQqgwj1y76z9IS/pqDo9OCDAipbBfrlPm/jfQ9g5Pgn8chpiljlLghzihi1U9fDyiRNW8KX0T52BVsyUV3aeI9Ly1L2ZNrgxjoc86TSnK1cjOM8ctQ/n4HVhiaq+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=pX1TsPMS; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=W6VMq+jdtNY7KZ9RFI8fNJ+i3gyiN3AOm7I9Ty49Sd5xdRzTDxm8k5ycOBxWQSdnMIjADV8DE9sntecV/NM/+2u9pjA9LzqgcM26C5OPN46jrm8yVqpXp83byzqOmX+AEDhexsXQAAIt+58iROUQNVwgmZzFRxsDatZSh+Daa0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=a4/mycc7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PJK+SZB1; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="pX1TsPMS"
-Received: from [10.0.0.152] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 3344B5340736;
-	Sun, 06 Sep 2026 23:32:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1788730330;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ywu0HVMs2UTCAROTw3iWE+Ohkzj8oh/ZNprFOl07sZA=;
-	b=pX1TsPMSDXYaoQLBzSABrO0AnROnaXad4UszKoP7dgLOpo4Za2GyzFlzWo+byU0AZA7vRs
-	XPUTXY6B2vOE8zpqEuyzvsrQt0aY0VgEQm+cZhSsKaSjCYYtuuqMBD52lbXyCF6ogTsGg4
-	6UYThD/mJirEIyOn1HfAjJQx9b8ZafE=
-Message-ID: <28fb606b-8631-483a-a02e-ecd16e9cc238@ixit.cz>
-Date: Sun, 6 Sep 2026 23:32:09 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="a4/mycc7";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PJK+SZB1"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68777X3x2724146
+	for <phone-devel@vger.kernel.org>; Mon, 7 Sep 2026 08:36:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	32WO/Xjsl8YBeCXk6vwKWTCZYT8FK+KYc95D1qtSyg4=; b=a4/mycc7VI8LHTRW
+	PvnoRVwH/wOGERBA1yQa40Q/RMmfXKda5WqR2myYw3gu9wdSrE69ojWYoF2JQo8K
+	THtCUfpQQMxPifvZATjjGLQEwolM66QXDJToEVZD40jAdV/vopAfkhXMpulOLjR6
+	44MYbNdVqeW2ZjYF7uMqbC4oanrz+7EW/lYbrssJOUJNTeacBKALNDvX9UGvM/6x
+	m6jD8W6N3HtMVfBhdVVAQOvDo0MhmbcQ5huG18ziEn8OV1yGUjthJqFJDFDo7yEF
+	kt5AaByK2nJKBo7tOy6Pp8iXjU4hA+CLiq0PfLh/d/XxxcOwY2VSmVGQ0qG3XDfE
+	sKhhIw==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghfxksrfj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 07 Sep 2026 08:36:18 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51ca37ce4c3so5253521cf.3
+        for <phone-devel@vger.kernel.org>; Mon, 07 Sep 2026 01:36:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1788770178; x=1789374978; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=32WO/Xjsl8YBeCXk6vwKWTCZYT8FK+KYc95D1qtSyg4=;
+        b=PJK+SZB1wd4Q2tCQVle1fQVf4ID+feyIU/SfAuNfpZ1GH28mYDVvD8IMW+XI0Lunx1
+         10no1k+G/1ieS1+VxFYwoWgPULo/V++sP83j+2tT7VMuIoH1tkn9R8haAejrDGr44Shr
+         Ry5cUizHrYYcN43CU7nkoDAKJgfaqsXPQvtjTxk2FMv2C1/5R8zp4hvHMrs5uJxsVO5L
+         6wEYJtaGLYUj/DuGV4wkpQD0gIDZFi7ytLyiOL6eWKsRYn3VhAyz1mee1lcOOCDGnCYK
+         UsImCxy7GyRt4CYy7d0J5XNJFrImjpfNXvIPt1STXqn0rJ1BdlS6bSQYPw2bJKReXS3D
+         S43w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788770178; x=1789374978;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=32WO/Xjsl8YBeCXk6vwKWTCZYT8FK+KYc95D1qtSyg4=;
+        b=Lk+w3+n3Cd2cv3T922+VzDh3NTor1EJCtJhQ5BNCK3I3W0hxPoLWgeqIORi3e8+0sk
+         V15hm4IMftfRIrXTZ/GFsEG8uWvErnWTLJYivKRLyW3uEeOWCHACG3OkbAP3uB+qV30S
+         o1JIcmOOpMHablV+vG1SMYz3iutxpSHv+XGrsAxku25f2CRBo1jHH+O8InsG77/O0pBf
+         wehpkhmfM1cf488j1DqUyOJU0rYaOwt8pL3u64K9FO5/24bN90wgrmpek7Tbv9RQuvQP
+         CszYIPdKdzvbMjzg2op/oP7pAFte33xd4oFuYNw9AUi3ju2GbKz7hEXxrHZ2N3pGoere
+         s8dQ==
+X-Forwarded-Encrypted: i=1; AKwUvByxqEMKg2AVLtVgDN6d7C7kmZvKzwJ5BGYKm9N7k+nIbhIu5epPZhFMEn6X+PpxZnNOklGVS4TBoZd6zw==@vger.kernel.org
+X-Gm-Message-State: AFuF++lqxhBoMXDoS2wlL0HUeZgrxfU1tgfHQEPEyHTHZZcm12VTXzD7
+	aS90I/NOsve8kk7Oj6pyduYDFbKe8iGKo2PgZV0jNIz1qjqSDoIeRXjgx6NJZi1tvQW3DcVxch7
+	7f/boSoAS7pvxJoxl0ywS1BXs9veQzZTLJyN5hI+91jGikxMBQfD1LkmlnwpFlCFNtA==
+X-Gm-Gg: AYBFou3EztCzJZBVy7I4+yEr4q6112HLxg3F9hkgdz010FospzQhirpo5CyQJlebyLM
+	75ScBAPwZwZtMx4agy6HdND/mw0i1V3Uk59Krr561XFV6EasM9Rsk4F5jyI4MuuFrxJ5xQu55ba
+	govP6k2JtohO4O8FGMomZAVbghbtbvXiLrI4rrBvejntFQpq60GyvZym4M/MhlnGKRRXXHI1q+m
+	mPvzpLu7ZUDenP884oWS1Gu3lXkv8ygG45KTPy7E1Q3EQ81YNzOiKyP19/L9D4ODzfqcsJBRSUQ
+	iTWoY0gKJ+1XecU7T0G7QBWMH24DFlbPAaiCBT1aTOBFEPElbcSi1fEJHWXL3M56/osDuKcswYC
+	yM7JcF4R4PRVw29F9k2dJiA==
+X-Received: by 2002:a05:622a:3ca:b0:52d:8270:8e36 with SMTP id d75a77b69052e-53064793ba6mr120479951cf.5.1788770177990;
+        Mon, 07 Sep 2026 01:36:17 -0700 (PDT)
+X-Received: by 2002:a05:622a:3ca:b0:52d:8270:8e36 with SMTP id d75a77b69052e-53064793ba6mr120479771cf.5.1788770177667;
+        Mon, 07 Sep 2026 01:36:17 -0700 (PDT)
+Received: from [192.168.202.12] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a7e68c3d88sm3973687a12.15.2026.09.07.01.36.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Sep 2026 01:36:16 -0700 (PDT)
+Message-ID: <b84cb955-2ee4-4865-9bb6-3fec074f451a@oss.qualcomm.com>
+Date: Mon, 7 Sep 2026 10:36:13 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,150 +89,72 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: dts: qcom: sdm845-lg: Enable NFC
-To: Paul Sajna <sajattack@postmarketos.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20260906-sdm845-lg-judy-nfc-v2-1-63aeb7b1a5f6@postmarketos.org>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260906-sdm845-lg-judy-nfc-v2-1-63aeb7b1a5f6@postmarketos.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH RFC 2/4] soc: qcom: Add modemsmem for Google phones
+To: david@ixit.cz, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Richard Acayan <mailingradian@gmail.com>,
+        Petr Vorel <petr.vorel@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260906-modemsmem-v1-0-a3634b553841@ixit.cz>
+ <20260906-modemsmem-v1-2-a3634b553841@ixit.cz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260906-modemsmem-v1-2-a3634b553841@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDA5MyBTYWx0ZWRfX0W9UgmwjERw8
+ Ji6IQGhIM9HCpnPhPURs3Gm5AaOO1WCulj/fylkQ7Ud8P5KfY3GvQB7OyXKTSUNKSgZalpNEAbz
+ 3kw7VcBTcKHoGaUQX4cP/SFMn9miNdx38X9fThM16Rgy+8K9+LQWnwUKclKyaNdxFwYOB//6OLv
+ Iz3CdMJmAe4l5owNiohJ+ZSEljob0jMXWb1BoABrfwD2ur8W9KTCaQoxFLzX0Lttyb4P89DdMUx
+ G+Lb7w4QskC6oV3RjGT/7W38TYn2oFFPoQrTDWduuqmjB3qwRI9C/8XpCiyomkLZWeUag8TSz7w
+ 5PYS6MLS4LM4zmIJF2x0gvcm86wM9kSatPOgOj5qyRgIPoLfhgsntzZzR1n+/ImcHj5HDrj43r8
+ MgwyALRIcwBP88Sj56yYdBwRpsJ8gdUeWcxAtGecRryCaAHs7lmMZo3rOIQBkds6IdaQCtrKGBC
+ O4/w/miZZTazl+wicEg==
+X-Proofpoint-GUID: mzTxQdgdf_CZgspUtj_h3FOsFVcvyk92
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDA5MyBTYWx0ZWRfXwUfE9d/IhlrS
+ A/jg3LLV+kiVe4qlIlRfIcpQg2yIsKlBUq4cxWxHIDoFbgOoJj6s4Qo9uKyZWxQ113+/wl3I8AS
+ VD9NXiCqY9lRZqYiITbZdEMJcHpQrbE=
+X-Authority-Analysis: v=2.4 cv=daOwG3Xe c=1 sm=1 tr=0 ts=6a9e7782 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=pGLkceISAAAA:8 a=SIia9Xva6E6vu_7LpCQA:9 a=QEXdDO2ut3YA:10
+ a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-ORIG-GUID: mzTxQdgdf_CZgspUtj_h3FOsFVcvyk92
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-07_02,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070093
 
-On 06/09/2026 23:11, Paul Sajna wrote:
-> Add the i2c and tlmm nodes to support the NXP PN547 NFC chip
+On 9/6/26 2:41 AM, David Heidelberg via B4 Relay wrote:
+> From: Richard Acayan <mailingradian@gmail.com>
 > 
-> Downstream dtsi for reference:
-> https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/lge/sdm845-judy/sdm845-judyln_lao_com/sdm845-judyln_lao_com-nfc.dtsi
-> 
-> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-> ---
-> Changes in v2:
-> - correct drive-strength
-> - add gpio116
-> - Link to v1: https://lore.kernel.org/r/20260902-sdm845-lg-judy-nfc-v1-1-282173900569@postmarketos.org
-> ---
->   arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 31 ++++++++++++++++++++++++++
->   1 file changed, 31 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> index b030a10009c5..c77da1b0d57d 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> @@ -471,6 +471,25 @@ &gpu {
->   	status = "okay";
->   };
->   
-> +&i2c3 {
-> +	clock-frequency = <1000000>;
-> +
-> +	status = "okay";
-> +
-> +	nfc@28 {
-> +		compatible = "nxp,pn547", "nxp,nxp-nci-i2c";
-> +		reg = <0x28>;
-> +
-> +		interrupts-extended = <&tlmm 63 IRQ_TYPE_EDGE_RISING>;
-> +
-> +		enable-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
-> +		firmware-gpios = <&tlmm 62 GPIO_ACTIVE_HIGH>;
-> +
-> +		pinctrl-0 = <&nfc_default>;
-> +		pinctrl-names = "default";
-> +	};
-> +};
-> +
->   &ipa {
->   	status = "okay";
->   };
-> @@ -551,6 +570,11 @@ &qupv3_id_1 {
->   	status = "okay";
->   };
->   
-> +&qup_i2c3_default {
-> +	drive-strength = <2>;
-> +	bias-disable;
-> +};
-> +
->   &qup_uart9_rx {
->   	drive-strength = <2>;
->   	bias-pull-up;
-> @@ -609,6 +633,13 @@ sd_card_det_n: sd-card-det-n-state {
->   		function = "gpio";
->   		bias-pull-up;
->   	};
-> +
-> +	nfc_default: nfc-default-state {
-> +		pins = "gpio12", "gpio62", "gpio63", "gpio116";
+> Modems on Google Pixel devices require extra information about the
+> SoC to be passed through a vendor-controlled Shared Memory (SMEM)
+> channel. This driver provides this information.
 
-here the verbosity may not be bad (device-tree functions as documentation too)
-gpio116 is associated with eSE NFC part (just guessing, but... it worked before, 
-so), and generally the pn547 doesn't need it at all to work.
+[...]
 
-TBH not sure if there or what consensus is here about this. The eSE needs it, 
-but we don't have the driver thus also no integration with NFC part.
+> +	ret = of_property_read_u32(dev->of_node, "qcom,smem-id", &smem_id);
 
-David
+Is it ever not 134?
 
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
->   };
->   
->   &uart6 {
-> 
-> ---
-> base-commit: 32b6ef9a5d0eca44f9cd91f52f4faa89f145a0de
-> change-id: 20260902-sdm845-lg-judy-nfc-5f9e5775393d
-> 
-> Best regards,
+FWIW you may find this useful:
 
+134 - SMEM_ID_VENDOR0
+135 - SMEM_ID_VENDOR1
+136 - SMEM_ID_VENDOR2
+
+which you may find in various downstream kernel used for various
+purposes
+
+Konrad
