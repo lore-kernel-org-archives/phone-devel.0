@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75E653ECEB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFEE53ECF3;
 	Tue,  8 Sep 2026 12:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788871504; cv=none; b=iiDePxgLLRX2EC1s6r6Gyo32xjZ/581H12H+MayTg0Nt5rFgqrEZWvhMfnrPIB/Rg2TfxDqM+HzqH/3oSuyaSqjO5xP77JStqGFSoq3THypP9xov2iG9boLNEXX/F0LbowGRZXRZhTK02Ne4H9idzppNpCWM/uo+rRdgZ0mwAdA=
+	t=1788871504; cv=none; b=MXIAxjJ5li9n8ITUlNrQXmQ/o2anu0SJf304W1mir093m8EhdoQzfnIo+atumHTfLtpvK8Sf/hfy9LFaX6CsLTfNGJyspEU5wAaZxpEsQHzEseGkrI19ZDPV/A8b65DIDw2GbujIXwcO6HP/958GwVrzIaABKUI2hf3xO8xJBhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788871504; c=relaxed/simple;
-	bh=tggSJCl2AdaSwI6K1UKsXMUFn3nfnZ+dlVIx8qMmy08=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=D/2ZBNFrDDgv7dmzDA3N5dmCJNPP94teIKX0PAIVgXiGqz+FGGiwKRWUokIIytbUFUqG7v9pF3MG974KYqJGAbXv1vwyaFOj4qlrVY+9zqy5tWm4BlF7ZPNw2nZZRw5ii/mNwcQ+Euv+DtucNpU0N5oRK+biPEM22hPfLvxZ7/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvCSllkj; arc=none smtp.client-ip=10.30.226.201
+	bh=4fuDNklbywCb7qoO5dLJnpOotv58leCBq6uit2rmcKE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=e4xHlQrvXHbA3Yg2xNfyOmDUHIHspiyO+nhCNYyiqVE6Xp6lCl9xvv59ekDKvyibKVyTOqsUY5Zq06pKuvJUZ1tJlyHSHXgTw7ebHCIlwNFa0p+dOxn07cfWrDW0bD3FCEXlvgVzG+37FIQfkwVKth/DrMKWLeGWpnqgjUoceJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qwY4QiEj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvCSllkj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 56667C2BCFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qwY4QiEj"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8D738C2BD01;
 	Tue,  8 Sep 2026 12:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1788871504;
-	bh=tggSJCl2AdaSwI6K1UKsXMUFn3nfnZ+dlVIx8qMmy08=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=LvCSllkj2sm2J7JLd9pjsN4toGFiIanibYlRwxG8GRLppF9gcb+Q9E/2lfAUlcAMd
-	 CZ2Tqh3jfpZVXNznujApSMNDS8W9gpLjcB5jp9Ct9Wvyo6ZQC9MdB0CGxFHjG6XTne
-	 BPyDrS6EnQ9wDYqYk/7jikloDFqQMMvfIE0YVjXhgJEnhaOCoNZSs5/Gjil7A6YpEe
-	 0rp387o2TmN1ZzqVs7BmQ1jPJwnuBA4xVDYVJm2aacX9r1A3QSs6skSiwegDEdrvai
-	 CQlQNOswOM533J5YZhr8zVl+TPdfEbAOMSkmPvWN9X41qJhm77/1A6akfI9O/cX1VB
-	 DAVBVuXNoGOjA==
+	bh=4fuDNklbywCb7qoO5dLJnpOotv58leCBq6uit2rmcKE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=qwY4QiEj97q+Wf5HHuPaI5ix9P11uCyD2YTSXJerYwM1cdyRWe0h8UyiJf/yES9+9
+	 NVYQmzQIlDrwt8R4Cg3HGdHwhV2ezP5vRG/ZKsndRVcVTW2w1uTNsayGh/Ei6TjfjD
+	 aWtuSWScjy1zDHU0VCtXOlbar/oDeWcQv0RvB6Xc3o4Oo4SqY8gGqLgPYAnt2zZMD4
+	 f6ZKe//WQXatZzcJXDTu3WPSrJfRceHI4wL7ly6o7VI5wjazkBRIYr39z11NdNFkLG
+	 IdbCIks6gPgoqn+2i/a2Znda5YGPHZTN2jlMk1/yfWdXMwfx8b4RfF1ReZR8GrrAqr
+	 7EpEaAU2+fnsA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39B8FC79F99;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7705DC79F82;
 	Tue,  8 Sep 2026 12:45:04 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v2 0/3] Xiaomi Poco F1 (ebbg display variant) fixes
-Date: Tue, 08 Sep 2026 14:45:01 +0200
-Message-Id: <20260908-ebbg-ft8719-fixups-v2-0-5454ae1f5581@ixit.cz>
+Date: Tue, 08 Sep 2026 14:45:04 +0200
+Subject: [PATCH v2 3/3] drm/panel: ebbg-ft8719: Split initialization into
+ enable/disable fn
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,11 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NsQ6DMAxEfwV5rivHAgqd+I+KgQQDXgAlFNEi/
- r0pXTu+O927HYJ4lQD3ZAcvqwadxgh8ScANzdgLahsZmDgnw4xibY/dUtxMiZ1uzzmgdZKlBWd
- kiSEOZy+xOaWPOvKgYZn86/xYzTf96UrK/+lWg4SpFGmeGXJNayrddLm6N9THcXwAEn4yybIAA
- AA=
-X-Change-ID: 20260122-ebbg-ft8719-fixups-bce548250b02
+Message-Id: <20260908-ebbg-ft8719-fixups-v2-3-5454ae1f5581@ixit.cz>
+References: <20260908-ebbg-ft8719-fixups-v2-0-5454ae1f5581@ixit.cz>
+In-Reply-To: <20260908-ebbg-ft8719-fixups-v2-0-5454ae1f5581@ixit.cz>
 To: Joel Selvaraj <foss@joelselvaraj.com>, 
  Neil Armstrong <neil.armstrong@linaro.org>, 
  Jessica Zhang <jesszhan0024@gmail.com>, 
@@ -54,58 +53,145 @@ To: Joel Selvaraj <foss@joelselvaraj.com>,
  Sam Ravnborg <sam@ravnborg.org>, Marco Mattiolo <marco.mattiolo@hotmail.it>, 
  Linus Walleij <linusw@kernel.org>
 Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
- Casey Connolly <casey.connolly@linaro.org>, stable@vger.kernel.org
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1011; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3584; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=tggSJCl2AdaSwI6K1UKsXMUFn3nfnZ+dlVIx8qMmy08=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqoANOFJeLQjNYi0kXTpsGdTO+bBpMS+a5Wl0S6
- Nl0RyjUoaiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaqADTgAKCRBgAj/E00kg
- ciBnD/wNSFGRfZVkyBhqNF/AkPwW+A9tFaAfw6x8X3yaefweifSqELEDIH87v+L6N1TSxgj32QD
- RNZ6ocaJEAZge4WV6qcvklwSJcWGlwhWFoBDHnIndBbRudUMIkdZkxvIo1htvE9Wn9Gq7GCsCwY
- mhIRGr05Uba06qS+W0SoZt1jt8U+Y0O9N1AOql3NGNv0qRXD63M8cPh2PYBuOFgcu/nQVOrF3m8
- GNB9GKF5dPRjRfjNB7Yp0pUCX+4OrS1opxeRZ4qZi9pin26icIIoMHBqMV+tz7qY+x5eRNJSL5y
- RmNkl2frVAmm4Apapb120L0gG4Rezu9RS/0hC94pRoRAypz4Ku2ZkhJ/7IlDbgEV8yNu4S0zCyg
- WoRACCzChM1NvHTey88xChBgEzsNleOO1GXjqVvzTNkCnFyNuTqIMDBdmhdM0poX/QGKu5Y4dPX
- F2dXB8APaQPmZssiW72lizk5G84nletKZKvHiPRO/y9M4B4pRzyGmw2cQ86Q+XSADb7Hj7HjZlk
- g3r6G1Dt47ugA8YxFSSvqT+CJH+zhTxcc+DbXHn2+Ein+ejEjocHPVGm1NCIrh6RUmvxULnvBOB
- FkHPEFCE+Z1A61t5ROmhpTKdQwRjALU9ow3HIQD40cy5V2cZLJGGWQbZs0Sfrg4hJxyvbBZljdv
- laqYTedl76R230A==
+ bh=p59FHt+W5RxJxYzBAZ41gjyX0PrqfPnJroW1P4JaiHQ=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqoANO4JeodgFDo3sfvRALM9dtf/AW0QxG/TDpk
+ O4JX5PpurCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaqADTgAKCRBgAj/E00kg
+ ch4ED/kBbl106wXrSg1G9m+3LB2P1WbofO4pTJc0f7pF03qbU8bV5HoUip4tdyriX4T1FWPfwc4
+ 4/1ea49TeJgoshYNKq/uMUbEaVkuAZSfGxeZBZWR+KSQgzcrMmcBaY95/xJgCW0ECsTShqHOc2o
+ 388J4TMMQbYfl4Ypl+WEaFVjBt672e+nn7j69kVd5CA842LBbPfXAC443DwrbuAhs+0wm1N+aFS
+ 9qdcQOR14Pt8+NGUTRu6/FwAULpScQybwZwCsAtf4uFiCBzK3QMyhNxGoYSHBYmfCtRmiHAHJLC
+ NgvO0OP1+BLK3Qk+Jgh9YQNmO/SCExw08LCQVjcfzrfiT+fcDhWORgnFEPYOXzi4+LYb8AxdZlJ
+ zr4zklkzAPm6z4qb0A4YxMxisu2PwTc66YJIw73BGbvUnBFo07erFs+SGkUuoE5LPpn0ENZWMSM
+ C1eBUWjQfNqL0GfXO2mrjp4/MXES1gWAzwUseRUN0fCfLih7t5ueCX4OOgpuqQDuQSqZCNnt4uU
+ iQp+RSFAQENJgeO8tqZXBcRXl+MuSUO3sxz6un2OISH3D0EtXOTkeGllE+6ZYGndpBFUw51C3MQ
+ uoKGPWSxkEXxO7RR4pLRuseOa2dprp7nP9y5MpqWmCPpaaIab+X43y9q5TMbA98b705ytD4jWAq
+ YyhTn26GWCJXBbg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-Been broken in mainline for some time.
+From: David Heidelberg <david@ixit.cz>
+
+Move the MIPI commands into enable/disable callbacks since they
+are called between prepare/unprepare callbacks.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v2:
-- Ignore the disable() errors, as there were ignored before too. (Neil)
-- Update the `Split initialization into enable/disable fn` commit
-  message. (Neil)
-- Replaced the maintainer old email with new, so Joel gets notified
-  about this patchset being sent.
-- Link to v1: https://patch.msgid.link/20260906-ebbg-ft8719-fixups-v1-0-4e846510cad1@ixit.cz
+ drivers/gpu/drm/panel/panel-ebbg-ft8719.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
----
-Casey Connolly (1):
-      drm/panel: ebbg-ft8719: Set prepare_prev_first
+diff --git a/drivers/gpu/drm/panel/panel-ebbg-ft8719.c b/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
+index 14982263a94f1..1652de70900f1 100644
+--- a/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
++++ b/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
+@@ -49,74 +49,69 @@ static void ebbg_ft8719_reset(struct ebbg_ft8719 *ctx)
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+ 	usleep_range(4000, 5000);
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+ 	usleep_range(1000, 2000);
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+ 	usleep_range(15000, 16000);
+ }
+ 
+-static int ebbg_ft8719_on(struct ebbg_ft8719 *ctx)
++static int ebbg_ft8719_enable(struct drm_panel *panel)
+ {
++	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
+ 	struct mipi_dsi_device *dsi = ctx->dsi;
+ 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
+ 
+ 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+ 
+ 	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0x00ff);
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_CONTROL_DISPLAY, 0x24);
+ 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_POWER_SAVE, 0x00);
+ 
+ 	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
+ 	mipi_dsi_msleep(&dsi_ctx, 90);
+ 	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
+ 
+ 	return dsi_ctx.accum_err;
+ }
+ 
+-static int ebbg_ft8719_off(struct ebbg_ft8719 *ctx)
++static int ebbg_ft8719_disable(struct drm_panel *panel)
+ {
++	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
+ 	struct mipi_dsi_device *dsi = ctx->dsi;
+ 	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
+ 
+-	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
++	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+ 
+ 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+ 	mipi_dsi_usleep_range(&dsi_ctx, 10000, 11000);
+ 	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+ 	mipi_dsi_msleep(&dsi_ctx, 90);
+ 
+-	return dsi_ctx.accum_err;
++	return 0;
+ }
+ 
+ static int ebbg_ft8719_prepare(struct drm_panel *panel)
+ {
+ 	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
+ 	int ret;
+ 
+ 	ret = regulator_bulk_enable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ebbg_ft8719_reset(ctx);
+ 
+-	ret = ebbg_ft8719_on(ctx);
+-	if (ret < 0) {
+-		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+-		return ret;
+-	}
+-
+ 	return 0;
+ }
+ 
+ static int ebbg_ft8719_unprepare(struct drm_panel *panel)
+ {
+ 	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
+ 
+-	ebbg_ft8719_off(ctx);
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
+ 
+ 	return 0;
+ }
+ 
+ static const struct drm_display_mode ebbg_ft8719_mode = {
+ 	.clock = (1080 + 28 + 4 + 16) * (2246 + 120 + 4 + 12) * 60 / 1000,
+@@ -148,16 +143,18 @@ static int ebbg_ft8719_get_modes(struct drm_panel *panel,
+ 	connector->display_info.height_mm = mode->height_mm;
+ 	drm_mode_probed_add(connector, mode);
+ 
+ 	return 1;
+ }
+ 
+ static const struct drm_panel_funcs ebbg_ft8719_panel_funcs = {
+ 	.prepare = ebbg_ft8719_prepare,
++	.enable = ebbg_ft8719_enable,
++	.disable = ebbg_ft8719_disable,
+ 	.unprepare = ebbg_ft8719_unprepare,
+ 	.get_modes = ebbg_ft8719_get_modes,
+ };
+ 
+ static int ebbg_ft8719_probe(struct mipi_dsi_device *dsi)
+ {
+ 	struct device *dev = &dsi->dev;
+ 	struct ebbg_ft8719 *ctx;
 
-David Heidelberg (2):
-      drm/panel: ebbg-ft8719: Fix the MODULE_LICENSE() string
-      drm/panel: ebbg-ft8719: Split initialization into enable/disable fn
-
- drivers/gpu/drm/panel/panel-ebbg-ft8719.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
----
-base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-change-id: 20260122-ebbg-ft8719-fixups-bce548250b02
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+-- 
+2.55.0
 
 
