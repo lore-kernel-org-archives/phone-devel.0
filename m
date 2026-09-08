@@ -1,148 +1,160 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FD33812ED
-	for <phone-devel@vger.kernel.org>; Tue,  8 Sep 2026 07:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F2B3E4C69
+	for <phone-devel@vger.kernel.org>; Tue,  8 Sep 2026 12:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788851865; cv=none; b=L5aKnwKrVoWtzkBSHGCboOPOYCherfhcSf9kO1gAGM/zHd8nCNWMOYBIc+6P/F05sdZQ+afEt4OJc/Q6fKO0QbH6k8S8uaXzXchp0suuQBiN29a2aFNLayzG+gf9SfuGaPcvg8xG9lcTEYosB51QsKezFCX0Q5qBw4Rdj0nCfGo=
+	t=1788869480; cv=none; b=a/DEvTIsAk8Q6N9NZcNZEszGKtO4ajGO28i9Rob8+ov0yVKTRfemjJmDNNFod0C0H2SX8nAaxEJBMvg5bJBHyecAEsN/dny9ZORsWqJ7c9YPJzTfGNSsxKxVoeVWkm8nJvbhTtOaVONZSRr5RAWgKMY/gZam/wVybGIermiH0dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788851865; c=relaxed/simple;
-	bh=yA3DkIG9wLceIzqY5pH906S7W2EOQlbooZi/3IyjZXQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RG4hEUeFBdayzW4papxgcfXV0z9Y3enmg6CZ3euMiR49704HuprHZqdJ1VEyXB7J3mWQJJZwdHWlPPrRXGH1ECcP5dwRHcJ1kviHBsf5BzTxNU1TMJtQJO4ZsgWHUd6pJuAz9mflAJzYFnENhmjYZMHJwo+hhmHZql6VrOA4b+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WuZpxWIP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jZv+WTGy; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788869480; c=relaxed/simple;
+	bh=3hq1hCpYfFruAk9NwdwkNOcTA0yG+rhjKun45Ep62e4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Qc5Qbs/wG3KaIiXcRu6CEeLsECTSntkYz77q63X/kVZKEI8cna8hNDke3AcUrTtGdD+coJUk3hnvI3+k2BRHK2aHfs2K/9S1N+1gMEPbVtmqDQkVn50Ozn6MaG1UqYiRo2IIGqTUulazEy/PipxS++zTmQgNwtkVJykw5AW83dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ugunq0fR; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WuZpxWIP";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jZv+WTGy"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6886M3Ul2363272
-	for <phone-devel@vger.kernel.org>; Tue, 8 Sep 2026 07:17:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=ubwlFPq4WID6HMwM3Ww8q+VA
-	AJmdhFmvzLLU9Ua8Nbk=; b=WuZpxWIP6PoxyE1KUVgXObHpT9XBFF+wz1A1tLRn
-	Kawaj8rwBvZfQlXvjeh8u+I3UM7kzEjSlgaPtvzgC7RcUoSVVkoUKJTDThSwD2Zf
-	11Q3ZYG/83/CsQuLJun39FaCEgSW9j0dQrLLQ5XWt4Fu7eWMkI3r+6Tw902Jlx9B
-	gRQhlIm8fVfUP4EYUTxLdqd0Ug+p6mWOmWo6d4Lc7uKPq32J3+RZDETfTt/+C+lR
-	kqiroop2AZIv+2WxbgGCiyypIpe+CtbelP6M61PBkcRaPjpSzvEAyWSnyaHY+4E3
-	z7ZT89TGZHNKl6Pdsg9XvyJ1EN8LyrhgBHJMAN1/ICBAUA==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gjagugse1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Tue, 08 Sep 2026 07:17:42 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e820609d9so675787485a.2
-        for <phone-devel@vger.kernel.org>; Tue, 08 Sep 2026 00:17:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ugunq0fR"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48436216a98so3151544f8f.0
+        for <phone-devel@vger.kernel.org>; Tue, 08 Sep 2026 05:11:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788851862; x=1789456662; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ubwlFPq4WID6HMwM3Ww8q+VAAJmdhFmvzLLU9Ua8Nbk=;
-        b=jZv+WTGy4vEA+cRhe8UreZwnqOs60j6/YsSN2C38g9vBIHG7ynt+XXLSGS4T25Qf6h
-         OEHa/s+gQpVh28HgRxQGJAN35YMeOpeWhaTxOCfLY0vC8/wHRXWSbRxRvNgpkM0HYecX
-         TUS6NHYt3amL8/IlNlKq8LfE4V/3PHWVYUIaYIMUF1eihIi+vohnCd86bkVkqfYdErMJ
-         g9QLEMgS2U+JNvaUxZnXB93dlb4yMtGtacpg8WkKrsa2u/4Uk8IyRMHwQiP1InV5uZb+
-         F0sQtCcYsbGIQnPbqxwUgGDbSu1WqTJjtjH7nqI/rLgQDZtGw8ncJcr4R53DMSp8Ikkr
-         prKw==
+        d=linaro.org; s=google; t=1788869464; x=1789474264; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:content-language:references:cc:to:subject:reply-to:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DbFI851Wc6QNNKR3nQbUG1a0fTB8uT4edMUZygEozxY=;
+        b=ugunq0fRufaLNO+bUusVzPYDVeZylkTeB3/IIDWgzoqRCNr0ewzcPZYSFU8HgmRRbF
+         KWAC/WGQlXplUoFUQc0/OjYkyaTq355D1DPdwklrWq6WLGBPFuY0Mj2Lj6BjOdPnpzMs
+         jcWR+XQRKI7HfUtyN5APa089jQ/1C0lqOo7CsXStiJ5iv7achFkXJ3N3iplYezrlCuhl
+         DhLHsPG01pocwGAiotSg+F5yUqN6MJ0cKq3D92d1NPm+cE0+kqkMIb2+CMXAY/oD2auI
+         QO4P8mkEmy7pPjN/jo/IPVX9/LTIvxAItpf9fGAlR4dBZdjosYv/chTvfEk9reYtESMW
+         FpEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788851862; x=1789456662;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ubwlFPq4WID6HMwM3Ww8q+VAAJmdhFmvzLLU9Ua8Nbk=;
-        b=L7NgX8WRP/E64dnr7PFa2z00RzjQh3aN5SnOSxDAF3kNKGGiq6dVdlYucKPUkMcfS8
-         kRmT1bTWV3B0NPC4Iaumo0lPGDAY1WyNCANAGM1vOe93048CWH1SppynBYvEa0kzouJc
-         9TMPFEeDkWf2HPWb9kxLb2kSweK4aqfjWGzbo5AmBoerH5La/RdL4zW0Rf25Dcr7/EfF
-         mLSTD0NFqc92SeKfGezPNJkpqaD8Y41DvpoeYF3vHeXjSrjYbn/yFPBiIxCg3SNfIPY4
-         rrYE4S5w5oSK4UcsUU66E+zuib01htzbKFjjrKg+pD8dHPH4NJHVI2M1GM364sZQAw/0
-         xN4Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxFgvD5natXRefuQ7iApx3YOUZ9BIEC9KSZM3MpqTAh4eA597Uw1EwxlcBHlEYSSwxy208+NQzB8o5JOA==@vger.kernel.org
-X-Gm-Message-State: AFuF++nuPRZrUdoua9K6lJ8J+q5R4UpI7xkzddAm7MYGLolP3plOPPlu
-	Pfsh3U6OEdUQoPuaOK2Q3Z57DMAMqO1ecQeBvQtmRtyglzws99dwhajTpyziYLL4geOLZjkh/1/
-	ffDPOvhVjpKbJf9qN9S9Ye/0SJFd7MNFAxxsP18Qi/lTey+CaVHIzqnIM+xOb/27Xqw==
-X-Gm-Gg: AYBFou1unwB52qoELgKSYn4QDOvoDIRTLiSpLYSMR26AVEyontvu258hxhoyvoaaSFy
-	Kyk8M8WIoUxB3CsTH01ejgiyC1i7ufNdi+/Sk5EczycGf3sEP/4WeJYHyZ/p7KbIH9YWK2nxHuR
-	tIHok0RFwAOW0IsOKRfq/vpMYexEKgaCA53tZLSrbKBk4wlVZU38l3oqAv81CGKlaHpQtXgFHLL
-	dEFOmvJiAzyHqmT9aU0sQsLydXd0gUTS6Iokkv2sTCO8B7KLBOZU77kl/Hg3SRc/dBMMNWW1CON
-	SEK9Nwqd4FFpTNGCDtqKL/8XoJHRiTFwkN+UIUpzTnXHXgeIpmOVK4+k3QcxR59FtQsdz6fvfhE
-	TbzkD9YGdvpU=
-X-Received: by 2002:a05:620a:7017:b0:939:76b9:1d00 with SMTP id af79cd13be357-939802efe0amr2984177285a.9.1788851861937;
-        Tue, 08 Sep 2026 00:17:41 -0700 (PDT)
-X-Received: by 2002:a05:620a:7017:b0:939:76b9:1d00 with SMTP id af79cd13be357-939802efe0amr2984174685a.9.1788851861424;
-        Tue, 08 Sep 2026 00:17:41 -0700 (PDT)
-Received: from oss.qualcomm.com ([86.121.7.210])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce58da3acsm949579995e9.0.2026.09.08.00.17.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 00:17:40 -0700 (PDT)
-Date: Tue, 8 Sep 2026 10:17:38 +0300
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: david@ixit.cz
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Petr Hodina <petr.hodina@protonmail.com>,
-        Richard Acayan <mailingradian@gmail.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v9 1/2] arm64: dts: qcom: sdm845-google: Add dual front
- IMX355 cameras
-Message-ID: <g4ql75tuwtzi5iy7z43ee2jcpwfxhqu3cqhcgzodbidyb4h6zw@zm6nqwi3eobs>
-References: <20260907-pixel3-camera-v9-0-b1981f2d3291@ixit.cz>
- <20260907-pixel3-camera-v9-1-b1981f2d3291@ixit.cz>
+        d=1e100.net; s=20251104; t=1788869464; x=1789474264;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:content-language:references:cc:to:subject:reply-to:from
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DbFI851Wc6QNNKR3nQbUG1a0fTB8uT4edMUZygEozxY=;
+        b=nwHihXDauYxCCGRsR/mw/7M21UTv4VR/TKH48Doo4/1qxTkiDQzgycpALi1Q1BfCzG
+         5W1C6G0E9dctrTmfWC/J1yI6feBshTb2hnBye/qbzPuHCVhZAHl987/ERIOcFry9k0ur
+         ULp2vzxRiMuCSqyO/4/LBkgbRtlSmVDGux5yOWHwW5o/g1aFKhVPMVrJWwJhZLy1TYNa
+         uN5BHJsCifUOitJnli6TrzRGzTC75lrDjB5EuxtKVmxUwNuTpBOm7ZrHiQpYTMHX9Amo
+         sZUg5Dc0qGgZvqaGG59eE81KFY+qu2mToggOA6D7fTvyNJ8KqGhNShXTx/VGDNswubOS
+         aPbw==
+X-Forwarded-Encrypted: i=1; AKwUvBxtDVjLNgfJYMD1596GC/2Eyvlv2ri5N40QyuQUa6EUDFBcjFj2O6Axn/kqF2yA5EYDwz0MEiU+xQWfhg==@vger.kernel.org
+X-Gm-Message-State: AFuF++l0kfKkPorU1GOZv0KTQViFcw/lqrGQZvQAT8BbCFyvOiscH8QS
+	oxjH5cZM/j2nTPw3df4fk0VucAnI0YKwNp8Fwyhu+pG+A8qngtCh4ak4V/m7dSEFM9Y=
+X-Gm-Gg: AYBFou0uThQhd4rqTe3E0ds8mQcbZlbAmgHk4io/G1hljuCosquT9g+AbIKybLe+GMN
+	GbSDp8lEw8shYW4RnVONR3HQHHpXsY9zxyI89WT+w9c1GoeSR/MgK5ZaWm70FrytVO2VtMaOxGs
+	yfwHQKRN9MfgGJ9f/N3eQI16i4+Uw+OKs7JVq8Wcxcb7AzfFLspJkpNwOpgqA/UedXhZG1gS53q
+	DsY9OdynI74YD7nhSI0MQUW5OgkhPpy8JVftd6c3SFfutxcfHtt3l/ibT5wKj0JxCOe4y/BUySI
+	Pqt6+dMpFxKXXGaI7QI8DxxAlbQqpgSLKrN8VbjZN37SSCA2kdfMSdPiMQAXYZBU32iM7EcvHpp
+	u5FHYf2Rbz0HZY5SeNOERAkQvCCJDq0GKffPrLkDSxTE0Q7Gv+iKIh/AKp3CV9lg2hFHhTjWC9c
+	jb75omy0UG/L81+TT+L8r4Hz2u1rsuwoDluMb902F9knjS558UIHMYlurd2Mb7uev5gTJJqVGf7
+	tHSkRojTrI9bX5U7Juz2Ab6wgMhnP97VQKX1KC3xmIx
+X-Received: by 2002:a05:600c:46d5:b0:49c:fc6c:be06 with SMTP id 5b1f17b1804b1-49cfc6cc142mr239764675e9.29.1788869464167;
+        Tue, 08 Sep 2026 05:11:04 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:106d:1080:ea45:883b:8b89:b4e5? ([2a01:e0a:106d:1080:ea45:883b:8b89:b4e5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee7fec25sm553052685e9.13.2026.09.08.05.11.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Sep 2026 05:11:03 -0700 (PDT)
+Message-ID: <4688bc5c-edc0-4f1c-8534-286364f03c78@linaro.org>
+Date: Tue, 8 Sep 2026 14:11:02 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907-pixel3-camera-v9-1-b1981f2d3291@ixit.cz>
-X-Authority-Analysis: v=2.4 cv=TqLWQjXh c=1 sm=1 tr=0 ts=6a9fb696 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=dePp4Gl7O00gmbwhyVsZwA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=uxpBaPyPSpK-buiB_gcA:9 a=CjuIK1q_8ugA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-GUID: 1m5kx_Cgb8U6O-5TvdM6lzPpXMFXJGV_
-X-Proofpoint-ORIG-GUID: 1m5kx_Cgb8U6O-5TvdM6lzPpXMFXJGV_
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDA3NCBTYWx0ZWRfXz3f79yMskmdS
- vn8VXOIwmOQjys8npGON1lYTbzcaAuxyLlwaGUW6PR++6/hvjgZ0yieaBBKJo2eNy9OjSM++tiX
- jMNwR+/fs5yD8kYtKTILZ0JOUec1+tY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDA3NCBTYWx0ZWRfX1qpOwRE+ZTJ/
- tgnSGGpe+JAZ4GN/AsoE6mrNpWNV92B/6M9xlfYZMfJOF9ceYa7NaK76jsdNIw6HvMm2Wt/U6JX
- HazQjZdIP6P58m+7jkwlEZI1Mw7EDW5XzvRWfdfPzqB0FvTHLPwgNjFRZu4OGmpB6AiL55vojQe
- XLW6YT1Q1vU0xUuTJtSPVTKY4mWcTfZoqVFxagQEkb5kOuHsHpL95JxcIKBY7W/pA1BD9EqY/Fy
- AU6lm+snGvhqZo3GnrBe+URyX38Hd1Ptc4jMebwbXg6NGmCJa9zQL53h5VAHNnwbj6epFZwB4q2
- OHzfl4LcF7YiG0xCb+OQgYT7vVa0iKWxktB+80uCqcUyPcWvk8gAu53xtTTHJoCGUw7iOigl2Qk
- 1FaXodK42lhAq0ndSuIQ1FRorSVs0umWWzZQPQYmowCzafmBWNf3r6jaxU/7WrIKPXDF+nCri/4
- 4maZsyJr6Bf7eh4aVEw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_01,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
- phishscore=0 malwarescore=0 clxscore=1015 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080074
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH 1/3] drm/panel: ebbg-ft8719: Set prepare_prev_first
+To: david@ixit.cz, Joel Selvaraj <jo@jsfamily.in>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sam Ravnborg <sam@ravnborg.org>, Marco Mattiolo <marco.mattiolo@hotmail.it>,
+ Linus Walleij <linusw@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, Casey Connolly <casey.connolly@linaro.org>,
+ stable@vger.kernel.org
+References: <20260906-ebbg-ft8719-fixups-v1-0-4e846510cad1@ixit.cz>
+ <20260906-ebbg-ft8719-fixups-v1-1-4e846510cad1@ixit.cz>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260906-ebbg-ft8719-fixups-v1-1-4e846510cad1@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 26-09-07 17:58:09, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 9/6/26 15:19, David Heidelberg via B4 Relay wrote:
+> From: Casey Connolly <casey.connolly@linaro.org>
 > 
-> The Pixel 3 features two front-facing Sony IMX355 sensors with
-> different focal lengths (standard and wide-angle).
+> This corrects the host initialisation sequence so that we can send
+> DSI/DCS commands in prepare().
 > 
-> Sensors are connected via CSIPHY port 1 and 2 and controlled over CCI
-> I2C1, using MCLK2 as the clock source.
-> 
-> This enables support for the dual front camera configuration.
-> 
+> Cc: stable@vger.kernel.org
+> Fixes: b00de0e237da ("drm/panel: introduce ebbg,ft8719 panel")
+> Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
 > Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>   drivers/gpu/drm/panel/panel-ebbg-ft8719.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-ebbg-ft8719.c b/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
+> index fb9f9f42be4f2..1ab09c50a6306 100644
+> --- a/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
+> +++ b/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
+> @@ -193,16 +193,18 @@ static int ebbg_ft8719_probe(struct mipi_dsi_device *dsi)
+>   	ctx->dsi = dsi;
+>   	mipi_dsi_set_drvdata(dsi, ctx);
+>   
+>   	dsi->lanes = 4;
+>   	dsi->format = MIPI_DSI_FMT_RGB888;
+>   	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+>   			  MIPI_DSI_CLOCK_NON_CONTINUOUS;
+>   
+> +	ctx->panel.prepare_prev_first = true;
+> +
+>   	ret = drm_panel_of_backlight(&ctx->panel);
+>   	if (ret)
+>   		return dev_err_probe(dev, ret, "Failed to get backlight\n");
+>   
+>   	drm_panel_add(&ctx->panel);
+>   
+>   	ret = mipi_dsi_attach(dsi);
+>   	if (ret < 0) {
+> 
 
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+
+Thanks,
+Neil
