@@ -1,126 +1,171 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854BF459AD2
-	for <phone-devel@vger.kernel.org>; Wed,  9 Sep 2026 21:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC163380FE7;
+	Thu, 10 Sep 2026 03:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788987863; cv=none; b=b9y79ZvykH8ngJ5okb7F+cSkCdY0LZhpMXT65iYkCQF5VLwrm+pcJMWWOw0s33idEQzzlhC/O/mSJrckdsghr6THzHvVMTzj+b8lQlhbo8uTLKiv78zGubooFvWWJCYLGY4sAuVc+5Xt97qs5NyZ7I0YKidZriCy/ZT0cUHjvgU=
+	t=1789009756; cv=none; b=sI8HuSYeUJlZt/88EHM4Gq842ezgmZJ6r8/kPEXC2yjvV85pE0fhx4v8MVze4o3dFKNP4m8b8S5GQKxuft0UJUtuTWiQFG4koZSbJDowHbBx/qb5FhlLnZK7eftB13xykm9HQXCvik7wpi6/h5MkFXf8JpORJ9LFFoyG6GwnEsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788987863; c=relaxed/simple;
-	bh=ux4LwqZlbuHjN5pDgf+R+mKnPiisvTQFqDbT/x5yXuE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dAbB7JjXvQp8nAs/lt/s973W0BFrP4tX88qjCoeiU+QDQGJqz7zf3I85OjxSHMgk6lgld0dkOwRs9p/vEz7EQVuA964QTdLHbGuk+g+F6xCo5zeN1j/Lc2BkRsjZxDyFDWzcDrYfdhtX6UO+CVj8djMjp93FovjCUJurbgEW3XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=kflyLVDU; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1789009756; c=relaxed/simple;
+	bh=0gMJj2/y7UEk2F5iiJ0+r0KOpjpb25MfLcU89P2tClY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DzsQSgKZTck3iSGDQpxsNhMGT2eQBB5th9vcHyuyrvQu353isE3X1M1Rscnv/bffEXJcC6HQyCg6oAnS+McY5S+xKbhfLJc3Ry3M2hpI2KGHBCfvxnBwEjwPt9pq+hE4f5ZL2K5Qmo0gYQGcgTVV/IiEbRG2nLEPC/I+lzlz66c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OranrfeV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kflyLVDU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=2yofm2bllvcebmrjy3frax4z3q.protonmail; t=1788987854; x=1789247054;
-	bh=P91JSApwUvPyWA9CkkLfouUbbAesRpLSdan/W/e1NLc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=kflyLVDUd+HQMXYvAACOjgkarCgP+mmFkRMoSd9fUdmqTUY1pbe7/o+bZjzhKNEs1
-	 GsiXJ2VniwDyxkYH5twLDlQl3Jenxb6RZdPHmnZnN01XcTEjvRK9qTH7bWFT8SwL6D
-	 YBdDibUGVVPY/gRznESkCYqozO8+Ph1CCfdVRYyWcLl7h3wv7Wivdabk50pdzlm9Bh
-	 9xfhunZH79+W1j/Gko1RuKmQrhY+1CGQshIIf9IsM/De6yDTdaYP4RUmi23VUghx6G
-	 os8sL2x+Y1z1V61EeiETk5ZQOGNGRXRBOWL/krHoV2iXMmwTTtgJBBhaYtx46mf7wm
-	 Jewj0gYlYHNvg==
-Date: Wed, 09 Sep 2026 21:04:05 +0000
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-From: Esteban Urrutia <esteuwu@proton.me>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Alex Elder <elder@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, Nazar Kompanets <xlie7669@gmail.com>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: sm8450: Add IPA node
-Message-ID: <530a28fb-28da-4ee0-9c77-6bac7ea6c047@proton.me>
-In-Reply-To: <kirwxhjjskimczzf7fv6go5b4j27qouqvj27n7vckd4vkr3rkd@tf2ugwqbp3kc>
-References: <20260909-sm8450-ipa-v2-0-2deb8b4e91a5@proton.me> <20260909-sm8450-ipa-v2-3-2deb8b4e91a5@proton.me> <kirwxhjjskimczzf7fv6go5b4j27qouqvj27n7vckd4vkr3rkd@tf2ugwqbp3kc>
-Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: d485751c4d99f1bb18b42b75c245d66e48bc113a
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OranrfeV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92E41F000FF;
+	Thu, 10 Sep 2026 03:09:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789009754;
+	bh=7Mnnl6IixqIIoQUXK0HBqu/7/2qQhKzWTmOfpvOINa4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OranrfeVIMyz+75rRMIjl4Wkqdv1UE6u0OXOjR+/I3fAJKDyEMA7v9VfLs4fmpuUV
+	 OuxYkVqySdLeZaCpBe0b6rQ5p71TgfwPZNScxBGyCBPCmwKQy+tIewPtbRN8Xjpu23
+	 XjQttZAg/kczR3Qvuzrimg5hpAs82meiP1Dik1VavYHNd+xpRXVvzrV7CtN65QrV38
+	 L5JmOu7KBIQL0OZ0fbKBTZHfi6rMBQ8l3v2FDL5sGmO3MLxZIRENW/UWV6H21z789L
+	 DYNOUrMeeCkOa3W7Lc8NsY6n26WfkmC9e/TpChMJBxITFwpFY0CtRT7FwZ56aGiT8+
+	 HRY1Qj3ANbczg==
+Subject: Re: [PATCH] net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
+From: netdev-bot+sashiko@kernel.org
+To: esteuwu@proton.me
+Cc: elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, xlie7669@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+Date: Thu, 10 Sep 2026 03:09:13 +0000
+Message-ID: <178900975328.219967.188619870211891152@kernel.org>
+In-Reply-To: <20260909-ipa-modem-drop-v1-1-0c9664f09c4a@proton.me>
+References: <20260909-ipa-modem-drop-v1-1-0c9664f09c4a@proton.me>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-On 9/9/26 4:06 PM, Dmitry Baryshkov wrote:
->> diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/=
-qcom/sm8450.dtsi
->> index b8793482b181..95b6fd22a846 100644
->> --- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
->> @@ -2625,6 +2625,47 @@ adreno_smmu: iommu@3da0000 {
->>  =09=09=09dma-coherent;
->>  =09=09};
->>
->> +=09=09ipa: ipa@3f40000 {
->> +=09=09=09compatible =3D "qcom,sm8450-ipa";
->> +
->> +=09=09=09reg =3D <0 0x3f40000 0 0x10000>,
->> +=09=09=09      <0 0x3f50000 0 0x5000>,
->> +=09=09=09      <0 0x3e04000 0 0xfc000>;
->> +=09=09=09reg-names =3D "ipa-reg",
->> +=09=09=09=09    "ipa-shared",
->> +=09=09=09=09    "gsi";
->> +=09=09=09iommus =3D <&apps_smmu 0x5c0 0x0>,
->> +=09=09=09=09 <&apps_smmu 0x5c2 0x0>;
->> +
->> +=09=09=09interrupts-extended =3D <&intc GIC_SPI 654 IRQ_TYPE_EDGE_RISIN=
-G>,
->> +=09=09=09=09=09      <&intc GIC_SPI 432 IRQ_TYPE_LEVEL_HIGH>,
->> +=09=09=09=09=09      <&ipa_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
->> +=09=09=09=09=09      <&ipa_smp2p_in 1 IRQ_TYPE_EDGE_RISING>;
->> +=09=09=09interrupt-names =3D "ipa",
->> +=09=09=09=09=09  "gsi",
->> +=09=09=09=09=09  "ipa-clock-query",
->> +=09=09=09=09=09  "ipa-setup-ready";
->> +
->> +=09=09=09clocks =3D <&rpmhcc RPMH_IPA_CLK>;
->> +=09=09=09clock-names =3D "core";
->> +
->> +=09=09=09interconnects =3D <&aggre2_noc MASTER_IPA 0 &mc_virt SLAVE_EBI=
-1 0>,
->> +=09=09=09=09=09<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_IPA_CFG =
-0>;
->> +=09=09=09interconnect-names =3D "memory",
->> +=09=09=09=09=09     "config";
->> +
->> +=09=09=09qcom,qmp =3D <&aoss_qmp>;
->> +
->> +=09=09=09qcom,smem-states =3D <&ipa_smp2p_out 0>,
->> +=09=09=09=09=09   <&ipa_smp2p_out 1>;
->> +=09=09=09qcom,smem-state-names =3D "ipa-clock-enabled-valid",
->> +=09=09=09=09=09=09"ipa-clock-enabled";
->> +
->> +=09=09=09sram =3D <&ipa_modem_tables>;
->=20
-> No qcom,gsi-loader / memory-region ?
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Right. I forgot about this change. I'll add those in v3.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
->> +
->> +=09=09=09status =3D "disabled";
->> +=09=09};
->> +
->>  =09=09usb_1_hsphy: phy@88e3000 {
->>  =09=09=09compatible =3D "qcom,sm8450-usb-hs-phy",
->>  =09=09=09=09     "qcom,usb-snps-hs-7nm-phy";
->=20
->=20
-> Also the device is disabled by default. On which platform did you enable
-> it? Is it supported upstream?
+- [Medium] The newly declared region id `IPA_MEM_MODEM_STATS_DROP` has no
+  producer and no consumer, so the patch is functionally inert and…
+- [Low] Commit-message / code identifier mismatch plus stale peer
+  documentation for the new drop-statistics region.
 
-Yes, as it should be. It has currently been tested as working in:
-- sm7475-realme-senna
-- sm8450-oneplus-negroni
-- sm8475-motorola-bronco
-None of these devices have device trees upstreamed at the moment.
-I plan on eventually upstreaming support for motorola-bronco.
+--
 
-Regards,
-Esteban
+net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
 
+This adds a new ipa_mem_id enumerator for the modem-side drop statistics
+region and allows it in ipa_mem_id_valid() only for IPA v5.0 and later.
+No platform data file or driver code path references the new region.
+
+Link: https://github.com/LineageOS/android_kernel_qcom_sm8450-modules/commit/fc71d0972a2453cc29f873d723a355a902c6d69c
+
+> diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
+> index 078d32a18dbf..3000aaa24530 100644
+> --- a/drivers/net/ipa/ipa_mem.c
+> +++ b/drivers/net/ipa/ipa_mem.c
+> @@ -166,6 +166,7 @@ static bool ipa_mem_id_valid(struct ipa *ipa, enum ipa_mem_id mem_id)
+>  			return false;
+>  		break;
+>  
+> +	case IPA_MEM_MODEM_STATS_DROP:
+>  	case IPA_MEM_AP_V4_FILTER:
+>  	case IPA_MEM_AP_V6_FILTER:
+>  		if (version < IPA_VERSION_5_0)
+
+[Severity: Medium]
+Can this new case ever be taken?  ipa_mem_id_valid() is only consulted for
+ids that already appear in a struct ipa_mem_data.local[] array, and a grep
+of the tree at this commit shows IPA_MEM_MODEM_STATS_DROP only in
+ipa_mem.h (the declaration) and here.
+
+The v5.0+ data files that the version >= IPA_VERSION_5_0 gate could apply
+to all define just the one drop-stats region:
+
+drivers/net/ipa/data/ipa_data-v5.0.c
+drivers/net/ipa/data/ipa_data-v5.2.c
+drivers/net/ipa/data/ipa_data-v5.5.c
+	.id		= IPA_MEM_STATS_DROP,
+
+and the only consumer of drop-stats memory still looks up the old id:
+
+drivers/net/ipa/ipa_qmi.c:init_modem_driver_req() {
+	...
+	/* If the DROP stats region is defined, include it */
+	mem = ipa_mem_find(ipa, IPA_MEM_STATS_DROP);
+	if (mem && mem->size) {
+		req.hw_stats_drop_base_addr_valid = 1;
+	...
+}
+
+The commit message says the region "is used in IPA v5.0 and higher", but
+with no producer and no consumer the change has no runtime effect.  Would it
+make sense to land the data-file entry and the QMI consumer in the same
+series?
+
+There also seems to be a layout prerequisite that isn't mentioned.  In
+ipa_data-v5.0.c, IPA_MEM_STATS_DROP is at offset 0x3870 with size 0x0020
+(ending at 0x3890), and IPA_MEM_MODEM starts at 0x3898 with canary_count 2,
+so its two canaries occupy 0x3890-0x3898:
+
+	{
+		.id		= IPA_MEM_STATS_DROP,
+		.offset		= 0x3870,
+		.size		= 0x0020,
+		.canary_count	= 0,
+	},
+	{
+		.id		= IPA_MEM_MODEM,
+		.offset		= 0x3898,
+		.size		= 0x0d48,
+		.canary_count	= 2,
+	},
+
+Doesn't adding a second drop-stats region require shifting IPA_MEM_MODEM and
+everything after it?
+
+> diff --git a/drivers/net/ipa/ipa_mem.h b/drivers/net/ipa/ipa_mem.h
+> index b25babade787..56703bada07c 100644
+> --- a/drivers/net/ipa/ipa_mem.h
+> +++ b/drivers/net/ipa/ipa_mem.h
+> @@ -68,6 +68,7 @@ enum ipa_mem_id {
+>  	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
+>  	IPA_MEM_STATS_TETHERING,	/* 0 canaries, optional (IPA v4.0+) */
+>  	IPA_MEM_STATS_DROP,		/* 0 canaries, optional (IPA v4.0+) */
+> +	IPA_MEM_MODEM_STATS_DROP,	/* 0 canaries, optional (IPA v5.0+) */
+
+[Severity: Low]
+The subject and the body both name IPA_MEM_STATS_DROP_MODEM, but the
+enumerator added here is IPA_MEM_MODEM_STATS_DROP, and a grep of the tree at
+this commit finds no occurrence of IPA_MEM_STATS_DROP_MODEM at all.  Could
+the changelog and the code be made to agree?
+
+The neighbouring statistics regions put the owner last:
+
+	IPA_MEM_STATS_QUOTA_MODEM,	/* 2/4 canaries (IPA v4.0+) */
+	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
+
+Would IPA_MEM_STATS_DROP_MODEM (as the subject says) fit that convention
+better than IPA_MEM_MODEM_STATS_DROP?
+
+Also, the comment on the existing IPA_MEM_STATS_DROP still reads "0
+canaries, optional (IPA v4.0+)" with no hint that it becomes the AP-side
+region once the modem-side one exists on v5.0+.  Could that comment be
+updated so a config author can tell which region to use for AP drop
+statistics?
+
+One more thing on the changelog: the paragraph explaining the split ("From
+IPA v5.0 onwards, two memory regions for drop stats exist: one for the AP
+(that is, the driver) and one for the modem (Q6).") sits below the ---
+cut line, so it is not part of the recorded commit message.  Was that
+intended to be above the cut line?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-ipa-modem-drop-v1-1-0c9664f09c4a%40proton.me
