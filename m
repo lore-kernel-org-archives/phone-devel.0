@@ -1,77 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBC630D41B;
-	Sun, 13 Sep 2026 09:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FCF3749FD;
+	Sun, 13 Sep 2026 12:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789291720; cv=none; b=k1DngnaYY818nVZrK1+BmHtIv4BND++hSkDnjEhh/yTlRzzsGcahkhV2bB8vDZlUpadboGnY59xx+rVES5fhKdn9iW9IB94y6BBfoXT3R3K4ikiS4m3oyMNBQ7ibkzi/UJGyLY+7Ce+xFyCE8dDu0N3HKzTGHFb1yP0X9qZEw4w=
+	t=1789303655; cv=none; b=CLRaiaa44FUx5LJyXKW29AS0OlcJh7W8wmIJgjZPe0QwTO3Whd/2hH4fbf3kxLUrcNSxjC1D6ILI4PF7UrD1rKKSWQijGDNFPwgpDSjiAsw/28kKcSs9yohfGWIsS4NUCKNVEamzW50NtzEdad0kINzqel+rTcP73K77RMOhgKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789291720; c=relaxed/simple;
-	bh=1J2/1A6pyNm3aR9HUjwEPLKv/fEdMVMciUSdbisyEXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lzZnO+d/9URwEag6/y+IWtYpEwMNI0cMPBR9DlTrYMMnM1ZTORRD22U3H3Z3Ar3okHkdjUfdCyz2OkHf2X5GqgJib6sNdno8RgejeWT+XHSaUiDcgrko0rTzml9idrSpYHmRuV3VJ/XZ92l9qQqp98J+Qrb4LIv1Vl2k4rzqF0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XCSO7GKz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789303655; c=relaxed/simple;
+	bh=gXcaR8LX8ApftwewEhc12zqCDGFILnSeKGmKi/Mfskw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LOiAuZuipGLHz9EzAR+8Za9RmSMn3v01GPb4/ftB9ftKiFhk9DNEse9RCr8llmtLlb5C/8I1McA8EafRWxuhQawE33ZvO/tc9fyZAEa2kpbhopz/JpJOShJl3UuDqc3QzVZAjev/8K1Xti78X07kpcYOZwM2cggkSh2aN0SburQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=LTOkUEev; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XCSO7GKz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C351E1F000FF;
-	Sun, 13 Sep 2026 09:28:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789291719;
-	bh=zRAXfflsyj0gMVmrP2SJ8BE+BkhuhBUZSSDA6IPtF5Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XCSO7GKz9o3uceyzTvd2Cz9OhstiXGsVVBfu+ECIJUKO38njH9mgwNQoxHxIV+j+L
-	 P+5nwUVrg65tc3maIdiRtAOrvJTkdI5pxBpz+HuUzG3Aj/NYjehdvRWEm3dskWBsg1
-	 AkTobT0Ua10pF+lGqTk4JW0W12tzHzQDoMejWwp3TZrXz43mDhlStTwN15XSJa/ULY
-	 euBwit6Qcl3QguhhC1Gf6sPdv3DJ9s9kK+BY7kq1HJ5tYKRPdEE57eNgRImqdlyFt4
-	 kynBkzrr716a4sM8t0I2tMikBCaEw9ay8FktiekulDeSl8ZvidJTpjUjJ9mq7IxQKT
-	 I8maUfPqkkYdA==
-Date: Sun, 13 Sep 2026 11:28:34 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-input@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: input: touchscreen: document ESWIN
- EPH8621
-Message-ID: <20260913-military-cherry-tortoise-176cab@quoll>
-References: <20260911-eswin-eph8621-v1-0-db447ff9e445@fairphone.com>
- <20260911-eswin-eph8621-v1-1-db447ff9e445@fairphone.com>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="LTOkUEev"
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id EACF9534020C;
+	Sun, 13 Sep 2026 14:47:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1789303644;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4O4ttVM3pEusyMizBao1PUVjU9/8vfUkTOlWV89M7EI=;
+	b=LTOkUEevuyRA0BsJpSAj8qnCX6905DkILnX4dx/4BmMuSW//v8aP6fPj6qjEfxWGvyiFCJ
+	sjA+581jPlSrDJfbdYxC+YcxDNE7XBsKDbjh3cANek87yuP2wVDZ0tA3OqILhbvssbX+4s
+	zL8dCV0zshRo0a2+rxoLsQvNi0hyW7I=
+Message-ID: <757d826a-739c-42f5-9671-9348a1480951@ixit.cz>
+Date: Sun, 13 Sep 2026 14:47:23 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260911-eswin-eph8621-v1-1-db447ff9e445@fairphone.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 8/9] drm/panel: novatek-nt36672a: Add panel for Asus
+ Zenfone Max Pro M1
+To: Alexey Minnekhanov <alexeymin@minlexx.ru>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Joel Selvaraj <foss@joelselvaraj.com>,
+ Chintan Patel <chintanlike@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ phone-devel@vger.kernel.org, iAboothahir <aboothahirpkd@gmail.com>
+References: <20260913-nt36672a-panels-v1-0-ce097402c6ea@minlexx.ru>
+ <20260913-nt36672a-panels-v1-8-ce097402c6ea@minlexx.ru>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260913-nt36672a-panels-v1-8-ce097402c6ea@minlexx.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 11, 2026 at 05:16:09PM +0200, Luca Weiss wrote:
-> Document the ESWIN EPH8621 touchscreen controller, which can operate in
-> SPI mode. Other touchscreen controllers from the EPH861X family (and
-> potentially also EPH8621) can also operate in I2C mode, this was not
-> added yet.
+On 13/09/2026 07:36, Alexey Minnekhanov wrote:
+> Add support for TXD TXDI600YANPA-43V3 video mode panel based on
+> Novatek NT36672A, used in Asus Zenfone Max Pro M1 smartphone
+> (asus-x00td).
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> Co-developed-by: iAboothahir<aboothahirpkd@gmail.com>
+> Signed-off-by: iAboothahir<aboothahirpkd@gmail.com>
+> Signed-off-by: Alexey Minnekhanov<alexeymin@minlexx.ru>
 > ---
->  .../bindings/input/touchscreen/eswin,eph8621.yaml  | 79 ++++++++++++++++++++++
+>   drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 281 +++++++++++++++++++++++++
+>   1 file changed, 281 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+> index 1bfa808365874..954ab24c9d00a 100644
+> --- a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+> +++ b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+> @@ -468,6 +468,252 @@ static void tianma_jasmine_init_cmds(struct mipi_dsi_multi_context *dsi_ctx)
+>   	usleep_range(5000, 6000);
+>   }
+>   
+> +static void txd_x00td_init_cmds(struct mipi_dsi_multi_context *dsi_ctx)
+> +{
+> +	mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0xff, 0x20);
+> +	mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0xfb, 0x01);
 
-...
+Just for a start,
 
-> +  touchscreen-swapped-x-y: true
-> +
-> +additionalProperties: false
+0xff -> CMD2_P0, datasheet page 6
 
-If there is going to be a new version, this should be just before
-example.
+0xfb -> Set non-reload MTP commad, page 12
 
+This driver has amazing datasheet, so the driver could look like a real driver 
+instead of dump of the register sequence :)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-
-Best regards,
-Krzysztof
-
+David
