@@ -1,124 +1,154 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160E53EE1D4;
-	Sun, 13 Sep 2026 12:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C670E2F28FC;
+	Sun, 13 Sep 2026 22:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789303955; cv=none; b=Htl1VVTXDbbwAQGypIPFWjoQd51KGK3klr4QVF5ZhlPUKluZYvvBi8V6gz6Cj/GnqfbuTIeO2z46wokS8Y3DHhyGnKKPxcGrZeYYpM0tju0n/e3wkpTOYJHpcZSkH6fqWRCqzgCJS9i0FNhDvYGEsfEvx9KPvS/CNrU7hAv8fW4=
+	t=1789337044; cv=none; b=hcBYvgvqYWv5ILpAQQGmKcMi495/nfoE8kcchod1LOY/7Xra/xXHU/164hj3LbFr3GS0H53JLOFnUe7IQpw2VfSPhehJ1+ppWK4jZhWkGpd4Z1PRvnC7gQgw/BkVCyXYDOGzAsj1/PLgpNgzjWbd7fJLy5aK9Fi4XBhHzxS8m8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789303955; c=relaxed/simple;
-	bh=k2I60XoCVSCYmgAa0ba0kBMXXMGknLXvTmYCazOkEAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KbFW1iE1odjHAqYoGaDkNmRN7dFpKgDJEJZhIj+cJhfpG1N/AwKCDHIXfW1xJEnfy/CEDBI2JQKP+YXnEWgCWuFzqlCSMiCBeLy2iUw0qrtsjXjYNwjAsz65W1eU1o5Psh8koaGV3nZSmG4YVy9n5rdY9kjwH+DrP6mLPaI69KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=R+j+ZiDC; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1789337044; c=relaxed/simple;
+	bh=47WmqnedWWqYfZPZQ3NzMNFRn8FZHL0B9IXQnGLDKmM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mkWruLuUbezfHmRiQRphw7D14M07rynkHTagTS7yRE9dAMGFO7YwycxqWmdYPhPd0Pv8h5ixqO8w1+9gcVtKPlXHRZSBc+MS8fRuoPG2Zf3gpD5B/nsnAUOAhAC393k3G2xxSeKSWk5naROD4JBLCtmh9sxd4v7LBYa94PiPITM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgYA+Y8c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="R+j+ZiDC"
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id BF1495340279;
-	Sun, 13 Sep 2026 14:52:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1789303950;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RFO/qO8DMU5sWYee6PLwf++zga6gDrDBoQRd392f1k8=;
-	b=R+j+ZiDCd20E9PC3XVHDe9TzQAyaWAOqntP50dZEyMWfV5mHsUsGET6AKKC3GxMUyopP7t
-	S7gIpCERFUIpcnQ3oeYfqWc2mWYhy020zo1cmTkkwB4Irthhu9cA/WMVzUSZXtnlyg52xT
-	JiR2VtQuJYeO/OC7swS3dVmGO8KWQgk=
-Message-ID: <9ace4ebe-7955-4735-8814-4323c1fc89cc@ixit.cz>
-Date: Sun, 13 Sep 2026 14:52:30 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgYA+Y8c"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 38241C2BCC7;
+	Sun, 13 Sep 2026 22:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789337044;
+	bh=47WmqnedWWqYfZPZQ3NzMNFRn8FZHL0B9IXQnGLDKmM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=cgYA+Y8czaROCIifpqTteTZ1gYJPEIl17Owqh2NWWnELKyKtfEJRdwCgQfPeWNWLU
+	 g8xRsPzaThgQOWVWKzTZxn5iaaKU9wQnp946s+8RQPu/NtHYuuvv78vZZVLr3ylNSA
+	 SOPWNMDu9PRJSZjhSVEMMULNnPx07M2whMQV8a7MS4jlw0pzMxx8VBdXMF7yCLGUg5
+	 OL38FE9ni9bEpAgMLEmkMacklNAsEgxmu6YSlndYGb2wNNeJF2rylxMiX0qUQHgN+Z
+	 qk+7yXO+u2GODC/aFToSSclpED7F1/zykHF2J1ItbEPflmaVONhTRVM7wK4ZOt/6uI
+	 HSzbD1I1qC87A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 141B4C88E64;
+	Sun, 13 Sep 2026 22:04:04 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Mon, 14 Sep 2026 00:04:01 +0200
+Subject: [PATCH v2] media: qcom: camss: Don't reject sensor links faster
+ than 4x the CSIPHY timer
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/9] drm/panel: novatek-nt36672a: Set driver name to
- novatek for consistency
-To: Alexey Minnekhanov <alexeymin@minlexx.ru>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: Joel Selvaraj <foss@joelselvaraj.com>,
- Chintan Patel <chintanlike@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- phone-devel@vger.kernel.org
-References: <20260913-nt36672a-panels-v1-0-ce097402c6ea@minlexx.ru>
- <20260913-nt36672a-panels-v1-4-ce097402c6ea@minlexx.ru>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260913-nt36672a-panels-v1-4-ce097402c6ea@minlexx.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260914-csiphy-sdm845-limits-v2-1-622db5a6ebf0@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQ6CMBBGr0JmbQ0tgsQV9zAsaDuVMfKTTiUg4
+ e4WPIDLl3zfeyswekKGW7KCx4mYhj6COiVg2qZ/oCAbGVSqirRUShimsV0E26685OJFHQUWWmJ
+ mdeNym5UQr6NHR/Ohvdc/5rd+ogm7a1+0xGHwy9Gd5L77k5ikkMJmRard1cSMq2imcDYfqLdt+
+ wK+q0GsyAAAAA==
+X-Change-ID: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Bjorn Andersson <andersson@kernel.org>, linux-media@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2724; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=4Cq9bOXeGKICKWJHpNyYvsyQ9j7GJVD/aYCdslBWgjk=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqpx3SFUalm5mC9E2nv/wBYp16G9lduNx5j352M
+ stJXr6XkPWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaqcd0gAKCRBgAj/E00kg
+ clLbD/4+CjTgR2qBsW2lv29+7ydJstXFbe0MqkBjKJBxK33hfox9lLhnbqy40UzSWx+UyBb8+rO
+ aZttSoYguDNXTTZ5aooSzzhwCS1X1DXK1bIta7WQ1ubiSPRytWD7FbMQTBqmqIqqjf3UuaPr0PS
+ SiYvqj8B11J8z/xYaCCz7JDIddW0nd9fJeLw2HxMPUDIPjfPYfcBoIbXoitX5ShrbUvATIBfX0N
+ CvvfBu6lDHu9/p/Kz7/A7NhyHCTng2FdtqYhyDh/TTF64GPeHv/+7JzEmYLTG6HOG9nXoJSfMww
+ 0weqpHGm7sUn/aqPCQir4Fn3SGBlVSHHeV/hP420TSSWWn4dMygoLDR9XbnGFhd6Ehq7IywRBZH
+ 0OtVyBNyC9Kf7Y388ECqFePMaexPcaxqbqK0gaAWzuhbsTNPFidr+NITA5H7ZnyWesLVkS79dq/
+ PK2D+tzihFgnrx52q4iQ4qythhVarC3VnT7WYS3wfii601fTfoxG90QgXZN3awXN0iubcqdilxH
+ +YZpRPH6tlN7uB4WSNzdUCh0u+ml4ROD8E8A5+N8YL1db5etY9dierXJUUeT794ekW2SIm8L1fk
+ Fh5HiSx7cl3dC9QOGJZ9JvXH4z8vHPWEyMJL4gUHN0Q+TGo8FcdEfGe1nltlvB9h7i+l2PldQSs
+ SjvDXAZPrTv0Krg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 13/09/2026 07:36, Alexey Minnekhanov wrote:
-> Since this driver should represent not only devices manufactured by
-> Tianma Micro-electronics, but also from other companies, it makes more
-> sense to name it according to what driver file name already is: novatek.
-> 
-> This does not change neither module file name nor Kconfig symbol, only
-> driver identification in dmesg. This makes it possible to e.g. grep
-> dmesg for "novatek" and get messages from both nt36672a-based panel and
-> Novatek touchscreen.
-> 
-> Signed-off-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
-> ---
->   drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-Reviewed-by: David Heidelberg <david@ixit.cz>
+From: David Heidelberg <david@ixit.cz>
+
+The timer clock has no such relationship to the link rate. Both the 2ph
+and 3ph code use it only as the reference for csiphy_settle_cnt_calc(),
+where a faster link makes the settle count smaller, not larger: at
+269.33 MHz the count converges to 16 as the link rate grows. The vendor
+driver pins the timer to 269.33 MHz for every sensor (it is the highest
+rate in the SDM845 clock plan) and streams this exact link with it.
+
+Clamp to the highest listed rate instead of failing, the same way the
+unknown-link-rate case is already handled.
+
+Solves issue on sdm845 that caps the link at ~1.02 GHz,
+so the Samsung S5K2X7SP, ~2.3 Gbps/lane, link 1.15 GHz) fails with
+Pixel clock is too high for CSIPHY
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Tested on SHIFT 6MQ with sdm845-next-20260820-9.
+---
+Changes in v2:
+- Drop the camcc change entirely; the 269.33 MHz ceiling stands. (Konrad)
+- Fix the check in camss instead: clamp the timer clock to the highest
+  listed rate rather than failing, matching the vendor driver.
+- Link to v1: https://patch.msgid.link/20260822-csiphy-sdm845-limits-v1-1-d360bf7cd38f@ixit.cz
+---
+ drivers/media/platform/qcom/camss/camss-csiphy.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
+index 539ac4888b608..f3d17ea0ab515 100644
+--- a/drivers/media/platform/qcom/camss/camss-csiphy.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
+@@ -157,25 +157,23 @@ static int csiphy_set_clock_rates(struct csiphy_device *csiphy)
+ 			long round_rate;
+ 
+ 			camss_add_clock_margin(&min_rate);
+ 
+ 			for (j = 0; j < clock->nfreqs; j++)
+ 				if (min_rate < clock->freq[j])
+ 					break;
+ 
+-			if (j == clock->nfreqs) {
+-				dev_err(dev,
+-					"Pixel clock is too high for CSIPHY\n");
+-				return -EINVAL;
+-			}
+-
+-			/* if sensor pixel clock is not available */
+-			/* set highest possible CSIPHY clock rate */
+-			if (min_rate == 0)
++			/*
++			 * The timer clock is only the reference for the
++			 * settle count and does not need to track the link
++			 * rate. Use the highest listed rate when the link is
++			 * faster than the table covers or unknown.`
++			 */
++			if (j == clock->nfreqs || min_rate == 0)
+ 				j = clock->nfreqs - 1;
+ 
+ 			round_rate = clk_round_rate(clock->clk, clock->freq[j]);
+ 			if (round_rate < 0) {
+ 				dev_err(dev, "clk round rate failed: %ld\n",
+ 					round_rate);
+ 				return -EINVAL;
+ 			}
+
+---
+base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
+change-id: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
+
+Best regards,
+--  
+David Heidelberg <david@ixit.cz>
+
+
