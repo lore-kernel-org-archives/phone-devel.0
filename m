@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FCF3749FD;
-	Sun, 13 Sep 2026 12:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160E53EE1D4;
+	Sun, 13 Sep 2026 12:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789303655; cv=none; b=CLRaiaa44FUx5LJyXKW29AS0OlcJh7W8wmIJgjZPe0QwTO3Whd/2hH4fbf3kxLUrcNSxjC1D6ILI4PF7UrD1rKKSWQijGDNFPwgpDSjiAsw/28kKcSs9yohfGWIsS4NUCKNVEamzW50NtzEdad0kINzqel+rTcP73K77RMOhgKk=
+	t=1789303955; cv=none; b=Htl1VVTXDbbwAQGypIPFWjoQd51KGK3klr4QVF5ZhlPUKluZYvvBi8V6gz6Cj/GnqfbuTIeO2z46wokS8Y3DHhyGnKKPxcGrZeYYpM0tju0n/e3wkpTOYJHpcZSkH6fqWRCqzgCJS9i0FNhDvYGEsfEvx9KPvS/CNrU7hAv8fW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789303655; c=relaxed/simple;
-	bh=gXcaR8LX8ApftwewEhc12zqCDGFILnSeKGmKi/Mfskw=;
+	s=arc-20240116; t=1789303955; c=relaxed/simple;
+	bh=k2I60XoCVSCYmgAa0ba0kBMXXMGknLXvTmYCazOkEAM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LOiAuZuipGLHz9EzAR+8Za9RmSMn3v01GPb4/ftB9ftKiFhk9DNEse9RCr8llmtLlb5C/8I1McA8EafRWxuhQawE33ZvO/tc9fyZAEa2kpbhopz/JpJOShJl3UuDqc3QzVZAjev/8K1Xti78X07kpcYOZwM2cggkSh2aN0SburQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=LTOkUEev; arc=none smtp.client-ip=84.42.129.46
+	 In-Reply-To:Content-Type; b=KbFW1iE1odjHAqYoGaDkNmRN7dFpKgDJEJZhIj+cJhfpG1N/AwKCDHIXfW1xJEnfy/CEDBI2JQKP+YXnEWgCWuFzqlCSMiCBeLy2iUw0qrtsjXjYNwjAsz65W1eU1o5Psh8koaGV3nZSmG4YVy9n5rdY9kjwH+DrP6mLPaI69KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=R+j+ZiDC; arc=none smtp.client-ip=84.42.129.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="LTOkUEev"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="R+j+ZiDC"
 Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id EACF9534020C;
-	Sun, 13 Sep 2026 14:47:23 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id BF1495340279;
+	Sun, 13 Sep 2026 14:52:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1789303644;
+	t=1789303950;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4O4ttVM3pEusyMizBao1PUVjU9/8vfUkTOlWV89M7EI=;
-	b=LTOkUEevuyRA0BsJpSAj8qnCX6905DkILnX4dx/4BmMuSW//v8aP6fPj6qjEfxWGvyiFCJ
-	sjA+581jPlSrDJfbdYxC+YcxDNE7XBsKDbjh3cANek87yuP2wVDZ0tA3OqILhbvssbX+4s
-	zL8dCV0zshRo0a2+rxoLsQvNi0hyW7I=
-Message-ID: <757d826a-739c-42f5-9671-9348a1480951@ixit.cz>
-Date: Sun, 13 Sep 2026 14:47:23 +0200
+	bh=RFO/qO8DMU5sWYee6PLwf++zga6gDrDBoQRd392f1k8=;
+	b=R+j+ZiDCd20E9PC3XVHDe9TzQAyaWAOqntP50dZEyMWfV5mHsUsGET6AKKC3GxMUyopP7t
+	S7gIpCERFUIpcnQ3oeYfqWc2mWYhy020zo1cmTkkwB4Irthhu9cA/WMVzUSZXtnlyg52xT
+	JiR2VtQuJYeO/OC7swS3dVmGO8KWQgk=
+Message-ID: <9ace4ebe-7955-4735-8814-4323c1fc89cc@ixit.cz>
+Date: Sun, 13 Sep 2026 14:52:30 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,8 +41,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/9] drm/panel: novatek-nt36672a: Add panel for Asus
- Zenfone Max Pro M1
+Subject: Re: [PATCH 4/9] drm/panel: novatek-nt36672a: Set driver name to
+ novatek for consistency
 To: Alexey Minnekhanov <alexeymin@minlexx.ru>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
@@ -54,9 +54,9 @@ To: Alexey Minnekhanov <alexeymin@minlexx.ru>, Rob Herring <robh@kernel.org>,
 Cc: Joel Selvaraj <foss@joelselvaraj.com>,
  Chintan Patel <chintanlike@gmail.com>, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- phone-devel@vger.kernel.org, iAboothahir <aboothahirpkd@gmail.com>
+ phone-devel@vger.kernel.org
 References: <20260913-nt36672a-panels-v1-0-ce097402c6ea@minlexx.ru>
- <20260913-nt36672a-panels-v1-8-ce097402c6ea@minlexx.ru>
+ <20260913-nt36672a-panels-v1-4-ce097402c6ea@minlexx.ru>
 Content-Language: en-US, cs-CZ
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -102,42 +102,23 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260913-nt36672a-panels-v1-8-ce097402c6ea@minlexx.ru>
+In-Reply-To: <20260913-nt36672a-panels-v1-4-ce097402c6ea@minlexx.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 13/09/2026 07:36, Alexey Minnekhanov wrote:
-> Add support for TXD TXDI600YANPA-43V3 video mode panel based on
-> Novatek NT36672A, used in Asus Zenfone Max Pro M1 smartphone
-> (asus-x00td).
+> Since this driver should represent not only devices manufactured by
+> Tianma Micro-electronics, but also from other companies, it makes more
+> sense to name it according to what driver file name already is: novatek.
 > 
-> Co-developed-by: iAboothahir<aboothahirpkd@gmail.com>
-> Signed-off-by: iAboothahir<aboothahirpkd@gmail.com>
-> Signed-off-by: Alexey Minnekhanov<alexeymin@minlexx.ru>
+> This does not change neither module file name nor Kconfig symbol, only
+> driver identification in dmesg. This makes it possible to e.g. grep
+> dmesg for "novatek" and get messages from both nt36672a-based panel and
+> Novatek touchscreen.
+> 
+> Signed-off-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
 > ---
->   drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 281 +++++++++++++++++++++++++
->   1 file changed, 281 insertions(+)
+>   drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-> index 1bfa808365874..954ab24c9d00a 100644
-> --- a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-> +++ b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-> @@ -468,6 +468,252 @@ static void tianma_jasmine_init_cmds(struct mipi_dsi_multi_context *dsi_ctx)
->   	usleep_range(5000, 6000);
->   }
->   
-> +static void txd_x00td_init_cmds(struct mipi_dsi_multi_context *dsi_ctx)
-> +{
-> +	mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0xff, 0x20);
-> +	mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0xfb, 0x01);
-
-Just for a start,
-
-0xff -> CMD2_P0, datasheet page 6
-
-0xfb -> Set non-reload MTP commad, page 12
-
-This driver has amazing datasheet, so the driver could look like a real driver 
-instead of dump of the register sequence :)
-
-David
+Reviewed-by: David Heidelberg <david@ixit.cz>
