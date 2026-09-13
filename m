@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1365D28D831;
-	Sun, 13 Sep 2026 02:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E2E376BCC;
+	Sun, 13 Sep 2026 02:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789267089; cv=none; b=X3ySJxTjgML/zZQYNAVt6Tp+w33vCi983Fxx1OdLviJ7UmP08zmOgBiBwBFtLWDoMggwbGVSKh0hYFBceBN2iiKBx0ZGg/B4+uhpC4AuRNWZ3AyKBLEAmIni99mpFfeIcPyRQLuAD1X1rdFfxyQL8WnWB77ulVtgSY8wxRvh3xY=
+	t=1789267089; cv=none; b=BBJTifS8Kt6K4JZkk3GjwMcoZlYTHe88meg/OiejM/qdX4du40KoPjLZBrDbeknILSv1oh/uFYB7opeeln94E9miaTDIeHXCQUHAkybB9fddr5HFEXu0mJvmFNTAe9k144saOFIqrDhJWMKL/RQffU50z+4AaOrVZC5/y/YSWws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789267089; c=relaxed/simple;
-	bh=ZnOgLdspKp6PXfMxtUeiK8FG0a+Ot0kQxnHtZbQFrOY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=liwuCg4NfwdiUJE3BA1ibm5sMhrtRzXqV2rPVNXOtMHlVCdeelWXevtR70PlqEFxTAOz7U/XrfjJYD5OZ5cZKDqXwbl5+MggjOwRdtFHV5LjK55oAXOtrp88UU/NmQwoAdVLHgX4wmwLEacfBgJHEF2+vg8Ea0M+bCtJYk7fMoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nj0J70qJ; arc=none smtp.client-ip=10.30.226.201
+	bh=1p96QVsI041xiggk+9kJfF92XF3Bp24d0J5zfXI9ZeM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=SDLRny7ZkuhVylPIO++3SHvXAGFf8M0JjkcWhZMGy/5Fwgi0xCC3yy8jXuThpD+7DdOinJOaPeNXqJoONCr0F9HXePPFLzMF4VyajwvB5eOpTtvmhKOOa3WMZzKvG5G0hV7G8wK4d+Aignqh11dTR96z9C7i+yh0OQ5YiksDtcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGkpKVjs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nj0J70qJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7283FC2BCB9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGkpKVjs"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 953BFC2BCFB;
 	Sun, 13 Sep 2026 02:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789267088;
-	bh=ZnOgLdspKp6PXfMxtUeiK8FG0a+Ot0kQxnHtZbQFrOY=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=nj0J70qJxSnBMzMZH6IR+yNTiaFQK8q4LkiI6FESAldQJNZyE7Wpq6tle7cWjnVrA
-	 zBtmmV7JAo++CG5JIrgRQtFoQePB9Bw/0hBb0c609ndxA8k/sW5yk6A6rneoyWX+LJ
-	 BhKu4QCDzsWywdxbAfOBHxBugB4fkDyxrRHmpHBIRu+6zZMLTpNVR/Lj7qBYvMpy66
-	 FAg79gLFbNd4vXYj/XEg70L4hIMJPqGGi18TeOgvmYUnjtUNIeAGhGwd0fPoajJZXa
-	 zMzEcRyKOSIpI7mmRRCaWoQceXUGeY7zUNOHyPNBowlsbBWQCadNpM0jwW7J1onxKT
-	 hVWunlH6eewnA==
+	bh=1p96QVsI041xiggk+9kJfF92XF3Bp24d0J5zfXI9ZeM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=MGkpKVjsIBWwt11yYCFoTnpzjJ4i6BEXNwW5TnYfETVtC8xGW+2nWD9o35SB7+xhz
+	 K6G8aqSShAy6rYD3gKsYZCM4VeQ9FUEMxHvp4Yv5ED/WFQpSl6iUB/DzYnYOHL9Bq7
+	 c1B9R8gs7XfLTxHnKL0xyWMpo4CRc68nXFx2fJNY1mPyTbqi1ToPLFrWr+CWUT+x/L
+	 JZsDM2XaofJahfdaHd9EhSuRTzCQ6OkPj4o1QGln3su/7rpyiyS8OK8obbbJenDSFj
+	 qYS83WXud9ZIw8WrbQcpsIoaCDl9RrJ7Stv9O605jcVOKT3ZG1tzwS8HYopmADo+Qu
+	 ZiDL2uWnaQuhg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A002C88E5A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74043C88E56;
 	Sun, 13 Sep 2026 02:38:08 +0000 (UTC)
 From: Rudraksha Gupta via B4 Relay <devnull+guptarud.gmail.com@kernel.org>
-Subject: [PATCH v7 0/3] Samsung Expressatt: Camera Flash
-Date: Sat, 12 Sep 2026 19:38:07 -0700
-Message-Id: <20260912-expressatt_camera_flash-v7-0-e1fd2edc8d84@gmail.com>
+Date: Sat, 12 Sep 2026 19:38:09 -0700
+Subject: [PATCH v7 2/3] leds: flash: rt8515: Support single-GPIO flash ICs
+ with vin supply
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,14 +40,10 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XR32rCMBQG8FcpuV4k/2NkjL3HGHKanKxh1m5NL
- Yr47ov1wq7gdvmFnN+XQ84kY58wk011Jj2OKaduX4J9qohvYP+BNIWSiWDCMMkMxeNXjznDMGw
- 9tNjDNu4gN5RLzzVYJSwAKdPlVkzHSX57v+Uevw+lYLgdkvbKTAWb6nnytbAznw7dwTefeKKjo
- Jwy5YIHxaOX8PrRQtqtfNe+XLtqyEhLaNOwqUa7EuTa2KQ8dP1pWm3kU+W/W4ylh9bcOROtDzG
- Ee9NkjmLm8PVjRxRHe1E7MEIGXy8dOXPEH++RxUGrUQe9do7FpaNmjuSPHVWcyNG5qKzSXC4df
- Xc0k48dXRyntVCaGbDOLR0zc3795sIxxQnIIteMCYVq7lwulx/fCOLTmAIAAA==
-X-Change-ID: 20260306-expressatt_camera_flash-13c15a7427aa
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260912-expressatt_camera_flash-v7-2-e1fd2edc8d84@gmail.com>
+References: <20260912-expressatt_camera_flash-v7-0-e1fd2edc8d84@gmail.com>
+In-Reply-To: <20260912-expressatt_camera_flash-v7-0-e1fd2edc8d84@gmail.com>
 To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
@@ -55,15 +52,13 @@ To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
  Mark Brown <broonie@kernel.org>
 Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>, 
- Conor Dooley <conor.dooley@microchip.com>, David Heidelberg <david@ixit.cz>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+ phone-devel@vger.kernel.org, Rudraksha Gupta <guptarud@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789267087; l=5616;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789267087; l=8605;
  i=guptarud@gmail.com; s=20240916; h=from:subject:message-id;
- bh=ZnOgLdspKp6PXfMxtUeiK8FG0a+Ot0kQxnHtZbQFrOY=;
- b=sP4WXXThtqcRH2L60jl8kDIxLzzTTNrY+FCptx+CJiD8G2aOtAnBHF6RfWOhw52NBybIE/cj+
- VwgkWELg9tRBelLN5av60WPhv3EDEItrmLEi/qPDL102G4qrc0RXQLP
+ bh=skylHszTLWKkxhvTfuJWw+lsWyDXTn0YaNbK6ScaP3M=;
+ b=LJgoC1eV0Q2KJCIvx9SlazOf4UjuPfh5blxHB7+vcLE43bqgjU3hzRd4JhpX2omRYro4sUeTL
+ +pyO8/D/fpBBcPMzcVwhtzBf6p+Jdj7ISbqefKynxzhhXw9Rt93yTA2
 X-Developer-Key: i=guptarud@gmail.com; a=ed25519;
  pk=ETrudRugWAtOpr0OhRiheQ1lXM4Kk4KGFnBySlKDi2I=
 X-Endpoint-Received: by B4 Relay for guptarud@gmail.com/20240916 with
@@ -71,163 +66,288 @@ X-Endpoint-Received: by B4 Relay for guptarud@gmail.com/20240916 with
 X-Original-From: Rudraksha Gupta <guptarud@gmail.com>
 Reply-To: guptarud@gmail.com
 
-This small series adds camera flash to an existing similar mainline
-driver and adds it to the Samsung Expressatt's DTS
+From: Rudraksha Gupta <guptarud@gmail.com>
 
-// Tests
+Extend the RT8515 driver to support flash ICs that use only a single
+GPIO for both flash and torch modes (no separate ENT pin), with an
+optional vin regulator that gates power to the flash IC.
 
-// # Navigate to LED
-sudo su
-cd /sys/class/leds/white:flash
-
-// # Should stay at dim brightness
-echo 1 > brightness
-echo 1 > brightness
-echo 1 > brightness
-echo 1 > brightness
-echo 0 > brightness           # LED_OFF
-
-// # Max Brightness
-echo 50 > brightness
-echo 0 > brightness           # LED_OFF
-echo 99 > brightness
-echo 0 > brightness           # LED_OFF
-echo 1000 > brightness
-echo 0 > brightness           # LED_OFF
-echo 100 > brightness
-echo 0 > brightness           # LED_OFF
-
-// # Should increase in brightness
-for i in $(seq 1 16); do echo $i > brightness; sleep 1; done
-echo 0 > brightness           # LED_OFF
-
-// # Test flash strobe (rt8515_led_flash_strobe_set)
-cat max_flash_timeout          # check max
-echo 200000 > flash_timeout    # 200ms
-echo 1 > flash_strobe          # strobe ON → brightness_commit + timer
-cat flash_strobe               # should read 1, then 0 after timeout
-sleep 1
-cat flash_strobe               # should be 0 (timer fired)
-
-// # Test manual strobe cancel
-echo 1 > flash_strobe ; echo 0 > flash_strobe          # immediate off
-
-// # Check regulator error handling
-dmesg | tail -20                     # look for any "failed to turn off LED" msgs
-
-// # Multiple strobes shouldn't cause errors
-echo 200000 > flash_timeout
-echo 1 > flash_strobe
-echo 1 > flash_strobe
-sleep 1
-cat flash_strobe
-dmesg | tail -20
-
-// # Multiple strobes shouldn't cause errors (extreme test)
-for i in $(seq 1 500); do echo 1 > flash_strobe; echo 0 > flash_strobe; done
-dmesg | tail -20
-
-// # Test minimal timeout (turns on briefly)
-echo 1 > flash_timeout
-echo 1 > flash_strobe
-sleep 0.1
-cat flash_strobe
-dmesg | tail -20
-
-// # Flash strobe overrides brightness and flashes at full brightness
-echo 200000 > flash_timeout
-echo 1 > brightness
-echo 1 > flash_strobe
-sleep 1
-cat flash_strobe
-cat brightness
-dmesg | tail -20
-
-Downstream reference:
-Link: https://github.com/LineageOS/android_kernel_samsung_d2/blob/stable/cm-12.0-YNG4N/drivers/leds/Makefile#L51
-Link: https://github.com/LineageOS/android_kernel_samsung_d2/blob/stable/cm-12.0-YNG4N/arch/arm/mach-msm/board-apexq-camera.c#L591
-
+Assisted-by: Claude:claude-opus-4.6
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
 ---
-Changes in v7:
-- address Lee's comments
-- PM8921_MPP_S4 instead of PM8921_GPIO_S4 for the MPP4 power-source
-- Link to v6: https://lore.kernel.org/r/20260527-expressatt_camera_flash-v6-0-de0f150024e4@gmail.com
+ drivers/leds/flash/leds-rt8515.c | 147 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 107 insertions(+), 40 deletions(-)
 
-Changes in v6:
-- Address Lee Jones's comments:
-    - formatting
-    - use cancel_delayed_work_sync()
-- Link to v5: https://lore.kernel.org/r/20260503-expressatt_camera_flash-v5-0-95524506a799@gmail.com
+diff --git a/drivers/leds/flash/leds-rt8515.c b/drivers/leds/flash/leds-rt8515.c
+index 00904cc90ed6..541f61e13f01 100644
+--- a/drivers/leds/flash/leds-rt8515.c
++++ b/drivers/leds/flash/leds-rt8515.c
+@@ -30,6 +30,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/workqueue.h>
+ 
+ #include <media/v4l2-flash-led-class.h>
+ 
+@@ -43,6 +44,9 @@
+ #define RT8515_TIMEOUT_US	250000U
+ #define RT8515_MAX_TIMEOUT_US	300000U
+ 
++#define RT8515_OFF		0
++#define RT8515_ON		1
++
+ struct rt8515 {
+ 	struct led_classdev_flash fled;
+ 	struct device *dev;
+@@ -51,7 +55,7 @@ struct rt8515 {
+ 	struct regulator *reg;
+ 	struct gpio_desc *enable_torch;
+ 	struct gpio_desc *enable_flash;
+-	struct timer_list powerdown_timer;
++	struct delayed_work powerdown_work;
+ 	u32 max_timeout; /* Flash max timeout */
+ 	int flash_max_intensity;
+ 	int torch_max_intensity;
+@@ -62,27 +66,50 @@ static struct rt8515 *to_rt8515(struct led_classdev_flash *fled)
+ 	return container_of(fled, struct rt8515, fled);
+ }
+ 
+-static void rt8515_gpio_led_off(struct rt8515 *rt)
++static int rt8515_gpio_led_off(struct rt8515 *rt)
+ {
+-	gpiod_set_value(rt->enable_flash, 0);
+-	gpiod_set_value(rt->enable_torch, 0);
++	gpiod_set_value(rt->enable_flash, RT8515_OFF);
++	gpiod_set_value(rt->enable_torch, RT8515_OFF);
++
++	if (!rt->reg)
++		return 0;
++
++	return regulator_is_enabled(rt->reg) > 0 ? regulator_disable(rt->reg) : 0;
+ }
+ 
+-static void rt8515_gpio_brightness_commit(struct gpio_desc *gpiod,
+-					  int brightness)
++static int rt8515_gpio_brightness_commit(struct rt8515 *rt, struct gpio_desc *gpiod, int brightness)
+ {
+-	int i;
++	int ret;
++
++	/*
++	 * Reset the IC to start brightness from zero,
++	 * then re-enable and pulse to the desired level.
++	 */
++	ret = rt8515_gpio_led_off(rt);
++	if (ret)
++		return ret;
++
++	/* IC needs time to reset its brightness counter */
++	usleep_range(100, 200);
++
++	if (rt->reg) {
++		ret = regulator_enable(rt->reg);
++		if (ret)
++			return ret;
++	}
+ 
+ 	/*
+ 	 * Toggling a GPIO line with a small delay increases the
+ 	 * brightness one step at a time.
+ 	 */
+-	for (i = 0; i < brightness; i++) {
+-		gpiod_set_value(gpiod, 0);
++	for (int i = 0; i < brightness; i++) {
++		gpiod_set_value(gpiod, RT8515_OFF);
+ 		udelay(1);
+-		gpiod_set_value(gpiod, 1);
++		gpiod_set_value(gpiod, RT8515_ON);
+ 		udelay(1);
+ 	}
++
++	return 0;
+ }
+ 
+ /* This is setting the torch light level */
+@@ -91,23 +118,37 @@ static int rt8515_led_brightness_set(struct led_classdev *led,
+ {
+ 	struct led_classdev_flash *fled = lcdev_to_flcdev(led);
+ 	struct rt8515 *rt = to_rt8515(fled);
++	int ret = 0;
+ 
+ 	mutex_lock(&rt->lock);
+ 
+ 	if (brightness == LED_OFF) {
+-		/* Off */
+-		rt8515_gpio_led_off(rt);
++		ret = rt8515_gpio_led_off(rt);
++		if (ret)
++			goto out;
+ 	} else if (brightness < RT8515_TORCH_MAX) {
+-		/* Step it up to movie mode brightness using the flash pin */
+-		rt8515_gpio_brightness_commit(rt->enable_torch, brightness);
++		/*
++		 * Step it up to movie mode brightness.
++		 * If there is no separate torch pin, use the flash pin
++		 * for torch as well.
++		 */
++		ret = rt8515_gpio_brightness_commit(rt,
++				rt->enable_torch ?: rt->enable_flash, brightness);
++		if (ret)
++			goto out;
+ 	} else {
+-		/* Max torch brightness requested */
+-		gpiod_set_value(rt->enable_torch, 1);
++		/*
++		 * Max torch brightness requested.
++		 * If there is no separate torch pin, use the flash pin
++		 * for torch as well.
++		 */
++		gpiod_set_value(rt->enable_torch ?: rt->enable_flash, RT8515_ON);
+ 	}
+ 
++out:
+ 	mutex_unlock(&rt->lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int rt8515_led_flash_strobe_set(struct led_classdev_flash *fled,
+@@ -116,27 +157,35 @@ static int rt8515_led_flash_strobe_set(struct led_classdev_flash *fled,
+ 	struct rt8515 *rt = to_rt8515(fled);
+ 	struct led_flash_setting *timeout = &fled->timeout;
+ 	int brightness = rt->flash_max_intensity;
++	int ret;
++
++	if (!state) {
++		cancel_delayed_work_sync(&rt->powerdown_work);
++		mutex_lock(&rt->lock);
++		ret = rt8515_gpio_led_off(rt);
++		if (!ret)
++			fled->led_cdev.brightness = LED_OFF;
++		mutex_unlock(&rt->lock);
++		return ret;
++	}
+ 
+ 	mutex_lock(&rt->lock);
+ 
+-	if (state) {
+-		/* Enable LED flash mode and set brightness */
+-		rt8515_gpio_brightness_commit(rt->enable_flash, brightness);
+-		/* Set timeout */
+-		mod_timer(&rt->powerdown_timer,
+-			  jiffies + usecs_to_jiffies(timeout->val));
+-	} else {
+-		timer_delete_sync(&rt->powerdown_timer);
+-		/* Turn the LED off */
+-		rt8515_gpio_led_off(rt);
+-	}
++	/* Enable LED flash mode and set brightness */
++	ret = rt8515_gpio_brightness_commit(rt, rt->enable_flash, brightness);
++	if (ret)
++		goto out;
++
++	/* Set timeout */
++	schedule_delayed_work(&rt->powerdown_work, usecs_to_jiffies(timeout->val));
+ 
+ 	fled->led_cdev.brightness = LED_OFF;
+ 	/* After this the torch LED will be disabled */
+ 
++out:
+ 	mutex_unlock(&rt->lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int rt8515_led_flash_strobe_get(struct led_classdev_flash *fled,
+@@ -144,7 +193,7 @@ static int rt8515_led_flash_strobe_get(struct led_classdev_flash *fled,
+ {
+ 	struct rt8515 *rt = to_rt8515(fled);
+ 
+-	*state = timer_pending(&rt->powerdown_timer);
++	*state = delayed_work_pending(&rt->powerdown_work);
+ 
+ 	return 0;
+ }
+@@ -162,12 +211,17 @@ static const struct led_flash_ops rt8515_flash_ops = {
+ 	.timeout_set = rt8515_led_flash_timeout_set,
+ };
+ 
+-static void rt8515_powerdown_timer(struct timer_list *t)
++static void rt8515_powerdown_work(struct work_struct *work)
+ {
+-	struct rt8515 *rt = timer_container_of(rt, t, powerdown_timer);
++	struct rt8515 *rt = container_of(work, struct rt8515, powerdown_work.work);
++	int ret;
++
++	mutex_lock(&rt->lock);
++	ret = rt8515_gpio_led_off(rt);
++	mutex_unlock(&rt->lock);
+ 
+-	/* Turn the LED off */
+-	rt8515_gpio_led_off(rt);
++	if (ret)
++		dev_err(rt->dev, "failed to turn off LED (%d)\n", ret);
+ }
+ 
+ static void rt8515_init_flash_timeout(struct rt8515 *rt)
+@@ -297,11 +351,19 @@ static int rt8515_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, PTR_ERR(rt->enable_flash),
+ 				     "cannot get ENF (enable flash) GPIO\n");
+ 
+-	/* ENT - Enable Torch line */
+-	rt->enable_torch = devm_gpiod_get(dev, "ent", GPIOD_OUT_LOW);
++	/* ENT - Enable Torch line (optional for single-GPIO flash ICs) */
++	rt->enable_torch = devm_gpiod_get_optional(dev, "ent", GPIOD_OUT_LOW);
+ 	if (IS_ERR(rt->enable_torch))
+ 		return dev_err_probe(dev, PTR_ERR(rt->enable_torch),
+-				     "cannot get ENT (enable torch) GPIO\n");
++				     "Failed to obtain the Enable Torch GPIO\n");
++
++	rt->reg = devm_regulator_get_optional(dev, "vin");
++	if (IS_ERR(rt->reg)) {
++		ret = PTR_ERR(rt->reg);
++		if (ret != -ENODEV)
++			return dev_err_probe(dev, ret, "Failed to obtain the input supply\n");
++		rt->reg = NULL;
++	}
+ 
+ 	child = device_get_next_child_node(dev, NULL);
+ 	if (!child) {
+@@ -327,12 +389,17 @@ static int rt8515_probe(struct platform_device *pdev)
+ 		dev_warn(dev,
+ 			 "flash-max-timeout-us property missing\n");
+ 	}
+-	timer_setup(&rt->powerdown_timer, rt8515_powerdown_timer, 0);
++	INIT_DELAYED_WORK(&rt->powerdown_work, rt8515_powerdown_work);
+ 	rt8515_init_flash_timeout(rt);
+ 
+ 	fled->ops = &rt8515_flash_ops;
+ 
+-	led->max_brightness = rt->torch_max_intensity;
++	/*
++	 * If there is no separate torch pin, use flash max intensity
++	 * as max brightness instead.
++	 */
++	led->max_brightness = rt->enable_torch ?
++		rt->torch_max_intensity : rt->flash_max_intensity;
+ 	led->brightness_set_blocking = rt8515_led_brightness_set;
+ 	led->flags |= LED_CORE_SUSPENDRESUME | LED_DEV_CAP_FLASH;
+ 
+@@ -371,7 +438,7 @@ static void rt8515_remove(struct platform_device *pdev)
+ 	struct rt8515 *rt = platform_get_drvdata(pdev);
+ 
+ 	rt8515_v4l2_flash_release(rt);
+-	timer_delete_sync(&rt->powerdown_timer);
++	cancel_delayed_work_sync(&rt->powerdown_work);
+ 	mutex_destroy(&rt->lock);
+ }
+ 
 
-Changes in v5:
-- Address Lee Jones's comments:
-    - formatting
-    - use devm_regulator_get_optional()
-    - use a workqueue instead of a timer
-    - previously we were validating ent-gpios xor vin-supply at probe,
-        but was removed. update the commit msg to reflect this
-- Link to v4: https://lore.kernel.org/r/20260331-expressatt_camera_flash-v4-0-f1e99f474513@gmail.com
-
-Changes in v4:
-- Driver:
-    - revert function renames
-    - add comment to use flash instead if torch pin not available
-- Link to v3: https://lore.kernel.org/r/20260326-expressatt_camera_flash-v3-0-e75e5d58990f@gmail.com
-
-Changes in v3:
-- DTS:
-    - Renamed and reordered nodes
-- Driver:
-    - Use regulator_is_enabled() instead of reg_enabled
-    - remove ent xor vin check
-    - remove rt->reg == -ENODEV check
-    - rename functions to reflect what they do and added ret's
-    - Fixed: LED was increasing in brightness when setting the same
-        brightness multiple times
-- Link to v2: https://lore.kernel.org/r/20260318-expressatt_camera_flash-v2-0-5c2b9a623dcb@gmail.com
-
-Changes in v2:
-- dt-bindings: Explain the hardware and not the driver
-- **/*: Use vin-supply instead of unlock-gpio
-- expressatt DTS: Reorder pinctrl-*
-- expressatt DTS: Define rfs-ohms to a default (couldn't find
-                  information about this)
-- Link to v1: https://lore.kernel.org/r/20260306-expressatt_camera_flash-v1-0-b1996f7cdfdd@gmail.com
-
-To: Lee Jones <lee@kernel.org>
-To: Pavel Machek <pavel@kernel.org>
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Linus Walleij <linusw@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-leds@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-msm@vger.kernel.org
-
----
-Rudraksha Gupta (3):
-      dt-bindings: leds: rt8515: Support single-GPIO flash ICs with vin supply
-      leds: flash: rt8515: Support single-GPIO flash ICs with vin supply
-      ARM: dts: qcom: msm8960: expressatt: Add camera flash
-
- .../devicetree/bindings/leds/richtek,rt8515.yaml   |  34 ++++-
- .../dts/qcom/qcom-msm8960-samsung-expressatt.dts   |  44 ++++++
- drivers/leds/flash/leds-rt8515.c                   | 147 +++++++++++++++------
- 3 files changed, 184 insertions(+), 41 deletions(-)
----
-base-commit: 237a1c39e8dfd3e1c6f1f023eea37a48ec04cc63
-change-id: 20260306-expressatt_camera_flash-13c15a7427aa
-prerequisite-message-id: <20260527-expressatt-touchkey-v2-1-049dca41fc3a@gmail.com>
-prerequisite-patch-id: 2b24e9ba47500ef05d38e37b40d8ca2dceb4716a
-
-Best regards,
---  
-Rudraksha Gupta <guptarud@gmail.com>
+-- 
+2.55.0
 
 
