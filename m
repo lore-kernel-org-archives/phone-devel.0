@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EB439A06D;
-	Mon, 14 Sep 2026 18:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F08415B6E;
+	Mon, 14 Sep 2026 21:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789410902; cv=none; b=ZKYZGmWHlqy6v3uzInCj8Aq59odcSgww8o7wgLVhbRgtQtAZI0jqfBKXlVyphf4CoC18VWenH/v6mRyJnMM+hEEOgn6X9wiPSfcgohjDC5KicurxbdjuqKBfS/LnB5SBsAREKKLLfwoOAKZiHnZjhgRs4XWPV1dpyFRP2znkGvY=
+	t=1789419902; cv=none; b=NGvsVRZDy49kUV6arKtJIXHCjOyZBVP2I0jstf+xf3G6Wq2+4EAys6HNcHS5uVV6n9UD8Kup3wblPhqlVHOzv605sy/g4/+cSsqEIWwqqdK3bGVags/UnHuqF+qkdMsEwOEzXAEyEqjQfqDWKFaPTfIHB701YTrGTyU1PK9F+/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789410902; c=relaxed/simple;
-	bh=B/KhOE/cPA5wuGhVuSxvGslGu9BTJq+GgxVblXAqPlo=;
+	s=arc-20240116; t=1789419902; c=relaxed/simple;
+	bh=ihzL+l2KI7XVSNewbML1ta9wvrsrafmVC9sc5kiBTMQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hf7n//lRkXh11j2x7KunQH0dGBNTUpqhmpT0T/4bPLlIub9iFNsL5pNYDA+h+3pKXyGp+wvWzQozr9+Z7ol/6J8Z1iQ8Eeh46JdkJwPlguVlcR/ZYN3cG/1uQjMXCAQrIsQEH2L2mUhuRQOYgto4BAIzyuGYkPGH/PA4eholUlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=etFSTt+8; arc=none smtp.client-ip=84.42.129.46
+	 In-Reply-To:Content-Type; b=oNQk+gCK2XkjmjQc4C5XkEYP9UVBgRsmxQ2GtdlahpolH+EtJveYYjPNTcR1EXHY//drQmQwh9Bz+wWP4aVMZT5gBeQzg8vaCrI59VZa2TG5gEUQqoO0Un5rr1HJVj3s6qfP3pYvYz3cKbSFN84r/y4Dn7oRQ0+RzByUh4ZFPqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=s8kSuDxh; arc=none smtp.client-ip=84.42.129.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="etFSTt+8"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="s8kSuDxh"
 Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id D55435340313;
-	Mon, 14 Sep 2026 20:34:48 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 3C05E534032A;
+	Mon, 14 Sep 2026 23:04:57 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1789410889;
+	t=1789419897;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eSQ1KHTYxMqP644PbBgyA/dOPDLer74IQYxGcMnJfUA=;
-	b=etFSTt+8ptYo4K+cR2gJYnXD8B4G3ZuMtll5cEaDNDktWBL3s5VSOPK2USP1SW3NFlkRWq
-	SF/FUFcs4EyVMUigZfyLJ1iyNm0M85UDjLpXIruQrRTF9sWi15FhMLZI7Mqp4MpiV43bjC
-	1/l/pb1SDjvbRLD0KisEGP34f4Lu50M=
-Message-ID: <9ada2cc5-1f2e-48fa-a170-052fe33dff29@ixit.cz>
-Date: Mon, 14 Sep 2026 20:34:48 +0200
+	bh=Ucz9EKe46ScLEmo/7CYnL5FFLCA5CmnkIuajSNz4/sM=;
+	b=s8kSuDxhBCJOBKfjaXao3nCX/kanfcxEbJQGfERqu72Y9OPDhA7T1om6S56G9uzZNjYufm
+	3uH3/Ldk+1uUYJLbPm8bwI/LbZFzyrswqY+2Lw20PrH7cQPp/q6AfJMf9Gm7K/g+Jf6Pwp
+	EKyUFr+/wb27p9Prc8yTKYjUaanUOQo=
+Message-ID: <cd90572c-e1f3-47a0-829e-9b3d8097a62f@ixit.cz>
+Date: Mon, 14 Sep 2026 23:04:56 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,19 +41,21 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] backlight: qcom-wled: Fix NULL pointer dereference
- in PM callbacks
-To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
- Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
- Kiran Gunda <quic_kgunda@quicinc.com>,
- Marco Mattiolo <marco.mattiolo@hotmail.it>,
- =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Joel Selvaraj <foss@joelselvaraj.com>, stable@vger.kernel.org
-References: <20260914-qcom-wled-backlight-v3-0-d69fe9843841@ixit.cz>
- <20260914-qcom-wled-backlight-v3-1-d69fe9843841@ixit.cz>
+Subject: Re: [PATCH v2 1/2] drm/panel: lg-sw43408: do not assert reset across
+ unprepare
+To: Sumit Semwal <sumit.semwal@linaro.org>,
+ Casey Connolly <casey.connolly@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Dmitry Baryshkov <lumag@kernel.org>,
+ Marijn Suijten <marijn.suijten@somainline.org>, Vinod Koul <vkoul@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260810-fix-blueline-panel-v2-0-9344dfdbc3f9@ixit.cz>
+ <20260810-fix-blueline-panel-v2-1-9344dfdbc3f9@ixit.cz>
 Content-Language: en-US, cs-CZ
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -99,28 +101,90 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260914-qcom-wled-backlight-v3-1-d69fe9843841@ixit.cz>
+In-Reply-To: <20260810-fix-blueline-panel-v2-1-9344dfdbc3f9@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 14/09/2026 20:14, David Heidelberg via B4 Relay wrote:
+On 10/08/2026 11:55, David Heidelberg via B4 Relay wrote:
 > From: David Heidelberg <david@ixit.cz>
 > 
-> wled_probe() doesn't set the driver data for the platform device.
-> As a result, dev_get_drvdata() in wled_remove() will return NULL,
-> leading to a NULL pointer dereference afterward.
+> Asserting the reset GPIO in unprepare() and leaving it asserted puts
+> the DDIC into a state it never recovers from: after the following
+> prepare() the panel answers all DCS commands, reports display-on with
+> clean self-diagnostics, and its configuration registers read back
+> identical to a working panel, but it never lights up again.
 > 
-> Set the platform device driver data in wled_probe().
+> On the Pixel 3, vddi is shared with the touchscreen controller and
+> remains powered while the panel is off, so with this driver the DDIC
+> sits in reset with its logic rail up for the whole blank period - a
+> state the vendor stack never creates: the vendor firmware only toggles
+> reset as part of a full power-on sequence, and the vendor OS never
+> power-cycles the panel at all (LP mode is used instead).
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: feeab87b3072 ("backlight: qcom-wled: Add support for short circuit handling")
+> Leave reset alone in unprepare(); prepare() performs the regular reset
+> sequence anyway.
+> 
+> Without this, the Pixel 3 display never comes back after the first
+> blank/unblank cycle.
+> 
+> Since there isn't any other panel or device using this DDIC, this
+> approach seems resoanble to address the issue.
+> 
+> Fixes: 069a6c0e94f9 ("drm: panel: Add LG sw43408 panel driver")
+> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 > Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->   drivers/video/backlight/qcom-wled.c | 1 +
->   1 file changed, 1 insertion(+)
+>   drivers/gpu/drm/panel/panel-lg-sw43408.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
 > 
-Please ignore this [1/4] patch, so at least the rest get fixed.
-In next series, I'll omit this one (I thought it's easy drop in fix for 
-critical, but seems not).
+
+Good news is, that this patch really doesn't make panel power-off fatal for the 
+phone, but recent testing got me into state where I observed:
+
+10 hours, display on, phone operating normally.
+
+display on (various time), display off, display on OK, but sometimes
+
+display on, display off (for longer time), after pressing power button (to wake 
+up) the phone reboot into bootloader.
+
+Nothing printed into dmesg (I'll try enable drm-debug, but not having high hopes.
+
+So far, this is still heavy improvement comparing to instant crash, but not the 
+perfect solution either.
 
 David
+
+> diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
+> index 293826c5006b9..0bf8e08f10b9c 100644
+> --- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
+> +++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
+> @@ -50,18 +50,24 @@ static int sw43408_unprepare(struct drm_panel *panel)
+>   	int ret;
+>   
+>   	mipi_dsi_dcs_set_display_off_multi(&ctx);
+>   
+>   	mipi_dsi_dcs_enter_sleep_mode_multi(&ctx);
+>   
+>   	mipi_dsi_msleep(&ctx, 100);
+>   
+> -	gpiod_set_value(sw43408->reset_gpio, 1);
+> -
+> +	/*
+> +	 * Keep reset deasserted: vddi may stay powered (it is shared with
+> +	 * the touchscreen on Pixel 3) and holding the DDIC in reset while
+> +	 * its logic rail is up puts it into a state that no init sequence
+> +	 * recovers from - the panel keeps answering DCS commands and
+> +	 * reports display-on, but never lights up again. The vendor stack
+> +	 * only ever toggles reset as part of a powered-up init sequence.
+> +	 */
+>   	ret = regulator_bulk_disable(ARRAY_SIZE(sw43408_supplies), sw43408->supplies);
+>   
+>   	return ret ? : ctx.accum_err;
+>   }
+>   
+>   static int sw43408_program(struct drm_panel *panel)
+>   {
+>   	struct sw43408_panel *sw43408 = to_panel_info(panel);
+> 
+
