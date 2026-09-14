@@ -1,154 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C670E2F28FC;
-	Sun, 13 Sep 2026 22:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A1A41D648;
+	Mon, 14 Sep 2026 09:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789337044; cv=none; b=hcBYvgvqYWv5ILpAQQGmKcMi495/nfoE8kcchod1LOY/7Xra/xXHU/164hj3LbFr3GS0H53JLOFnUe7IQpw2VfSPhehJ1+ppWK4jZhWkGpd4Z1PRvnC7gQgw/BkVCyXYDOGzAsj1/PLgpNgzjWbd7fJLy5aK9Fi4XBhHzxS8m8o=
+	t=1789378387; cv=none; b=dDffKkPisBcsgOd5uok72rla+BENIZjGwYVRtAvf9nTUWrjJTHjR8NMLlUi8p+P0A3FgGdE5QprY0j54pS0xAAV7vrhpSzsVxpiWOiQgqmghYifHAGE6TighQ1VsahiMv03bzb0tJih4bAZp3ZQ4HyxZ3jFsjL/M6iAe2g4/ruQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789337044; c=relaxed/simple;
-	bh=47WmqnedWWqYfZPZQ3NzMNFRn8FZHL0B9IXQnGLDKmM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mkWruLuUbezfHmRiQRphw7D14M07rynkHTagTS7yRE9dAMGFO7YwycxqWmdYPhPd0Pv8h5ixqO8w1+9gcVtKPlXHRZSBc+MS8fRuoPG2Zf3gpD5B/nsnAUOAhAC393k3G2xxSeKSWk5naROD4JBLCtmh9sxd4v7LBYa94PiPITM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgYA+Y8c; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1789378387; c=relaxed/simple;
+	bh=Rns9Q4qLtxlw6IyA5BLhL4Pqqdje+UUjfQyTd+lbEuc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ylcvmy7kjzE00YfVQ7yqwK+J4L0P4vnNDxJVdoUtmmpf1Wy+53hdACe6I7fLZDGpo2r36mc+0KcI4kEXEXQywzDfyI6UZy0oQ4aYwpfmttBirKr2ffrxg0oTNyQEg17SOKChlLmgf04518R54HqgFgO6Avd0NH/HBNAZkk5n3xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqyci8CU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgYA+Y8c"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 38241C2BCC7;
-	Sun, 13 Sep 2026 22:04:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789337044;
-	bh=47WmqnedWWqYfZPZQ3NzMNFRn8FZHL0B9IXQnGLDKmM=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=cgYA+Y8czaROCIifpqTteTZ1gYJPEIl17Owqh2NWWnELKyKtfEJRdwCgQfPeWNWLU
-	 g8xRsPzaThgQOWVWKzTZxn5iaaKU9wQnp946s+8RQPu/NtHYuuvv78vZZVLr3ylNSA
-	 SOPWNMDu9PRJSZjhSVEMMULNnPx07M2whMQV8a7MS4jlw0pzMxx8VBdXMF7yCLGUg5
-	 OL38FE9ni9bEpAgMLEmkMacklNAsEgxmu6YSlndYGb2wNNeJF2rylxMiX0qUQHgN+Z
-	 qk+7yXO+u2GODC/aFToSSclpED7F1/zykHF2J1ItbEPflmaVONhTRVM7wK4ZOt/6uI
-	 HSzbD1I1qC87A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 141B4C88E64;
-	Sun, 13 Sep 2026 22:04:04 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 14 Sep 2026 00:04:01 +0200
-Subject: [PATCH v2] media: qcom: camss: Don't reject sensor links faster
- than 4x the CSIPHY timer
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqyci8CU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692FD1F00893;
+	Mon, 14 Sep 2026 09:33:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789378385;
+	bh=TF8vWdHT/xzToLwETV42FttPVsuKKNCeUrPRhSDWsyk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cqyci8CULMLK5znEv17PEAp1/k+q2BZIachlXSX4MAJIur5gdxyJpr9iZTcPmarw1
+	 udrtyEXOfU3jnqGH9gn3/FEcgbXAmW37oY0S91OZZmtwu/0IEbZiRmm4YMKc9CFgjs
+	 AVg7pAppOCUNzV1QITn1ejrkrVtZq7Wjgv8oTqgh/oIRJTsHIOLYAFDL2bF1dSWN/h
+	 i7iTbvvfX4VhxkSnKVBjvl4IoGQiD5pquf5juSYLpa0ac1pj/5VrzV+n9eztmd0kWg
+	 wZStrzX++2+c+NJrErDiuOCJWiDF2fskFA+YTdpX1MIP7gcvG9/P8beC4k8Yorw73G
+	 /mnGqYlLgJncw==
+Date: Mon, 14 Sep 2026 10:33:01 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: esteuwu@proton.me, elder@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, xlie7669@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH] net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
+Message-ID: <20260914093301.GP48209@horms.kernel.org>
+References: <20260909-ipa-modem-drop-v1-1-0c9664f09c4a@proton.me>
+ <178900975328.219967.188619870211891152@kernel.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260914-csiphy-sdm845-limits-v2-1-622db5a6ebf0@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQ6CMBBGr0JmbQ0tgsQV9zAsaDuVMfKTTiUg4
- e4WPIDLl3zfeyswekKGW7KCx4mYhj6COiVg2qZ/oCAbGVSqirRUShimsV0E26685OJFHQUWWmJ
- mdeNym5UQr6NHR/Ohvdc/5rd+ogm7a1+0xGHwy9Gd5L77k5ikkMJmRard1cSMq2imcDYfqLdt+
- wK+q0GsyAAAAA==
-X-Change-ID: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Bjorn Andersson <andersson@kernel.org>, linux-media@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2724; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=4Cq9bOXeGKICKWJHpNyYvsyQ9j7GJVD/aYCdslBWgjk=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqpx3SFUalm5mC9E2nv/wBYp16G9lduNx5j352M
- stJXr6XkPWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaqcd0gAKCRBgAj/E00kg
- clLbD/4+CjTgR2qBsW2lv29+7ydJstXFbe0MqkBjKJBxK33hfox9lLhnbqy40UzSWx+UyBb8+rO
- aZttSoYguDNXTTZ5aooSzzhwCS1X1DXK1bIta7WQ1ubiSPRytWD7FbMQTBqmqIqqjf3UuaPr0PS
- SiYvqj8B11J8z/xYaCCz7JDIddW0nd9fJeLw2HxMPUDIPjfPYfcBoIbXoitX5ShrbUvATIBfX0N
- CvvfBu6lDHu9/p/Kz7/A7NhyHCTng2FdtqYhyDh/TTF64GPeHv/+7JzEmYLTG6HOG9nXoJSfMww
- 0weqpHGm7sUn/aqPCQir4Fn3SGBlVSHHeV/hP420TSSWWn4dMygoLDR9XbnGFhd6Ehq7IywRBZH
- 0OtVyBNyC9Kf7Y388ECqFePMaexPcaxqbqK0gaAWzuhbsTNPFidr+NITA5H7ZnyWesLVkS79dq/
- PK2D+tzihFgnrx52q4iQ4qythhVarC3VnT7WYS3wfii601fTfoxG90QgXZN3awXN0iubcqdilxH
- +YZpRPH6tlN7uB4WSNzdUCh0u+ml4ROD8E8A5+N8YL1db5etY9dierXJUUeT794ekW2SIm8L1fk
- Fh5HiSx7cl3dC9QOGJZ9JvXH4z8vHPWEyMJL4gUHN0Q+TGo8FcdEfGe1nltlvB9h7i+l2PldQSs
- SjvDXAZPrTv0Krg==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178900975328.219967.188619870211891152@kernel.org>
 
-From: David Heidelberg <david@ixit.cz>
+On Thu, Sep 10, 2026 at 03:09:13AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> 
+> - [Medium] The newly declared region id `IPA_MEM_MODEM_STATS_DROP` has no
+>   producer and no consumer, so the patch is functionally inert and…
+> - [Low] Commit-message / code identifier mismatch plus stale peer
+>   documentation for the new drop-statistics region.
 
-The timer clock has no such relationship to the link rate. Both the 2ph
-and 3ph code use it only as the reference for csiphy_settle_cnt_calc(),
-where a faster link makes the settle count smaller, not larger: at
-269.33 MHz the count converges to 16 as the link rate grows. The vendor
-driver pins the timer to 269.33 MHz for every sensor (it is the highest
-rate in the SDM845 clock plan) and streams this exact link with it.
+Hi Esteban,
 
-Clamp to the highest listed rate instead of failing, the same way the
-unknown-link-rate case is already handled.
+I'd appreciate it if you could comment on the AI-generated
+review posted by netdev-bot+sashiko. This is now an expected
+part of the Netdev development process [1].
 
-Solves issue on sdm845 that caps the link at ~1.02 GHz,
-so the Samsung S5K2X7SP, ~2.3 Gbps/lane, link 1.15 GHz) fails with
-Pixel clock is too high for CSIPHY
+Thanks!
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Tested on SHIFT 6MQ with sdm845-next-20260820-9.
----
-Changes in v2:
-- Drop the camcc change entirely; the 269.33 MHz ceiling stands. (Konrad)
-- Fix the check in camss instead: clamp the timer clock to the highest
-  listed rate rather than failing, matching the vendor driver.
-- Link to v1: https://patch.msgid.link/20260822-csiphy-sdm845-limits-v1-1-d360bf7cd38f@ixit.cz
----
- drivers/media/platform/qcom/camss/camss-csiphy.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+[1] https://docs.kernel.org/process/maintainer-netdev.html#review-timelines
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
-index 539ac4888b608..f3d17ea0ab515 100644
---- a/drivers/media/platform/qcom/camss/camss-csiphy.c
-+++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
-@@ -157,25 +157,23 @@ static int csiphy_set_clock_rates(struct csiphy_device *csiphy)
- 			long round_rate;
- 
- 			camss_add_clock_margin(&min_rate);
- 
- 			for (j = 0; j < clock->nfreqs; j++)
- 				if (min_rate < clock->freq[j])
- 					break;
- 
--			if (j == clock->nfreqs) {
--				dev_err(dev,
--					"Pixel clock is too high for CSIPHY\n");
--				return -EINVAL;
--			}
--
--			/* if sensor pixel clock is not available */
--			/* set highest possible CSIPHY clock rate */
--			if (min_rate == 0)
-+			/*
-+			 * The timer clock is only the reference for the
-+			 * settle count and does not need to track the link
-+			 * rate. Use the highest listed rate when the link is
-+			 * faster than the table covers or unknown.`
-+			 */
-+			if (j == clock->nfreqs || min_rate == 0)
- 				j = clock->nfreqs - 1;
- 
- 			round_rate = clk_round_rate(clock->clk, clock->freq[j]);
- 			if (round_rate < 0) {
- 				dev_err(dev, "clk round rate failed: %ld\n",
- 					round_rate);
- 				return -EINVAL;
- 			}
-
----
-base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-change-id: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
-
-
+> 
+> --
+> 
+> net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
+> 
+> This adds a new ipa_mem_id enumerator for the modem-side drop statistics
+> region and allows it in ipa_mem_id_valid() only for IPA v5.0 and later.
+> No platform data file or driver code path references the new region.
+> 
+> Link: https://github.com/LineageOS/android_kernel_qcom_sm8450-modules/commit/fc71d0972a2453cc29f873d723a355a902c6d69c
+> 
+> > diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
+> > index 078d32a18dbf..3000aaa24530 100644
+> > --- a/drivers/net/ipa/ipa_mem.c
+> > +++ b/drivers/net/ipa/ipa_mem.c
+> > @@ -166,6 +166,7 @@ static bool ipa_mem_id_valid(struct ipa *ipa, enum ipa_mem_id mem_id)
+> >  			return false;
+> >  		break;
+> >  
+> > +	case IPA_MEM_MODEM_STATS_DROP:
+> >  	case IPA_MEM_AP_V4_FILTER:
+> >  	case IPA_MEM_AP_V6_FILTER:
+> >  		if (version < IPA_VERSION_5_0)
+> 
+> [Severity: Medium]
+> Can this new case ever be taken?  ipa_mem_id_valid() is only consulted for
+> ids that already appear in a struct ipa_mem_data.local[] array, and a grep
+> of the tree at this commit shows IPA_MEM_MODEM_STATS_DROP only in
+> ipa_mem.h (the declaration) and here.
+> 
+> The v5.0+ data files that the version >= IPA_VERSION_5_0 gate could apply
+> to all define just the one drop-stats region:
+> 
+> drivers/net/ipa/data/ipa_data-v5.0.c
+> drivers/net/ipa/data/ipa_data-v5.2.c
+> drivers/net/ipa/data/ipa_data-v5.5.c
+> 	.id		= IPA_MEM_STATS_DROP,
+> 
+> and the only consumer of drop-stats memory still looks up the old id:
+> 
+> drivers/net/ipa/ipa_qmi.c:init_modem_driver_req() {
+> 	...
+> 	/* If the DROP stats region is defined, include it */
+> 	mem = ipa_mem_find(ipa, IPA_MEM_STATS_DROP);
+> 	if (mem && mem->size) {
+> 		req.hw_stats_drop_base_addr_valid = 1;
+> 	...
+> }
+> 
+> The commit message says the region "is used in IPA v5.0 and higher", but
+> with no producer and no consumer the change has no runtime effect.  Would it
+> make sense to land the data-file entry and the QMI consumer in the same
+> series?
+> 
+> There also seems to be a layout prerequisite that isn't mentioned.  In
+> ipa_data-v5.0.c, IPA_MEM_STATS_DROP is at offset 0x3870 with size 0x0020
+> (ending at 0x3890), and IPA_MEM_MODEM starts at 0x3898 with canary_count 2,
+> so its two canaries occupy 0x3890-0x3898:
+> 
+> 	{
+> 		.id		= IPA_MEM_STATS_DROP,
+> 		.offset		= 0x3870,
+> 		.size		= 0x0020,
+> 		.canary_count	= 0,
+> 	},
+> 	{
+> 		.id		= IPA_MEM_MODEM,
+> 		.offset		= 0x3898,
+> 		.size		= 0x0d48,
+> 		.canary_count	= 2,
+> 	},
+> 
+> Doesn't adding a second drop-stats region require shifting IPA_MEM_MODEM and
+> everything after it?
+> 
+> > diff --git a/drivers/net/ipa/ipa_mem.h b/drivers/net/ipa/ipa_mem.h
+> > index b25babade787..56703bada07c 100644
+> > --- a/drivers/net/ipa/ipa_mem.h
+> > +++ b/drivers/net/ipa/ipa_mem.h
+> > @@ -68,6 +68,7 @@ enum ipa_mem_id {
+> >  	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
+> >  	IPA_MEM_STATS_TETHERING,	/* 0 canaries, optional (IPA v4.0+) */
+> >  	IPA_MEM_STATS_DROP,		/* 0 canaries, optional (IPA v4.0+) */
+> > +	IPA_MEM_MODEM_STATS_DROP,	/* 0 canaries, optional (IPA v5.0+) */
+> 
+> [Severity: Low]
+> The subject and the body both name IPA_MEM_STATS_DROP_MODEM, but the
+> enumerator added here is IPA_MEM_MODEM_STATS_DROP, and a grep of the tree at
+> this commit finds no occurrence of IPA_MEM_STATS_DROP_MODEM at all.  Could
+> the changelog and the code be made to agree?
+> 
+> The neighbouring statistics regions put the owner last:
+> 
+> 	IPA_MEM_STATS_QUOTA_MODEM,	/* 2/4 canaries (IPA v4.0+) */
+> 	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
+> 
+> Would IPA_MEM_STATS_DROP_MODEM (as the subject says) fit that convention
+> better than IPA_MEM_MODEM_STATS_DROP?
+> 
+> Also, the comment on the existing IPA_MEM_STATS_DROP still reads "0
+> canaries, optional (IPA v4.0+)" with no hint that it becomes the AP-side
+> region once the modem-side one exists on v5.0+.  Could that comment be
+> updated so a config author can tell which region to use for AP drop
+> statistics?
+> 
+> One more thing on the changelog: the paragraph explaining the split ("From
+> IPA v5.0 onwards, two memory regions for drop stats exist: one for the AP
+> (that is, the driver) and one for the modem (Q6).") sits below the ---
+> cut line, so it is not part of the recorded commit message.  Was that
+> intended to be above the cut line?
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-ipa-modem-drop-v1-1-0c9664f09c4a%40proton.me
