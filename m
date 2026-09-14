@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BECC49B1E1;
-	Mon, 14 Sep 2026 17:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D75735AC03;
+	Mon, 14 Sep 2026 18:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789407774; cv=none; b=qtTy2x+NBhmoK5ChtZ4GHe5Oi4nFyK7fVshSenvJepQYQTI5D4oW6eSIli8BC85o/CKROHWvgqIw82b5JihAccFVwWpLnRcEqew0So6KDhGlPg7f1pEOKLTpGNmZ+AObpqXAsJQgmbm7CHGeYgRNj/+k1rJob58sjpQmXIpO6rA=
+	t=1789409658; cv=none; b=kAdapcEwlQZhpQ2EMEguivZZfTWvu+xRIYUNrRYXocbJqlnkmb6M3M9PF/ZS0c0vPUOrmBCpDrSnV97UQMd8yMxQs4M89s8kWY0Y9u/sHgRw3cwy2xZkw01aoGvhlh244jzmS+wRq8Sko+6JERJ02KNBMFFe6Ra4riuxup1urF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789407774; c=relaxed/simple;
-	bh=PUvlkcnmJaXZt5p8As0KvIuk3AZONRe1vja4HE+7gb4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PROZ46hh8EpIsnCvg14JZin7HD2jgvw+ywoBghVxgjRw7ohOAFY01FmXMJ5oV2lJdAqZPfNzbHJhVwljR50ceank0SvsOGxStJSJgSKohtnbDCg900qQ/NgoJfh4MXjgG6gMoj3WkVk/PUXVF+lN072iIJy2Z6JOukiewZ9Mr3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9GMkzQ4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1789409658; c=relaxed/simple;
+	bh=WkUHM9dV7a2xSjD7kRnCTymeU+hrBQnaiHSi4mSqU5Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PLZmhQHCk0KjUl60kvo+qJOH3jiC7heUaPly5IYq1R9rKaypQanX23U/FDYVaTMZ35mglxCu4X2U5CzCVHJVQX9FrDzSxc0xHCy3rDxoN/8cGI8buDnaSsoTmSy/oarTxiS787R/BLygWtHJBo4vT9Pn4D9gitNTz10Wydlvw0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0Y+yrSZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9GMkzQ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 016E0C2BCB8;
-	Mon, 14 Sep 2026 17:42:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0Y+yrSZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D9E9BC2BCFB;
+	Mon, 14 Sep 2026 18:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789407774;
-	bh=PUvlkcnmJaXZt5p8As0KvIuk3AZONRe1vja4HE+7gb4=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=K9GMkzQ4tXQnYcuZuo4qsEOXG8WXJfw6ehXpaMRK/ECEQ0qVPjdMj4jnVma2fyXe3
-	 JcyHHoDM5nG/FnjgrOs6iOJQ8V8OljpIcYqZKkqa1cIkONgUGsQ/cOkm0ZB3Q3sKU3
-	 K8y6SR1nPGhJ0rCjaJ9Lao8bNuI1ObfHycKP60LhZ7GDYX3w21L2ijbCN35LVYUWdm
-	 6KOwVAq5RsA4s0BtH9sTKZrf/+eJduzrP9vOuv8Ib9mZj2eISzAZ0ghvTDWNfk2pKo
-	 mwl+rCoha+9hhdR6ZdMuxd6/aWc5Nffcf3yf71ww49BzpopC3VU5cxRw/1OqyFxPbw
-	 i9YbeJ2D1qF2A==
+	s=k20201202; t=1789409657;
+	bh=WkUHM9dV7a2xSjD7kRnCTymeU+hrBQnaiHSi4mSqU5Y=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=u0Y+yrSZRSblbLzrGRY8dRknzD0JQ7BglSRlMLwb++05uGU+SmruTziSoro75Lrqr
+	 Wf1j2J05Yyf4l1cXB9w68rfkjzAlu/OUKQxNl922mOqTSjRlJUO9gE0VBX5WOm373m
+	 Zz3pnMGMMUoHl9Iep+dO7lrgOtDz1NY3RaHAl96qXEd1l2Ze8BBGIJekQXHaxl73lk
+	 Y/vAUxBiyFtMzGLK+mQoB5+XMvwz4+RO8DID3RTUbhIEDyPKrQJgK/xNBlG9RRhvxs
+	 WcGYEYNv6urDjIAK2PzQKhBpTcoZp9mXIiGPCXb+aJybImIdaWR8ePFGKnBIctPqT3
+	 Lcs7qzogG0jHQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C352EC88E73;
-	Mon, 14 Sep 2026 17:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAFB0C88E72;
+	Mon, 14 Sep 2026 18:14:17 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v2 0/3] backlight: qcom-wled: Fix OVP IRQ imbalance and
- start from the hardware state
-Date: Mon, 14 Sep 2026 19:42:46 +0200
-Message-Id: <20260914-qcom-wled-backlight-v2-0-a908d9233e93@ixit.cz>
+Date: Mon, 14 Sep 2026 20:14:15 +0200
+Subject: [PATCH v3 2/4] backlight: qcom-wled: Fix WLED3 brightness register
+ stride
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,11 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NSxKCMBAFr0LN2rFCABFX3sNiEZIBRvloEhGlu
- LuAe5dd1a/fBI4sk4NTMIGlgR333QJyF4CuVVcRslkYpJAHkYkjPnTf4qshg4XSt4ar2mNpsiS
- NhUyjJIJlebdU8rhVL/mP3bO4kvZrajVqdr637+12CFfv/8MQYog6NiYmVRgl0jOP7Pf6A/k8z
- 1+qgE5jxgAAAA==
-X-Change-ID: 20260908-qcom-wled-backlight-fd9574027353
+Message-Id: <20260914-qcom-wled-backlight-v3-2-d69fe9843841@ixit.cz>
+References: <20260914-qcom-wled-backlight-v3-0-d69fe9843841@ixit.cz>
+In-Reply-To: <20260914-qcom-wled-backlight-v3-0-d69fe9843841@ixit.cz>
 To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
  Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
  Kiran Gunda <quic_kgunda@quicinc.com>, 
@@ -57,67 +55,77 @@ Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
  Joel Selvaraj <foss@joelselvaraj.com>, David Heidelberg <david@ixit.cz>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1862; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1777; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=PUvlkcnmJaXZt5p8As0KvIuk3AZONRe1vja4HE+7gb4=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqqDIcJVfrVXuYj/bpDoKLOG0YCDlIZtHrntKuG
- wxZR0f1JvmJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaqgyHAAKCRBgAj/E00kg
- chiGD/0RSVqrVoapWgon9AH1/YrrdXUVhs7NeYk97yKba4FByYxmYxUxhEyFzw3Vs3/3n37ezd5
- k2EB62/9RJUxQLTsJmiOheaSwYwBMC9NBAHUOP5FJponINw0xDfpigHOE0im7qnkzeBU0BAORH2
- EpWkzpwX6fitA8wVyeaAvN3X8XLAiht+U9aDQSlhjIhwTG6vWWdftMwPfS9OoN/7sDMhHrMysIV
- o16MmdHmD5v+gDUMtQC/UIZllBlXXWXcdb4Dt5E5znCnXQTKa+TVZhuo/ZnGB+W0erezMwl69qE
- RGMBW6W+mEzz2w5ZPO/2kjud/WYYfUFJeqBuVO13c06VK17YOa2oTWunhbAEW8rHgaGouxdCzQa
- r8gs2Q53wye/wJQKy+Nh+mfMhGo3SUiU7s3nBD8sB9Wuf+hUwhay2Hdf8FfC2A6KcK46utsg6Dm
- l/9H1iVQhgmiixrAZdJpDnrdn30GAvpS/dGdUiFZfrjom77pmuUnitnaaHXDM0oLxcn3A31RGSw
- eur/3WTXv3hhTjn3Sc8R0XocFa96rLXn/86Zxc0pC5XJ22mJVy6EBHmBQOrP9f0zm61IlH/VNCO
- 2aJZ1OqRbuEAb4Zgo2/vek+YjIk73WC92wo4t5rI4Fj3KE1BM3qGSzEx5/jSThRKd0qnDHmkYJl
- ZZaJZK/5nolyKnQ==
+ bh=l2V9M/mtqxNb2sIjHPyjkihrWhmivYuqBuqKZxlIoYM=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqqDl4e+EJzY/iCyxKxGF4mhW9oay6H5NgaCsGd
+ Ohbw0JWgXWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaqg5eAAKCRBgAj/E00kg
+ cmttD/4g8nziAhjgPhmtm3FoI3IvdN4iwbPG/MHGtdHuGY5A/UGENs944vkL0FDaObco14X87RS
+ PWvcnas3xWcFqqi8SRIq9W3VjCmY1lYTKC/iMA7voLvBveHndyxNbuAwsEeg/52HbWMhJqzcHSu
+ jI+F0WILo1resu1sMN6JWtDEdPGTbVFApxVG5lvDSvpivqMu4qFiC/VCqm7k+jJNd0HJIyixPyB
+ 9s5tOcOHL7+tlsY7Mi3Y+1fodLRVB537xn7+wOiKErHPPjL5g4/sMH9+go7L7F+yt37vrelpF4W
+ JsoawBydmLnDQf387r/558axlGsDKfX3K/eZ5m7ZlqimE5VOqMhAJcoBNWy9w/qhAWvkxDL3y26
+ uVatY0mKQEXnhWoAbpGL4TzEV48jGejbg/ynxt/VVCCKKPguiUyxVjDiK1Fgn/joxyyKi204XqR
+ s1MXMSYiG/VuB4HpBmKEYiox8Wuk7Y6sFvvi/3cAqCyxAL5SOnhV+PY2g0iMLvjgd8UsvJS8fCJ
+ cP6Nl0yvvTBfltTML1LGX/YHPu58+kdXUbD+49NgFG7KcFtU0MsD0UzkkKyBqRQqgkmmb7laDqh
+ IXKneKRRpqvmLmSWum0wYBlOogDmy36YxZQdAIcepMkFPJ4rwRDb/HGk8NHSesqLk8pHIbmspMC
+ X+UMNFwk1DlrFVQ==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-The qcom-wled OVP interrupt is enabled at probe whenever the module is
-already on, but the driver still believes the backlight is off, so the
-first brightness update re-enables the interrupt and trips "Unbalanced
-enable for IRQ". sdm845-mainline has carried a workaround for years and
-Joel posted a flag-based version last October [1], which Konrad and
-Daniel asked to be replaced by something that does not track the IRQ
-state by hand.
+From: David Heidelberg <david@ixit.cz>
 
-The first patch is unrelated and fell out of writing the readback: the
-WLED3 brightness register stride has been one byte instead of two since
-the 2019 restructuring, so multi-string pm8941 boards only program one
-string correctly. Untested, I have no WLED3 board; it restores what
-pm8941-wled.c did and matches the downstream leds-qpnp.c layout.
+WLED3 has a 16-bit brightness register pair per string, at 0x40 + 2*n,
+which is what the pm8941-wled driver wrote to:
 
-[1] https://lore.kernel.org/all/20251021-qcom-wled-fix-unbalanced-ovp-irq-enable-v2-1-7ff115b4ffe7@joelselvaraj.com/
+	rc = regmap_bulk_write(wled->regmap,
+			wled->addr + WLED3_CTRL_REG_VAL_BASE + 2 * i,
+			v, 2);
 
+The restructuring for WLED3 turned that into WLED3_SINK_REG_BRIGHT(n),
+defined as 0x40 + n, so the two byte writes for consecutive strings
+overlap: string 1 overwrites the MSB of string 0 with its own LSB, and
+with the default three strings only string 1 ends up with the requested
+value.
+
+Use the 2 byte stride.
+
+Fixes: 775d2ffb4af6 ("backlight: qcom-wled: Restructure the driver for WLED3")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v2:
-- Add a fix for the WLED3 brightness register stride.
-- Add patch reading the programmed brightness back via
-  backlight_ops.get_brightness. (Konrad)
-- Note the brightness readback is done in the follow-up to the first
-  patch.
-- Link to v1: https://patch.msgid.link/20260908-qcom-wled-backlight-v1-1-c4dd4eabda07@ixit.cz
+ drivers/video/backlight/qcom-wled.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-David Heidelberg (3):
-      backlight: qcom-wled: Fix WLED3 brightness register stride
-      backlight: qcom-wled: Fix unbalanced OVP IRQ enable at probe
-      backlight: qcom-wled: Read back the programmed brightness at probe
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index a76158a298335..e1962c2d90ed4 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -54,17 +54,17 @@
+ #define WLED3_SINK_REG_SYNC				0x47
+ #define  WLED3_SINK_REG_SYNC_CLEAR			0x00
+ 
+ #define WLED3_SINK_REG_CURR_SINK			0x4f
+ #define  WLED3_SINK_REG_CURR_SINK_MASK			GENMASK(7, 5)
+ #define  WLED3_SINK_REG_CURR_SINK_SHFT			5
+ 
+ /* WLED3 specific per-'string' registers below */
+-#define WLED3_SINK_REG_BRIGHT(n)			(0x40 + n)
++#define WLED3_SINK_REG_BRIGHT(n)			(0x40 + (n * 0x10))
+ 
+ #define WLED3_SINK_REG_STR_MOD_EN(n)			(0x60 + (n * 0x10))
+ #define  WLED3_SINK_REG_STR_MOD_MASK			BIT(7)
+ 
+ #define WLED3_SINK_REG_STR_FULL_SCALE_CURR(n)		(0x62 + (n * 0x10))
+ #define  WLED3_SINK_REG_STR_FULL_SCALE_CURR_MASK	GENMASK(4, 0)
+ 
+ #define WLED3_SINK_REG_STR_MOD_SRC(n)			(0x63 + (n * 0x10))
 
- drivers/video/backlight/qcom-wled.c | 88 +++++++++++++++++++++++++++++++------
- 1 file changed, 75 insertions(+), 13 deletions(-)
----
-base-commit: 944a035ecca915ae947905dcfb03f2b9dc6d032c
-change-id: 20260908-qcom-wled-backlight-fd9574027353
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+-- 
+2.55.0
 
 
