@@ -1,87 +1,37 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sm24.hosting.reg.ru (sm24.hosting.reg.ru [31.31.198.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCB344E052
-	for <phone-devel@vger.kernel.org>; Mon, 14 Sep 2026 11:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A437443C39;
+	Mon, 14 Sep 2026 11:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.31.198.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789385008; cv=none; b=ZjmNB3Zvd1bzqywOqp8opwtID9QQNCymfSIrLbu82AEBaaR4+X/AfAQyJhr7lQRxS9XvueCEih41FHH4buIToRh/aRbTZSJ4QD54CeZSO0MH8YZ7d1AxFAJ/+QABPyYmiYf4mTFalJy7iBO3EtXto17GR9yJnh5ygYMIg0o7bkE=
+	t=1789385012; cv=none; b=fBkgt+kPNWG3u6vvJ017BjvsQChVOb9+zCrQ1kAj2lr0p1WqN13W5vLhne3J6YyaAkAuYxR6dh5uJBzuUIKdQP02jmAvu+vbs8N/+VgK2335FJWah0gbAzYYdPu3FpGx8C/Ra3i1e2kVhqTKrM76jN/kkZ+kJSBYAstZRGl0fCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789385008; c=relaxed/simple;
-	bh=9NTdtJ/TSp6i9fELQDWEuFYvwbqy3ev3R+H2YTC2xv4=;
+	s=arc-20240116; t=1789385012; c=relaxed/simple;
+	bh=5CNt0QGx4zLWnjgEbjHZLHCAoTVd/ttj8A2ZBQRrnM4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VwrLcMLkygDK6/UmdSoL9AjEXnRDYpsF455JFinAJ4nUrbR7hudUo7Mo7ZpP9MXPv9VWe4tXgUgLs8nJ9TY35xeBBOjxozNw5YlM3UnhIs1of1qK2zvj7fvYjYMatobD309RQ80HgM9VBovp4AjN30bp6W6AagnEftXRPxdwd8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E/WVOCmY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cL4LlT2G; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=j541nzW0FBVSfT6LjsqDZtELMlpkiYOqlv6kdw8SSppv8FtT6thj9NkXdq6M77NZ8/UvsorKGnMZoMDoehhZheyGpv2urmKabLLlUheWSH4QQOsEf1cJq4BIYUVu3HWH3xwF1BbUBqk2v8ftk/aqRfvgGFu2qMHiCf93PiEEt0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minlexx.ru; spf=none smtp.mailfrom=minlexx.ru; dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b=YqX/jw3r; arc=none smtp.client-ip=31.31.198.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minlexx.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=minlexx.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E/WVOCmY";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cL4LlT2G"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68EAmNNk4032584
-	for <phone-devel@vger.kernel.org>; Mon, 14 Sep 2026 11:23:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	C99yA2ahM9Y0TtIpiFt1fwPT2Pp5VWgJygOu7Ai3npc=; b=E/WVOCmY/+5Enkgw
-	YEeOQ9dPHJUB8CWxTR20yFYOlY8UkoMJaYfEbZw5mtWvnO47B9tf1wMQPeafNwuh
-	wcPa+7jFxuwllxPm+71b/159YFvZtg/2RACZvfhGXsdX3lRflqfucbjNfAT60rpW
-	nT2W6tgRlLZN6L+MSJ/TNerjJkANtic5DzviOrYF00TQxSgNoyEqEGVr9kcRPO/3
-	gIuOu7yV0ud+xAE5Z0o7WnQCbf35GMdm9FpQLiSsBTvoxEBODy0Mr28DtrxMTC/P
-	1BajQAshRn13edHqPJho+jbGH0cD+CYPJc+8jjhbFR5E60BgJZv+Py3P6XJNpBgD
-	ZRcYpg==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gpeuq8ac8-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Mon, 14 Sep 2026 11:23:26 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-939f8e7ff71so35562185a.3
-        for <phone-devel@vger.kernel.org>; Mon, 14 Sep 2026 04:23:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789385006; x=1789989806; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C99yA2ahM9Y0TtIpiFt1fwPT2Pp5VWgJygOu7Ai3npc=;
-        b=cL4LlT2G/EdXfoFjfnoGNPEsSKsCRCUQ8NdNnTAtfO1zkTduOOrruWLVR6uYB/oUW1
-         iMcJjJ5d/aP+CVD4zQEZY088l446JuDk4bY4ZO6CxErvaEa0maJZyd+IvIgYi3WPP+Lh
-         42/Rp7i6CWSt1j90Jn4RyD8qdzSW3tzJB2kyKWhu6VtlJTVBNuAiIAlaRjEHamjk3JEC
-         I9PN3MZjJCTgX9G2LZBCTF4P6u0of/MOn1+RuaNO8qhc3mR0ugqJD8hKuEu4INuuPMDU
-         pradPM8KPLY1ZrcGJLHyERDJQBVNfMiV5bCB+NWkPA4Ck5B11UWcJ6VUf4bYotv8nLLO
-         H4GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789385006; x=1789989806;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=C99yA2ahM9Y0TtIpiFt1fwPT2Pp5VWgJygOu7Ai3npc=;
-        b=GI4jnTMx7DW9wx3brsKgCw6s+OoKC+NQTKs52SKPxGzSGnQ5xb+FLw+ni0G/jdjPzP
-         Nbh/jolkx/eddUeCrK3dG/nuwx5LI8yUS3MTorq95p2xvnqFiZUGQ5uGH4kA5pusQ08F
-         2thU/meSNrGYdVi9j6a1hdEIOo4tm1DssBW4CMLbBQcduSn1SLySuS/K4WQbJOf+sRxB
-         k9IsT+8sHuXuJg/3ZuGp2CUOz6vEuZh+eUXwBGbknQQjRyvo4TrC2lXl/yFDEOXWoExi
-         kWWWtSWkUl6EPhJylpfM4CXAVaXEOJ8HNGg1XKqI3BRnCcNiEBYOA5hpXtK93YtkYgDg
-         rPXg==
-X-Forwarded-Encrypted: i=1; AKwUvByhosbe1wg1gKnEAAu5fakeelu6o1VCEBtI7UDS194sYJXGkuSUJQZA/VACJyKVhTOKPEfbK8EtVJ6nnQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++nXBV9u2wjRQ5Na0EJQoL5xVyHFgaoXo/Ur1qRX0/n75DqznLKd
-	LYcHhaOaLt/cCyyJjVYSWuCkqZuHhFlozVobK/C67tSA2AKqQR2TUgWAOZItxEDgUAK9IwE9e7h
-	O7oTEvMvof0jsZ+jtPCFAWs676eV1IyVVIMQK8rmzM6hdfzcR0Yldx0hp8lwh6bWNtA==
-X-Gm-Gg: AYBFou31XL1rAUvdOpIdzl8SX2uo95A8L5eQywF+9UughdQePCWwCZfWLdRolofp2qH
-	al5dO33dGVN0DVzRPAePbxon0FOUiytXW2JbA6uEaZnW44YgQXsZMOblm5CtytRbr38doKpjugh
-	z9Gj8MlAKdNYj3S0p1x1MjWQjoLy0G7zPttjygXm/2cniYkvZdiq7ioI+ODrEi26HIyVipkp2vR
-	fDyktb3dNH0EaRbTAWv35fVuX6F7fgCFPcQMBcmH8z8yX/P+fMyLA/j6JnLK62Q4gpK5AJgVmIH
-	sbhb5OkWDxUD8v6SCl63H14Xbdpn5W4KHWTQBbPBKG+e5PO3I6RA+dnyGnTIj7kLROZeAsbl8RQ
-	U37Uke76fQOIbZ422zee1Jw==
-X-Received: by 2002:a05:620a:4555:b0:934:95d9:85fe with SMTP id af79cd13be357-93a29a8d250mr214249685a.3.1789385002613;
-        Mon, 14 Sep 2026 04:23:22 -0700 (PDT)
-X-Received: by 2002:a05:620a:4555:b0:934:95d9:85fe with SMTP id af79cd13be357-93a29a8d250mr214244085a.3.1789385002074;
-        Mon, 14 Sep 2026 04:23:22 -0700 (PDT)
-Received: from [192.168.202.12] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c296601f4ccsm406660866b.20.2026.09.14.04.23.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2026 04:23:21 -0700 (PDT)
-Message-ID: <757e124a-4c7b-4d3b-b73f-19e7e39f2677@oss.qualcomm.com>
-Date: Mon, 14 Sep 2026 13:23:16 +0200
+	dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b="YqX/jw3r"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=minlexx.ru;
+	s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
+	Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=NZYiYb0vHx2G4AzcO3FiZ8Swm2+PzG9tiyea+bzLK38=; b=YqX/jw3r2oulYcxoxyP5KPPl1p
+	hltJx/pEjC38GXjBXFyIncNRr+wla3YpqFmDpMEIvWjz/mwFrWGwPDXD/T22Raugxgcn1PhYPgb85
+	IIJu/N+6ftqNwoX5meC1crBT0l3hOiEZj5gsvMXEgdHTi++fohPeQXUubW1pTYSeKDmE=;
+Received: 
+	by sm24.hosting.reg.ru with esmtpsa (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(envelope-from <alexeymin@minlexx.ru>)
+	id 1x64mI-00000009erv-2tIe;
+	Mon, 14 Sep 2026 14:23:15 +0300
+Message-ID: <e31204a8-d4a8-47e6-85b8-084f5b2e8c2c@minlexx.ru>
+Date: Mon, 14 Sep 2026 14:23:13 +0300
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -89,91 +39,73 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 15/20] soc: qcom: ubwc: Add UBWC config for MSM8952
-To: muzafferkadir@mainlining.org, Bjorn Andersson <andersson@kernel.org>,
-        Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-        Brian Masney <bmasney+clk@redhat.com>,
-        Jerome Brunet <jbrunet+clk@baylibre.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Srinivas Kandagatla <srini@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>, Lee Jones <lee@kernel.org>,
-        Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov
- <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Robert Marko <robimarko@gmail.com>,
-        Guru Das Srinagesh <linux@gurudas.dev>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-        Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>, Dang Huynh <danct12@riseup.net>,
-        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        iommu@lists.linux.dev, mfd@lists.linux.dev,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        Krzysztof Kozlowski <krzk@kernel.org>, linux-pm@vger.kernel.org,
-        linux-input@vger.kernel.org
-References: <20260912-msm8952-initial-support-v1-0-0e742578b524@mainlining.org>
- <20260912-msm8952-initial-support-v1-15-0e742578b524@mainlining.org>
+Subject: Re: [PATCH 8/9] drm/panel: novatek-nt36672a: Add panel for Asus
+ Zenfone Max Pro M1
+To: David Heidelberg <david@ixit.cz>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Joel Selvaraj <foss@joelselvaraj.com>,
+ Chintan Patel <chintanlike@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ phone-devel@vger.kernel.org, iAboothahir <aboothahirpkd@gmail.com>
+References: <20260913-nt36672a-panels-v1-0-ce097402c6ea@minlexx.ru>
+ <20260913-nt36672a-panels-v1-8-ce097402c6ea@minlexx.ru>
+ <757d826a-739c-42f5-9671-9348a1480951@ixit.cz>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260912-msm8952-initial-support-v1-15-0e742578b524@mainlining.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDE2MSBTYWx0ZWRfX7YkDVJnTBfGp
- CohlaMfQkwHWS6Bg9bZ20/+QUpduz9Pki+NlLUeMzk8e8G3lzI/+DUiRI/kaYMXykgl9ZDgB4a0
- 9mgkHyQzYDFKPCzdLzax9WsLQbfw2TvG/vD0kMxSVsAq1DUQr8MGPA4ni1Ol2bTB+elzJG/ti5D
- Qa72SR0n1DcDgnRinswSsEb8rng3lFnRVFcMpEc272JovlfZ+JdkuWErlKqB/vSm0qHj3Nw+zrG
- sRq/7cjz6LUTTq9u1IEFDW6tOt5YqLtqqLrr0Mjg0lP3r7/+ekyXIzK8kAyQYT5aUrdEVMmOQs1
- Icp42i0Rz8DrmEiFWqSEWtX6UTQmDFrg2PHqeVc8hghJQmeW5tLZU5yxqsXdChNdiUVDMhFix+C
- De+8wsaMBtIL+CxgCQgQxaWPi9gf2/jREjxafxGoeUfmxKXJxRFrm18jgpJy1JnVPycHlgwFtA3
- +BrxSdS/LYOFRRQo9YQ==
-X-Authority-Analysis: v=2.4 cv=TrFzFzXh c=1 sm=1 tr=0 ts=6aa7d92e cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=OuZLqq7tAAAA:8 a=EUspDBNiAAAA:8 a=OvtQcJRYg_U4C0nSOkMA:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22 a=AKGiAy9iJ-JzxKVHQNES:22
-X-Proofpoint-ORIG-GUID: _yaEu0bXZSxpwqQ5npkS1hiR-7FUzlID
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDE2MSBTYWx0ZWRfX+pUTfvHh0gDK
- MRUFMQtGuekFifpM1S4htyEihpF9QDxWsjQNJDT7EVuEqQ0ZIpkamM4pA7P9dYgQsSDNfY6MTL6
- hiicQdG6w/xE5eSYmRRvXusMJcFH/BQ=
-X-Proofpoint-GUID: _yaEu0bXZSxpwqQ5npkS1hiR-7FUzlID
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-14_03,2026-09-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
- clxscore=1015 suspectscore=0 impostorscore=0 adultscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609140161
+From: Alexey Minnekhanov <alexeymin@minlexx.ru>
+In-Reply-To: <757d826a-739c-42f5-9671-9348a1480951@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 9/12/26 10:39 AM, Muzaffer Kadir via B4 Relay wrote:
-> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
+On 13.09.2026 15:47, David Heidelberg wrote:
+> On 13/09/2026 07:36, Alexey Minnekhanov wrote:
+>> Add support for TXD TXDI600YANPA-43V3 video mode panel based on
+>> Novatek NT36672A, used in Asus Zenfone Max Pro M1 smartphone
+>> (asus-x00td).
+>>
+>> Co-developed-by: iAboothahir<aboothahirpkd@gmail.com>
+>> Signed-off-by: iAboothahir<aboothahirpkd@gmail.com>
+>> Signed-off-by: Alexey Minnekhanov<alexeymin@minlexx.ru>
+>> ---
+>>   drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 281 +++++++++++++++ 
+>> ++++++++++
+>>   1 file changed, 281 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c b/drivers/ 
+>> gpu/drm/panel/panel-novatek-nt36672a.c
+>> index 1bfa808365874..954ab24c9d00a 100644
+>> --- a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+>> +++ b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+>> @@ -468,6 +468,252 @@ static void tianma_jasmine_init_cmds(struct 
+>> mipi_dsi_multi_context *dsi_ctx)
+>>       usleep_range(5000, 6000);
+>>   }
+>> +static void txd_x00td_init_cmds(struct mipi_dsi_multi_context *dsi_ctx)
+>> +{
+>> +    mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0xff, 0x20);
+>> +    mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0xfb, 0x01);
 > 
-> MSM8952 uses Adreno 405 and predates ubwc just like MSM8939.
+> Just for a start,
 > 
-> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
-> ---
+> 0xff -> CMD2_P0, datasheet page 6
+> 
+> 0xfb -> Set non-reload MTP commad, page 12
+> 
+> This driver has amazing datasheet, so the driver could look like a real 
+> driver instead of dump of the register sequence :)
+> 
+> David
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Yes, perhaps, this can be done similarly to how it was done in
+neighboring panel-novatek-nt36672e.c driver, but I though that
+this patch-set is already big enough and explaining commands
+can be done later.
 
-Konrad
+--
+Regards,
+Alexey Minnekhanov
