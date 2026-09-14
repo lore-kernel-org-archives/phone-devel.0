@@ -1,111 +1,104 @@
-Received: from sm24.hosting.reg.ru (sm24.hosting.reg.ru [31.31.198.150])
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A437443C39;
-	Mon, 14 Sep 2026 11:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.31.198.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30BC3D9DC9;
+	Mon, 14 Sep 2026 11:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789385012; cv=none; b=fBkgt+kPNWG3u6vvJ017BjvsQChVOb9+zCrQ1kAj2lr0p1WqN13W5vLhne3J6YyaAkAuYxR6dh5uJBzuUIKdQP02jmAvu+vbs8N/+VgK2335FJWah0gbAzYYdPu3FpGx8C/Ra3i1e2kVhqTKrM76jN/kkZ+kJSBYAstZRGl0fCg=
+	t=1789385674; cv=none; b=sDTjbrOtOrVOejTNuAj8GcU5rWuymnVS27LnwUKjGMKGh522vEDOhuBwwfpGmpQEyPabNvM2m1USIwdWdaB5KY6x1PW11ncsjEgQH3vADiE9uADx6KYfQDYJgsr7TJZlDGHjUNl5D4ftz8UVoKnTjcNZnUeUFGxm3sqGfX6wQUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789385012; c=relaxed/simple;
-	bh=5CNt0QGx4zLWnjgEbjHZLHCAoTVd/ttj8A2ZBQRrnM4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j541nzW0FBVSfT6LjsqDZtELMlpkiYOqlv6kdw8SSppv8FtT6thj9NkXdq6M77NZ8/UvsorKGnMZoMDoehhZheyGpv2urmKabLLlUheWSH4QQOsEf1cJq4BIYUVu3HWH3xwF1BbUBqk2v8ftk/aqRfvgGFu2qMHiCf93PiEEt0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minlexx.ru; spf=none smtp.mailfrom=minlexx.ru; dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b=YqX/jw3r; arc=none smtp.client-ip=31.31.198.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minlexx.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=minlexx.ru
+	s=arc-20240116; t=1789385674; c=relaxed/simple;
+	bh=PpE900YYTup0zjX0/okVz2oU4lPrmeJ3iBMQI4+6hUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UBbJqM1HetKNNgn3qAXmSFeI0ow+E1foU1YyYKKW0NhhINphyf7vU1rhBrIqfoYDDPQdwAl8DYx8D8YAqJLD6UVfYmX/W5NeQ3ls27mqYhsDGB5Cku+SIqDe6jRDyKahK8nvbVclxyw4z9paVzHiKf6ZS6djr0MmSzPCgKtVfQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=eXt2uK6E; arc=none smtp.client-ip=24.134.29.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b="YqX/jw3r"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=minlexx.ru;
-	s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
-	Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=NZYiYb0vHx2G4AzcO3FiZ8Swm2+PzG9tiyea+bzLK38=; b=YqX/jw3r2oulYcxoxyP5KPPl1p
-	hltJx/pEjC38GXjBXFyIncNRr+wla3YpqFmDpMEIvWjz/mwFrWGwPDXD/T22Raugxgcn1PhYPgb85
-	IIJu/N+6ftqNwoX5meC1crBT0l3hOiEZj5gsvMXEgdHTi++fohPeQXUubW1pTYSeKDmE=;
-Received: 
-	by sm24.hosting.reg.ru with esmtpsa (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(envelope-from <alexeymin@minlexx.ru>)
-	id 1x64mI-00000009erv-2tIe;
-	Mon, 14 Sep 2026 14:23:15 +0300
-Message-ID: <e31204a8-d4a8-47e6-85b8-084f5b2e8c2c@minlexx.ru>
-Date: Mon, 14 Sep 2026 14:23:13 +0300
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="eXt2uK6E"
+Received: from localhost (localhost [127.0.0.1])
+	by honk.sigxcpu.org (Postfix) with ESMTP id 41378FB04;
+	Mon, 14 Sep 2026 13:34:27 +0200 (CEST)
+Received: from honk.sigxcpu.org ([127.0.0.1])
+ by localhost (honk.sigxcpu.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id L2-6ixqJmWgU; Mon, 14 Sep 2026 13:34:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1789385665; bh=PpE900YYTup0zjX0/okVz2oU4lPrmeJ3iBMQI4+6hUA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eXt2uK6ET6OmQAl0AHF96DnJPXD6K1mJgX5C+K7pwwntUyjd2vUgdexDNnfbHgJJb
+	 2QW4IQQ9kKcLjgYMUWqAzyVDB8oMjtbS2QZj8piXcXmjNZKgtBxDTSVtD2osX+Uhsj
+	 7wPoMerGU1kNWdxIZ07l28aRSr66ZH/HYdgZSNX71fsetPCvTF0c5Mkb2mef19Zvhl
+	 +5my7Fn2LRLxD4HJNAf26WW3lFCm6g3v/LTF9b8YJBjibQADMy8kQx1jJMxeYHBizT
+	 eZFSDghpu+Vk4It72IHi/sVcO93w5BioRtEiapkZ6EIqkLoj8ZVJJXGLiArB/RghCO
+	 NV5A50eRRtMuQ==
+Date: Mon, 14 Sep 2026 13:34:24 +0200
+From: Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Val Packett <val@packett.cool>, Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] ASoC: soc-core: use the device tree card name as
+ long_name
+Message-ID: <aqfbwDUegHcx-kDn@quark2.heme.sigxcpu.org>
+References: <20260506041112.412871-2-val@packett.cool>
+ <aqfT4ZzmxtxM2Dn0@quark2.heme.sigxcpu.org>
+ <aqfYM0svh1mDZtqj@sirena.co.uk>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/9] drm/panel: novatek-nt36672a: Add panel for Asus
- Zenfone Max Pro M1
-To: David Heidelberg <david@ixit.cz>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: Joel Selvaraj <foss@joelselvaraj.com>,
- Chintan Patel <chintanlike@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- phone-devel@vger.kernel.org, iAboothahir <aboothahirpkd@gmail.com>
-References: <20260913-nt36672a-panels-v1-0-ce097402c6ea@minlexx.ru>
- <20260913-nt36672a-panels-v1-8-ce097402c6ea@minlexx.ru>
- <757d826a-739c-42f5-9671-9348a1480951@ixit.cz>
-Content-Language: en-US
-From: Alexey Minnekhanov <alexeymin@minlexx.ru>
-In-Reply-To: <757d826a-739c-42f5-9671-9348a1480951@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aqfYM0svh1mDZtqj@sirena.co.uk>
 
-On 13.09.2026 15:47, David Heidelberg wrote:
-> On 13/09/2026 07:36, Alexey Minnekhanov wrote:
->> Add support for TXD TXDI600YANPA-43V3 video mode panel based on
->> Novatek NT36672A, used in Asus Zenfone Max Pro M1 smartphone
->> (asus-x00td).
->>
->> Co-developed-by: iAboothahir<aboothahirpkd@gmail.com>
->> Signed-off-by: iAboothahir<aboothahirpkd@gmail.com>
->> Signed-off-by: Alexey Minnekhanov<alexeymin@minlexx.ru>
->> ---
->>   drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 281 +++++++++++++++ 
->> ++++++++++
->>   1 file changed, 281 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c b/drivers/ 
->> gpu/drm/panel/panel-novatek-nt36672a.c
->> index 1bfa808365874..954ab24c9d00a 100644
->> --- a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
->> +++ b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
->> @@ -468,6 +468,252 @@ static void tianma_jasmine_init_cmds(struct 
->> mipi_dsi_multi_context *dsi_ctx)
->>       usleep_range(5000, 6000);
->>   }
->> +static void txd_x00td_init_cmds(struct mipi_dsi_multi_context *dsi_ctx)
->> +{
->> +    mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0xff, 0x20);
->> +    mipi_dsi_dcs_write_seq_multi(dsi_ctx, 0xfb, 0x01);
+Hi Mark,
+On Mon, Sep 14, 2026 at 12:19:15PM +0100, Mark Brown wrote:
+> On Mon, Sep 14, 2026 at 01:00:49PM +0200, Guido G�nther wrote:
+> > On Wed, May 06, 2026 at 12:58:55AM -0300, Val Packett wrote:
+> > > When setting the model property for the sound card on an OF/DT system,
+> > > the expectation is that that model name would be used in the UCM config
+> > > path lookup. However, the DT model name was only used as the "short"
+> > > name, which gets overriden by the "long" name during loading, and
+> > > the "long" name is automatically set based on DMI data if available.
+> > > As a result, adding an intermediate bootloader such as U-Boot which
+> > > provides DMI data on a device that didn't have it before would break
+> > > the UCM config loading by suddenly looking at the "wrong" path.
 > 
-> Just for a start,
+> > > Fix by assigning the DT model name to the long_name field as well.
 > 
-> 0xff -> CMD2_P0, datasheet page 6
-> 
-> 0xfb -> Set non-reload MTP commad, page 12
-> 
-> This driver has amazing datasheet, so the driver could look like a real 
-> driver instead of dump of the register sequence :)
-> 
-> David
+> I'm not convinced that there is a clear expectation here, any change
+> will doubtless upset some other user (for example someone using a system
+> derived from a reference board that happens to work with it's device
+> tree, or something where the firmware puts discovered information into
+> DMI).  Really you're just not supposed to combine DMI and DT based
+> discovery methods, having a system shipping both is just going to lead
+> to confusion and there's no way we can possibly get it right.  You have
+> decided that for your systems the DMI information is bad and you want to
+> override it but that doesn't mean that the next person won't make the
+> opposite choice.  Any decision here should be policy based in userspace
+> based on the full system information.
 
-Yes, perhaps, this can be done similarly to how it was done in
-neighboring panel-novatek-nt36672e.c driver, but I though that
-this patch-set is already big enough and explaining commands
-can be done later.
+Thanks for the hint. So that would mean we should do something similar
+to what Lenovo does in UCM (that Val pointed to)?
 
---
-Regards,
-Alexey Minnekhanov
+https://github.com/alsa-project/alsa-ucm-conf/blob/980fb83651e82c3e53d3a0ab7fa9b7d6fc2d809b/ucm2/Qualcomm/x1e80100/x1e80100.conf
+
+> 
+> Please don't send content free pings and please allow a reasonable time
+> for review.  People get busy, go on holiday, attend conferences and so 
+> on so unless there is some reason for urgency (like critical bug fixes)
+> please allow at least a couple of weeks for review.  If there have been
+> review comments then people may be waiting for those to be addressed.
+
+The original mail was from May so I figured ~ half a year would be o.k.?
+Sorry I got that wrong.
+
+Cheers,
+ -- Guido
+
+
+
