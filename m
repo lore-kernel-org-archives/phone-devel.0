@@ -1,139 +1,185 @@
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C16E439F96;
-	Mon, 14 Sep 2026 11:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3227E41443A
+	for <phone-devel@vger.kernel.org>; Mon, 14 Sep 2026 11:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789384246; cv=none; b=X6i4DqO5khFVhMM+y4p/jvB9fW4ZJcMBHWtFCJD/4cOc/ZDaR0CuKUnbsYZ9/fTzHY7SSa5RTcN+7UzUmjAeY0ePf8dTTE6A4kQtbitjbHOlaRda/djDwOZeUKZZtL0oZtbsowRFYTkYSZcF1GSRLVxBkxRb4vptr4Hf2CKyq00=
+	t=1789384691; cv=none; b=PIgjn2hp/6mSjGYMOjWNoOcDPGYntDcuU1P4a3B5vU90t7QB8UsgPg9jp1qmwmJaXhu9s8m0RMGCYnXIFphJ/yk/kiXRWUedEHDTwjTmGkP2+LcRLIyMv93nHyUWohxmcU29Bko9aF7bLhjHc6r8+qNYpr6bK35TJKEE4WMAw1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789384246; c=relaxed/simple;
-	bh=Snz0OCxdiERQaB60pbDwd668W+usaSatmVo7PTAIJfc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HorVv+QxgysvaOSQuV5taQTo//dBblYCjPlpe1EI5fj4qhKH7yK6BhFeuZKS1K3H6aiox5TBo7WOaMwBEFI2yUSCj2YxFuYK03nu65MVHO/HuxysRYZKo0mcLXQq/4eGPPeoGDNNzKDS/QBRGRH5117u/YJb4xOnp9h+YT91B4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=n91rP5er; arc=none smtp.client-ip=24.134.29.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
+	s=arc-20240116; t=1789384691; c=relaxed/simple;
+	bh=qyo572r093/Wuuigpug703R2+cl/gSCazJtTr3U4JHo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qviXag+LHs5oj7tYkwyPi1Iwc1r5zZ22eWiRQywIyjDAvu7RUu5t/ZrTAw+mY9RO81A5/Thp+z4z5gjrlU7/He7pm1Pv1VwXW8D1/8OY8RYcUP563QUW4sXpyo9RUURiIXgL0Rlw+Og5pPzKa8k/nyY0LKRXSPPJqE2h86GCBJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=p74lKPfG; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FOI0siKZ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="n91rP5er"
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id A05FBFB03;
-	Mon, 14 Sep 2026 13:00:53 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
- by localhost (honk.sigxcpu.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id T89Q9flm9AQz; Mon, 14 Sep 2026 13:00:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1789383651; bh=Snz0OCxdiERQaB60pbDwd668W+usaSatmVo7PTAIJfc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n91rP5er2PLxe3m03DLXGE8fQJnS4cP884UhP8y0dhlLm5rF9TGk3GJDKsMafjoQ6
-	 qIOgcOLuO8KGKYFNZdbd5b8yB+frAVyVXTAE8qzDPYOvln1C7eglW6StOBw8HTwLyu
-	 bJkNDkBszFV3tEtqEHOboVGJQWyIvnP0eIOi6hYShPTuihYT30gdgiUktkeGOzRBA4
-	 wusUSKUlwKcjLcenbUeAt5alFCTti17C7UtEH8OBt9PxI+qTIBCFwniHRsOXRo1H6g
-	 H1T8HuLO1vFgGG8ZK+8hRKJKkFubeGIJ4AwUHusmMcfpazvZj2cytzmyQRhi/WDdZA
-	 XkrR3P6oTPVgA==
-Date: Mon, 14 Sep 2026 13:00:49 +0200
-From: Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-To: Val Packett <val@packett.cool>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] ASoC: soc-core: use the device tree card name as
- long_name
-Message-ID: <aqfT4ZzmxtxM2Dn0@quark2.heme.sigxcpu.org>
-References: <20260506041112.412871-2-val@packett.cool>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="p74lKPfG";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FOI0siKZ"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68EAm9BM3291616
+	for <phone-devel@vger.kernel.org>; Mon, 14 Sep 2026 11:18:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Lu8CNw9bVINJIb/MTRXcrF6ffg/r+0oykIW5TY8O4Y4=; b=p74lKPfGoxBk3sgk
+	Nv7jbyh+PyzNnEZXmPSeygceSiRc+hzxKGqPe8gSasJEoh9jI28KkTBcCvBuJBBC
+	WzTOXA5JvbzXDVBVkTe8WhQNutMRPF9it0XS3DkwhDoWGJi87AXJ0+RlvEDct+CO
+	FpWCASMm55uop92Bmk6T/9dn+zzxgMzrOQIb0RYNCmSme9cM+opFd9GTGy6LqdXv
+	WLobHlPt1oeF94En8pYt/HsObrlB/40wMNOpvIJbiUxfXCT87bg3586GtWX2lorZ
+	K+KSP/tphg2ZnwVCfvi3/hoL58VYSv1yosERpux0u3wiqzMpl+SntE0EUvlmh42G
+	6L58/g==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gperg8bad-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 14 Sep 2026 11:18:09 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e661ce1dcso55065085a.0
+        for <phone-devel@vger.kernel.org>; Mon, 14 Sep 2026 04:18:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789384688; x=1789989488; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Lu8CNw9bVINJIb/MTRXcrF6ffg/r+0oykIW5TY8O4Y4=;
+        b=FOI0siKZqayydFs0/W1u2lLkarT0ELiH+2D4URE7lJmJlrAaQ6+uZrH7xhX/9yNMrC
+         W5Mal3N2Lp4W8FfJ+E9kLilrFqn8RJu2oRtd3y/6V+u+IJgkqJo40Indnl+63UmdYyho
+         J0QSft307NtIsZVciPZoZCkQ6TPB/ELnDQFH+LPyW5EiwUSV6Ni2jTvlIW9Zv7pfsJ51
+         jsRSwMC/2Zw5slFcU6+rSj4Aq9ffEFfl5hOeb6VcXhOaxWSyDzCjQNnqWQ6Sz6sah4Mt
+         6CEvruM5hEQJUFriFRme3P4hoqmks7y/XUxWyPY6WxhbolxM91rglWukNIPTjENgKE6m
+         eVCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789384688; x=1789989488;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Lu8CNw9bVINJIb/MTRXcrF6ffg/r+0oykIW5TY8O4Y4=;
+        b=aPMriOPsoH2JqmZdUVOWPi8oK5PjodApWr5bcwWQzxJVtRRnSNyBvOfeQ7A2kWWVkB
+         ROO5spqjriLWV2FToQxP+5yaIV5fEAVaOoLdBhK1WbDXRqNbuLfy094lj+wgIL63xAdF
+         Z79tKGhsyh5IlC8rZwohyLL4XEcdJz3NCfSnMXba1GdQ6rroSe9v9seoVlenW1mZP9Ui
+         N9diQyw6Gs+m0EMIBjPCGMi0q6yhZ/y7h8/LJVXTDadGfywcHaIEktEBrH0LpU6K92uh
+         LWXqjb1FZq8GXMNcHy1NKj8/K9S7eivFxmeYvjXs/4cd3iBvAS+s63qmvqiPm5+mhhsI
+         yKVw==
+X-Forwarded-Encrypted: i=1; AKwUvBxJCiBivgHgwKw996n2hwZtvazCCw3itWQ9rBsnwtJBTkbV3m/R6kT9V2xPjRCY6hwDsj33V/dphtbWoQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++nB0hhyOFJOJY+Mk7FVl3AbSxgqandSZO3xsOF3qu5mLpWTn7/+
+	9GP/i/wD6ZbUdjeujf5dDzuTz0k2XJx8V7JFvcPCGRdYJzR66t2I8DnP9R29U2AvmR6W1XzXg+G
+	YRZElgBdsRwK7LbbL0FR4u7Zqbe7A39nhQmvDEP4J9/SidKuDN4OqB80MrxMR2cw/KQ==
+X-Gm-Gg: AYBFou3Nj8u4xUgRbOGHYFiDL8uykCyRXszTDbZVi8yeSsntbCuN+UgEiLi3jDxOzQU
+	+rXAsl5yzjompvvArkXgb/l2WGWLqvsi5w5U1BFkkhQ3thneq8ieDXima2qphMVJBStYr6hoK5K
+	JM70X/WWsCTVXzRRNEnseN8VUMMnA66URAhjqqgQ3PM/N6barUOnRvNmmGHesMA0AWQRc4HgXn1
+	CxM0boo1Zrfz5lsvFuwG7wwP8EnQBKP3zUtS7PqPCHeutRaX/3aL5Wr8e2tfWz0Al0vdUxYuh5l
+	2d2DhOifdlGwWwjKhwQdL9G9SkFyL6UI4rTixotij3OX4i4EpKVqYjbtHObb6L4wYkIzoSjcVZu
+	wQ9a2PAsebkpxDz1p1zh0pg==
+X-Received: by 2002:a05:620a:170b:b0:939:8148:1e3d with SMTP id af79cd13be357-93a2987c21fmr216467485a.2.1789384688253;
+        Mon, 14 Sep 2026 04:18:08 -0700 (PDT)
+X-Received: by 2002:a05:620a:170b:b0:939:8148:1e3d with SMTP id af79cd13be357-93a2987c21fmr216464885a.2.1789384687844;
+        Mon, 14 Sep 2026 04:18:07 -0700 (PDT)
+Received: from [192.168.202.12] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9b593d7dbsm4143990a12.22.2026.09.14.04.18.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Sep 2026 04:18:07 -0700 (PDT)
+Message-ID: <21722931-0a6c-444a-b23c-59b47dd82430@oss.qualcomm.com>
+Date: Mon, 14 Sep 2026 13:18:01 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506041112.412871-2-val@packett.cool>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 13/20] clk: qcom: smd-rpm: Add clocks for MSM8952
+To: muzafferkadir@mainlining.org, Bjorn Andersson <andersson@kernel.org>,
+        Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+        Brian Masney <bmasney+clk@redhat.com>,
+        Jerome Brunet <jbrunet+clk@baylibre.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Srinivas Kandagatla <srini@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, Lee Jones <lee@kernel.org>,
+        Rob Clark <robin.clark@oss.qualcomm.com>,
+        Dmitry Baryshkov
+ <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Robert Marko <robimarko@gmail.com>,
+        Guru Das Srinagesh <linux@gurudas.dev>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+        Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli"
+ <gpiccoli@igalia.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: David Heidelberg <david@ixit.cz>, Dang Huynh <danct12@riseup.net>,
+        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        iommu@lists.linux.dev, mfd@lists.linux.dev,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        Krzysztof Kozlowski <krzk@kernel.org>, linux-pm@vger.kernel.org,
+        linux-input@vger.kernel.org
+References: <20260912-msm8952-initial-support-v1-0-0e742578b524@mainlining.org>
+ <20260912-msm8952-initial-support-v1-13-0e742578b524@mainlining.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260912-msm8952-initial-support-v1-13-0e742578b524@mainlining.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=QK/91QLL c=1 sm=1 tr=0 ts=6aa7d7f1 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=OuZLqq7tAAAA:8 a=lCfP1g0v9f8vL_Xsk8YA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22 a=AKGiAy9iJ-JzxKVHQNES:22
+X-Proofpoint-GUID: 3NM3we1-lwCaYjSoVt0SK9Z8uXJGaxbW
+X-Proofpoint-ORIG-GUID: 3NM3we1-lwCaYjSoVt0SK9Z8uXJGaxbW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDE2MCBTYWx0ZWRfXzIxkGHi2hRW1
+ mVQaQOxK847JJ24XuUU8IgvHAV5WAONQIppJ6sXnQB2nT+ibH89f0oVFvSY17YUwzF1azpw1+1/
+ I88TkRnstd7SWnERYFAaYjh0NnFVISgE8phLQNOy5V8qAh5INSCb7ZqYqZhcvQRAWNRms/tLLFD
+ yffkLbtGXhRklYWmNAJHLWPtwkO1hk7etkxJo8RiPzcB1Zwwd4k0xcT/3CLd/X6GvVm1fzIVYdB
+ rizO+bfV+U+WgpW5otCCDQ7sWbbOavP4NFS3Qm1awa/ZW2TJWSoqBJRUCXG9iBB4MEX7kvEU3dw
+ o8KtzF+IdcgTyKSUA8dZVuqrYSSgan0r+tFRVMFI76N7Ka0QIvBibYsEn/j5+218eowZoEixbx9
+ kag4Jhg4LJkZrco2aOyegUJ+czH61EdhI4neWH8SylQvzTDz6uOTabqu3V2WvvFYcB3lL79Usuh
+ lSXX85grf0Hs5n71uqA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDE2MCBTYWx0ZWRfX0bC7xmoYVZPN
+ oJzWrctBkSeRAbotMq6CzpHUHedE/fXsLJ2ZTiDZ7uqWEvzbVfwbVVyMMauAD44GF+LsTz97Lho
+ uxllDx/cxiWCjJicNUa9Edrg6axsbS0=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-14_03,2026-09-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 bulkscore=0 clxscore=1015
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609140160
 
-Hi,
-On Wed, May 06, 2026 at 12:58:55AM -0300, Val Packett wrote:
-> When setting the model property for the sound card on an OF/DT system,
-> the expectation is that that model name would be used in the UCM config
-> path lookup. However, the DT model name was only used as the "short"
-> name, which gets overriden by the "long" name during loading, and
-> the "long" name is automatically set based on DMI data if available.
-> As a result, adding an intermediate bootloader such as U-Boot which
-> provides DMI data on a device that didn't have it before would break
-> the UCM config loading by suddenly looking at the "wrong" path.
+On 9/12/26 10:39 AM, Muzaffer Kadir via B4 Relay wrote:
+> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
 > 
-> Fix by assigning the DT model name to the long_name field as well.
-> 
-> Signed-off-by: Val Packett <val@packett.cool>
-> ---
-> 
-> For more context/examples, see:
-> https://gitlab.postmarketos.org/postmarketOS/pmaports/-/work_items/4386
-> 
-> err, for some reason that link requires an account to view right now,
-> hopefully that's fixed by the time you're reading this. if not, quoting:
-> 
-> > ALSA looks for wrong device name when using U-Boot
-> > 
-> > What's the expected behaviour?
-> >   ALSA finds Fairphone 5.conf
-> > What's the current behaviour?
-> >   ALSA looks for fairphone-Fairphone5-.conf, doesn't find it, and results in no audio.
-> 
-> ("Fairphone 5.conf" coming from `model = "Fairphone 5";` in .dts)
-> 
-> So it's totally unexpected in the DT world that adding DMI info would
-> change which UCM path is used.
-> 
-> Now the question is, could this possibly break anything for anyone???..
-> 
-> Qcom laptops do not rely on these model-based paths at all, instead
-> having custom DMI match `If` conditions inside of "fallback" SoC-wide
-> UCM .conf files such as:
-> https://github.com/alsa-project/alsa-ucm-conf/blob/980fb83651e82c3e53d3a0ab7fa9b7d6fc2d809b/ucm2/Qualcomm/x1e80100/x1e80100.conf
-> 
-> So there it shouldn't make a difference. But does *anyone* use DMI-based
-> soundcard names intentionally on *any* DT platform?
+> MSM8952 has same clocks with MSM8976 and MSM8940.
 
-Would be great to have some guidance from the subsystem / alsa ucm
-maintainers as multiple distros are patching around it atm (either with
-this patch or symlinks in the ucm profiles).
+Let's reuse the compatible then - add an entry to dt-bindings
+where we have a 8952-specific compatible in case we ever need to
+act on it specifically and a fallback to 8976, so that we don't need
+to modify the driver needlessly.
 
-Cheers,
- -- Guido
+Your DT then would look like:
 
-> 
-> 
-> Thanks,
-> ~val
-> 
-> P.S. I don't understand the lifecycle of these strings but it seeeems that
-> the expectation is that they point to static data so they're never freed?
-> 
-> ---
->  sound/soc/soc-core.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-> index 3fecf9fc903c..8456595bb41d 100644
-> --- a/sound/soc/soc-core.c
-> +++ b/sound/soc/soc-core.c
-> @@ -2995,6 +2995,14 @@ int snd_soc_of_parse_card_name(struct snd_soc_card *card,
->  		return ret;
->  	}
->  
-> +	/*
-> +	 * When setting the OF property in a device tree, the expectation is
-> +	 * that the UCM config matching the value would be loaded. However if
-> +	 * a long_name is set, it would be used in the config path instead, and
-> +	 * snd_soc_set_dmi_name sets long_name to the DMI name if it's unset.
-> +	 */
-> +	card->long_name = card->name;
-> +
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(snd_soc_of_parse_card_name);
-> -- 
-> 2.53.0
-> 
+compatible = "qcom,rpmcc-msm8952",
+	     "qcom,rpmcc-msm8976";
+
+Konrad
