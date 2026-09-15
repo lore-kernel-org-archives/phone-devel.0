@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F08415B6E;
-	Mon, 14 Sep 2026 21:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F2B47F781;
+	Tue, 15 Sep 2026 13:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789419902; cv=none; b=NGvsVRZDy49kUV6arKtJIXHCjOyZBVP2I0jstf+xf3G6Wq2+4EAys6HNcHS5uVV6n9UD8Kup3wblPhqlVHOzv605sy/g4/+cSsqEIWwqqdK3bGVags/UnHuqF+qkdMsEwOEzXAEyEqjQfqDWKFaPTfIHB701YTrGTyU1PK9F+/E=
+	t=1789480114; cv=none; b=YWcCPtK6nTAkKomES9nMxo41l7Vjt1rW2pNpypHd0hOs0p6l2HSQnGkEUtWDMPws8ub6BUyvrtFQNr7GleHPwjpGZdmu75i5Yx9PnvSSvusWC9PEPZosBy08VYzT7bgUhdE6o8Kzmrdejupi1wsU+mm5XKyseocx8Ojh/iKN224=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789419902; c=relaxed/simple;
-	bh=ihzL+l2KI7XVSNewbML1ta9wvrsrafmVC9sc5kiBTMQ=;
+	s=arc-20240116; t=1789480114; c=relaxed/simple;
+	bh=eIzBQCQUY0UEONgpR6GEDl+8l9qQpm1A7xQydUe9Zts=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oNQk+gCK2XkjmjQc4C5XkEYP9UVBgRsmxQ2GtdlahpolH+EtJveYYjPNTcR1EXHY//drQmQwh9Bz+wWP4aVMZT5gBeQzg8vaCrI59VZa2TG5gEUQqoO0Un5rr1HJVj3s6qfP3pYvYz3cKbSFN84r/y4Dn7oRQ0+RzByUh4ZFPqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=s8kSuDxh; arc=none smtp.client-ip=84.42.129.46
+	 In-Reply-To:Content-Type; b=DABtCXoG5k8c25qVgs6ez82GPtruHXUQkjW27IIaWRqRRqDkJBTEbFi4YVBAFhpY9BmqZjmJnDwFBTViuEHUUxBP8Qcs09hAOG2PJ97FZUBj99geqa1cLg9K64q81MxjaWv4rDBxWHMTWcEKFVI1vEWTRHn2gH7nJwwx+VoBycA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=zEb39bTZ; arc=none smtp.client-ip=84.42.129.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="s8kSuDxh"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="zEb39bTZ"
 Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 3C05E534032A;
-	Mon, 14 Sep 2026 23:04:57 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 42B57534022F;
+	Tue, 15 Sep 2026 15:48:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1789419897;
+	t=1789480108;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Ucz9EKe46ScLEmo/7CYnL5FFLCA5CmnkIuajSNz4/sM=;
-	b=s8kSuDxhBCJOBKfjaXao3nCX/kanfcxEbJQGfERqu72Y9OPDhA7T1om6S56G9uzZNjYufm
-	3uH3/Ldk+1uUYJLbPm8bwI/LbZFzyrswqY+2Lw20PrH7cQPp/q6AfJMf9Gm7K/g+Jf6Pwp
-	EKyUFr+/wb27p9Prc8yTKYjUaanUOQo=
-Message-ID: <cd90572c-e1f3-47a0-829e-9b3d8097a62f@ixit.cz>
-Date: Mon, 14 Sep 2026 23:04:56 +0200
+	bh=RJn8QGVr5qpe8l1FMRM/2xjsfgAMHHBeCMO7efrHp3Q=;
+	b=zEb39bTZpeiKJlu/WS35Ufn8G6mjBC7MHaJoM/r3Fy7bmG4UNBE5RTiwp704mB65ao6A6b
+	2nGkC3ewWZZXBUpaIMlUWHpYK6LWsv8/kd+4CMYqCb0Z1SB5N+YyYMf9oXpx901DEPjqRD
+	kD5aMWU5gghq8FIPeNcsw2MA4eosudA=
+Message-ID: <d8b4aaf6-3085-4319-a5d1-c099e6af16df@ixit.cz>
+Date: Tue, 15 Sep 2026 15:48:27 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,21 +41,20 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] drm/panel: lg-sw43408: do not assert reset across
- unprepare
-To: Sumit Semwal <sumit.semwal@linaro.org>,
- Casey Connolly <casey.connolly@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Dmitry Baryshkov <lumag@kernel.org>,
- Marijn Suijten <marijn.suijten@somainline.org>, Vinod Koul <vkoul@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260810-fix-blueline-panel-v2-0-9344dfdbc3f9@ixit.cz>
- <20260810-fix-blueline-panel-v2-1-9344dfdbc3f9@ixit.cz>
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: add Xiaomi Mi 8 (dipper)
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kees Cook <kees@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260809-dipper-v1-0-eb4d501e85df@ixit.cz>
+ <20260809-dipper-v1-2-eb4d501e85df@ixit.cz>
+ <8f05bf47-183f-4586-8ed2-eb2277f15c98@oss.qualcomm.com>
+ <b8cb7327-1e1b-4a44-ac97-dec9b6c32e9e@ixit.cz>
+ <5b1f237a-8675-47ae-9546-64b68c5d59f6@oss.qualcomm.com>
 Content-Language: en-US, cs-CZ
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -101,90 +100,34 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260810-fix-blueline-panel-v2-1-9344dfdbc3f9@ixit.cz>
+In-Reply-To: <5b1f237a-8675-47ae-9546-64b68c5d59f6@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 10/08/2026 11:55, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 18/08/2026 11:47, Konrad Dybcio wrote:
+> On 8/18/26 11:38 AM, David Heidelberg wrote:
+>> On 18/08/2026 11:27, Konrad Dybcio wrote:
+>>> On 8/9/26 6:48 PM, David Heidelberg via B4 Relay wrote:
+>>>> From: David Heidelberg <david@ixit.cz>
+>>>>
+>>>> Initial submission for one member of the prime Xiaomi Mi 8 family.
+>>>> Mi 8 Pro (equuleus) and Mi 8 Explorer (ursa) are nearly identical.
+>>>> Known differences are battery capacity and fingerprint sensor placement.
+>>>> This submission includes basic abstraction for other developers to be
+>>>> able easily extend it to support other variants.
 > 
-> Asserting the reset GPIO in unprepare() and leaving it asserted puts
-> the DDIC into a state it never recovers from: after the following
-> prepare() the panel answers all DCS commands, reports display-on with
-> clean self-diagnostics, and its configuration registers read back
-> identical to a working panel, but it never lights up again.
+> [...]
 > 
-> On the Pixel 3, vddi is shared with the touchscreen controller and
-> remains powered while the panel is off, so with this driver the DDIC
-> sits in reset with its logic rail up for the whole blank period - a
-> state the vendor stack never creates: the vendor firmware only toggles
-> reset as part of a full power-on sequence, and the vendor OS never
-> power-cycles the panel at all (LP mode is used instead).
+>>> No SS?
+>>
+>> Haven't thought about it, for now my goal is upstream basic telnet/ssh + FB. Then display and touch - e.g. minimal u-boot and kernel development features and then bring the rest.
 > 
-> Leave reset alone in unprepare(); prepare() performs the regular reset
-> sequence anyway.
+> If you have an actually-superspeed cable, the link speed in fastboot
+> should tell you the truth, or alternatively you can try plugging it
+> into a DP dock on downstream
+
+Ok verified, it has only USB 2.0 (spec, downstream DT)
+
 > 
-> Without this, the Pixel 3 display never comes back after the first
-> blank/unblank cycle.
-> 
-> Since there isn't any other panel or device using this DDIC, this
-> approach seems resoanble to address the issue.
-> 
-> Fixes: 069a6c0e94f9 ("drm: panel: Add LG sw43408 panel driver")
-> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->   drivers/gpu/drm/panel/panel-lg-sw43408.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-
-Good news is, that this patch really doesn't make panel power-off fatal for the 
-phone, but recent testing got me into state where I observed:
-
-10 hours, display on, phone operating normally.
-
-display on (various time), display off, display on OK, but sometimes
-
-display on, display off (for longer time), after pressing power button (to wake 
-up) the phone reboot into bootloader.
-
-Nothing printed into dmesg (I'll try enable drm-debug, but not having high hopes.
-
-So far, this is still heavy improvement comparing to instant crash, but not the 
-perfect solution either.
-
-David
-
-> diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> index 293826c5006b9..0bf8e08f10b9c 100644
-> --- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> +++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> @@ -50,18 +50,24 @@ static int sw43408_unprepare(struct drm_panel *panel)
->   	int ret;
->   
->   	mipi_dsi_dcs_set_display_off_multi(&ctx);
->   
->   	mipi_dsi_dcs_enter_sleep_mode_multi(&ctx);
->   
->   	mipi_dsi_msleep(&ctx, 100);
->   
-> -	gpiod_set_value(sw43408->reset_gpio, 1);
-> -
-> +	/*
-> +	 * Keep reset deasserted: vddi may stay powered (it is shared with
-> +	 * the touchscreen on Pixel 3) and holding the DDIC in reset while
-> +	 * its logic rail is up puts it into a state that no init sequence
-> +	 * recovers from - the panel keeps answering DCS commands and
-> +	 * reports display-on, but never lights up again. The vendor stack
-> +	 * only ever toggles reset as part of a powered-up init sequence.
-> +	 */
->   	ret = regulator_bulk_disable(ARRAY_SIZE(sw43408_supplies), sw43408->supplies);
->   
->   	return ret ? : ctx.accum_err;
->   }
->   
->   static int sw43408_program(struct drm_panel *panel)
->   {
->   	struct sw43408_panel *sw43408 = to_panel_info(panel);
-> 
+> Konrad
 
