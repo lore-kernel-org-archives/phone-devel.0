@@ -1,131 +1,122 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292A73793AA;
-	Tue, 15 Sep 2026 14:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8B43C1D6F;
+	Tue, 15 Sep 2026 14:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789481696; cv=none; b=dC+USvThtNXBuzCLXgnTcBvhhzB/qm6Kt7FmVkF7nPv+k6ud/axzHUCsb+VO7jkxGgpPxEO8rucXgsTLLwmBsVdNLTIM5kXC7/ep3usnM86VpPyBL6ZrnY/3bhG8MWNLfG2wlEPU4IsLVHqbbmBxpqXCtVM5fgMaIRMAhoJX8ZQ=
+	t=1789482749; cv=none; b=sKLNtxFXkpyEjJk6ycVpkoLnsKMowXmG+MLXoaNoOtFq4fCZeFy4jPEEkYf+yzaRLRBfwTI/HMvCL9KtPTKsBHIHmg514cBqwjD94vvWLddriF731LCjS3Z5c7700/7cMsgBe5+3VprxPEhtB6DVCBHQzTHPbDITqzVxcieEPEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789481696; c=relaxed/simple;
-	bh=c2UhuM8vGQ3KX1xu5a3TA//ukgGbB0yFYLkmVL5FoN4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t7DQtq7gCWC2ege/F/vUX+/KpCxEJ7m3Ee0Wd8bdbeIsyESzbLxblmA7HTumhTM/eVLfpFRmdObBe+/2EWQP9OIK0lt6V2AhEKDbWVvdk4EJlktpy9sFWzlVtulo/2DeJBeGgCLhC3vKFlV2TIAj/zNU8ISwfBEJr7Wuwn6iBYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=W6QOeKjv; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1789482749; c=relaxed/simple;
+	bh=KgaXJ/pb3DRKR/CJo1jmUo4ceN84s0N8uAZe35ZJPNM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GoJ/tNynnc8l1HAtqZRcGH9oez0rwx29hYvvobZACiTfL3b5k/TKqg+D3CDSU396GR8CpsyaSFo44q81b8JIuzqXS1tqSVvCQ20iHcgMZ+tusbBZu3mKGP4YMDbI8qOjEi/+TdqkwgYsAUbZQHJYy+EmvHGtUgIYg+cwVkvbTnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZuqrGNR1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="W6QOeKjv"
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 686D953401FF;
-	Tue, 15 Sep 2026 16:14:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1789481691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XETWVoXbegQgoSRWIW/ZKGWw+KthkneIm5dl47Oo3JU=;
-	b=W6QOeKjvbwpCqkFRbBoWJFsRHFQXgcCTaDfSaIzxAUgP2QEQQR9nZsnRFBpdXR9udhG7cS
-	OiWJ85HQhDngezg+qwwrBetvRaHSb3/jZuBnuur0Z/B7EiVbX5xduNb6+fzrpmeuYB3J/h
-	ot+DNnHqPosondqDkG1wOkD3wSSPxTY=
-Message-ID: <4e1fd71f-9d6f-43aa-a5b8-a13facaa5e26@ixit.cz>
-Date: Tue, 15 Sep 2026 16:14:51 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZuqrGNR1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C43FC2BCB9;
+	Tue, 15 Sep 2026 14:32:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789482748;
+	bh=KgaXJ/pb3DRKR/CJo1jmUo4ceN84s0N8uAZe35ZJPNM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ZuqrGNR14lj14B4YuML713qY6D79OulPZukIWWjuC7hV1gz1E3z1WLwaCikyadZ/l
+	 BQnfp6exgoLDZdhNRpJ8k+w5EhXDDBV+fXrTOA9WqRixvfiiHKGJUtJOAeFxWX4Bai
+	 g4pZtcor2Vqtz1OopjVjBbJRSsdYC0uxz8SCc8LGQTwdRxbsV/WHT7xhghGpJz+wMj
+	 S/J0O5xJhooIT8V40vohr5w8agBI2APsr/JTo0MyfTATKcWl8Q7oRWXAcSk4rBSjNN
+	 fwq0o7/TRwmI1dIXbCoXU5GRF877ftz8J1Kd+GMZoTtFA3GPP17IporfsLqFAY8FJh
+	 UCC/P/93ztAYQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E73BC88E7F;
+	Tue, 15 Sep 2026 14:32:28 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Tue, 15 Sep 2026 16:32:24 +0200
+Subject: [PATCH v2 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi 8 family
+ compatibles
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: add Xiaomi Mi 8 (dipper)
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20260809-dipper-v1-0-eb4d501e85df@ixit.cz>
- <20260809-dipper-v1-2-eb4d501e85df@ixit.cz>
- <8f05bf47-183f-4586-8ed2-eb2277f15c98@oss.qualcomm.com>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <8f05bf47-183f-4586-8ed2-eb2277f15c98@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260915-dipper-v2-1-cbade54919ee@ixit.cz>
+References: <20260915-dipper-v2-0-cbade54919ee@ixit.cz>
+In-Reply-To: <20260915-dipper-v2-0-cbade54919ee@ixit.cz>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1258; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=E/ElkcIutej9yrswGTSuy+VcChc1d40Fq6rbIpw9sXE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqqVb6lhA63Dif0jFEcWy4Ko7/7FSaU6eausaci
+ 73W7wdSAl6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaqlW+gAKCRBgAj/E00kg
+ ci5/EACrLyyDxMjkJowF5ja2c+QN5lBpUZlSjXM5NWO4wwBUVH15FuecCU9CKPluHP7CYrOGpJY
+ Q5InBqEhcg7Hcfzuus9ke3e8YLVk/bOyUFZq7P5Jui4hPMyJzJYk60RHIqJ7ipr0i5HXKMqIL58
+ tvgj25rYMnh3846YPDjuJ5Jl1zcJph/ddcB6+UXes6KoBt6oBhDArrw4Bx4N9aOFy3in8dVafkB
+ m1AQR2NZJ6q04rlUpAymHW97FArIc59hYzegnRUQA71e2wBAyDRLMDght1fJ/QG+fUYP83sM90I
+ u2z5RIH8WB4Cpg5+8cMp4FIRKY8aCJrT14cIIz+A+oakt0QzvfVyMHFvwuzbqT3nBu7gK3iStJ9
+ +T0qexR2Z5h0H1A3fzmrOANiLpKFlvpf8+7MpEic8H5Wrh85Hm2GrtHnedDEhCqcvx+ALnm2YKa
+ XExCR+52sXiiSoxTeffMs1zktpkYxar2/eEE1GbtAAsSrbLPlyTliKa+BBCkXXzDWv+j/eVoA7D
+ HWUPPMY1Mald1Yi/mQ7j/0J4J+aBFKEhHlTLKpg/YwLCpthIXa7OPm/Fim1Zntsxh2E5zHyVKMn
+ iZxmQSRfAiQDx88ytkXuBSXdMx+rVlnYoGBPQHoAjT/g8UVZLG71iTNTy9AamdxjjbVuy68ZMRs
+ gIxAxrHGKCXCz/A==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 18/08/2026 11:27, Konrad Dybcio wrote:
-> On 8/9/26 6:48 PM, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Initial submission for one member of the prime Xiaomi Mi 8 family.
->> Mi 8 Pro (equuleus) and Mi 8 Explorer (ursa) are nearly identical.
->> Known differences are battery capacity and fingerprint sensor placement.
->> This submission includes basic abstraction for other developers to be
->> able easily extend it to support other variants.
-> 
-> I had one of those. IIRC the Pro had a 3d IR scanner (vide face id)
-> whereas the base one had a normal IR cam
-> 
-> [...]
-> 
->> +	reserved-memory {
->> +		adsp_mem: memory@8c500000 {
-> 
-> adsp@ etc. and drop labels where unused
-> 
-I'll replace the node names, but as these labels are replacement for existing 
-sdm845 labels, used within the sdm845. As we remove these nodes in the begging 
-of the file, this would break dependencies.
+From: David Heidelberg <david@ixit.cz>
 
-David
+This smartphone codenamed dipper is now supported by this series,
+variants such as ursa and equuleus just documented.
 
-[...]
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index ff8a35df7862d..c3491630e56d1 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -945,16 +945,25 @@ properties:
+           - const: qcom,sdm670
+ 
+       - items:
+           - enum:
+               - google,bonito-tianma
+           - const: google,bonito
+           - const: qcom,sdm670
+ 
++      - description: Xiaomi Mi 8 family
++        items:
++          - enum:
++              - xiaomi,dipper
++              - xiaomi,equuleus
++              - xiaomi,ursa
++          - const: xiaomi,dipper-common
++          - const: qcom,sdm845
++
+       - description: Xiaomi Poco F1
+         items:
+           - enum:
+               - xiaomi,beryllium-ebbg
+               - xiaomi,beryllium-tianma
+           - const: xiaomi,beryllium
+           - const: qcom,sdm845
+ 
+
+-- 
+2.55.0
+
+
