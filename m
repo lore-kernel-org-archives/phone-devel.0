@@ -1,39 +1,39 @@
 Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F2B47F781;
-	Tue, 15 Sep 2026 13:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292A73793AA;
+	Tue, 15 Sep 2026 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789480114; cv=none; b=YWcCPtK6nTAkKomES9nMxo41l7Vjt1rW2pNpypHd0hOs0p6l2HSQnGkEUtWDMPws8ub6BUyvrtFQNr7GleHPwjpGZdmu75i5Yx9PnvSSvusWC9PEPZosBy08VYzT7bgUhdE6o8Kzmrdejupi1wsU+mm5XKyseocx8Ojh/iKN224=
+	t=1789481696; cv=none; b=dC+USvThtNXBuzCLXgnTcBvhhzB/qm6Kt7FmVkF7nPv+k6ud/axzHUCsb+VO7jkxGgpPxEO8rucXgsTLLwmBsVdNLTIM5kXC7/ep3usnM86VpPyBL6ZrnY/3bhG8MWNLfG2wlEPU4IsLVHqbbmBxpqXCtVM5fgMaIRMAhoJX8ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789480114; c=relaxed/simple;
-	bh=eIzBQCQUY0UEONgpR6GEDl+8l9qQpm1A7xQydUe9Zts=;
+	s=arc-20240116; t=1789481696; c=relaxed/simple;
+	bh=c2UhuM8vGQ3KX1xu5a3TA//ukgGbB0yFYLkmVL5FoN4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DABtCXoG5k8c25qVgs6ez82GPtruHXUQkjW27IIaWRqRRqDkJBTEbFi4YVBAFhpY9BmqZjmJnDwFBTViuEHUUxBP8Qcs09hAOG2PJ97FZUBj99geqa1cLg9K64q81MxjaWv4rDBxWHMTWcEKFVI1vEWTRHn2gH7nJwwx+VoBycA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=zEb39bTZ; arc=none smtp.client-ip=84.42.129.46
+	 In-Reply-To:Content-Type; b=t7DQtq7gCWC2ege/F/vUX+/KpCxEJ7m3Ee0Wd8bdbeIsyESzbLxblmA7HTumhTM/eVLfpFRmdObBe+/2EWQP9OIK0lt6V2AhEKDbWVvdk4EJlktpy9sFWzlVtulo/2DeJBeGgCLhC3vKFlV2TIAj/zNU8ISwfBEJr7Wuwn6iBYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=W6QOeKjv; arc=none smtp.client-ip=84.42.129.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="zEb39bTZ"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="W6QOeKjv"
 Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 42B57534022F;
-	Tue, 15 Sep 2026 15:48:28 +0200 (CEST)
+	by ixit.cz (Postfix) with ESMTPSA id 686D953401FF;
+	Tue, 15 Sep 2026 16:14:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1789480108;
+	t=1789481691;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RJn8QGVr5qpe8l1FMRM/2xjsfgAMHHBeCMO7efrHp3Q=;
-	b=zEb39bTZpeiKJlu/WS35Ufn8G6mjBC7MHaJoM/r3Fy7bmG4UNBE5RTiwp704mB65ao6A6b
-	2nGkC3ewWZZXBUpaIMlUWHpYK6LWsv8/kd+4CMYqCb0Z1SB5N+YyYMf9oXpx901DEPjqRD
-	kD5aMWU5gghq8FIPeNcsw2MA4eosudA=
-Message-ID: <d8b4aaf6-3085-4319-a5d1-c099e6af16df@ixit.cz>
-Date: Tue, 15 Sep 2026 15:48:27 +0200
+	bh=XETWVoXbegQgoSRWIW/ZKGWw+KthkneIm5dl47Oo3JU=;
+	b=W6QOeKjvbwpCqkFRbBoWJFsRHFQXgcCTaDfSaIzxAUgP2QEQQR9nZsnRFBpdXR9udhG7cS
+	OiWJ85HQhDngezg+qwwrBetvRaHSb3/jZuBnuur0Z/B7EiVbX5xduNb6+fzrpmeuYB3J/h
+	ot+DNnHqPosondqDkG1wOkD3wSSPxTY=
+Message-ID: <4e1fd71f-9d6f-43aa-a5b8-a13facaa5e26@ixit.cz>
+Date: Tue, 15 Sep 2026 16:14:51 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,8 +53,6 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
 References: <20260809-dipper-v1-0-eb4d501e85df@ixit.cz>
  <20260809-dipper-v1-2-eb4d501e85df@ixit.cz>
  <8f05bf47-183f-4586-8ed2-eb2277f15c98@oss.qualcomm.com>
- <b8cb7327-1e1b-4a44-ac97-dec9b6c32e9e@ixit.cz>
- <5b1f237a-8675-47ae-9546-64b68c5d59f6@oss.qualcomm.com>
 Content-Language: en-US, cs-CZ
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -100,34 +98,34 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <5b1f237a-8675-47ae-9546-64b68c5d59f6@oss.qualcomm.com>
+In-Reply-To: <8f05bf47-183f-4586-8ed2-eb2277f15c98@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 18/08/2026 11:47, Konrad Dybcio wrote:
-> On 8/18/26 11:38 AM, David Heidelberg wrote:
->> On 18/08/2026 11:27, Konrad Dybcio wrote:
->>> On 8/9/26 6:48 PM, David Heidelberg via B4 Relay wrote:
->>>> From: David Heidelberg <david@ixit.cz>
->>>>
->>>> Initial submission for one member of the prime Xiaomi Mi 8 family.
->>>> Mi 8 Pro (equuleus) and Mi 8 Explorer (ursa) are nearly identical.
->>>> Known differences are battery capacity and fingerprint sensor placement.
->>>> This submission includes basic abstraction for other developers to be
->>>> able easily extend it to support other variants.
+On 18/08/2026 11:27, Konrad Dybcio wrote:
+> On 8/9/26 6:48 PM, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Initial submission for one member of the prime Xiaomi Mi 8 family.
+>> Mi 8 Pro (equuleus) and Mi 8 Explorer (ursa) are nearly identical.
+>> Known differences are battery capacity and fingerprint sensor placement.
+>> This submission includes basic abstraction for other developers to be
+>> able easily extend it to support other variants.
+> 
+> I had one of those. IIRC the Pro had a 3d IR scanner (vide face id)
+> whereas the base one had a normal IR cam
 > 
 > [...]
 > 
->>> No SS?
->>
->> Haven't thought about it, for now my goal is upstream basic telnet/ssh + FB. Then display and touch - e.g. minimal u-boot and kernel development features and then bring the rest.
+>> +	reserved-memory {
+>> +		adsp_mem: memory@8c500000 {
 > 
-> If you have an actually-superspeed cable, the link speed in fastboot
-> should tell you the truth, or alternatively you can try plugging it
-> into a DP dock on downstream
-
-Ok verified, it has only USB 2.0 (spec, downstream DT)
-
+> adsp@ etc. and drop labels where unused
 > 
-> Konrad
+I'll replace the node names, but as these labels are replacement for existing 
+sdm845 labels, used within the sdm845. As we remove these nodes in the begging 
+of the file, this would break dependencies.
 
+David
+
+[...]
