@@ -1,127 +1,91 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Received: from sm24.hosting.reg.ru (sm24.hosting.reg.ru [31.31.198.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F4B4D37DB;
-	Thu, 17 Sep 2026 12:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FB23909A6;
+	Thu, 17 Sep 2026 16:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.31.198.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789647957; cv=none; b=JUqQAH0zbHIAUxdC8Is1junGFgtzvRwoMc7MedbgaZzIWUbPNvpK8h0QsAdPAOH78xCdY0FSzIoxwQ5r8fRa/FGPtmwG83IfYaee7oo4wh/zy24xPIa7O3B6wAJ7Kan5CHCxgJYbNbskUWfFHpJNv+KeelPD0Tf6g648a0jfQpU=
+	t=1789663461; cv=none; b=jCSdrAOj1yRK0EdYv0QlQ2G1Y5yrdHwMiQIHvNGpAQMhazQmHCrA6BkWvHcYSIEYbqnTOwb4uUvhYfaJ3129/BH5wy+ZlLuzxgi+TAIi5RGlriHIC4qiTi2UWCM4OvpTTUrtKZAkqYs7ty03bLDY8XL4EqLLEbvYHXg8WDlhtAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789647957; c=relaxed/simple;
-	bh=MO544Wsk/Oafa0bUboIOlCkH6j/N7fUKxAhwOhrTIWQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D/8eVkICDMcul1s65I7SkNsGDjatglrrDv/Ke6I6xnGTg0Psp+hs/016KLo8eps0fS+K7ItrKLnXz0kv6Hv176M7ggzTy/6MMqswd5aF7pkClQuSu71Ip/iBlBKNlgKh/TKDkiB2KVIlrComTOLOo5DwboWD9ZQZ4CtpojXEHD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.helo=mail.mainlining.org; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.helo=mail.mainlining.org
-Message-ID: <a47a1a0e-559b-410c-aa99-9230908c2fe6@mainlining.org>
-Date: Thu, 17 Sep 2026 15:25:32 +0300
+	s=arc-20240116; t=1789663461; c=relaxed/simple;
+	bh=iuCGv5i9sUK5NfEpPCkUnnl7p/aLhogUpELLxhLNOQs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rkcf3M5Lz1vMYvZAbYUY+jErSLy8bv7zHAibbsz9NWj0ycj5pvINwPegF/05YZnzureY5VUQIsqt7fBwS3+UhRqjgEYuqat0KBm08wZlSGne4C77vynFnWAHX4Xh1PUK9Prq5Hwzp+JVPsQqb8pAVL4WbEZ0Y++v/WpsC5IZON8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minlexx.ru; spf=none smtp.mailfrom=minlexx.ru; dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b=Ut4txk8u; arc=none smtp.client-ip=31.31.198.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minlexx.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=minlexx.ru
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=minlexx.ru header.i=@minlexx.ru header.b="Ut4txk8u"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=minlexx.ru;
+	s=dkim; h=Cc:To:In-Reply-To:References:Message-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=U7BxfyRDz/VeeNHxihWp+UO2gt3YHWP+ESOrM0F5a9U=; b=Ut4txk8u5/u8JhDrZLrAg+qTcW
+	dLXZJQDB/KoHbjHvmhwFQVo82gctpYBJUgr19E402ie2czgd/i7BAA5QvDk81ZYIle73a2XD5tzPW
+	TVomQ9PE/3PzIrw9cSftTxsoHvbxXrxTRjEzYlXg+GRwKFMiyHbggq+S713hKK5uBWt8=;
+Received: 
+	by sm24.hosting.reg.ru with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(envelope-from <alexeymin@minlexx.ru>)
+	id 1x7FDT-0000000Bw3I-2fsT;
+	Thu, 17 Sep 2026 19:44:08 +0300
+From: Alexey Minnekhanov <alexeymin@minlexx.ru>
+Date: Thu, 17 Sep 2026 19:43:03 +0300
+Subject: [PATCH v2 1/9] dt-bindings: vendor-prefixes: Add Shenzhen TXD
+ Technology Co., Ltd.
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/19] clk: qcom: Add global clock controller driver
- for MSM8952
-To: Taniya Das <taniya.das@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
- Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Srinivas Kandagatla <srini@kernel.org>,
- Ulf Hansson <ulfh@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Lee Jones <lee@kernel.org>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
- <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>,
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Robert Marko <robimarko@gmail.com>, Guru Das Srinagesh <linux@gurudas.dev>,
- Amit Kucheria <amitk@kernel.org>, Thara Gopinath <thara.gopinath@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- David Heidelberg <david@ixit.cz>, Dang Huynh <danct12@riseup.net>,
- phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
- iommu@lists.linux.dev, mfd@lists.linux.dev, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, Krzysztof Kozlowski <krzk@kernel.org>,
- linux-pm@vger.kernel.org, linux-input@vger.kernel.org
-References: <20260916-msm8952-initial-support-v2-0-798c2602dde1@mainlining.org>
- <20260916-msm8952-initial-support-v2-2-798c2602dde1@mainlining.org>
- <af3f7261-e4b0-42fc-818d-80e760cddc2c@oss.qualcomm.com>
-From: Muzaffer Kadir <muzafferkadir@mainlining.org>
-Content-Language: en-US
-In-Reply-To: <af3f7261-e4b0-42fc-818d-80e760cddc2c@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260917-nt36672a-panels-v2-1-f8de8be5b86f@minlexx.ru>
+References: <20260917-nt36672a-panels-v2-0-f8de8be5b86f@minlexx.ru>
+In-Reply-To: <20260917-nt36672a-panels-v2-0-f8de8be5b86f@minlexx.ru>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: David Heidelberg <david@ixit.cz>, Joel Selvaraj <foss@joelselvaraj.com>, 
+ Chintan Patel <chintanlike@gmail.com>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ phone-devel@vger.kernel.org, Alexey Minnekhanov <alexeymin@minlexx.ru>
+X-Mailer: b4 0.16.0
 
-Hi Taniya,
+Add prefix for Shenzhen TXD Technology Co., Ltd., manufacturer of
+medium sized LCD and camera modules for mobile phones, tablets and
+automotive.
 
-On Thu, 17 Sep 2026 09:49:07 +0530, Taniya Das wrote:
->> diff --git a/drivers/clk/qcom/Makefile b/drivers/clk/qcom/Makefile
->> index a6c676f68b79..3c3f27dcc68d 100644
->> --- a/drivers/clk/qcom/Makefile
->> +++ b/drivers/clk/qcom/Makefile
->> @@ -89,6 +89,7 @@ obj-$(CONFIG_MSM_GCC_8909) += gcc-msm8909.o
->>  obj-$(CONFIG_MSM_GCC_8916) += gcc-msm8916.o
->>  obj-$(CONFIG_MSM_GCC_8917) += gcc-msm8917.o
->>  obj-$(CONFIG_MSM_GCC_8939) += gcc-msm8939.o
->> +obj-$(CONFIG_MSM_GCC_8952) += gcc-msm8952.o
->>  obj-$(CONFIG_MSM_GCC_8953) += gcc-msm8953.o
->>  obj-$(CONFIG_MSM_GCC_8960) += gcc-msm8960.o
->>  obj-$(CONFIG_MSM_GCC_8974) += gcc-msm8974.o
->> diff --git a/drivers/clk/qcom/gcc-msm8952.c b/drivers/clk/qcom/gcc-msm8952.c
->> new file mode 100644
->> index 000000000000..6b82606dfadb
->> --- /dev/null
->> +++ b/drivers/clk/qcom/gcc-msm8952.c
->> @@ -0,0 +1,3550 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Copyright 2020 Linaro Limited
-> 
-> https://android.googlesource.com/kernel/msm/+/android-msm-shamrock-3.10-nougat-release/drivers/clk/qcom/clock-gcc-8952.c
-> 
-> This is our original copyright.
-> 
->> + * Copyright 2026 Muzaffer Kadir <muzafferkadir@mainlining.org>
->> + */
->> +
->> +#include <linux/kernel.h>
->> +#include <linux/bitops.h>
->> +#include <linux/err.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/module.h>
->> +#include <linux/of.h>
->> +#include <linux/clk-provider.h>
->> +#include <linux/regmap.h>
->> +#include <linux/reset-controller.h>
->> +
->> +#include <dt-bindings/clock/qcom,gcc-msm8952.h>
->> +
->> +#include "common.h"
->> +#include "clk-regmap.h"
->> +#include "clk-pll.h"
->> +#include "clk-alpha-pll.h"
->> +#include "clk-rcg.h"
->> +#include "clk-branch.h"
->> +#include "reset.h"
->> +#include "gdsc.h"
->> +
-> 
-> Add DT_BI_TCXO enum.
+[1] https://en.txdkj.com/
 
-Should I rename the clock name to bi_tcxo?
-Or should I use DT_XO for enum?
+Signed-off-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
 
-Best regards,
-Muzaffer Kadir
+---
+v2: prefix changed from "txd" to "txdkj"
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 4a5cf436eb143..bc87d5e9fdd2b 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -1773,6 +1773,8 @@ patternProperties:
+     description: Turing Machines, Inc.
+   "^tuxedo,.*":
+     description: TUXEDO Computers GmbH
++  "^txdkj,.*":
++    description: Shenzhen TXD Technology Co., Ltd.
+   "^tyan,.*":
+     description: Tyan Computer Corporation
+   "^tyhx,.*":
+
+-- 
+2.55.0
+
