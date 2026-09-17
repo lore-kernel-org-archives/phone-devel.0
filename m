@@ -1,130 +1,129 @@
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [84.42.129.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D8A411FB2
-	for <phone-devel@vger.kernel.org>; Thu, 17 Sep 2026 08:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4F44A99D6;
+	Thu, 17 Sep 2026 09:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789633553; cv=none; b=LT0Bbt+sZgAFYoF46vNG2GyeX2sz6XR4lJCsakKLgTZMEy9/QV/iWmjFze+OBoNz6G14Y3nmF8nVGHpcP40fIxyXBb49HJdDCm2Nx4YLrDxZ2+SYRHZEioclxIUXg45BzbIEHk17a1ZlbQTi/nRhCpVWAdo9/PU5ANCkTj+DS+8=
+	t=1789637657; cv=none; b=Sfk75YubWfJznJvxB4SNRuLG1w4RVA0vNlTtu8tYVLVazQfdVdKH720TCKPhVXvi0ZOPDd1YnEAumVH7IjNWznhl/RCtbX2pBFp5VW/Equazc0nvQw6AVVgo99flEXeIS26t5lwkQtAmEK0iEYBWoSyf4dumaIhSjGAsx8sif9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789633553; c=relaxed/simple;
-	bh=FfHLIqVbUiDFb7PV/tcKm2OY5dbtW8PPcCi5ELgVdOA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JQbX/mKmVEWIXX31w9PLIBOcqSf3NwBmAO8UegfZuDhhe4fDHc0IQQsJ/HmGY4krAE37CSOqSu2vpAwgw1DK4+iQlRAFmjpB9GLdySmaqPd0gpwqJoVbSXzfCqswX2C2FRdIsHeqrdvDXzXu9l+hY1PqOwdMSZBSst7u2ZdUPNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=xVTLs+XZ; arc=none smtp.client-ip=74.125.228.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1789637657; c=relaxed/simple;
+	bh=jQwnz2NqEpiwdc+jHtTOkUDDHGCS4wvIUDEADChCJIY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GhbDfqP0ZJdKsYhCEeqiUWmp1x6ipoFj8URLO1UiLIZ4/ELM5P9I9UC98Lxyorg4d4IuQVT8l8axm59m37XMEE9LeniYckbvjaCC/Qw7hXDA3KhiKLR4e4hvNp4uE19yFsaB19pQDEnTWXhQLa88zHLFegELeagPlsafiqOoZdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=o4kbef4i; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="xVTLs+XZ"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a99cd5115bso914999a12.3
-        for <phone-devel@vger.kernel.org>; Thu, 17 Sep 2026 01:25:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1789633526; x=1790238326; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=pPKRfs0d0OIg8AedUsUxNykcUXne60lf5vpq99a5hjU=;
-        b=xVTLs+XZdtDXLeSU/pAzejkZd68K1nUcGAKg+uBvlrRIUe0zu/EIzyNbGaFz9A+x/K
-         lgiCRY9YoQbTgPwNYPgr2wYf9jk7E2ikCRtEZTIZsp74d80LI8NyeV+G91O89w6YlWhA
-         abYlsgdKxUiFMwZMm4EddBz2rFutAf/89AnMUVEINT8hYvQ60oSQKUVBrW0+VT9yXJkY
-         vM5KVQRU+mvANDCpSzk3wtwjYug2mWe0IzAZuLHWWEgoKobco/W0Zarf76aMxXUUAqlA
-         pmzaZTqC5SvKseIwJht/2aVR4QvLBM0Pp8lCgrc6gdd6DCUf/mLrzCsJCU+kPGO0njoQ
-         QgCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789633526; x=1790238326;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pPKRfs0d0OIg8AedUsUxNykcUXne60lf5vpq99a5hjU=;
-        b=iruR0Qp8VwtoaALHttd1fCCt5TLbOCE4jgstjQdlZg8O1OXp4cdZxBxdfIY+SjfRuH
-         rogp1K8NHdquo1Rw1iYM6JmS/1Zlxmljm1LByyR+n6akqOWIs1VvHvIcu6gPesFn5XqD
-         6hW0gTpft0Uv6htnMqu1p/VdAZSAHqSVJ6yXF9CAlsUHSCyQH/IfbYC91B0MgzLZ9fHS
-         kUvpPGZ7c/azPzbaANzlWufVgsSaTPy6DNOjmYTBMh9GxH5JgT1cYIznRrPB+TJ5kYGt
-         Vi3iXzdunzVYaaKtGWDgIe5V0togjjIkR47N7YqWvC6kCExO8iPfFtW/yQrdkoOB8vRQ
-         mgJg==
-X-Forwarded-Encrypted: i=1; AKwUvBw3Xa6ntB0+6IeGZryW+9z6aJXWWI/Kt1/caHqmWJ6FgVOqaFxJh5w5Gc4WyxyTTiMKQ13aOsIoddpraQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++mjR6NTXP5XFLn/izgGHBtq/kRg6F4Vzm5I8SMYUGB73gxc/gFu
-	f4/uTOd4me/LiYXHg/+aX90U2/GDZvvt0T7ZfSPv2q4hGgYdmDOKqpNqUFBu4bLbxL4=
-X-Gm-Gg: AYBFou2a5dtTYhqP8XIQjRNIIpGK2tPWn+OZo9s64AsIk4JakntU6sHSGYpK4FtJpBx
-	ZF+xI3KjUokg9ZH+yiWeJdCUwPEMmBiQ0LOER6c4WdOfhXcvs5PwTtqvvJf+v84t7M9nqJzYBux
-	hxXIfUcqeBM7w0M+iLXmudd/KF4E2g49YC0WJrCIApIbdF84dJG0LtlyP0uOdj40oRXIUeBqmU7
-	tMnncxUO0E5mWhgjlyGxIiJs4vXYxxdWgr8hgjrCz/0toiszLaA/+oPgVQa5PBDk4TJvLuxqCqk
-	OcBNmx8G2Y3gGvVh3Fh29FX57/75HW26hkNIBTvHwH38dydnTtI6F3BnHjXEYVFZH6hoyTdZqVj
-	n0KWTxGh1FjeYFH43IXfH4blX0OTtpLaI0g/ffCucrQyPUjhOKR7iEWyInxNCPFRofQe0c9mlMR
-	K554KPi6VWIrtnplmW2J6RwRNbZSRnphVQzpcmwN5cMoUBqZwah/wL+/vc75tBaB6C1/+oAw+kb
-	ps1Fn/vA5r8XFqGTGIgd7YWrxdFQJ44gECA/2mB+EarwrJnd7xW
-X-Received: by 2002:a17:906:6296:b0:c21:450d:cd88 with SMTP id a640c23a62f3a-c29e51e1395mr396582466b.6.1789633525767;
-        Thu, 17 Sep 2026 01:25:25 -0700 (PDT)
-Received: from [172.16.220.101] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c29de0851ebsm242943966b.4.2026.09.17.01.25.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 01:25:25 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH v2 0/3] ESWIN EPH8621 touchscreen support for Fairphone
- (Gen. 6)
-Date: Thu, 17 Sep 2026 10:25:22 +0200
-Message-Id: <20260917-eswin-eph8621-v2-0-f534080a6338@fairphone.com>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="o4kbef4i"
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id E2FB253402F6;
+	Thu, 17 Sep 2026 11:34:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1789637642;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=fq1RWD1Zu98RJWnnIFie8UooLuFAdUYog7Rzc5xGfUw=;
+	b=o4kbef4i3ZoqLTE3fL6FfqwzpNcZ9c63GwuTK1QLrpHoofT659BZG2+IrMorsRSrpIseYk
+	Hc7TbMGhX2VJ0GeFF4CIIJ9UJWzN4c5elccag8FQvYGxf/yiwpD73dpngofezcI/9mMl2Z
+	dh8LMaG5+L+XXyZupQ+5AYtuTHbipFM=
+Message-ID: <1dd8faa4-f137-4fa2-aed4-60bb7d687979@ixit.cz>
+Date: Thu, 17 Sep 2026 11:34:01 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOyw6CMBREf4XctSVteSkr/8OwgHJrrwkUW0AN4
- d8t4NblSWbOzAIeHaGHMlrA4UyebB9AniJQpu7vyKgNDJLLnF+EYOhf1DMczDmXgmVt0hZ5jrL
- hCkJncKjpvftu1cF+ah6oxk3ySzh8TmFoPGLQ1B6Zsl1HYxnNRZwwpxLY2ob8aN1nPzeLPfznx
- ywYZ22TpoXWF0zT7KprcoOxPcZBDdW6rl89vPBt7AAAAA==
-X-Change-ID: 20260911-eswin-eph8621-5d3d766e2b0c
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789633524; l=1248;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=FfHLIqVbUiDFb7PV/tcKm2OY5dbtW8PPcCi5ELgVdOA=;
- b=w3Ev19vHK3OUPv1BqDmTac+9v85Z/m5S2Kr3BnLpY8/UYjszHo9WM3dST0c6SoNjgHp5jFixq
- NJk/4fvM+sLDmuX5CnQngsYOjugx/QNGsg6P6LW3yqyZR8IVzp0hZmO
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] Xiaomi Poco F1 (ebbg display variant) fixes
+To: Linus Walleij <linusw@kernel.org>
+Cc: Joel Selvaraj <foss@joelselvaraj.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sam Ravnborg <sam@ravnborg.org>, Marco Mattiolo <marco.mattiolo@hotmail.it>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, Casey Connolly <casey.connolly@linaro.org>,
+ stable@vger.kernel.org
+References: <20260908-ebbg-ft8719-fixups-v2-0-5454ae1f5581@ixit.cz>
+ <CAD++jLkQw-U=e43K7Zjdawid5D54hoQFAkVLBLmOsq00FGOoAg@mail.gmail.com>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <CAD++jLkQw-U=e43K7Zjdawid5D54hoQFAkVLBLmOsq00FGOoAg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Add dt-bindings, driver and dts additions to support the touchscreen on
-Fairphone (Gen. 6).
+On 16/09/2026 18:40, Linus Walleij wrote:
+> On Tue, Sep 8, 2026 at 2:45 PM David Heidelberg via B4 Relay
+> <devnull+david.ixit.cz@kernel.org> wrote:
+> 
+>> Been broken in mainline for some time.
+>>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+> 
+> Looks good to me:
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> 
+> Or should I simply apply it for fixes?
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Changes in v2:
-- dt-bindings: Move additionalProperties down just before the examples
-- driver: Fix some memcpy undefined behavior, and various potential
-  issues with malformed or malicious touchscreen response data
-- Pick up tags
-- Link to v1: https://patch.msgid.link/20260911-eswin-eph8621-v1-0-db447ff9e445@fairphone.com
+I think whole patchset is fine, generally everyone using the phone using 
+sdm845-next or sdm845-mainline (based on sdm845-next), thus these patches are 
+everywhere.
 
----
-Luca Weiss (3):
-      dt-bindings: input: touchscreen: document ESWIN EPH8621
-      Input: Add driver for ESWIN EPH8621 touchscreen IC
-      arm64: dts: qcom: milos-fairphone-fp6: Add touchscreen
+David
 
- .../bindings/input/touchscreen/eswin,eph8621.yaml  |  79 +++++
- arch/arm64/boot/dts/qcom/milos-fairphone-fp6.dts   |  29 +-
- drivers/input/touchscreen/Kconfig                  |  12 +
- drivers/input/touchscreen/Makefile                 |   1 +
- drivers/input/touchscreen/eswin_eph8621.c          | 333 +++++++++++++++++++++
- 5 files changed, 453 insertions(+), 1 deletion(-)
----
-base-commit: c2cd463d6ee7d55a3ec0719d93c49ff99022d58f
-change-id: 20260911-eswin-eph8621-5d3d766e2b0c
-
-Best regards,
---  
-Luca Weiss <luca.weiss@fairphone.com>
+> 
+> Yours,
+> Linus Walleij
 
