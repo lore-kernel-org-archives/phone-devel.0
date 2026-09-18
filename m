@@ -1,125 +1,150 @@
-Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277144B489B
-	for <phone-devel@vger.kernel.org>; Fri, 18 Sep 2026 08:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECAC4A0921;
+	Fri, 18 Sep 2026 08:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789719426; cv=none; b=gj23Wo29xXZBwiIw1u6gH79YgSgv1VkudeLpO0dyN446ngy9oPmfUPfJGXdWHvcjckvQlG00uwsHyrIEXZYBjiNVD8lRb0xCxnr+c4DBPkyKxT5kaiQ08nW7HjnuK0XMUMZEop9vHBl4w31u9OnK5h7nAuwsinxWnHVhmAfuxzg=
+	t=1789720819; cv=none; b=oynzi43jKcNxLWT/4Y91AuftYGuA4L8TXhm99O3app3EKt3xWFrWStBfAZN+pTBvvc8jw57yFo4kt5eoLEYC01bVs/vWa4BfRG2UyXimZyofyMhUtDRMZxmhzGNfdg7WhPDYWJlRXEL2U11VFjgHpR5U7ucnfLDjKIK/+zHpDzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789719426; c=relaxed/simple;
-	bh=3Vb/Q5gFmB9GEcWuixSJnDg8oOAAOJry8Kj0f4JNoZk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YdvISPzET5LzOhblB52s6hqMfS4U/FI2o7gD4y8JocbfoH+LGK5wim4bLkZJY9Cu0MNfZUkgtZC6wp8Z/cGe5580RQhfRMpaNhIO1HUsGeajKpIzwQ5RTHSuUv0oD2QcZ7WDlilmyvtnNDF4x10en1lefT4jLXoDJDCRpxSb7Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=f/ZuQw+U; arc=none smtp.client-ip=74.125.228.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1789720819; c=relaxed/simple;
+	bh=/cN8uyQZ9nDnHW8G5wdiabquj0TfX4E7hMc2JFryRE4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WVgMP587gkqA3pgGCfMtlez6P7otSVo0iiyFPfw2EEJzQkhz5v760LrMbTtOFbTQ39unvxpBd90rupgHq1WerfczFr0T9DaZhmPsvz823dZxFAIzW7oOTj3V0zP4ElTX2nIL/ZgsxfzxVCKhY+GOQgWNQ2lDs5iyDl+EfCf7tf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbsGideP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="f/ZuQw+U"
-Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6a6063d7dc4so539220a12.3
-        for <phone-devel@vger.kernel.org>; Fri, 18 Sep 2026 01:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1789719422; x=1790324222; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=4kVqeGTAB3R+JJC+QW2Gmsm/OFhxPzA+cRh/xOgn5H4=;
-        b=f/ZuQw+U6Oou4+0wxLQVaTn8sEDXNSjmna2q7eqbF0jBzljRtSjZkishgGWJ9tLwdW
-         uJvWi8HD/Ua78NnS6cpHA162DnYi+814p379aFP6RqUnLSq+tEYAFjA9LORXqlRQWLSE
-         W3Njy2xMyDkRgHoRsmel36brh4QS3edDNP0mmqce9FY4JMsviHXG2GXco0sLgmcEqyB5
-         66YEFGfDKae/nNklAm/LdVrMw6cUYKEYoFq3h1/NDqSOcrvFHyAPpce9mdQUtbMCivA2
-         /gt8Yednq5j04iNF6PQYPnJlsfS9HJyKZ9D47NUKvBmn8tVpy6+eFrJXz1Dj78OPERoL
-         kuyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789719422; x=1790324222;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=4kVqeGTAB3R+JJC+QW2Gmsm/OFhxPzA+cRh/xOgn5H4=;
-        b=YA78n8Z+2vMtNtBi4YHev9P0SSnDU4B/yjVrHLbwynN6MBJV7MtUXTZi8TI0zG044P
-         A/1Pn9YvxTugjgb1mxHwdk0jakHptDwaHtF/GmznbPTXBhqIOghXC7NfwDeoVMmTmEjj
-         QeMDH6xhvPMP4k528pwheuzDbJEw4V/eV/0MZOKAzbrzR6tPvszzRuDkeRiQslKj57iI
-         hVpNmPPjuFFIHiydplNQ/wMRpEt9JpAdhv4D35kEb8imsuNHNNSRTfLGr2pgec/juwOo
-         Yh2X42qqSo6RuAhBa7q8024xaS+p3c213NVsjLYAZtCMaraTRU/v0UUtNk6P9BBl1yRw
-         KWRA==
-X-Forwarded-Encrypted: i=1; AKwUvBzy6yaKHcLw5L2pbYaRrosnFz+3QsMWhuZxKR72MogChuzXs41uHp8ubFix7pLJjmEx6q68Ap3aql+K/g==@vger.kernel.org
-X-Gm-Message-State: AFuF++molKAfSIOc4etm6XamyMZQaDru8NHgwlOSLXFbbtrdA3H8BeJ+
-	G7NuKrPIeOpnEhLxQY615rUL9wddXGHGZECANG0tnerAVyAr/ZtoscM+HrqeTA+3Pd1zXFUiXxO
-	45FXZ
-X-Gm-Gg: AYBFou3wljA/fRgtJvQe5eguO7/7/OVN4Ofpv7hyjYR+GlSGun6aVKCCyleWZ3r2HaY
-	/W4K4n1MW3S4DatLeouXPTY3pdaSeLZ9dYbmQ8gZMC7bjop2C0ewbKXqzXoOZ4+6cpq4IbnwFFo
-	5+UI6kiESg5e8Qzpi8OsiKciB4wmmwDCe9i7OFNRtjIvjFJ1glJPIWsWW96KM5h9/PnehNcIZbr
-	dn9Wpo9028fH7MqOZv5WTYwyn5YRuou8Wo9lhw8A6JlpV04UZwuWB9zZijgLd0TuQbutCkDAsbk
-	ynKo70ecluSGdWirFfz+yZ7BbqgtLI6r/GQqM5owjQkgMP+Y3mBmGcfn1RkLALWiyjTwgPZQfgb
-	dM/bVFgepbBetSthEUjkHOIow0wsNuORvh/4sCYuPnyTGnBVxALhrD287LjenqTvFeMqB1RQIkT
-	JxDwN9KQV1xzSKKg1kYD7KyAmU3y5C5NCfPUoGyMFKpiRdnBqIqfFWYWqyt0+k5G1EmzgFA5Qgy
-	XCiyfb9Jbt6m8qQ8htrR2rBNAnHzl4TPkpu0/OX6ZULH3vmt97o
-X-Received: by 2002:a17:907:3cc4:b0:c29:f5d5:5aa0 with SMTP id a640c23a62f3a-c2a159a977bmr170225166b.42.1789719422087;
-        Fri, 18 Sep 2026 01:17:02 -0700 (PDT)
-Received: from [172.16.220.101] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a1bb43a37sm30344066b.23.2026.09.18.01.17.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 01:17:01 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 18 Sep 2026 10:17:00 +0200
-Subject: [PATCH] nfc: st-nci: Use print_hex_dump_debug() in NDLC_DUMP_SKB()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbsGideP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94751F000FF;
+	Fri, 18 Sep 2026 08:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789720818;
+	bh=gUKkL/xmF5f394jyQDECLCZfFEXGSwufYWfevSsRYy0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NbsGidePkrOEfa1hkwsufe7o/scVFbF32GHeCoZVuyKYNLxpCAWwvIB1k+nJWMHTd
+	 FMhRjiJnhSWFTMqF3wJfJty+HC2KTs+bXP9OFKkrbZvoU8InwXGO9LpyR3po/1uVNO
+	 tyy3N2IVQWuuG4z2pjHcWd5pgD4sNO8QZksLlBBGbNqS0dDICDhp4FXKUpcNZHzkfK
+	 DTec91szBuv97WarSiFKeSP0hWkXZcTSRropMi1PTDuiCRbdXppp7O8hLs2Bcniwh+
+	 VK1g772ZrgqwoqXeSqyFMGccuQVb/Owu/iKCe0rI3x2nSFqEq8eDH4kno2EeTYtTd4
+	 hsKaTXtLEOHpQ==
+Message-ID: <0fd3e0a5-33f7-4bc6-9146-dcaf035c3ef5@kernel.org>
+Date: Fri, 18 Sep 2026 10:40:11 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-stnci-ndlc-debug-v1-1-48d370af9c6a@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQqDMBBA4avIrDug8Se1VxEXJhl1iqQloyKId
- zfq8lu8t4NQYBL4JDsEWln45yOyVwJ27PxAyC4aVKqqtM7eKLO3jN5NFh2ZZcDcaFWVhTZalxC
- zf6Cet3vZtI9lMV+y8/WB4zgBGa5/CXQAAAA=
-X-Change-ID: 20260918-stnci-ndlc-debug-3b726547b775
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi 8 family
+ compatibles
 To: David Heidelberg <david@ixit.cz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org, 
- Kristian Brox <isyourbrainfoss@proton.me>, 
- Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789719421; l=1184;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=3Vb/Q5gFmB9GEcWuixSJnDg8oOAAOJry8Kj0f4JNoZk=;
- b=aVqV952H3U9RE4pnVYs1xz5MaLGPVT6K6cveb1CJo3CvPPyUkSeZdwykELjdRwogWB6L7Db2D
- q0SaOd5RYEzDSPlDvAIj+bLA5G5NT1n8jKCHnxSq6ZCA8qGBcSxQIkC
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kees Cook <kees@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
+ <gpiccoli@igalia.com>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20260915-dipper-v2-0-cbade54919ee@ixit.cz>
+ <20260915-dipper-v2-1-cbade54919ee@ixit.cz>
+ <20260917-heavenly-weasel-of-criticism-1add6b@quoll>
+ <b324f0b8-0875-457f-936c-89b858d082fa@ixit.cz>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <b324f0b8-0875-457f-936c-89b858d082fa@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-print_hex_dump() will output when just the console log level is set to
->= 7, which is different than the pr_debug() on the line before, which
-will be going through the dynamic debug feature.
+On 17/09/2026 12:25, David Heidelberg wrote:
+> On 17/09/2026 12:21, Krzysztof Kozlowski wrote:
+>> On Tue, Sep 15, 2026 at 04:32:24PM +0200, David Heidelberg wrote:
+>>> +      - description: Xiaomi Mi 8 family
+>>> +        items:
+>>> +          - enum:
+>>> +              - xiaomi,dipper
+>>> +              - xiaomi,equuleus
+>>> +              - xiaomi,ursa
+>>> +          - const: xiaomi,dipper-common
+>>
+>> We do not make "common" compatibles.
+>> git grep common -- Documentation/devicetree/bindings/arm/qcom.yaml
+> 
+> TBH I have mental issue with calling it xiaomi,dipper-dipper
+> 
+> All three devices are branded as own devices, just based on 99.9% same base.
+> 
+> I'm not aware of any internal name which group these devices.
+> 
+> I could call it like xiaomi,common, but there is the polaris and beryllium, 
+> which aren't "that common" with these three.
+> 
+> Do you have idea what to do in this situation?
 
-Use print_hex_dump_debug() to have both prints be controllable via
-dynamic debug.
+Just don't use "common" or "generic" or anything close to it, because it
+confuses future contributors thinking "common" compatible is allowed.
+It's not.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/nfc/st-nci/ndlc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Except above, the actual names of compatibles are irrelevant, they just
+need to uniquely identify the device. Personally, I would not use
+nicknames at all for devices because they tell me nothing. Maybe they
+tell to you because you read internal source code, but not to me.
 
-diff --git a/drivers/nfc/st-nci/ndlc.c b/drivers/nfc/st-nci/ndlc.c
-index be4808859cfa..89a13a439279 100644
---- a/drivers/nfc/st-nci/ndlc.c
-+++ b/drivers/nfc/st-nci/ndlc.c
-@@ -39,7 +39,7 @@
- #define NDLC_DUMP_SKB(info, skb)                                 \
- do {                                                             \
- 	pr_debug("%s:\n", info);                                 \
--	print_hex_dump(KERN_DEBUG, "ndlc: ", DUMP_PREFIX_OFFSET, \
-+	print_hex_dump_debug("ndlc: ", DUMP_PREFIX_OFFSET,       \
- 			16, 1, skb->data, skb->len, 0);          \
- } while (0)
- 
+And if you google for Xiaomi Dipper, you will find first forks of code,
+so again not source information but derivative. Only fifth result is
+gsmarena website, but weirdly it does not have even "dipper" text
+mentioned. So basically using such names is counter productive to me,
+confusing and bringing downstream - postmarketos or lineageos -
+practices to upstream. Basically downstream forks create some codename
+and you push it to the usptream. You can, but I don't find it useful.
 
----
-base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
-change-id: 20260918-stnci-ndlc-debug-3b726547b775
+I would use proper model names, e.g. "xiaomi,mi-8" for final
+compatibles. Codename for family is fine, because simply there is no
+product which we could identify as common base...
+
 
 Best regards,
---  
-Luca Weiss <luca.weiss@fairphone.com>
-
+Krzysztof
