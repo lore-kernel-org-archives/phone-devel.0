@@ -1,128 +1,160 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340AF50B8CC
-	for <phone-devel@vger.kernel.org>; Fri, 18 Sep 2026 15:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2A24E80B4;
+	Fri, 18 Sep 2026 16:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789747128; cv=none; b=mmVJXMJ33bTGbbgfJzOB2Z77/6/6p4YiCKIvAL/8RiraEkRsMm5nJd3ZYgbdPDL9jSczGDAaF+uxHPIGp+kXpBPwbIncaPNfg84EvqCvufdns6x+bxa7pZPJ8APVd2dkH81wJnnTCgN93wtqFBT1+RyyZN+83PYVGFBVL5Xa7fI=
+	t=1789748672; cv=none; b=khnlSUwraN2QpMNalvASxY9SJ1CJ9Q7WPMMvkdsEvhzFwH5RB5DhRQ21yy0+/G3AhwpIF/zJmtP+X+7FVUCHC+SRze5kqAWH/5c/HB0KPrBbSFvo0Gk9ge3laf09VXONebL356qK7hR3OCORXj7ZaRsNErsvBbSitxFtfAjcjzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789747128; c=relaxed/simple;
-	bh=k6iD2D2etMihq1Ed/Z2D6Mnz744U4yuQqMUM1sM4K3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OPAdCyfdJ3iIuaxyAgecDoidtBvV9u7Ukgc51Kp61IbZiXObIz6cumhxumz93AfDT1aUaXji1jBOGIEkff42uQ/RmljHMhxuce5CIJJqBg9noycQ1E8f0iMreNuCcWZQ1SYAIkPanEuOXwTpQL99bU45WV6pqmgz8UOOasHklvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=iN3bq48t; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1789748672; c=relaxed/simple;
+	bh=z5X9zCh5IuFuZcvgGxwrAtS1NSjrzMSbCh5e6zRR+KM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZYZHRB78btAkdSd+jB2tBLFaG/ARw6UpfAYiUAoFvlby+SDZWbQTfTYP4H6IydoAQFwyOfA4uPxlCq1Q+s/IsF2qFdV7rzNP+Gimc3ipbEO0tXFAOOFxf0K2W+dOFrPFXuIb+3k/nJfI5Ch38r6u7zMSwxeFDYztOYMPNlwm67w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmEeUch7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="iN3bq48t"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912e2406so4668505e9.1
-        for <phone-devel@vger.kernel.org>; Fri, 18 Sep 2026 08:58:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1789747124; x=1790351924; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=k6iD2D2etMihq1Ed/Z2D6Mnz744U4yuQqMUM1sM4K3I=;
-        b=iN3bq48tlNrunPRtgjFkjHM4AQ4/oH2tuiZTIoQEtQDEEcKoYBONQUVBrbkbDD7X+O
-         yQo6MYyOdTofXubCwQpQDGmOT2v1HUA2iOpFnpKAwE2ZaY1cw4aYhooSdIWT+ppmrZ2l
-         mrrpkmHnO/SPN+/tush/TNFuUD5MZ5heHXtw2mXjeoqmpWRloJMP0TQkPEoZKxfpZ5XF
-         YWRodSb+PzDdcb2+DCx2Tlebeq4z5QOq4yPoGEs6aiLYGLl4fbyggGphDobBDlGVCtNB
-         W97ajsZhH8HDhFr7A+cIvwtOAkUz+2bVqjeMDWQ17Kw+jyGqELtjUI4meFo8nEZZi96d
-         7cUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789747124; x=1790351924;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=k6iD2D2etMihq1Ed/Z2D6Mnz744U4yuQqMUM1sM4K3I=;
-        b=Sh37jBHoM/F7VDZ5B4tM2UWJSDeW31QE2FljYLulpRKSlEp0JOzwlzqo/GKD8kHZAl
-         DZ33tdw3Xo4Ql0itlegTlGmnmYuMKR3EYOmObvWrNKZZiSNTjWaKq0UJXPAKC9ce0uBd
-         Ij+Gn/4nHcuLE5KgfT6b82aWz/Xt16YD45pXUqvQXqa7saJyKyer0C1kglPqDflEb7Na
-         jmnL1WWKlnMJ/Wm6qlIhkwshQbyj/kCfvZ2kF3/4CV3Jd1ddBkwNjikqDpNLEov9YZxV
-         MaLVKOZx9c+Xvg0GmBS0Us2dpbCyiZiRXE1aKEBE1P9Lgc/ULyQz6hRU3nSFQNiZjAPK
-         Jlgg==
-X-Forwarded-Encrypted: i=1; AKwUvBzzySR7DVmqbGsCaLTFSWTXFFenXOj9eQzd5ridsEmeVDZu+EEh8bgZV92ya+L5fK2/GkI04DCoGosMLg==@vger.kernel.org
-X-Gm-Message-State: AFuF++nBpWYx72d6+y6jU09daQLBKA8WLC+k3tRrqmuQrg1qjxLyZuEz
-	0Kb5YUHwLnoAzXfWZcdPSeQJu9ExXGMhETkLwoNsSW6DseQBArzZ0toSv/D1zPTm45U=
-X-Gm-Gg: AYBFou30sUaRkJcEcZjM2Mg6YVxdXaLAvIHUfmrzGKWcCOKULwQo7Z8fHW1WS/x7w/6
-	VoUKXdITy3nVanmc2MJ/o+j0Q+/hPBGQ3j/8RatFeWvPA1vcSaZyaY1ndZJ+P/RtaJRIZiRSUhX
-	5ieCk7T4LvXdVZoe7p+Qlptjt6+faa3IQEdv1AUT+JDccA3XgNCvn16B3h9HCQn1tNvqAoQX9Ia
-	eJDPZX+3ODrzVrlY02+8pnsAg49kyolE5TIHO/eOl3ikvZUzmJnd4TLx/QEJC+ZovePxeBeNK4i
-	xdHZd47UnW1wBEkNJcKFj440CAEVeMbCOr7fViZ8NKtntlvajl5cYIr7wvZrmqsSbpOcPeLctcE
-	6ITWoeENkNG6S16ZPdBn8JUAVDkhkq5eteiuikFuLgmDUa7st6f+qv3pEis+kc7Fcn78jQh/LDh
-	OmYuAFivEA5kOKb2LMEYaipxo4uCGUPuU5LZjWPWSQEs5WN003cDo3KusBRZgCAdgSQ0QB0+qkT
-	B6fEi+rGrvl+mlDijm7WE1Ax/Kjz+CEJ4p2HTCwYXorzPX+tbR+j4n+4RlVWg==
-X-Received: by 2002:a05:600c:1389:b0:49d:2936:8ad1 with SMTP id 5b1f17b1804b1-49fc4f71c7dmr45192755e9.1.1789747124490;
-        Fri, 18 Sep 2026 08:58:44 -0700 (PDT)
-Received: from localhost (p200300f65f19a90444c8989fe13f5be4.dip0.t-ipconnect.de. [2003:f6:5f19:a904:44c8:989f:e13f:5be4])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49fc56eff84sm56426065e9.1.2026.09.18.08.58.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 08:58:43 -0700 (PDT)
-Date: Fri, 18 Sep 2026 17:58:42 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for Novatek NT37705 panel
-Message-ID: <aq1erjmXLCFB3uoB@monoceros>
-References: <20260918-fp6-panel-v2-0-6695c4008920@fairphone.com>
- <20260918-fp6-panel-v2-2-6695c4008920@fairphone.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmEeUch7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235B81F00898;
+	Fri, 18 Sep 2026 16:24:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789748668;
+	bh=XFeae9yCxsl9uHzfvyOrz7r4DovEX9FHnVBraiTaw/Q=;
+	h=From:Subject:Date:To:Cc;
+	b=PmEeUch79xZCBp2RCRv9IBPP43EiA78zOZtMKDZb08VgLH+ddXIdig3ixwdO6lwXq
+	 j9pyaP6tKYDCT1NlZoAoP6LRjbDgYkUUcK8hSGrIAIE9dUlk3+E1XORwEJPvDt12S6
+	 mhAURh1if5mEANluVhM1Yw2XUAT6fcvduRWrlhpMkh8u9ozWjYbVCy0uBKlDGIRklp
+	 ZSujoQPC6+qfY1dSw/u8gdoo+vZJ1izTS/Ip9m8JWRrmzkY7SdFEUGATJ18leIYvIX
+	 nxoBe6VcSNJ4fsydcxeOBeGJ8jIRInm2fDNSRR+nTg5PntI/qp/dxuXmOPX1JO9qkY
+	 RemOPcUqNPX6Q==
+From: Linus Walleij <linusw@kernel.org>
+Subject: [PATCH v3 00/22] dmaengine: ste_dma40: Fix numerous accumulated
+ bugs
+Date: Fri, 18 Sep 2026 18:24:19 +0200
+Message-Id: <20260918-dma40-fixes-v3-0-8dd8450669e8@kernel.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qruxh2qmdhupwtoy"
-Content-Disposition: inline
-In-Reply-To: <20260918-fp6-panel-v2-2-6695c4008920@fairphone.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32MQQ6CMBBFr0Jmbc10CqWw8h7GRYEBGhVMaxoN4
+ e4WdibG5fs/7y0Q2DsOUGcLeI4uuHlKoA4ZtKOdBhauSwyEpNEQiu5ucxS9e3EQTVXZXmtEanp
+ IxsPzfiThfEk8uvCc/XuPR7mtvztRChQFy9zIwnbaVKcr+4lvx9kPsIUi/ZEpyVqRMkrlbYnll
+ 7yu6wf0/Vu+5AAAAA==
+X-Change-ID: 20260820-dma40-fixes-b99af66002bf
+To: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
+Cc: dmaengine@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Linus Walleij <linusw@kernel.org>, sashiko-bot@kernel.org
+X-Mailer: b4 0.14.3
 
+This series fixes 24 DMA40 bugs.
 
---qruxh2qmdhupwtoy
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for Novatek NT37705 panel
-MIME-Version: 1.0
+12 were found while reviewing the Ux500 LCLA SRAM power-domain conversion.
 
-On Fri, Sep 18, 2026 at 04:40:05PM +0200, Luca Weiss wrote:
-> +#include <linux/mod_devicetable.h>
+The cyclic transfer residue bug was exposed by Ux500 audio playback.
 
-Please don't include that file. of_device_id is also provided by
-<drm/drm_mipi_dsi.h> (transitively via <linux/device.h> ->
-<linux/device/driver.h> -> <linux/device-id/of.h>) and you can rely on
-that.
+11 more issues were identified during review.
 
-If you want to go full iwyu, please use <linux/device-id/of.h> instead
-of <linux/mod_devicetable.h>.
+The method taken is: whenever Sashiko complains: fix the bug it complains
+about if possible.
 
-<linux/mod_devicetable.h> is a dependency hog and will hopefully go away
-soon.
+This has been boot tested on the Samsung Skomer device: DMA for MMC, wireless
+SDIO and UART still works after these patches, and DMA for audio started
+working.
 
-Best regards
-Uwe
+Assisted-by: LLM
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+Changes in v3:
+- Add a fix so physical channels advertise their existing cyclic support.
+- Add a cyclic-transfer residue fix so DMAengine PCM reports the correct
+  hardware pointer and Ux500 audio playback does not stop with -EIO.
+- In patch 3, preserve cookie completion order when the next queued
+  transfer fails to start and retire failed cyclic descriptors.
+- In patch 4, enable runtime PM before requesting the IRQ so pending
+  interrupts can be acknowledged during probe.
+- In patch 5, keep valid interrupt handling with CONFIG_PM disabled and
+  only drop a runtime PM reference when one was acquired.
+- Add checked runtime PM resume handling to channel operations.
+- Add an IRQ status patch returning IRQ_NONE when no DMA40 interrupt was
+  acknowledged.
+- In patch 8, keep the IRQ disabled until hardware initialization has
+  configured and cleared the DMA40 interrupt state.
+- In the DMA registration unwind patch, free the IRQ before unregistering
+  the DMA devices and drain initialized tasklets before releasing storage.
+- Add a fix releasing the LCPA SRAM node reference after reading it.
+- Move the disabled-channels binding restoration to its own series.
+- Store memcpy channel mappings per controller and check the property read.
+- Add validation for disabled physical channel indexes.
+- Reject DMA specifiers that do not contain exactly three cells.
+- Reject transfer direction changes after channel allocation so logical
+  channel resource masks are released correctly.
+- In the event-group bounds patch, use variant-specific limits so DB8540
+  event group 4 remains available.
+- Add fixed-channel fixes that search later physical blocks and validate
+  configured physical channel indexes.
+- Move the generic DMAengine debugfs naming fix to its own series.
+- Use `Assisted-by: LLM` for the existing assistance trailers.
+- Rebase onto v7.3-rc1.
+- Link to v2: https://lore.kernel.org/r/20260820-dma40-fixes-v2-0-63238334c707@kernel.org
 
---qruxh2qmdhupwtoy
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes in v2:
+- In patch 1, complete the failed-start descriptor through the normal
+  tasklet path and drop the runtime PM reference instead of freeing the
+  submitted descriptor directly.
+- Add an IRQ fix to avoid register access when DMA40 is runtime suspended.
+- Add a probe ordering fix so DMA40 hardware is initialized before
+  DMAengine devices are registered.
+- Add a probe unwind fix so DMAengine registrations are released before
+  freeing IRQ and LCLA resources.
+- Add an LCLA allocation fix so __get_free_pages() and free_pages() use an
+  allocation order instead of a raw page count.
+- Add a probe unwind fix so ESRAM LCLA mappings are not released with
+  free_pages().
+- Add a device tree parsing fix so memcpy-channels cannot overflow the
+  memcpy channel array.
+- Add a dev_type bounds fix so derived event groups cannot overflow
+  phy_res or the priority/realtime register window.
+- Add validation for fallback memcpy configurations so memcpy-channels
+  entries cannot bypass the dev_type bounds checks.
+- Add a DMAengine debugfs naming fix so drivers registering several
+  DMAengine devices for one parent device do not trigger duplicate-name
+  warnings.
+- Link to v1: https://lore.kernel.org/r/20260820-dma40-fixes-v1-0-5e14815ad689@kernel.org
 
------BEGIN PGP SIGNATURE-----
+---
+Linus Walleij (22):
+      dmaengine: ste_dma40: Fix physical cyclic capability
+      dmaengine: ste_dma40: Fix cyclic transfer residue
+      dmaengine: ste_dma40: Fix failed start cleanup
+      dmaengine: ste_dma40: Fix probe runtime PM disable
+      dmaengine: ste_dma40: Check runtime PM in IRQ
+      dmaengine: ste_dma40: Handle runtime PM resume errors
+      dmaengine: ste_dma40: Return IRQ_NONE without interrupt status
+      dmaengine: ste_dma40: Init hardware before registration
+      dmaengine: ste_dma40: Fix probe IRQ leak
+      dmaengine: ste_dma40: Fix DMA registration unwind
+      dmaengine: ste_dma40: Fix LCLA allocation order
+      dmaengine: ste_dma40: Fix probe LCLA free
+      dmaengine: ste_dma40: Put the LCPA SRAM node
+      dmaengine: ste_dma40: Fix memcpy channel parsing
+      dmaengine: ste_dma40: Validate disabled channel indexes
+      dmaengine: ste_dma40: Validate DMA specifier length
+      dmaengine: ste_dma40: Reject direction changes after allocation
+      dmaengine: ste_dma40: Fix logical channel bounds check
+      dmaengine: ste_dma40: Fix event group bounds
+      dmaengine: ste_dma40: Search all blocks for fixed logical channels
+      dmaengine: ste_dma40: Validate fixed physical channel indexes
+      dmaengine: ste_dma40: Validate memcpy configuration
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqtX7AACgkQj4D7WH0S
-/k45Dgf/cdIUUEx1eWlxLi0ByfmazBebC1gamR8J8DORRZZV6FdlLvHC+Xy2/RL4
-slct57z4ZQbBeYwbTEYHirry7VGiKwEpKPQDLmLDnPWad4IuhJyPJHWq1qextxYL
-Jr0wsKOilDFYPTydHs9WPS30t/IUFq+/EPzL5pa8ZeGgOVFoqNsW8b/ZrfoDFdJc
-O+3m9OwNRXXICF7BpJ5BeHKu3Npv3CiukAmilSjD8dyFd3JXZX3b02ursgRjuDyR
-4k+acvjvKFtZ9V4lJpvtwU/6XQxLiQNmLT4YYEYx0aH9JNlxjtie+CUXYEDKcNoU
-ynf/eUOrVnbj4s3Yoh1l7LkySt2lyA==
-=Sgj4
------END PGP SIGNATURE-----
+ drivers/dma/ste_dma40.c | 387 ++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 277 insertions(+), 110 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260820-dma40-fixes-b99af66002bf
 
---qruxh2qmdhupwtoy--
+Best regards,
+-- 
+Linus Walleij <linusw@kernel.org>
+
