@@ -1,65 +1,65 @@
 Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1C84E1C8E
-	for <phone-devel@vger.kernel.org>; Fri, 18 Sep 2026 14:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F023D5C26
+	for <phone-devel@vger.kernel.org>; Fri, 18 Sep 2026 14:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789742607; cv=none; b=jggx19pugTsmYaEh8OzcRhnasjNUICSeadtT6cDwYaEcFlNwXyODfM3W3dpQP+AvTBBTvXfmOryD1DxD2hOqsEyBfuRlyMn8uyYiWm7M3MnbNv1Jj9vTQLnXRHMyR/+XvqawxD5EE9Zzfak/VHCKSZ1IxDB1bZRzp/br2oJ77B4=
+	t=1789742910; cv=none; b=ZcBcC8kR92AtkqQtDXiHA3xGi8YkR4JCpTwZ8P5uzyWEIXXfJxDpGo6iiSvPRmm0JaSnrtQMOCn84lI1ULhYNUb33oojjCeXLLBjarvia3z3cl0mXaK53CXlnCoBx2FqHPYqt2j4ReUVJhA2dmVz3AfWbiFPEpOtbWqAD+A4+Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789742607; c=relaxed/simple;
-	bh=Iryp186ezY+gCaEJKKJAixL+bjwtfJ0T/atOJE5WaQA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=n/v/9mOY+k3vUfzCfagRmRXWx6Ytrwq8Kp69UgVhXBiTYapJLRw8tw4DgET9GpiZ6sQfWzu6W/hWfWb6xSVg31rSODalQmML36fx52A8IT6lgys2gbE1lQsWw0P3RYCMzvpG0ZUt1zSh0FXAN5A2hvAOQ+sO8++lxYeJk7Kd1p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=bhpqsMSp; arc=none smtp.client-ip=74.125.228.76
+	s=arc-20240116; t=1789742910; c=relaxed/simple;
+	bh=L4bI3PGgU9bSJgOhljQBgG0v7C7CIE/2yIrGX7MDOqE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=LXOQTeVtaE5YmeiTo2CGdfr1U0oBfetDSQTsm9bkS4O/aFCknkRTl0EZfIGzB+7O/x0XMDHhhTd38s39Y00wejM8+BsKSWmkvgsvqpUFMmpjYcDW+9HSk9Z73TzgKRR0pHct6AsmLggoAhGnWl0Y3KHBZds6RI5audqZbh5wGV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=cyWzPhFE; arc=none smtp.client-ip=74.125.228.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="bhpqsMSp"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a985fba28bso901347a12.3
-        for <phone-devel@vger.kernel.org>; Fri, 18 Sep 2026 07:43:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="cyWzPhFE"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a985e8fcddso983208a12.3
+        for <phone-devel@vger.kernel.org>; Fri, 18 Sep 2026 07:48:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1789742603; x=1790347403; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=fairphone.com; s=fair; t=1789742906; x=1790347706; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=Iryp186ezY+gCaEJKKJAixL+bjwtfJ0T/atOJE5WaQA=;
-        b=bhpqsMSppMXS57/rwie8aIPBboNhq43ehVhkULnvPa175uVXt/MpzOT9JFAr2kUNNe
-         DkPCRPkKsoGVnHdYl61k5IMGAeUM72QS0zEOVKdaulXWmVqJ8l7IA65JogktZnZIFhJi
-         bSzVzs3BM1lJ4W17eHfutGUJNO41Bm6NAqs+NE6AbInBEMEnKKztopefxcLk1heRFQ3M
-         lDwZhHqtzdqxUQ0xnL185CVb2U7BXVtpoSAuJseN7eyjVQ8A22A1HZi0BuuVtuBplWq/
-         vEEfRjsKnkdTDeFEHQRWfLLcbWgLKGnIRiuz6/fsdMgLq8FbG8+wjnPRXeg2VGZErN4u
-         Xtwg==
+        bh=Hg9vfa4lsW5ktc6Y5Et7BMiTJemiUATqSiHMCuNMX5E=;
+        b=cyWzPhFE7qdE1aFe+S4eLXfEmqXcs3wc5OKxabPrVzvOUlA1/CVsSGOSDK2oUBeAHf
+         VTHuh6+d/FtT/VedI1JDFJYaYnSSS1KO1r0NoyKWq7kc1hm+HuV0BquTHazshHcwNrR/
+         CYsEjhCTSRtjUZ5yCOcn9ToOHPGgfU2tL80eldLtBtIA/bPQi2Bo8Z8uP0tHFEgjHa4C
+         jMF7axCTOcoTmYSUnwAs3UwuO1NDILwFkWymXVDr2RC863dwQAdz2BqvaEl5Eks26FVN
+         6NSTxy/zyd5+Q40bdbDn/T+W5Q+6hgvmTH/ayxJjgn9q9cdlobpAuvIJFaWayy2Tx+UC
+         Ozrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789742603; x=1790347403;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=1e100.net; s=20260707; t=1789742906; x=1790347706;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Iryp186ezY+gCaEJKKJAixL+bjwtfJ0T/atOJE5WaQA=;
-        b=byi61YGhGxplPJm89sKFGaubOKT/Lg1g6ejzG0mZpxM8x5vboLIXDiwgsQ58DHMqht
-         iSJfD+7BxR0FS4T1oAWXddotonBekHwAuSj0ZNjqOAuNbKf9vHlY5/Yd4ymtz0rSZMYi
-         rUIQy/WzXG+sVAdJM06J2E7hEJF/OHVgIx46Em64jQCn76dWzlXmsYPJ9Iila8+FkxYn
-         WmAyitiVPkWwm159vxllVMkPSkzfwfzE1GCQ2HhYX16MoJq8dm8Uig8GW22FdTuMD9UR
-         LopMlSI3W1jYWgRGzKuSe7D0oSmzhZqhVQrFGlPtnVVCIPz4ohWl6H53uNFuEbC+/3RN
-         cgDQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwtPTHHpBiy0PlKy8T8j261ijNjjgXxipJajH7rAeLsJLt2yH9JSRJ60KooRSuK81BA5l1T5hPcNEHMzw==@vger.kernel.org
-X-Gm-Message-State: AFuF++lzorf7HLYqX1vg2PVncW0P+E62lbIS+BxYGHzJ0OE7S/Ag8niB
-	NyGKDezf6PLKZTC1FlO2alsfwb0TWiW7IdsxFF5JqBRiG3j3HIEDYC+0KfxiNFF+Hfc=
-X-Gm-Gg: AYBFou0dBjeR3ONAejHOpRxKOGqKVtq01prjd5j7nLsKPopATqmR26vvW0KM/I5+/0G
-	+x6zdyv/T9EUtjcZWGYKL83CiLDulWGhWIVIhHBUz4w3oAcDDmc9GGXVsi+f7Ho3yyITkS/zq+o
-	FyPl2HycbhakYTqJrvkqoXeJugaosfQFNJoyWH0GLuO6tTZjeou+xwi6ZZZQghjyFUpOpTUK1EO
-	n71yE6y6wlUYOHG4P5fbNcyy64PpPbteBJXLwrbRjxktXg6ldE3LGkWzHigYo+Tzq2xRdEnwnEO
-	4ONu+X3Jh8NmxaO7Z1b0TuZriQY+YkUnzjTKenUAgqj7QhbpnuI1w5/5KJAmipC2AN2SeOyrh4G
-	L1a4z5aL+1p+Z6HhHft8oZycrHm0twap3ICre8whoWj2PThdeYFYw8XeHaq1of1VOsO5316YAZg
-	NmP723STOcXFYlhxdYkUTC9DdSDkPwGchwsc2sYJqlpMAAFRM31by5801uWP2h8FvotOWxrlSDK
-	b8zl+9cm/iiyPc2VfrHyUCq2AQAqClLJm7n3xF35nQ=
-X-Received: by 2002:a05:6402:5111:b0:6a9:ab6a:640f with SMTP id 4fb4d7f45d1cf-6aa531c28c8mr1640375a12.37.1789742603374;
-        Fri, 18 Sep 2026 07:43:23 -0700 (PDT)
+        bh=Hg9vfa4lsW5ktc6Y5Et7BMiTJemiUATqSiHMCuNMX5E=;
+        b=xGWyTbfLxGidk+S5dxUn9ETtgqpzanyxzmBzeTrVVlfO8FrvJTXSP9caGmLCOs+WIg
+         Ng+zyatBL4Diw2KL4H+5Rwa0AKSYVhP9k3BkCIn8NIlX1TobgUcu83mqIJ4JClmQih3J
+         NcNCICnmwbRfSnfpv1KptxZpz+avqiAHQk0M7eWSqHLmbT7NfBHIE3egYvclOKTcXuv+
+         GVYxbjlbjJWTya/jCJVO/CFEoGiesVamo5zShIurmaAtOMmCXZeBvaJ+xkZ+o2F3MoC+
+         4Kt8htVpUbDOvM2b1tYgzDywA7uT8mmogF6+zEauaZMyeytJkjFtkebFneuCrNVUCxCu
+         f2Eg==
+X-Forwarded-Encrypted: i=1; AKwUvBydmgnqx+Fl5jw/271SEkyBahGPbLogzKD6sVmNwETt9eAMtdHlkb325f4dR0Ksh4q0MMui9P505Ew//A==@vger.kernel.org
+X-Gm-Message-State: AFuF++md9DgIrSLcSQzJ4F1Au20izSkP2GH9PamBcxWg5INKy8run/Ax
+	Kav03a6/1LPa7BePjEffdDuyH0XwznmHSnSITs/aBweAhJ3zBjB5VsA68VN4StSwHu8=
+X-Gm-Gg: AYBFou33YKrtJmjWzgNXE3lT8GyE6ILIdLPAtOQIuf3FMrhD+IGtL9M2bZqo12DQLp6
+	p6A3uoZZrsJSaCm/EAxmveELQKkcboGe+oQC1ahiXeS1+ia+9wkf+SwGIAWOiJCtsw1vAWNfB21
+	BRJthKFGO59vkFZDipHpzBrmH2F8GRmVzf1UKrku3ZmeBViWfdnvIFzsp/6TUue2884Z8f7DR8n
+	bsUVjqG9qqMdwAi7Q93f/kLIVSRdVu/NnaDI4UgcO37ZOvw54QUXOSyNXoRs5waPEbhhaOkgDam
+	mzC8GKoEUdKwqblpMaaoucFELevU8MOdeUNxAGiC6+y5F64/aTEBID306apQ8J8Rp/YUIzwVpIN
+	EVpi7TtTQo5+5TORMoIf8Xh3l/mZDDCZaDzywYa4UzVreQ3AETc7A8s/UkZX8Wckx/YHBqWAt6M
+	Vx4P0OeUj5oRK1xxVCfd2rtsADmpsVU4ZuVtPKgqnF7if8A7eHe14ajvHZAO3HHOJltv6UXtPxy
+	Uv8Ub4pnpfZQu8ODURnbHo5qBWgeNqtXUpLffcG01I=
+X-Received: by 2002:a05:6402:a0c4:b0:6aa:4865:55df with SMTP id 4fb4d7f45d1cf-6aa5637bc93mr1670013a12.26.1789742906136;
+        Fri, 18 Sep 2026 07:48:26 -0700 (PDT)
 Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aa59605618sm991778a12.11.2026.09.18.07.43.22
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aa58f3236esm980880a12.9.2026.09.18.07.48.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2026 07:43:23 -0700 (PDT)
+        Fri, 18 Sep 2026 07:48:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -68,75 +68,77 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 18 Sep 2026 16:43:22 +0200
-Message-Id: <DLIISWYS60TX.BBXK30H05VRL@fairphone.com>
-Subject: Re: [PATCH] arm64: dts: qcom: kodiak: Elite-ify LPASS macros
+Date: Fri, 18 Sep 2026 16:48:25 +0200
+Message-Id: <DLIIWS3MACOE.1MZFUJORZ6P5V@fairphone.com>
+Cc: "Srinivas Kandagatla" <srini@kernel.org>, "Liam Girdwood"
+ <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, "Jaroslav Kysela"
+ <perex@perex.cz>, "Takashi Iwai" <tiwai@suse.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>,
+ <cros-qcom-dts-watchers@chromium.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-sound@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH RFC 1/2] ASoC: codecs: lpass-tx-macro: Use correct
+ config for sc7280
 From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Luca Weiss" <luca.weiss@fairphone.com>, "Konrad Dybcio"
- <konrad.dybcio@oss.qualcomm.com>, "Bjorn Andersson" <andersson@kernel.org>,
- "Konrad Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
- <conor+dt@kernel.org>, <cros-qcom-dts-watchers@chromium.org>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: aerc 0.22.0-0-gc2f86b7abde3-dirty
-References: <20260522-kodiak-elite-macros-v1-1-487661ac1270@fairphone.com>
- <b39e4b4f-c166-48e1-901c-51694cf8172b@oss.qualcomm.com>
- <DJFFMB9BO7GF.3CIRW26SHUSD@fairphone.com>
-In-Reply-To: <DJFFMB9BO7GF.3CIRW26SHUSD@fairphone.com>
+References: <20260526-sc7280-tx-macro-v1-0-1aad6900fec0@fairphone.com>
+ <20260526-sc7280-tx-macro-v1-1-1aad6900fec0@fairphone.com>
+ <4rd4l5ioccdiggvlwl623qsdoy2udy5cr6sigyxrg5pbdll37g@sboebzvzlr6m>
+ <DJTUMRRV8K1A.3AL1AMOF242DP@fairphone.com>
+In-Reply-To: <DJTUMRRV8K1A.3AL1AMOF242DP@fairphone.com>
 
-Hi Konrad,
+Hi all,
 
-On Mon Jun 22, 2026 at 10:23 AM CEST, Luca Weiss wrote:
-> On Wed Jun 17, 2026 at 12:05 PM CEST, Konrad Dybcio wrote:
->> On 5/22/26 4:46 PM, Luca Weiss wrote:
->>> Due to initial kodiak/sc7280 bringup being done for Chrome platforms,
->>> some Chrome-specific bits still remain in kodiak.dtsi, like the clocks
->>> and power-domains for the LPASS RX/TX/WSA/VA macros.
+On Thu Jul 9, 2026 at 9:06 AM CEST, Luca Weiss wrote:
+> Hi Dmitry,
+>
+> On Sat Jul 4, 2026 at 1:55 AM CEST, Dmitry Baryshkov wrote:
+>> On Tue, May 26, 2026 at 05:29:54PM +0200, Luca Weiss wrote:
+>>> With the v9 data, the controls will have completely wrong names and
+>>> using wrong code paths that do not apply to v9.4.
 >>>=20
->>> Move them to sc7280-chrome-common.dtsi and put Elite (q6afecc)
->>> equivalents in its place. The qcs6490-audioreach.dtsi file can also dro=
-p
->>> deletion of power-domains properties then.
->>>=20
->>> This follows previous commits moving Chrome-specific configuration to
->>> the correct file, leaving kodiak.dtsi for Elite and
->>> qcs6490-audioreach.dtsi for AudioReach.
->>>=20
->>> No functional change intended. The clock-output-names property will now
->>> exist for both Chrome and AudioReach devices but this shouldn't have an=
-y
->>> relevant effect. And WSA macro clocks weren't added to Chrome because I
->>> don't believe this would've ever worked given it already referenced
->>> q6afecc and the nodes were originally added during AudioReach bringup.
+>>> Note, that this will change control names so it's a breaking change.
 >>
->> I think it's better to keep them, if only to make sure that the result
->> of dtx_diff isn't outside the expectation of a commit that claims to
->> only reshuffle data for these platforms
+>> Is it something that we want to keep as compatible for the old DTs? Or
+>> is it completely broken and unusable?
 >
-> I documented this in the commit message for this purpose.
+> It's definitely not completely broken since a good number of devices
+> work (seemingly) correctly with it.
 >
-> But I'd argue not putting (likely incorrect) wsa_macro overrides there
-> is the better thing to do. Probably somebody should've taken care of the
-> Chrome platforms when adding the wsa nodes in the first place.
+> I also tried and I could make the microphone on Fairphone 5 (QCM6490,
+> Elite audio) work even with the "wrong" v9.0 config, by updating the
+> control names to the v9 names instead of the correct v9.4 names.
+>
+> In the cover letter I've expanded more on this and the possible options
+> I see.
 
-Is that okay, or do you want me to change this? I'm still of the opinion
-that adding a very-likely-broken WSA macro to chrome is not great.
+Any suggestions on how to proceed with this patch set? I want to sort
+this out before upstreaming microphone support for Fairphone 5, which
+has been working for a while. Just needs to sort out this situation
+first.
 
-Anything else to note? R-b would be nice :)
+The cover letter has some possible options (new compatible, new property
+to mark the dts as 'v9.4-compatible' and more, etc.), but it's difficult
+to send patches if there's barely any feedback :(
 
 Regards
 Luca
 
 >
->>
->> It looks OK as-is for Elite and Audioreach platforms (for the record, I
->> checked rb3gen2 and FP5)
->
-> Thanks!
->
 > Regards
 > Luca
+>
+>>
+>>>=20
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>> ---
+>>>  sound/soc/codecs/lpass-tx-macro.c | 9 ++-------
+>>>  1 file changed, 2 insertions(+), 7 deletions(-)
+>>>=20
 
 
