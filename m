@@ -1,89 +1,161 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D6251FCBB;
-	Fri, 18 Sep 2026 20:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF66D35674A;
+	Fri, 18 Sep 2026 21:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789763647; cv=none; b=MUE6JH0C2/kpseSlomPh43gwZZek3gMdfBiDnz2DdazfFU4fLD1DcUFwUPxHU4h6+LuKC7KRvQRvL7BYnUSzlKzIpILQU2Qww1RyKVEJgBLsi59pWdSub6EZtyJwv/W6sWuet8Xf8CHmuG1FtUwOkXDhfawxRwBSFA3rZ2eVrhI=
+	t=1789767322; cv=none; b=DNe4Pi9dSwJb9sokug6ZDP4GZv859Lw1oA0r7Nfr/xB6YSrF4qa0lfsdV8RONc0m9fF3p+Kbszd89I8uNwscaK37E/tkStVXUohoHjfKWAUfRA5GMnPLPnCzUtKK9HUbFECSI3LAA1ZxUyHSOTukNcUOO/u+Ef/F1KHUzeSRc8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789763647; c=relaxed/simple;
-	bh=cBKQONdshAJXM6/gb+YgGSbqiMy75fyyKnNMeQ/Be5U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ik5wy/sMfgPiQa7uRuOs2OsFIoMNXg3rwlSsgNyCQZtYO2BtiqoDg2GncZ8slxUg2a7OQtu/WYZKVOLtMKo46Bx7f6CJR7+XV2yhpgazeDliMDti9eoJallgC+iE4OtysYQ/zmJnKCJ4G4ZWVIjpMeGtwaaC3qJux5XrpBtzPw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZyVvVuS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789767322; c=relaxed/simple;
+	bh=cRJ+PVM/y4zy/Zu1yfhqH5rqt0ISqNKOL1eFVVH+e3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZSr8dL1+vdNIuXu6WZ0EntSS2uoDg3rLSL1fUQromNBGLLctDSi4lD52SVinrCdADLzQaEZeqTaAf9Y33BFDz3WTwTP33CqAL5miUs2lvKiy3vKua/3l6EbWSXLd0H/CKUy0dFlCpi1iILMGXy5L5yoN+YzsVRU/Ujprwsa8JxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3D8k9lf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZyVvVuS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CEC1F000FF;
-	Fri, 18 Sep 2026 20:34:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3D8k9lf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333951F000FF;
+	Fri, 18 Sep 2026 21:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789763646;
-	bh=EU4D9e7ez7H8tffRc2UKHpYD4iiRbdWWwGGar/naEgM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BZyVvVuSq1vV3LixrKU/8CIzcqHuFS4LroaQ3R7w1/o4SDus5cGFnOVp3z6Uu6ovv
-	 2f3IvRMGPqVZlyL1jZ9+frjB3jfsjkjXAB/bG/R26R+juiZC2+kTOKHKckXNdetdol
-	 I27e+vplcOuhmZzvnIFhpnlPZlunM5ZKGUVe4q/zeeng+CbxGIv9vujvzNfM08Kg5m
-	 FLBYHBj3SMbRh60ijCgZpwBz6tZgrb5PiysoYafdluLwVF0Ue5hoXsgbRAwCvbtwmB
-	 jxm2S7QcH8NM+1YJJ2ArsitUbS3RgCsX67sllT+2ppOJAezNvErWit8cg1PdOVUe9z
-	 KRAzH2LL1DLwg==
-Message-ID: <96294c65-171e-48e4-9938-9f321b4c5e6c@kernel.org>
-Date: Fri, 18 Sep 2026 21:34:01 +0100
+	s=k20260515; t=1789767320;
+	bh=ej3xKpckrpjvUc2u6qoLx+3TMAOcBxUdzeIFFyYah/c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U3D8k9lfVGUmG3mrLdr956SF7/Qr5CBRsP2flicGDEQ75+/x23Gz7gEdh0FeSfeOc
+	 PtLQM0QAfD4jSijXXjL4vzXI/6kdfmRD88xSJ3dmf+R3sAyp21mlzRfKw1lTn0TlzF
+	 hqAhbwz9JnTygIoS1AqYKAxjH+LxQNrOjuS/SYtCmlfLlojf8j18w8Z9scv2QOkyBp
+	 atgWD6pI9o9jsvuHdvoiMD7K1I57B49g/DdD+oFyuxRM89OeePA1MRjBeXiiHtFqZP
+	 1dax3Bv/8ODg6IBwW/ZFtA5wD5LFllEGvbfA4UlFc84SJQItxe8xF9MlnBv/5mbZST
+	 GvNXUIA+atX0A==
+Date: Fri, 18 Sep 2026 16:35:18 -0500
+From: Rob Herring <robh@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: display: panel: Add Novatek NT37705
+Message-ID: <20260918213518.GA2337779-robh@kernel.org>
+References: <20260918-fp6-panel-v2-0-6695c4008920@fairphone.com>
+ <20260918-fp6-panel-v2-1-6695c4008920@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/2] Correctly use TX macro v9.4 for SC7280 / Kodiak
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Srinivas Kandagatla <srini@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, cros-qcom-dts-watchers@chromium.org
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20260526-sc7280-tx-macro-v1-0-1aad6900fec0@fairphone.com>
-Content-Language: en-US
-From: Srinivas Kandagatla <srini@kernel.org>
-In-Reply-To: <20260526-sc7280-tx-macro-v1-0-1aad6900fec0@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918-fp6-panel-v2-1-6695c4008920@fairphone.com>
 
-
-
-On 5/26/26 4:29 PM, Luca Weiss wrote:
-> As a bit of a note where I'm coming from, I'm working on microphone
-> bringup for qcm6490-fairphone-fp5 where so far we've been using
-> qcom,sm8450-lpass-tx-macro to get the correct control names. I've tried
-> reverting to sc7280-lpass-tx-macro, updating audio-routing in dts and
-> UCM to the v9.0 names and it does seem that microphone (AMIC1) is
-> working with that, but I'm not particularly happy about leaving the
-> wrong control names everywhere, so I'm happy to try and untangle this
-> situation.
-Are you referring to the enum values that go into "TX SMIC MUX" mixer
-control?
-
-if this is the problem, i think we could use values instead of enum in
-your setup. They do endup in the same register.
-
-However I do acknowledge the issue.
-
-pl let me know your thoughts.
-
+On Fri, Sep 18, 2026 at 04:40:04PM +0200, Luca Weiss wrote:
+> Novatek NT37705 is a display driver IC used to drive AMOLED DSI panels.
 > 
-> I'm also not sure where this v9.x actually comes from, maybe I'm lacking
-> some documentation, downstream kernel only refers to Bolero v1.x and
-> v2.x so these seems to be a completely different versioning system.
-Am not sure how we ended up using lpass versions instead of codec
-version in tx, this is a redundant to codec version. I want to clean
-that up at somepoint.
-
---srini
-
+> Describe it and the panel in the Fairphone (Gen. 6) (BJ631JHM-T71-D900
+> from BOE) using it.
 > 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Link: https://lore.kernel.org/r/81a3c207-4d8f-490f-8e2a-6f3f4c2acd35@kernel.org/
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  .../bindings/display/panel/novatek,nt37705.yaml    | 72 ++++++++++++++++++++++
+>  1 file changed, 72 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml
+> new file mode 100644
+> index 000000000000..1c796599f6fc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml
 
+Did novatek,nt37705 get dropped as a compatible, but the filename 
+remains?
+
+> @@ -0,0 +1,72 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/novatek,nt37705.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Novatek NT37705-based DSI display panels
+> +
+> +maintainers:
+> +  - Luca Weiss <luca.weiss@fairphone.com>
+> +
+> +description:
+> +  The Novatek NT37705 is a generic DSI Panel IC used to control AMOLED panels.
+> +
+> +allOf:
+> +  - $ref: panel-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    contains:
+
+As sashiko reports, "contains" is too loose.
+
+> +      const: boe,bj631jhm-t71-d900
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vddio-supply:
+> +    description: I/O voltage rail
+> +
+> +  dvdd-supply:
+> +    description: Digital voltage rail
+> +
+> +  vci-supply:
+> +    description: Analog voltage rail
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reset-gpios
+> +  - vddio-supply
+> +  - dvdd-supply
+> +  - vci-supply
+> +  - port
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    dsi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        panel@0 {
+> +            compatible = "boe,bj631jhm-t71-d900";
+> +            reg = <0>;
+> +
+> +            reset-gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
+> +
+> +            vci-supply = <&vreg_l19b>;
+> +            vddio-supply = <&vreg_l9b>;
+> +            dvdd-supply = <&vreg_oled_dvdd_1p2>;
+> +
+> +            port {
+> +                panel_in_0: endpoint {
+> +                    remote-endpoint = <&dsi0_out>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
+> 
+> -- 
+> 2.55.0
+> 
