@@ -1,561 +1,295 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013029.outbound.protection.outlook.com [52.101.72.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9300C50254A;
-	Mon, 21 Sep 2026 18:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790014754; cv=none; b=aDUVisQf9elaSID/oCvZvlWZxfwVEfiG1v3+ePXTFTFVoBwlreUHO7LTHwcNC7eq8R3oZ7YRNxpMO7M1L0QK6ZHhueeTepHs+ACCu/bOmvdPQzLv+OYNEKQr2OJz5vqfTAO5zJI0haYjb26xaziTJAhGpSrQTaE2yv0lQppPGmw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790014754; c=relaxed/simple;
-	bh=5cXE6uCU2V3eae7E0njrVJ4gN89dQf7mLXcJnNlcbR0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pKFS1wAzTUycph5AejUEdPoHFjYu9wAUQ3b/CaelDXN4HVWt/nRaAa9G3DvM9XAVMBc1Qv5HbtngbWvQOSTaLVQA6CKXZ0+Re0XICizFgrckzbObAgGm5BP3a3hMbzbWGiwjJElJwzWRPzuyxlg2JRHbxIO21RzK7TrbzypcPMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJsiOM7Q; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE5B5172C6;
+	Mon, 21 Sep 2026 21:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790027525; cv=fail; b=N+VrKxEbYt4rc4o9twbsYmfy2rnPOMzA5QdTC4bEKI+rotCrb0kktbM2xTOT1VCi9DxmnSb45QyXh2LL74VompwnA9sy0Lx/s3iExtEOE8YTuLXgeROC1gFFuv/7tHGb1dZ2MyzgvlaF8ga0+i30GbG6NPzvlPM7V+AUM3H7xL8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790027525; c=relaxed/simple;
+	bh=HDjGK5oPJBpWOexgAYfqx6YN843Plbqc0Qza+mhrGLA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pX7AgoHDTmgxPk6y+Ll78xFhUZ1x/wkuFmwdi0xlv3vIthO1Teuop1pLDOqVRzjjKlJvMFJt+KrDY8MqO7MYlSNuKLHAPSlOgZJKPhK8NOXyU0XS7JnCK1LRWXh2Xh8rbRP/XURMALuyTJW7YNmW/+V/SCoktV7liXgTvjvu7g4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bGNWOD1Z; arc=fail smtp.client-ip=52.101.72.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJsiOM7Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 274C0C4DDFB;
-	Mon, 21 Sep 2026 18:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790014754;
-	bh=5cXE6uCU2V3eae7E0njrVJ4gN89dQf7mLXcJnNlcbR0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=MJsiOM7QISXDgvkjS7oDOQ7I2QLIA4muXGeoDpBd0sNUEHgX2QATAfHVYphYQGAO0
-	 W/whggP4/Sb5xHI7OgDaLLajuHdDilAu4iXRmPyDRaWw8KIsDrayhBlRbHbXnLPCxR
-	 gDNBACrdirrjOQv/umrEkeucGlJcJdsxIQXOT1KGwQ9UcvG2U5EqeJRrBzEwtoue9Z
-	 fZiE4KdN+x6n2BWCaHffIVpb+EISGXTaef23Vo8IsA95sDrneWQO6rMjXQMcPUuAcT
-	 vcnE12dn1XP366wVakfeG5NXbmNCDoYiSJEotiNZcw8gcwMRBKvGdJp1m7VR0H1AFP
-	 KqayBPmi+XJlg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C7E1C982FA;
-	Mon, 21 Sep 2026 18:19:14 +0000 (UTC)
-From: Muzaffer Kadir via B4 Relay <devnull+muzafferkadir.mainlining.org@kernel.org>
-Date: Mon, 21 Sep 2026 21:19:10 +0300
-Subject: [PATCH v3 19/19] arm64: dts: qcom: generalmobile-shamrock: new
- device
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bGNWOD1Z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xl6yax0bGHqTe38ggaac9jGEip83OQ7TEhdRnnPplxY2n+HezEMuduLCN/VIZXTIMdXTw3Ohs8fDYzKHdA9jg8Yq4iWbWHQeOjfQxsa4fuEW41VwGNIdWGQEjvd04rtDM4Lki3IBKm5EyHFG5zuAXCjsmnUo3mvb4B8553L3UIy2a/rJpBpzeSeminZzZy5lHptjFe27575kWv7KnLAdQ2Yd8VZBzLU+aJy1ltSNFLEAF574mtfwappxuKnRjNwltyIOMFeGs304fAIp9qK0jWPexbZ7P8QdHOg0ATTh37hoqyss4clN1aRjLpfqbbBir/EDEog/PHuZ//SX7B5lBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rBDs31lYXSC4IrCuODE1TKNnzOgeHKSKhK1ikqMgFl4=;
+ b=fGrhwCGAdjlB0rhJr5Yl/xo6qidkwIYV6kWNdJvBPQY085PHMwHKYA2v7kswJrCtwtvWRHOAmw9ReQf5Q7yiswPp0vbEo/d9ei57xIik3IvdseaFXmf/ciCledk97wK6UdscK8/ePJ9+AlM9wIpM0Qm6d3Vbib+gsxsruTdyboZT9rlFygpyrDcrlz5G+bl4ookvJUHvs614RbRraFgLmEZplXrUffTqegVKP436wMtkDduiG7ev593j+SGt9kCvrvsIgd5dqUN5a0dufnS94q7xM71H1B808OGmOXge6XSDICKLJj4NmqDP5CrLAkBZGiF4vnW/E3LEpGlIUkUtvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rBDs31lYXSC4IrCuODE1TKNnzOgeHKSKhK1ikqMgFl4=;
+ b=bGNWOD1Zbg3OQt3H79lp/nSSiR627rHqASMDy1cemqgy5DfljKNHwO7JEwFr7t9s1pX4NyL+f2YejPzKl/C76/G0aoPcEPjdIVxw4/TFpoYWljTHyXOmByIwYiulGnN4UEAIjfoBIverDd/xF8LuFn/4RYsiR8PxMiYGuIsZKc5VjLadDDWVfYhIc/S/NXjtw0WbFHxIZu7vOD/TdhR3wSqVR44FFv2j1+Okqo9KnL84PugkIxXv0cSyMU9G8I2+fGwpqBvtYb0sCk+fjimDeTJNI1GTShuVy2qSTLzi8nm+3JrYB6E8wiheL9I5qCTOHW+w5mEIziTV6oyrcioFiw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AMBPR04MB529741.eurprd04.prod.outlook.com (2603:10a6:20b:789::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
+ 2026 21:52:01 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
+ 21:52:00 +0000
+Date: Mon, 21 Sep 2026 16:51:53 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	dmaengine@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v5 03/23] dmaengine: ste_dma40: Recover coalesced cyclic
+ callbacks
+Message-ID: <arGm-Wivy4MXb5if@SMW015318>
+References: <20260920-dma40-fixes-v5-0-5c55cd7f92f9@kernel.org>
+ <20260920-dma40-fixes-v5-3-5c55cd7f92f9@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260920-dma40-fixes-v5-3-5c55cd7f92f9@kernel.org>
+X-ClientProxiedBy: PH8PR20CA0020.namprd20.prod.outlook.com
+ (2603:10b6:510:23c::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-msm8952-initial-support-v3-19-b96fd3fe298b@mainlining.org>
-References: <20260921-msm8952-initial-support-v3-0-b96fd3fe298b@mainlining.org>
-In-Reply-To: <20260921-msm8952-initial-support-v3-0-b96fd3fe298b@mainlining.org>
-To: Bjorn Andersson <andersson@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
- Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, 
- Ulf Hansson <ulfh@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
- Robin Murphy <robin.murphy@arm.com>, Lee Jones <lee@kernel.org>, 
- Rob Clark <robin.clark@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Robert Marko <robimarko@gmail.com>, Guru Das Srinagesh <linux@gurudas.dev>, 
- Amit Kucheria <amitk@kernel.org>, Thara Gopinath <thara.gopinath@gmail.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Kees Cook <kees@kernel.org>, 
- Tony Luck <tony.luck@intel.com>, 
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mmc@vger.kernel.org, iommu@lists.linux.dev, mfd@lists.linux.dev, 
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, linux-pm@vger.kernel.org, 
- linux-input@vger.kernel.org, Muzaffer Kadir <muzafferkadir@mainlining.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790014748; l=11254;
- i=muzafferkadir@mainlining.org; s=20260816; h=from:subject:message-id;
- bh=gxJWGZasJH0N7y1/tnmz0xZTEb+9bQ5AsajURmCeODc=;
- b=Zx+XEpGm7jWsY+IPPp4wws/rjBYZ7hJ7JOFM+6yQtbnyAlYHjs+YZkI69BqeYdmro9vNjEQEk
- WGAfwDKNOOuDWwhHfYVbt7uweKuN9KOtgqDn+bf50fx7esgew9dBPeg
-X-Developer-Key: i=muzafferkadir@mainlining.org; a=ed25519;
- pk=4zkv4suQ3cYcO4Z7CrV8JSSjEGLBGepUtvQCFjgnYIU=
-X-Endpoint-Received: by B4 Relay for muzafferkadir@mainlining.org/20260816
- with auth_id=954
-X-Original-From: Muzaffer Kadir <muzafferkadir@mainlining.org>
-Reply-To: muzafferkadir@mainlining.org
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AMBPR04MB529741:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9ce3add-a391-4664-f134-08df182a90af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|23010399003|376014|1800799024|6133799003|10067099003|11063799006|5023799004|4143699003|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	Wn5wFblqLxLLtuEjf/B/8rypl28H1AltQkJ+CUd/mxmMtS5oFBZEM1tCMsl6vfaTzG1xUbLLh9DyYSEauFe1DvEmqdkT+fN5gvKiajmavvVmY7UT0nQtaV5raH0COzV3/+xqqAN+QNuAJZGBXzL7Uvwygee8E8UM40fZo+q6hgh+uOR9fJ15hzNjnRy5P1FqXE4UG3Tml7ccMlEAUJtBjlBnBGfTTKpvCL0tU+SVbJMoYlRhJl3cRLk+iY668gkvEkRF3p1FZnV2iE/LXh8wfXkEtaf2Hn+mZF2BAsM+twCicdk1CBRe7gJn2jGDtrCf64376BOmAHvFvm+04N8RIE2xihp+F28W7GFlXh63EFvzdrC9BVu3nID10DNsHbtLsNT3SoTkfhgNaTGCfqQhTaMwjec9roXDeCIvC9ruffhClRQLImZTw6iTw2kSmnBhDtDmTsbqKBFisawf5DbsAMNwimzwCTY/xPcAwpeU47CLOztxOL9nPMjbTFvjZ6dpPsvAxyuNDh3EXOkJhyv35PV0VT0u+tuqTAK5IMaRLYkbHZ61Ob9h9bnrg4fQZK1rDxIbA7V6+cOYRqGSGenSoxUuFakmS3MYL63y2DvpcDDVDH7GxlOZ2e78zJA4I9UchkMkukkClcbRUn4Lq6aXdR2NzPJFW+M6hLXaqKpTrmE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(23010399003)(376014)(1800799024)(6133799003)(10067099003)(11063799006)(5023799004)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tgVt0FCJd+6YI1UqI8xvpNQ2YU8vR4HkUK2LOSuwuhDryzb8Lukuclb2rR91?=
+ =?us-ascii?Q?E+bQOp3mMTNwEmP7GICdJ8KQho2XRJSajXWaOS2DKMqGMDceh7ItL8dbKsII?=
+ =?us-ascii?Q?G8aTdzY8KXQJ3ac/QAv7eZ6OqF9m9lyICXX8wc04gKBoO2eG+MAxlgcrALfS?=
+ =?us-ascii?Q?DmSsUyn+Df1hUPTv9UB2nclmlnqAI+7L/O3o63/cAQeK/N+UaAxpVF6HQLoG?=
+ =?us-ascii?Q?cC0QQQnjqqZ3ALgYIbHUXnAWODr65Mjt5Rb2MwPLC2rg+tAsIiKIVPSyF6sw?=
+ =?us-ascii?Q?n58OTzUt9FZWWgpVPqHKXye7sK8fRUqRpoHkX0S0nsZ1+FfzQhX9s+ieB/BL?=
+ =?us-ascii?Q?17Mxrm94V9XvmGkZVbSfZUmN7ckbcU0UIodwBwmYIHJX6FhxfgMqmdc5WF13?=
+ =?us-ascii?Q?EPnI97+JpqNcXg0wHyhAMqLIzetKTvoOhNhiB2lJb6UqHjDB8UEh+mPdvzL9?=
+ =?us-ascii?Q?d/YEGaLhf+YeYi0JXmIAkMg2j5nkzYjTAYQxzuhRsYZtmLYFKUeRFtSjHMdG?=
+ =?us-ascii?Q?iiRdY4CvxHY5oNVSdcFqVdSbf1t6j5HQN4QUnul9PV6k2nhIMxdOQbvZ84Dl?=
+ =?us-ascii?Q?D0JnZFOwDQMei3OLQn/U++d/b2nIebCoI5W769fDc50yumCnvBo+GV1O8giO?=
+ =?us-ascii?Q?fgiO8XJKfpjm7+dUn55ABxhz9P2OjbiJe4CsMbvdsUrR8zGTdANMRRYEP683?=
+ =?us-ascii?Q?nqYm6+1DVJMnCDXiKcLHnace7EoFItESOrBw61LUyc7l8xni/ozqS3mwDRaU?=
+ =?us-ascii?Q?RSWH0AsowS1eOz+p9MxnYLYr/+qtPKTkcjQDK5cnbKC1D+1oQ39nKw0ii91M?=
+ =?us-ascii?Q?ThvjoDJMM/vog9A27ZnXWskWA0uBi5K1g1ou4OrX8hNswfwESWmY8M2qgBm2?=
+ =?us-ascii?Q?LoDrRHzuwim5qGreMavNa0F9oc/ElATOir+SLvJI8PuoF4/0VAk+qs4yFQVt?=
+ =?us-ascii?Q?ClqC20IQo5ZmIPh2GzcrmEMycjC+vOlNb30knsQUNax99B8sbx/URANMWFr9?=
+ =?us-ascii?Q?FjWf2X8u/xZ+ZvQvN1VOp9mgbqnY9OA+XJItQep72fLHd+rRa5nfR+Fc4N0w?=
+ =?us-ascii?Q?l344G2o5ioTeTFCUfNDcewLA/6olA8p2TArtT9b/q5OgnTZlBxwAQUCRHMk8?=
+ =?us-ascii?Q?Sv1OnMoqVK+cqqxX+++7jFB7oRSvfnC7OWUdnKJ2Q2PmpiP+WpasDBmSZuqJ?=
+ =?us-ascii?Q?T5E8oKzyLk5Jk/XEB9ihbdO+R6QYX5FOIVG7S4U4GPZLg4oJCTZ2LuBdJVXu?=
+ =?us-ascii?Q?P9x7mm4XU3fPjSvZ6pg7xh6E6XSrcqvodNft3C2eQA7qEkiMEabMWIsVnMeY?=
+ =?us-ascii?Q?pPkVs2Sk4uVI+HD5M9Li88sxe44KK/Kbq5BU2Mo+7DKzfIBOjCn//o7ObIuy?=
+ =?us-ascii?Q?pr/hp4Y0yYgceWFJk8YvsSMUKITNvHb9SBElrDHTZ8lKNEyLefn3FqBJB0gi?=
+ =?us-ascii?Q?KfIqSWop9moDhZNhb7QIaxHbBpH3SQR3kLpVysxKWyWoQycca7dbCdq4gcOa?=
+ =?us-ascii?Q?4UuRg5nczcq1p+b798ueGQB5KzG/VRS6AAf38F8uG/pyxGr4+pQWs/gOjI+K?=
+ =?us-ascii?Q?1/G+Uvzd1sPsDp3qzlXqkFx34TzB1fXjeepiRmAezxPeTF7VhBJ7ZDPHSRX6?=
+ =?us-ascii?Q?G7zKxQbhkgYJzhk9J6NBeeey3DB66aMVRZmXUIiKDgbqaND7lA/9REA0U/6G?=
+ =?us-ascii?Q?cZv2+WoMCbAMJ+a8YBbFp85W//+jLB6wBl5JfqSemK8iCnhskcIzHx0olL5V?=
+ =?us-ascii?Q?gcxd00/ESpHjKEeqr5SvYTAiFJeR6d3zPg00BJS1G1i9510PrnTx?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9ce3add-a391-4664-f134-08df182a90af
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 21:52:00.8052
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aUAiirwydzQiXSIj1UL0vvs1vyEgV52RU1usCWUOoyh3MqUO8QtqyU5uA9EbvY1K6KKQc4smLD4IuREZgsne4Qyy2NQWkjwYVPCJbrbPVuvIaMoxqfvR9U2OAvwMFJ1r
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB529741
 
-From: Muzaffer Kadir <muzafferkadir@mainlining.org>
+On Sun, Sep 20, 2026 at 08:59:38PM +0200, Linus Walleij wrote:
+> DMA40 exposes one terminal-count status bit per channel. If more than one
+> cyclic period completes before the interrupt handler clears the bit, the
+> events coalesce and the driver schedules only one callback. Short audio
+> periods can consequently lose period notifications.
+>
+> Use the current memory-side pointer to find the period boundary reached
+> since callbacks were last queued. Add every elapsed period to pending_tx
+> so the tasklet invokes one callback for each of them.
+>
+> If the pointer cannot be sampled, report one callback and mark the callback
+> position invalid. At the next successful sample, resynchronize instead of
+> deriving a count from stale state. Any additional periods coalesced while
+> the pointer is unavailable cannot be recovered reliably.
+>
+> DMA40 exposes one latched terminal-count status bit, not an event counter.
+> If the pointer remains at the same boundary, hardware cannot distinguish a
+> repeated status from an exact full-buffer lap. In this ambiguous case,
+> report one callback rather than potentially enqueueing a whole buffer of
+> spurious callbacks. Exact full laps, including multiple laps, therefore
+> cannot be recovered by software.
+>
+> The preceding cyclic-residue fix ensures that every cyclic period fits in
+> one LLI, so each boundary corresponds to one client callback.
+>
+> Fixes: 0c842b551063 ("dma40: cyclic xfer support")
+> Assisted-by: LLM
+> Signed-off-by: Linus Walleij <linusw@kernel.org>
+> ---
+>  drivers/dma/ste_dma40.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 61 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
+> index c9983e600daf..1f9e8c7249b1 100644
+> --- a/drivers/dma/ste_dma40.c
+> +++ b/drivers/dma/ste_dma40.c
+> @@ -381,11 +381,14 @@ struct d40_lli_pool {
+>   * @cyclic_dma_addr: Start address of the cyclic buffer.
+>   * @cyclic_buf_len: Length of the cyclic buffer.
+>   * @cyclic_residue: Last valid cyclic residue sample.
+> + * @cyclic_period_len: Length of one cyclic period.
+> + * @cyclic_callback_pos: Position after the callbacks already queued.
+>   * @txd: DMA engine struct. Used for among other things for communication
+>   * during a transfer.
+>   * @node: List entry.
+>   * @is_in_client_list: true if the client owns this descriptor.
+>   * @cyclic: true if this is a cyclic job
+> + * @cyclic_callback_pos_valid: Whether cyclic_callback_pos is reliable.
+>   *
+>   * This descriptor is used for both logical and physical transfers.
+>   */
+> @@ -402,12 +405,15 @@ struct d40_desc {
+>  	dma_addr_t			 cyclic_dma_addr;
+>  	size_t				 cyclic_buf_len;
+>  	size_t				 cyclic_residue;
+> +	size_t				 cyclic_period_len;
+> +	size_t				 cyclic_callback_pos;
+>
+>  	struct dma_async_tx_descriptor	 txd;
+>  	struct list_head		 node;
+>
+>  	bool				 is_in_client_list;
+>  	bool				 cyclic;
+> +	bool				 cyclic_callback_pos_valid;
+>  };
+>
+>  /**
+> @@ -1484,6 +1490,55 @@ static bool d40_cyclic_offset(struct d40_chan *d40c, struct d40_desc *d40d,
+>  	return false;
+>  }
+>
+> +static unsigned int d40_cyclic_periods_elapsed(struct d40_chan *d40c,
+> +					       struct d40_desc *d40d)
+> +{
+> +	size_t current_pos;
+> +	size_t offset;
+> +	unsigned int periods;
+> +
+> +	if (!d40d->cyclic_period_len)
+> +		return 1;
+> +
+> +	if (!d40_cyclic_offset(d40c, d40d, &offset)) {
+> +		d40d->cyclic_callback_pos_valid = false;
 
-Add General Mobile Shamrock (GM 5 Plus). Shamrock is designed
-similar to L9300. Downstream reference is [1].
+looks like cyclic_callback_pos_valid is not useful. if d40_cyclic_offset()
+failure, always return 1.
 
-[1] https://github.com/Asderdd/android_kernel_generalmobile_shamrock/blob/cm-14.1/arch/arm/boot/dts/qcom/msm8952-l9300.dtsi
+Logically, can't reconfigized n*period_len.  assume period is 4.
+if there are not additional register to recorder counter, you can't
+distringiush, 1, 5, 9, ... irq elapsed.
 
-Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
----
- arch/arm64/boot/dts/qcom/Makefile                  |   1 +
- .../dts/qcom/msm8952-generalmobile-shamrock.dts    | 435 +++++++++++++++++++++
- 2 files changed, 436 insertions(+)
+So we have to assume never elapse more than peroid.
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 5c19f945c785..7713dd4cdc06 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -126,6 +126,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-samsung-a7.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-sony-xperia-kanuti-tulip.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-wingtech-wt82918.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-wingtech-wt82918hd.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8952-generalmobile-shamrock.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-flipkart-rimob.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-motorola-potter.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-xiaomi-daisy.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8952-generalmobile-shamrock.dts b/arch/arm64/boot/dts/qcom/msm8952-generalmobile-shamrock.dts
-new file mode 100644
-index 000000000000..259c75fa4a48
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8952-generalmobile-shamrock.dts
-@@ -0,0 +1,435 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/dts-v1/;
-+
-+#include "msm8952.dtsi"
-+#include "pm8950.dtsi"
-+#include "pmi8950.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
-+
-+/ {
-+	model = "General Mobile GM 5 Plus";
-+	compatible = "generalmobile,shamrock", "qcom,msm8952";
-+	chassis-type = "handset";
-+	qcom,msm-id = <QCOM_ID_MSM8952 0x0>;
-+	qcom,board-id = <QCOM_BOARD_ID_QRD 1>;
-+
-+	aliases {
-+		mmc0 = &sdhc_1; /* SDC1 eMMC slot */
-+		mmc1 = &sdhc_2; /* SDC2 SD card slot */
-+		serial0 = &blsp1_uart2;
-+	};
-+
-+	battery: battery {
-+		compatible = "simple-battery";
-+
-+		charge-term-current-microamp = <100000>;
-+		charge-full-design-microamp-hours = <3100000>;
-+		constant-charge-current-max-microamp = <3000000>;
-+		constant-charge-voltage-max-microvolt = <4400000>;
-+		voltage-min-design-microvolt = <3400000>;
-+		voltage-max-design-microvolt = <4400000>;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+
-+		framebuffer {
-+			compatible = "simple-framebuffer";
-+			memory-region = <&cont_splash_mem>;
-+
-+			width = <1080>;
-+			height = <1920>;
-+			stride = <(1080 * 3)>;
-+			format = "r8g8b8";
-+
-+			power-domains = <&gcc MDSS_GDSC>;
-+
-+			clocks = <&gcc GCC_MDSS_AHB_CLK>,
-+				 <&gcc GCC_MDSS_AXI_CLK>,
-+				 <&gcc GCC_MDSS_VSYNC_CLK>,
-+				 <&gcc GCC_MDSS_MDP_CLK>,
-+				 <&gcc GCC_MDSS_BYTE0_CLK>,
-+				 <&gcc GCC_MDSS_PCLK0_CLK>,
-+				 <&gcc GCC_MDSS_ESC0_CLK>;
-+		};
-+	};
-+
-+	/* Front Flash */
-+	flash-led-controller {
-+		compatible = "sgmicro,sgm3140";
-+
-+		enable-gpios = <&tlmm 33 GPIO_ACTIVE_HIGH>;
-+		flash-gpios = <&tlmm 128 GPIO_ACTIVE_HIGH>;
-+
-+		pinctrl-0 = <&front_flash_default>;
-+		pinctrl-names = "default";
-+
-+		front_flash_led: led {
-+			function = LED_FUNCTION_FLASH;
-+			color = <LED_COLOR_ID_WHITE>;
-+			flash-max-microamp = <1000000>;
-+			led-max-microamp = <625000>;
-+			flash-max-timeout-us = <1280000>;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-0 = <&gpio_hall_sensor_default>, <&gpio_keys_default>;
-+		pinctrl-names = "default";
-+
-+		button-volume-up {
-+			label = "Volume Up";
-+			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
-+			debounce-interval = <15>;
-+			wakeup-source;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 46 GPIO_ACTIVE_LOW>;
-+			wakeup-source;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+		};
-+	};
-+
-+	multi-led {
-+		compatible = "leds-group-multicolor";
-+		color = <LED_COLOR_ID_RGB>;
-+		function = LED_FUNCTION_INDICATOR;
-+		leds = <&red_status>, <&green_status>, <&blue_status>;
-+	};
-+
-+	reserved-memory {
-+		cont_splash_mem: cont-splash@83200000 {
-+			reg = <0x0 0x83200000 0x0 (1080 * 1920 * 3)>;
-+			no-map;
-+		};
-+	};
-+
-+	vph_pwr: regulator-vph-pwr {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vph-pwr";
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+};
-+
-+&adsp {
-+	status = "okay";
-+};
-+
-+&blsp1_i2c2 {
-+	status = "okay";
-+	/* SMB1351 @1d charger */
-+	/* wsa881x-i2c @e @44 @f @45 audio amplifier */
-+};
-+
-+&blsp1_i2c3 {
-+	status = "okay";
-+
-+	/* himax,852x@48 Touchscreen */
-+
-+	touchscreen@5d {
-+		compatible = "goodix,gt970", "goodix,gt911";
-+		reg = <0x5d>;
-+		interrupts-extended = <&tlmm 65 IRQ_TYPE_EDGE_FALLING>;
-+		irq-gpios = <&tlmm 65 GPIO_ACTIVE_HIGH>;
-+		reset-gpios = <&tlmm 64 GPIO_ACTIVE_HIGH>;
-+		AVDD28-supply = <&pm8950_l10>;
-+		VDDIO-supply = <&pm8950_l6>;
-+
-+		pinctrl-0 = <&touchscreen_default>;
-+		pinctrl-names = "default";
-+
-+		touchscreen-size-x = <1080>;
-+		touchscreen-size-y = <1920>;
-+	};
-+};
-+
-+&blsp2_i2c1 {
-+	status = "okay";
-+
-+	/* FUSB301 @25 USB-C Controller */
-+
-+	tpa6130a2: audio-controller@60 {
-+		compatible = "ti,tpa6130a2";
-+		reg = <0x60>;
-+		pinctrl-0 = <&tpa6130a2_default>;
-+		pinctrl-names = "default";
-+		power-gpio = <&tlmm 61 GPIO_ACTIVE_HIGH>;
-+		Vdd-supply = <&pm8950_l22>;
-+	};
-+
-+	tusb320: usb@67 {
-+		compatible = "ti,tusb320";
-+		reg = <0x67>;
-+		interrupts-extended = <&tlmm 45 IRQ_TYPE_EDGE_FALLING>;
-+	};
-+
-+	led-controller@68 {
-+		compatible = "si-en,sn3193";
-+		reg = <0x68>;
-+
-+		shutdown-gpios = <&tlmm 68 GPIO_ACTIVE_HIGH>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		red_status: led@1 {
-+			reg = <1>;
-+			label = "red:status";
-+			led-max-microamp = <17500>;
-+		};
-+
-+		green_status: led@2 {
-+			reg = <2>;
-+			label = "green:status";
-+			led-max-microamp = <17500>;
-+		};
-+
-+		blue_status: led@3 {
-+			reg = <3>;
-+			label = "blue:status";
-+			led-max-microamp = <17500>;
-+		};
-+	};
-+};
-+
-+&pm8950_spmi_regulators {
-+	/* PM8950 S5 + S6 = VDD_APC supply */
-+	pm8950_s5: s5 {
-+		regulator-min-microvolt = <1050000>;
-+		regulator-max-microvolt = <1350000>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+};
-+
-+&pm8950_resin {
-+	linux,code = <KEY_VOLUMEDOWN>;
-+
-+	status = "okay";
-+};
-+
-+&pmi8950_wled {
-+	qcom,enabled-strings = <0 1>;
-+	qcom,current-limit-microamp = <30000>;
-+	qcom,ovp-millivolt = <29500>;
-+	qcom,external-pfet;
-+
-+	status = "okay";
-+};
-+
-+&ramoops_mem {
-+	status = "okay";
-+};
-+
-+&rpm_requests {
-+	pm8950_rpm_regulators: regulators {
-+		compatible = "qcom,rpm-pm8950-regulators";
-+		vdd_s1-supply = <&vph_pwr>;
-+		vdd_s2-supply = <&vph_pwr>;
-+		vdd_s3-supply = <&vph_pwr>;
-+		vdd_s4-supply = <&vph_pwr>;
-+		vdd_s6-supply = <&vph_pwr>;
-+		vdd_l1_l19-supply = <&pm8950_s3>;
-+		vdd_l2_l23-supply = <&pm8950_s3>;
-+		vdd_l3-supply = <&pm8950_s3>;
-+		vdd_l5_l6_l7_l16-supply = <&pm8950_s4>;
-+		vdd_l8_l11_l12_l17_l22-supply = <&vph_pwr>;
-+		vdd_l9_l10_l13_l14_l15_l18-supply = <&vph_pwr>;
-+
-+		pm8950_s1: s1 {
-+			regulator-min-microvolt = <1000000>;
-+			regulator-max-microvolt = <1225000>;
-+		};
-+
-+		pm8950_s3: s3 {
-+			regulator-min-microvolt = <1300000>;
-+			regulator-max-microvolt = <1300000>;
-+		};
-+
-+		pm8950_s4: s4 {
-+			regulator-min-microvolt = <2050000>;
-+			regulator-max-microvolt = <2050000>;
-+		};
-+
-+		pm8950_l2: l2 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1200000>;
-+			regulator-always-on;
-+			regulator-boot-on;
-+		};
-+
-+		/* pm8950_l3 is managed by rpmpd (RPMPD_VDDMX) */
-+
-+		pm8950_l5: l5 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8950_l6: l6 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8950_l7: l7 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8950_l8: l8 {
-+			regulator-min-microvolt = <2850000>;
-+			regulator-max-microvolt = <2900000>;
-+		};
-+
-+		pm8950_l9: l9 {
-+			regulator-min-microvolt = <3000000>;
-+			regulator-max-microvolt = <3300000>;
-+		};
-+
-+		pm8950_l10: l10 {
-+			regulator-min-microvolt = <2800000>;
-+			regulator-max-microvolt = <2800000>;
-+		};
-+
-+		pm8950_l11: l11 {
-+			regulator-min-microvolt = <2950000>;
-+			regulator-max-microvolt = <2950000>;
-+			regulator-allow-set-load;
-+			regulator-system-load = <200000>;
-+		};
-+
-+		pm8950_l12: l12 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8950_l13: l13 {
-+			regulator-min-microvolt = <3075000>;
-+			regulator-max-microvolt = <3075000>;
-+		};
-+
-+		pm8950_l14: l14 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <3300000>;
-+		};
-+
-+		pm8950_l15: l15 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <3300000>;
-+		};
-+
-+		pm8950_l16: l16 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8950_l17: l17 {
-+			regulator-min-microvolt = <2850000>;
-+			regulator-max-microvolt = <2850000>;
-+		};
-+
-+		pm8950_l19: l19 {
-+			regulator-min-microvolt = <1225000>;
-+			regulator-max-microvolt = <1350000>;
-+		};
-+
-+		pm8950_l22: l22 {
-+			regulator-min-microvolt = <2800000>;
-+			regulator-max-microvolt = <2800000>;
-+		};
-+
-+		pm8950_l23: l23 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1200000>;
-+		};
-+	};
-+};
-+
-+&sdhc_1 {
-+	vmmc-supply = <&pm8950_l8>;
-+	vqmmc-supply = <&pm8950_l5>;
-+
-+	status = "okay";
-+};
-+
-+&sdhc_2 {
-+	cd-gpios = <&tlmm 67 GPIO_ACTIVE_HIGH>;
-+	vmmc-supply = <&pm8950_l11>;
-+	vqmmc-supply = <&pm8950_l12>;
-+
-+	status = "okay";
-+};
-+
-+&sleep_clk {
-+	clock-frequency = <32768>;
-+};
-+
-+&tlmm {
-+	gpio-reserved-ranges = <20 4>; /* Unknown, TZ Protected */
-+
-+	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-+		pins = "gpio46";
-+		function = "gpio";
-+		drive-strength = <6>;
-+		bias-pull-up;
-+	};
-+
-+	tpa6130a2_default: tpa6130a2-default-state {
-+		pins = "gpio61";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-down;
-+	};
-+
-+	touchscreen_default: touchscreen-default-state {
-+		ts-reset-pins {
-+			pins = "gpio64";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+
-+		ts-irq-pins {
-+			pins = "gpio65";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+	};
-+
-+	gpio_keys_default: gpio-keys-default-state {
-+		pins = "gpio85";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	front_flash_default: front-flash-default-state {
-+		enable-pins {
-+			pins = "gpio33";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+
-+		flash-pins {
-+			pins = "gpio128";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+	};
-+};
-+
-+&xo_board {
-+	clock-frequency = <19200000>;
-+};
+Frank
 
--- 
-2.55.0
-
-
+> +		return 1;
+> +	}
+> +
+> +	current_pos = rounddown(offset, d40d->cyclic_period_len);
+> +	if (!d40_residue(d40c) && current_pos != offset)
+> +		current_pos += d40d->cyclic_period_len;
+> +	if (current_pos == d40d->cyclic_buf_len)
+> +		current_pos = 0;
+> +
+> +	if (!d40d->cyclic_callback_pos_valid) {
+> +		/*
+> +		 * One callback was reported without a reliable pointer.
+> +		 * Resynchronize instead of deriving periods from stale state.
+> +		 */
+> +		periods = 1;
+> +	} else if (current_pos > d40d->cyclic_callback_pos) {
+> +		periods = (current_pos - d40d->cyclic_callback_pos) /
+> +			d40d->cyclic_period_len;
+> +	} else if (current_pos < d40d->cyclic_callback_pos) {
+> +		periods = (d40d->cyclic_buf_len -
+> +			d40d->cyclic_callback_pos + current_pos) /
+> +			d40d->cyclic_period_len;
+> +	} else {
+> +		/*
+> +		 * The TC status is a single latched bit. An unchanged pointer
+> +		 * cannot distinguish a complete lap from a repeated interrupt,
+> +		 * so do not amplify it into a buffer's worth of callbacks.
+> +		 */
+> +		periods = 1;
+> +	}
+> +
+> +	d40d->cyclic_callback_pos = current_pos;
+> +	d40d->cyclic_callback_pos_valid = true;
+> +
+> +	return periods;
+> +}
+> +
+>  static bool d40_tx_is_linked(struct d40_chan *d40c)
+>  {
+>  	bool is_link;
+> @@ -1606,6 +1661,7 @@ static struct d40_desc *d40_queue_start(struct d40_chan *d40c)
+>  static void dma_tc_handle(struct d40_chan *d40c)
+>  {
+>  	struct d40_desc *d40d;
+> +	unsigned int callbacks = 1;
+>
+>  	/* Get first active entry from list */
+>  	d40d = d40_first_active_get(d40c);
+> @@ -1631,6 +1687,7 @@ static void dma_tc_handle(struct d40_chan *d40c)
+>  				d40d->lli_current = 0;
+>  		}
+>
+> +		callbacks = d40_cyclic_periods_elapsed(d40c, d40d);
+>  	} else {
+>  		d40_lcla_free_all(d40c, d40d);
+>
+> @@ -1651,7 +1708,7 @@ static void dma_tc_handle(struct d40_chan *d40c)
+>  		d40_desc_done(d40c, d40d);
+>  	}
+>
+> -	d40c->pending_tx++;
+> +	d40c->pending_tx += callbacks;
+>  	tasklet_schedule(&d40c->tasklet);
+>
+>  }
+> @@ -2636,6 +2693,9 @@ dma40_prep_dma_cyclic(struct dma_chan *chan, dma_addr_t dma_addr,
+>  		desc->cyclic_dma_addr = buf_addr;
+>  		desc->cyclic_buf_len = buf_len;
+>  		desc->cyclic_residue = buf_len;
+> +		desc->cyclic_period_len = period_len;
+> +		desc->cyclic_callback_pos = 0;
+> +		desc->cyclic_callback_pos_valid = true;
+>  	}
+>
+>  	kfree(sg);
+>
+> --
+> 2.55.0
+>
