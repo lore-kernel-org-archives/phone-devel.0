@@ -1,164 +1,143 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FAE42F709;
-	Mon, 21 Sep 2026 11:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC4C493D25
+	for <phone-devel@vger.kernel.org>; Mon, 21 Sep 2026 12:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789989085; cv=none; b=itIPDjksUHf+xcxfrRCxs5YOepeNzM2LHJ/8OFjdf+f5MrouDEyenG/UQbWzNShnGrdR2MhI1wJ6y6jH/LMyoMIJVzyp3ipCApgtQmGiEP2jPXwBU5pmaebUxI3Du2eHDoNXPPyR/XWL3/UMSmRTqtdec9OjGqwW4/oUyaUfEAI=
+	t=1789992066; cv=none; b=dKLfyf/kRaJIppDDEW8dH66QBIBatJHditCGZYngHPeYV0wgDGosxTvZHytQ4+0Bi+ParWG599fEFPmwzyazkUvf3K06/niWdYhtUKx0L/e5FmMrZeEP+knFT64ZKExmRtyuwddVxO2nO/vvdaD+2IwJa9fgw76XIyxTQ6i/8mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789989085; c=relaxed/simple;
-	bh=KVmw4/iCMEr46CN6E/02QkIGZ5qIw/ifaBePmcgBqkE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nC0nHy9uGmaoLhqwYXlELYAB1NNHeMVz5FpRBGffWfcaSrn3rW/Icyyb8h/xeY3bEQ9qv8r71XK/rWNbLbZkXCxxFymgem8pzjDbY5xqAV1KuhMDaQfYL81e6yxIbatbN9iUNz8o8gC35m5lwW3GhB/NTyBLSWlgQ7v0tsPb+go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=IuzV5ABl; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1789992066; c=relaxed/simple;
+	bh=xJYmpMkdOypN7Sj/n2yeRBJRaKDrZu1gaBC/xhMqLj0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SX5ZwpIBu1K85gpj9sSAtZ/bLSXTXWdz3SJmnJqpjUWbFlSHka20am3mKPK2KB6y2gZzFP3z2LfUmGOiHNbS2Cp50ZhhZitM/u3TdrvEepknbkfv42TTXUdh5EcjTkej3ySpKIRIogjZxKC72dw1+Bh4Z9qX6kigX+B2jWv4gRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Mm8eWGDr; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ENLTbdcG; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="IuzV5ABl"
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 4704753406D6;
-	Mon, 21 Sep 2026 13:11:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1789989079;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IecxrbI1Oxnp6UQdEsBFcFLuXx/aPYWQ+14ndTQaXH8=;
-	b=IuzV5ABlF2Hqnl2UjIxaHjpRF7887QNhwI1nyJit5VuxSJkEEU5y+SwAiglo02WsfREJd6
-	yOezSg/vXNFecdwryc1fl0z89Ge8pplzks8FFj9ntdMkygeeko5gm5/e5+1usvVvyUsq2t
-	ysSEn8nmOgPKXlxwPqEbAkdySsg5xdM=
-Message-ID: <426b6aeb-578f-43ee-865d-30e69b7bb2f2@ixit.cz>
-Date: Mon, 21 Sep 2026 13:11:18 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Mm8eWGDr";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ENLTbdcG"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LB4i5a1129525
+	for <phone-devel@vger.kernel.org>; Mon, 21 Sep 2026 12:01:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=WexGBER5d9uASCyOQRs0xONS
+	Wi6CvrW7lSCk7SoMFoM=; b=Mm8eWGDrXAz/5Yap6kZWHCr5gxSUsrfrn5x9THLd
+	UzuW5g1/WwNetvQ1yQzJJVrR7mPFt603Vmoo+KcNMqq1YimWb/7CEjDhvYSBIFO1
+	FmKg6duF8mCLcCpmmsXb3xH+VPzwGqdMKJRe7YJ3PpGJUP0KoRLu2vVOea4qpPJh
+	ZIGI6Ml75kN2dwemHjZscrRJ5FitfkmXtbtJ61Th0MW7MS8e6bGdlYi0lit4uVVA
+	6nVLtzQtgqCUoWNt2wGlTmCiufffMM07ACKhCz/1RG5e3iDlZXNtuM45M6vSgfHg
+	RbEi47seoqH0Ub41gyQm6qi6s75ORAFg9pJQlgi3i5tG5Q==
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com [209.85.221.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gu3csg6uh-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 21 Sep 2026 12:01:04 +0000 (GMT)
+Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-5c833d4bd04so649888e0c.3
+        for <phone-devel@vger.kernel.org>; Mon, 21 Sep 2026 05:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789992063; x=1790596863; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WexGBER5d9uASCyOQRs0xONSWi6CvrW7lSCk7SoMFoM=;
+        b=ENLTbdcGhonsAyKvL8pKbVV/S3M2bAtjCj8ysg1x7VO/Cagz5Kj6E/Px6W/PecB56z
+         Wg5juPQFV4C0U03jArTP08jEsx2IxF/F5ppXR0rF8YTmqitPrz1Jr2SMrWDupMm7sp4b
+         OMO/rgs5FzzFezivZSp5an11F77A/p3EldLMcejNk47dMZUCorrqdjYz7LP4HKisL4wQ
+         Sy+P6yvRe9eAqYPsVEv1pGGN8q3pyNjQwYF/okk7duxW1UW38tYqxsfMbkmvMWGcwh3P
+         j4NdZ6OyiRW1AcMWfuqIsZsCyHfATYc027Mc6MdLScFHD3AdsLaMp6C63730EJ1FA038
+         8hzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789992063; x=1790596863;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WexGBER5d9uASCyOQRs0xONSWi6CvrW7lSCk7SoMFoM=;
+        b=itW3WskxYMFO5v1Tnb7BmmMmMNkgX1UPXia4UrLYj4B2Q0BTOffa17nfTvFxXaG5Uv
+         pv987DinToyYzbM68NjgPNV6+fp3TuvettM9aZFAC6ikFUFy6P5r41yUKQBcnc+RLNMO
+         qVKQTVGxeT2RZJjILIko0XXbqi6wZYfjj7RxH83xrYdyIJfZMRbQ5MI9AZH5qiSw7z/v
+         FdtOSLUnwNBRe2flRz5lWSPOqosej3GDTylyw1CyLhBvvmqu0sUwzxW6Ooh7M+d5mKni
+         BE5CEMhxZ43DCNSu56P9PGXX2/rMP0Aotjbx81K8rAXTlQGjQiatOSv2L4KgRFT25MkQ
+         eZzw==
+X-Forwarded-Encrypted: i=1; AKwUvBxyjPv1ACzg5udEBvOCYSjuUFCDhU1E/aIpwmy9y0+39kedjNfoz6CGeVN/NgKFXkmv/WxEq+IaDHyREw==@vger.kernel.org
+X-Gm-Message-State: AFuF++l63z/qzMx3qK1SkNoNDpd06KEKpyYixH3CkqPuZHu7MYhV59ED
+	UQrCyaq0rBE5VYlmG+Y6d0xfXszChQG2pxdpZqurDSXTNNwzlQxnnvRw0b9yST0/G4vFwDRLwO5
+	4rsJJHuM62LqkdTVy+knQkiSuX8beWgC0TJZeG3u6900Ovw9FnSFCzgL5ksgra2MT1w==
+X-Gm-Gg: AYBFou2ATd1GjZZT9UW2PGsMbXGzAlatg6UkNH51vzqgxZSnY4Kt8xLIn/Ow45vbeMJ
+	XOTjnT1EGeDVfq8c455QgY4voZbGvwmCpg+NTFjyGtET1MwRbsAZEqvHgO3KChtkq4gnrcuU20f
+	2OguPnka40fsH4YWjsWaQrtfNUCdTrOXNYIGmHyEI4TUyI3MQ7wmrz6qU9IAmvPEKttFGZiO8ln
+	7b31rxbanJO92WcwecLKSzLwCDWQ3BjkqzxEPkIWSRpfNl8QGhvJk8bnjZUzJnHaiZSj9ZleJje
+	tjXO33kMbJBsIxtx+IBqwZutzAu9MhI1C7LfWjMRdW40mufhk+Z+ekA9w5pH38hGp5+YrxS5mlQ
+	2dnEerFJtBfPux9c=
+X-Received: by 2002:a05:6102:8008:b0:7a5:4fe2:b380 with SMTP id ada2fe7eead31-7a55e1a44bcmr3760495137.26.1789992063331;
+        Mon, 21 Sep 2026 05:01:03 -0700 (PDT)
+X-Received: by 2002:a05:6102:8008:b0:7a5:4fe2:b380 with SMTP id ada2fe7eead31-7a55e1a44bcmr3760444137.26.1789992062795;
+        Mon, 21 Sep 2026 05:01:02 -0700 (PDT)
+Received: from oss.qualcomm.com ([86.121.170.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc5755c40sm294306075e9.3.2026.09.21.05.01.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 05:01:01 -0700 (PDT)
+Date: Mon, 21 Sep 2026 15:01:00 +0300
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: milos-fairphone-fp6: Add
+ touchscreen
+Message-ID: <dqlby3gbrub5x6rdwd655wu437xonhlxhvrhxaojupi4wzvbff@3vgdyj7sxmw2>
+References: <20260918-eswin-eph8621-v3-0-514eb1f622c0@fairphone.com>
+ <20260918-eswin-eph8621-v3-3-514eb1f622c0@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] backlight: qcom-wled: Fix WLED3 brightness
- register stride
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Lee Jones
- <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
- Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
- Kiran Gunda <quic_kgunda@quicinc.com>,
- Marco Mattiolo <marco.mattiolo@hotmail.it>,
- =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, Joel Selvaraj <foss@joelselvaraj.com>,
- stable@vger.kernel.org
-References: <20260921-qcom-wled-backlight-v4-0-bab8c7ef73cb@ixit.cz>
- <20260921-qcom-wled-backlight-v4-2-bab8c7ef73cb@ixit.cz>
- <22355625-a2ea-4b6e-99b3-65cf93ac8034@oss.qualcomm.com>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <22355625-a2ea-4b6e-99b3-65cf93ac8034@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918-eswin-eph8621-v3-3-514eb1f622c0@fairphone.com>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDE3NCBTYWx0ZWRfXxSbCWVhF+dr7
+ uUkpwQQzAdbjfTdJXD0kW1dWruNeDtRBg6x67mDQl+94YVOMmp7VHsCZLwW+Pj3+tJoOvW4HBdx
+ iXIQv3ppMr+s6zyAVfCiqmZht8CWL4c=
+X-Proofpoint-GUID: 8AR0WWu8OHcOMDQxwFSElny_mKPbmTtv
+X-Authority-Analysis: v=2.4 cv=QovLTlyd c=1 sm=1 tr=0 ts=6ab11c80 cx=c_pps
+ a=+D9SDfe9YZWTjADjLiQY5g==:117 a=po8fGBi+ks8MzcVQGuqtFQ==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=6H0WHjuAAAAA:8 a=HVTXq6jCC7j2OmNmFLcA:9 a=CjuIK1q_8ugA:10
+ a=vmgOmaN-Xu0dpDh8OwbV:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDE3NCBTYWx0ZWRfXxnZjKTZ5vux6
+ t/YQxuI8MqmhiYim/Pa57QIghfdp3kQu00z3GESDeS2qc3wbS09nZCdfzB/O1QrY7cX9JLDoJGW
+ /mSnIQ+VOFO4a8guOxpdOEdMguYwY3RGelZSaox18Vbh2rDy9NsHdU/nVxdXZ21Uj38OdoM+I0h
+ cZWUK4DNqr135uo90ptaq7KDk/rd+55euwLwv32vO2ip3CN0s8q8uNZDKarncKilTegrTZqL3wu
+ 6kmswMsCmT6tbhk7eRNBrz/OTZkuuyRw1cVabh1SS6cdgcZ9+nlgZE/ZirlVmmvOknkooGCW1YM
+ jD/7b7SQI1lG3i8WXvDzXpAmtpy1kXWVCabJi+YuVnQR/CwliZ2zVIVobUKs2DA1sPTfCkeO4PC
+ r0NQntntosWgxz1ISdIHP5yKdBnaq24It8IlUiaAndfN3DchkLZLL7gcM+PhrIAXVqaTZgUwWAy
+ QbyzxQ2mXKZcITMmFbw==
+X-Proofpoint-ORIG-GUID: 8AR0WWu8OHcOMDQxwFSElny_mKPbmTtv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-21_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
+ spamscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210174
 
-On 21/09/2026 13:08, Konrad Dybcio wrote:
-> On 9/21/26 12:46 PM, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> WLED3 has a 16-bit brightness register pair per string, at 0x40 + 2*n,
->> which is what the pm8941-wled driver wrote to:
->>
->> 	rc = regmap_bulk_write(wled->regmap,
->> 			wled->addr + WLED3_CTRL_REG_VAL_BASE + 2 * i,
->> 			v, 2);
->>
->> The restructuring for WLED3 turned that into WLED3_SINK_REG_BRIGHT(n),
->> defined as 0x40 + n, so the two byte writes for consecutive strings
->> overlap: string 1 overwrites the MSB of string 0 with its own LSB, and
->> with the default three strings only string 1 ends up with the requested
->> value.
->>
->> Use the 2 byte stride.
->>
->> Fixes: 775d2ffb4af6 ("backlight: qcom-wled: Restructure the driver for WLED3")
->> Cc: stable@vger.kernel.org
->> Assisted-by: LLM
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   drivers/video/backlight/qcom-wled.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
->> index 2281007bdd459..f452d328997ad 100644
->> --- a/drivers/video/backlight/qcom-wled.c
->> +++ b/drivers/video/backlight/qcom-wled.c
->> @@ -54,17 +54,17 @@
->>   #define WLED3_SINK_REG_SYNC				0x47
->>   #define  WLED3_SINK_REG_SYNC_CLEAR			0x00
->>   
->>   #define WLED3_SINK_REG_CURR_SINK			0x4f
->>   #define  WLED3_SINK_REG_CURR_SINK_MASK			GENMASK(7, 5)
->>   #define  WLED3_SINK_REG_CURR_SINK_SHFT			5
->>   
->>   /* WLED3 specific per-'string' registers below */
->> -#define WLED3_SINK_REG_BRIGHT(n)			(0x40 + n)
->> +#define WLED3_SINK_REG_BRIGHT(n)			(0x40 + (n * 0x2))
-> 
-> Ideally n would be wrapped in its own parentheses (doesn't
-> checkpatch warn against that?)
-
-Yeah it does, thou not sure it make sense here.
-If needed, I'll send another version with it... :)
-
-Thanks
-David
-
+On 26-09-18 09:29:54, Luca Weiss wrote:
+> Add a node for the ESWIN EPH8621 touchscreen connected via SPI and the
+> pinctrl state for the two GPIOs connected to the touchscreen.
 > 
 > Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> 
-> Konrad
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
