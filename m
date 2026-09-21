@@ -1,39 +1,87 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EEC45D921;
-	Mon, 21 Sep 2026 09:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629794718E9
+	for <phone-devel@vger.kernel.org>; Mon, 21 Sep 2026 09:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789981772; cv=none; b=in3qrlyRdlz6ZgOX3UGayxD+FUpamhM+YixJJb6WwsY+g0RgpUIEZuHE7p1s3JQl+KhaWewERN9lh/kzGqmohEmx/GQ2xLbr3rZDhxyzDGeEnDxQbPdu3aspZKzokvTL0Y6NoHHmTo2/xKMnUEmmziJnCup8WbJd08GTucJIyqk=
+	t=1789982860; cv=none; b=TuQB9uy5JqY1I38IQCEaqVpwP9wRTkcrDbTzPGIVh5qFxxufcXI/d/gfAjPTsul07HK1OYZN/2aOY0Cgh336CeRyHdoRyMnKeA+oO55sXeQ4K/T8bzN0y3M9QcxsP7bylN87GOUCiyKDLCEtWmLoX7g+f/tumpvFwluPzzPtGHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789981772; c=relaxed/simple;
-	bh=5XRzwSCJbnP34vhbrz1v3PzH/6p2/JOs0B6UkcKXkYY=;
+	s=arc-20240116; t=1789982860; c=relaxed/simple;
+	bh=N7Bwiz8vNzShNEWWo1hbEjNmyTi8IpUXmCv1WVc77gw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DwYuUF41LoCCP6PyAF0qZ+jBRMu5iAwMWJJQanfNupiXsaGaHcOFB8xxb+zCzug73K0FLEIizWqk1LC8aSsrFcGSlyhz82WnWCSTjkpL9+1O/QclRV8bNBi9cyDDXFD4TeKcwecUBJ4K3jxmc4Qje3VbLdEVxZ0lBTsscdE9Qxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=kYdFgHXr; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	 In-Reply-To:Content-Type; b=eZ2SO+6ek/wf5fRo2kU6mYQwShoYOIOh2b2uBCyinqoFAEMfET5wX+uz0n7TzrjXASjf7hIjAv/gYz7BEyJhsUhs5XHwmGC9Tal1stmMxdxB3DXElA9zegXYA6qF43dOo4ew2NBRfDw5PAEpOWDN0OoeYn/bD+M8zYLMBImGa9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=emtK+myv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JPFTvmwg; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="kYdFgHXr"
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 7F70C53400AC;
-	Mon, 21 Sep 2026 11:09:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1789981767;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1Lwt+TIgtguEY/T9+p87dCpDZ4frDJaZrh0/aFNdbWU=;
-	b=kYdFgHXrv5W9xM6WFK6+SEFlbk5ClP9MwCpHDJHSUdgh3Kenw042HG5tOcmPNtg7Q3I9Gq
-	P6M/ZsLemSjRnUoJekZc5oCDUPSqP8rm48PqrS2qJtgaAJ33Z7NlQ/77jigJt9S23dThbT
-	+cEjZpVKODrtbeE41fOvo6toxYcvf0Y=
-Message-ID: <e700caf9-a701-4c11-a44a-fedc9cc1575f@ixit.cz>
-Date: Mon, 21 Sep 2026 11:09:26 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="emtK+myv";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JPFTvmwg"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68L8abr34146823
+	for <phone-devel@vger.kernel.org>; Mon, 21 Sep 2026 09:27:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6y9zQn6vdVFp1pIjeU34Sa+AThYw+cYdoj6+lWv6DoI=; b=emtK+myv3usdP24s
+	OllM6ZLLActmbGIWq2Dsd3DlQZsIk+9Zg4RY+DSIH1KzrEkwP0XtH1p2heGqZwlv
+	hpc0RnbFu7RCi2ETWJIXuctcgK2Y9r1NcaK6fb4kUTiH5fGyFpBZEQeJdzgz7Uou
+	sCI2F8YJlEVkRJwCU3vUrIZx52YSEZhasX+1wJc0lrLUpku7pDP6CmtETVcFeWac
+	CPPIuKYW2Q8NlxkjUPZ35ukMIJLzOZEfcwfyrWotYX/6/ve7VXvENjXPXqkbMYvX
+	RvgdTpNzG8kv2GO8wTM/Fn+2qFVYzv6Pf0mD0kfr1EvKeaqb4RsRoiv0GKZ/8/w/
+	7ocMAg==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gu17gr7hg-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Mon, 21 Sep 2026 09:27:38 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93bfa443305so42825585a.0
+        for <phone-devel@vger.kernel.org>; Mon, 21 Sep 2026 02:27:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789982857; x=1790587657; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6y9zQn6vdVFp1pIjeU34Sa+AThYw+cYdoj6+lWv6DoI=;
+        b=JPFTvmwgPbAmq/ddV9qE6qiw/GTc4AkFv+KR/iLmZNC19sBEwUSBVmaO749ZL/xg+k
+         8NYI9cAoMk6ZcuKSToRn8gfja7UgaWHla3Lt4PU3egU0yCVLRklMKOH2umeeEF1El7PV
+         7E4acvbTTIEqEUOf0yDsiYMV/NZ8sFLslnE43ksnxc2ixA/FXGKwBKUSc46M7Ek61hyP
+         HpCJJs5MHeW8OYyFQFENdYEomzHw+jo4aGxYloD2D9QOtdO/vczCzjEIa8Eb7K0pdex6
+         DODiOjeGhLzBnK6Yy08alJYBpkc9JZ31Kt07NVmiv6h609ATga+a2/f/9HBNmB2CYXSh
+         ATew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789982857; x=1790587657;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6y9zQn6vdVFp1pIjeU34Sa+AThYw+cYdoj6+lWv6DoI=;
+        b=UFDhe6Wko4tmgI2tl2Hi6WpGToA5V3uoJItGexi3VgU+3xLmuOWR5OWGFJGRit+2zf
+         S0uSP2akvQjWek5uEGkmgCjZUbY74fZFdgkCnqVNpOHx/MzmjfBTitIAHMfgXcqLlWbU
+         YZVP80vM4TvvKagwPzUD9DLuW8LZygvf379uw1gK5Ua1hytbouPBAgBOnf7kSlPVb+/R
+         rIKaLs3E/lBvyMlrV9FfRI0I/ti2DIsDBJCNUnLwdfm5wtIxfggHwXbbIiPDrxQiRuJk
+         ofLAYMrnayjB8gBGWbw968/W6G80DJVoyp0gM4GaHyIyoiGec5tbyY2hR1kr/2tqWOz3
+         xYtA==
+X-Forwarded-Encrypted: i=1; AKwUvBxZp7XxWXBfCo0eIwCejw4+dX3e82P5djHYRimFt8qv8VIfwAVl+NYLO8E2rDssrW19ZoSOv5LlyO0aOA==@vger.kernel.org
+X-Gm-Message-State: AFuF++lPbXVlpAkglFQ6zgeFzqepnVSkRuPgX36ykB1fdiGPQ0+P0pxp
+	1OHHukC0gE3Kqdv+xoSV+3UYbE2GDyAtltt3iiW3mSTkrIKswxbAULdU6iivLf+ldjzo4G4jeW+
+	/EFiLlqdhfhPIpweQPrOqlQHpOkglPRc0JyQc2G1iwuXN9vvyJTPHbPyc3LnD77WBlg==
+X-Gm-Gg: AYBFou0IadvX4iAO9pXRV5TjcA1hIZEA22BiuP6VCG+8rJ/lsT1qjX89Ntr3L5sSbRW
+	STprzxGg51QIBHp+cRCMo0ANXbgcAIkemi5hCvNc2L32yt7BUipXkE0gMj48qBFxVHHRbGyVmJ5
+	ePoN4xmEZj6uzvTgvzMDWxQ7r4sJ3l+kDkgU0cvdV/ff06JJpbB5YZbzJZjl2q5GWZ/CPwyaUeD
+	lKCvLYEHP9dT7zX5RoVshNH3NTHSZGEQvshsuKpfhyBXrOdkuqq5omH+ZtqYrZ7rqoRGBB3Z7Iw
+	K34Y4KvErcCOWCUeorjAzyDXFCO9c4X+VrWN8Kv+DZdN6TA3awyBEnbTDVPMXzP3yVJy0qW/3+3
+	9/FALWH6/UddExCSd3uypfA==
+X-Received: by 2002:a05:620a:470e:b0:939:c6ab:e3f3 with SMTP id af79cd13be357-93bf574e359mr981020485a.3.1789982857293;
+        Mon, 21 Sep 2026 02:27:37 -0700 (PDT)
+X-Received: by 2002:a05:620a:470e:b0:939:c6ab:e3f3 with SMTP id af79cd13be357-93bf574e359mr981018285a.3.1789982856852;
+        Mon, 21 Sep 2026 02:27:36 -0700 (PDT)
+Received: from [192.168.202.12] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a3573ce12sm276656166b.35.2026.09.21.02.27.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2026 02:27:36 -0700 (PDT)
+Message-ID: <989c8883-c481-4132-b6ca-3a333aa0788a@oss.qualcomm.com>
+Date: Mon, 21 Sep 2026 11:27:32 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,154 +89,95 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 0/2] Add initial dual front camera and rear flash
- support for Pixel 3 / 3 XL
-To: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Petr Hodina <petr.hodina@protonmail.com>,
- Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260917-pixel3-camera-v10-0-df631279b39d@ixit.cz>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260917-pixel3-camera-v10-0-df631279b39d@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 1/4] backlight: qcom-wled: Fix NULL pointer dereference
+ in PM callbacks
+To: david@ixit.cz, Lee Jones <lee@kernel.org>,
+        Daniel Thompson <danielt@kernel.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
+        Kiran Gunda <quic_kgunda@quicinc.com>,
+        Marco Mattiolo <marco.mattiolo@hotmail.it>,
+        =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, Joel Selvaraj <foss@joelselvaraj.com>,
+        stable@vger.kernel.org
+References: <20260914-qcom-wled-backlight-v3-0-d69fe9843841@ixit.cz>
+ <20260914-qcom-wled-backlight-v3-1-d69fe9843841@ixit.cz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260914-qcom-wled-backlight-v3-1-d69fe9843841@ixit.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: XZCMGs1iBKMjbayB3ST4PNLeZEZyTAat
+X-Authority-Analysis: v=2.4 cv=IewSymqa c=1 sm=1 tr=0 ts=6ab0f88a cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=VwQbUJbxAAAA:8 a=WGO8Zn8UdcYOddqErpsA:9 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDEzNSBTYWx0ZWRfX7oYmHKRDnmPl
+ 6sl3SDwFp8+7cvCLWF+3oGvoLMICsWBHRjj3sfCMv+ZPc92O7bJOx3ZYasyYSo53fl6S8pYdOlo
+ 1l4P+fR9rTzDVHXktEnZtr8yIb6DreD4Ja04DOXeasp/9elIlVL6OxUaPZ07GXS0YeC/hSBjGqy
+ klHmRP4vpW0Bp7F1nIsA5huDSzGZ2SCnFaGTozIHzGZCRXTJeR7mvWtZWS/2PpYRPgII9nDrqtk
+ 1HZc8FIHzAu0A3ZkY3M4N92Jig0pbyfVKKJmCfd8qs8PobbXYRsh8hPYmfTIOHDp52hHOb/fI9f
+ o3v/Zat995BsXg8GmBE4CXQ3j1XuzFKe/AY0w3bSO6XQsDxS3mqq7QOc8cs9LZ50mHpUjqU69N7
+ +1ACF8nZCWii3Teg28HA2fA36+zVwSJMpxqFYoYoPaAi9v/M6CR/l17bhJ7I99332KY/rceTMCn
+ /vWGkU2tYyfa4TdJV0g==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDEzNSBTYWx0ZWRfX7rrURJm7yypY
+ myURpHsJFEN5zPmnK9w3hG88f6W5dqn6SPOo+4+gX4E7YvhXvoC5iAdvDrT5F1oi3hl1ct0rBY/
+ El2miw5gzU2NCe7q28JNg0gjVHTU95o=
+X-Proofpoint-ORIG-GUID: XZCMGs1iBKMjbayB3ST4PNLeZEZyTAat
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-21_03,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609210135
 
-On 17/09/2026 11:46, David Heidelberg via B4 Relay wrote:
-> Describe the dual front-facing IMX355 sensors (standard and wide)
-> and enable the PMI8998 flash LED with hardware-accurate limits.
+On 9/14/26 8:14 PM, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
 > 
-> This brings up the basic camera topology and flash support in DT.
+> wled_probe() doesn't set the driver data for the platform device.
+> As a result, dev_get_drvdata() in wled_remove() will return NULL,
+> leading to a NULL pointer dereference afterward.
 > 
+> Set the platform device driver data in wled_probe().
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: feeab87b3072 ("backlight: qcom-wled: Add support for short circuit handling")
 > Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
-> Changes in v10:
-> - Removed the (not yet met) dependency. I'll apply fix after it gets
->    merged. Feel free to pick between v10 and v9 for merging as what you
->    think is the best way.
-> - Link to v9: https://patch.msgid.link/20260907-pixel3-camera-v9-0-b1981f2d3291@ixit.cz
+>  drivers/video/backlight/qcom-wled.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+> index 650dd95f06ef5..a76158a298335 100644
+> --- a/drivers/video/backlight/qcom-wled.c
+> +++ b/drivers/video/backlight/qcom-wled.c
+> @@ -1747,16 +1747,17 @@ static int wled_probe(struct platform_device *pdev)
+>  
+>  	memset(&props, 0, sizeof(struct backlight_properties));
+>  	props.type = BACKLIGHT_RAW;
+>  	props.brightness = val;
+>  	props.max_brightness = wled->max_brightness;
+>  	bl = devm_backlight_device_register(&pdev->dev, wled->name,
+>  					    &pdev->dev, wled,
+>  					    &wled_ops, &props);
+> +	platform_set_drvdata(pdev, bl);
 
-Please take this version as the dependency in v9:
+This does make the pointer non-null, but it stores the wrong object
 
- > The whole series needs to be postponed by one kernel cycle :-/ It's not
- > urgent so it's not a big deal. Kieran will have the priviledge of
- > rebasing and sending a v7 🙂
+Konrad
 
-https://lore.kernel.org/all/20260921073538.GA1466037@killaraus.ideasonboard.com/
-
-David
-
+>  	return PTR_ERR_OR_ZERO(bl);
+>  };
+>  
+>  static void wled_remove(struct platform_device *pdev)
+>  {
+>  	struct wled *wled = platform_get_drvdata(pdev);
+>  
+>  	mutex_destroy(&wled->lock);
 > 
-> Changes in v9:
-> - Dependency merged, no longer depends on anything.
-> - Link to v8: https://patch.msgid.link/20260901-pixel3-camera-v8-0-99f159883348@ixit.cz
-> 
-> Changes in v8:
-> - Fix ordering of includes. (Konrad)
-> - Link to v7: https://lore.kernel.org/r/20260721-pixel3-camera-v7-0-82d323c6c5d2@ixit.cz
-> 
-> Changes in v7:
-> - Depend on the
->    https://lore.kernel.org/all/20260628-kbingham-orientation-v3-0-4ed92968aff8@ideasonboard.com/
->    (Konrad)
-> - Sort the renamed regulators. Why Mr. Anderson, why. (Konrad)
-> - Link to v6: https://lore.kernel.org/r/20260720-pixel3-camera-v6-0-afe419bef476@ixit.cz
-> 
-> Changes in v6:
-> - Remove forgotten bias-pull-down property from cci0_sleep node.
->    (dtbs_check)
-> - ..-regulator -> regulator-.. (Konrad)
-> - Rename camera -pin to -state and remove _pin from the labes. (Konrad,
->    dtbs_check)
-> - Link to v5: https://lore.kernel.org/r/20260719-pixel3-camera-v5-0-99593f1bd8ec@ixit.cz
-> 
-> Changes in v5:
-> - Added function-enumarator to flash LEDs. (Sashiko)
-> - Dropped l22a regulator needed only for NFOV actuator. (Sashiko)
-> - Dropped vdda-csi[0-2]-supply, as it was unused. (Sashiko).
-> - Added previously omited cam_mclk2_sleep sleep state.
-> - Link to v4: https://lore.kernel.org/r/20260719-pixel3-camera-v4-0-48cab1236852@ixit.cz
-> 
-> Changes in v4:
-> - Use 24 MHz ext clock for the cameras, as the downstream does, since
->    the upstream driver can now support it.
-> - Added additional LED, as the phone contains two separately controlled
->    white LEDs flash (upper and bottom, in one module).
-> - Increase flash-max-microamp, as I took wrong "flash" from the
->    downstream sources and dropped Dmitry R-b.
-> - Address formatting issues. (Konrad)
-> - Link to v3: https://lore.kernel.org/r/20260412-pixel3-camera-v3-0-e26b090a6110@ixit.cz
-> 
-> Changes in v3:
-> - Dropped cam_vio label. (Dmitry)
-> - Move the MCLK2 pinctrl from cameras to common camss. (Dmitry)
-> - Link to v2: https://lore.kernel.org/r/20260411-pixel3-camera-v2-0-41b889abb14c@ixit.cz
-> 
-> Changes in v2:
-> - leds.h include escaped the initial submission. Fixed.
-> - Link to v1: https://lore.kernel.org/r/20260411-pixel3-camera-v1-0-2757606515b6@ixit.cz
-> 
-> ---
-> David Heidelberg (2):
->        arm64: dts: qcom: sdm845-google: Add dual front IMX355 cameras
->        arm64: dts: qcom: sdm845-google: Enable PMI8998 camera flash LEDs
-> 
->   arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 198 ++++++++++++++++++++-
->   1 file changed, 197 insertions(+), 1 deletion(-)
-> ---
-> base-commit: 944a035ecca915ae947905dcfb03f2b9dc6d032c
-> change-id: 20260315-pixel3-camera-a9989bf589ee
-> 
-> Best regards,
-> --
-> David Heidelberg <david@ixit.cz>
-> 
-> 
-
