@@ -1,191 +1,156 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013057.outbound.protection.outlook.com [52.101.72.57])
+Received: from adishatz.org (ns314768.ip-37-187-26.eu [37.187.26.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831FE4A2A61;
-	Tue, 22 Sep 2026 19:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790105880; cv=fail; b=J9R4ER7N2Wgv9t+kuBNceTRAf3rpb8umGrv11cZU2793oyMhbriPpkeRwOex/5Y6b2TcDiKi433fhrcPx5Rz1V91ybKXstUA9lRrYBWMTrq1EZesqhbsPuZdtu4k3pBP+00f8/wwmdmabDVFpjOItos8sXdh9z9CmZmC5QOFgNA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790105880; c=relaxed/simple;
-	bh=HiMGYWndUDy/kxmWszKu31SllzNZjrm28CUshMuoO38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=F/I5P+aPiRnMZoSiMxgrpUBo6JE5QmJAeRWcjNSqZlRNXTEXKh5qoGViS85eudNxW3J8B8BWasti9h/UAIX3srLYql1Wk/FLLiy5IloAPcYYqQR2Q9BB2OML5enA/UGxGGlMrFZb3dvJetakPPnQ6m0z3eydhv18A+nNppFjTBo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=XtnOe6Ez; arc=fail smtp.client-ip=52.101.72.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D026E4A49B3;
+	Tue, 22 Sep 2026 19:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.187.26.192
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790106487; cv=none; b=YrbVZpaK/nL8g/0qN7HVxeRIjsv9jPKcpnnWxPrxAfJ7tNhparreoBnlmphsIthTzpWoZKkNrlzGzl/gzAhlgswtcOB1UNLpdJw0eMiBQ2LxBOwZqOXoBwNZ7Z3bzwBr+6EBrUGyE6Z5In6bfbH2+/hQxZTG+DFzeSIBP7JuC2U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790106487; c=relaxed/simple;
+	bh=2GUkSs5ZTpTYdJEpouNGeYCwn+yt9cJWKo+yGU386i0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tX6nEa4rRpd3AhHIeUp5+4HJLyt5mphsNl6Zurb5GxTWuC47yLY8g45eZSC7z53q8KnRan3IR/vr4hhugN4MgIEdAYueNcZKGbdgy9LzgxIoNVf77r26ILYJGXYAwCw8OxRv+m8xo8xXHp6LSNn+rfCuOZ9KkOC3tk6AL+Rr0wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=adishatz.org; spf=pass smtp.mailfrom=adishatz.org; dkim=pass (2048-bit key) header.d=adishatz.org header.i=@adishatz.org header.b=iFncfHsn; arc=none smtp.client-ip=37.187.26.192
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=adishatz.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=adishatz.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="XtnOe6Ez"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fswpOGe6M3ham0ZDb0QQk36/Tuwf5VLV3ZauOdcJT2cvfDm/WIdSJ+butI4bXB2EN4b0TqLu/aTSHUyNkf/+RLQke/ufbmW/QfYjWE6KIuQspZb3/n1GjC/Mju0jiHstgDza0xTp1lzO32KqNVvL8sYHLlzpYAQtk+4Hu8FBgH+7gHVjKZCbTnE72qdFKDXKHm3SYbbW043f+i31f66+d0ZuulG/Ez7h7W8EG36CMJLqnDAokYHHYTUtVBJf4Vnz1Hil/4381WdJRk1dtTh8AJ+9z0Ij/qCv1bK2MilsGkHE1lV87Bo2bJrA/nCqLedYGbic6Y1sm6Xe2Wa6mfJC5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8UeJdX+rnPqxXJ8i19Ts9Sknpyx1rXfqHBEvKc+2jwo=;
- b=t1xe+Xa33/nTbQAn3LheoC8D8aqUarhKnMN/GXkEboAUO/i0m0vgrsUILDd2yEYGYlweUvNe9tUvX4uJhuBHR6Y5oVQB1Ox5JczwU9YIZCuMq/zg4MEMO2B498ew9THNODaO/Sqm0oB4qV5CohP2iFeS025j6Gw8nfOf9tZoZd1ZOCdc8oMFTptdOhQfU7tlU8weswsHB8CaxJPb+x3NkDuvXjmcoEiWhs2fi9ntc7Vo95MnQQ7dNQa5Rc1wVNgk7LrS5jKwSYJLP4u0UUuZmXjFsKOmTQKm8uPhvuOyysq4SFrc1YknagW7M2R1ZvPubh7Hm6UozmURoay+JihE+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8UeJdX+rnPqxXJ8i19Ts9Sknpyx1rXfqHBEvKc+2jwo=;
- b=XtnOe6EztwKZVbbfhSdu4q9DxGxyuwtm0IvScNUzGRRbl+J9vB5n+FwiujBi9rByO8V0ZqysD5E30kzMTz9jNAZY+X6cEz0P5VdLn9XFNx0HvdDAVt17MpuQySY40t0rZggiIh6YZQSfmOJWbUjpTzD/aTwcj9e0MKsoQCg2fvhZQIgaH2LjsicjWRdwGHKL7eqzwVn0kv69CAzF7k1jUG+oMARC9dNatUux1QbxfZLH4BN5XKMT7XVtbCt/CJLvHnRucR8I9CsmA0rwricfUm7cHhuRLWTQIDyRoHIemhp6sqUK0gy39Pkd3+cQvFNbaWySgmUGQSMl0IgLMue2ew==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM0PR04MB6883.eurprd04.prod.outlook.com (2603:10a6:208:17f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Tue, 22 Sep
- 2026 19:37:53 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Tue, 22 Sep 2026
- 19:37:53 +0000
-Date: Tue, 22 Sep 2026 14:37:43 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	dmaengine@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v5 08/23] dmaengine: ste_dma40: Return IRQ_NONE without
- interrupt status
-Message-ID: <arLZBzE25DrDC6jg@SMW015318>
-References: <20260920-dma40-fixes-v5-0-5c55cd7f92f9@kernel.org>
- <20260920-dma40-fixes-v5-8-5c55cd7f92f9@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260920-dma40-fixes-v5-8-5c55cd7f92f9@kernel.org>
-X-ClientProxiedBy: CY8PR11CA0039.namprd11.prod.outlook.com
- (2603:10b6:930:4a::27) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=adishatz.org header.i=@adishatz.org header.b="iFncfHsn"
+Received: from [192.168.1.197] (88-165-227-194.subs.proxad.net [88.165.227.194])
+	by adishatz.org (Postfix) with ESMTPSA id B6BB14C022F;
+	Tue, 22 Sep 2026 21:39:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=adishatz.org;
+	s=mail; t=1790105977;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LGPIgJER122xCLLQSaDkRENXxVHfnMixSv9onUzEXmk=;
+	b=iFncfHsnOQE6Nzy9cVrk0NEcaV0RfZdx35/lAGdRHWhUX1k5LgDCvHSf/ksD1e1RqlSWp9
+	2jsHHbrhnDAXvUJJdrwcBHb9m+G+RnzfXP3/B74a99CKLZkUR0XKjYlOy+06uhwlla6+/5
+	ttLCTLb0bTbtGqMs8edIHc+mlPXQX3lggly3ltHe0wkG4EBPm/YPD87LnICqYCMRFtyen0
+	N+zcUFyglZ0IO0s2joDyIrXbJ9OYgqknvZZoT2mwBDE/yxiqYTjQgosmgSXni7ngpiznYg
+	MFa6MJQqIRhIeGOCmGO3kL9F6JuDo7ya6GCyJOkaweaL1b5NPMNob2dW2WPycg==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=cedric.bellegarde smtp.mailfrom=cedric.bellegarde@adishatz.org
+From: =?utf-8?q?C=C3=A9dric_Bellegarde?= <cedric.bellegarde@adishatz.org>
+Date: Tue, 22 Sep 2026 21:39:12 +0200
+Subject: [PATCH] media: v4l2-async: link ancillary device runtime PM to the
+ sensor's
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM0PR04MB6883:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e99007a-e86d-4803-0376-08df18e0fe42
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|19092799006|366016|23010399003|10067099003|56012099006|4143699003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	pInttY8QEoU6jkeCfY1V9xE7SZ0zA/8l7lbFuvWO4j9ewCzJKBlb6/qzalvUX9c6Hm91xrUzvOyEhZ55muF1+XzFSQwoM4jaGY20mb8VJmnugERa5eC5q9AVOB/c5nBX9zBby77K2vWVCN/6ijNWqrxoXG3TdmtE4/wtm6QNdDpz810RGTgGkvGn0wtk7OrgbcjmPCtd6Izs6G/YXy1gHOHMMNfPRodkXz7eV83VkuyJJO/5EW/fr28EWFjELunLfJI26zSicK80MgPJu1H2oiT6fOBEbNHnwN987MoFtIvVaCRq35lxyfefGANCmz5UVMtrx12fBq/KFpCtvrXX1gvKH03QWZXwHyhSHSpJpkHZRV0fiO73YXbP2PppXInqjk3+KRkPomZteQfbSvk86Ulxa+cgfel4r1DmRkCP8h2dnBnHutXuNdmNGDj0FItmkyPcBlahI7pTTAo/ownfg5TCXK2eoXQWKiIHYJwdnaptDZnri5ZP3/H88utsuU9PlQOsWgjT4xMjwGlh70QCAXAgu7gEWXd7/Bb1ScsEOE/Ni8yWyMjNC/9rcRR+rjvs5EB9WG0KoqREwVT1NBTuagarCw3OpO8fJ97RLz/RjAEf6G3KWJwnR8rbFGzwouhQW2uosF2W85pRgdqS3KIjI9qnFifVpoYvHf7IVVV/AZ0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(19092799006)(366016)(23010399003)(10067099003)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ohkcYH/I8DbkJ+xVtq5+udCbOPQpH9D3Tu7sF+pE7GpwjZ8UB4232JDJTWAo?=
- =?us-ascii?Q?EZcz7HOC3hMkT/ndiQAJw950HTM8vqt/re2zmUNPlJKqnHv7dchjJRzVjwsm?=
- =?us-ascii?Q?im4WGKInO9jfusO3RpZpwA8MdSw2h6uwduAMG2l7AkHNFmoqpxJW7HV5xaKA?=
- =?us-ascii?Q?Bv4+BdwwJ6f+ODpexV00eONT5CtMI1AuNgKXF6uYzi6rJLBexPHokw1m3pEd?=
- =?us-ascii?Q?gWHLXqZdBucs2gkwZndPxdiZJEbXgiBjDicUfY5+c7K1bNhtlgbSJAZvnUwt?=
- =?us-ascii?Q?ohBYwQbAaOed2sM7dS4rz1dMB7tzTUtD3wOglDiKxU3xS7afWLwP8oMSxvWF?=
- =?us-ascii?Q?+cexQuw//IXJGjh0Nl2YDdS80q25m2sEVpDx6bhPtEiS55E9wgBfLgwpEads?=
- =?us-ascii?Q?7Zd78PzszU3pINRADUPZKMK/se8eapqASAJIZmxBDNIc0XTcq0DxDhBMG06j?=
- =?us-ascii?Q?3KQAuv65F/KsGzbwfAipwjWDvHV/fAPnFMdAXpAsVC7rCXlh16p/RhVEgVI9?=
- =?us-ascii?Q?tD1O9tFyGTlWRieRUa7sreE9pfTZTReJ6a5L1bWNhUYSgOIsRp004BLln9IN?=
- =?us-ascii?Q?36xSa9YZl5/OCdo2gVMtIkESgJ5yC50SYzMXNhO1MLcmTue8EY12AH41HGKV?=
- =?us-ascii?Q?AGOO+762qkVo7QhJhe5IdcZJoZnIUJPq7nEY0whqYwa5+dMu5ekgnUyVEwrt?=
- =?us-ascii?Q?IPWLldBg+MJXc4Z516kd+MmjgXvT3Qb8jSM0cCkAVhRdGLNsveM7YPuhtVWe?=
- =?us-ascii?Q?m4oCq4HejGF0Q18MWbBw5BjNxqodiUMDY/sjn03HRK9yP+kUlS0svs0ijdxe?=
- =?us-ascii?Q?ibAvMcWsIz91HK+HAhmten0k/p5O/kxMR+opnqpsCuin7WwCZja2nFRKmsqm?=
- =?us-ascii?Q?+WiGBKLwHxZhRB9jLt8rhJcEGZWfRzkLUjV4Yo8iCM3Ipi6IlCZNvrjVs5/m?=
- =?us-ascii?Q?Qp+9ujTVTUTmLcNaDSjvdM1TduHjte4vdNtOA1XbFjMfZVc7gErJ0lSX7LyT?=
- =?us-ascii?Q?6DANXOJafOTWYMI2BpCEgbQlm4yxWAZ7h+5MMCzsDvguy7YmeoNEyWnlF7K8?=
- =?us-ascii?Q?woUQ4micSidpyG0KncVTdxq7CmL2PI6EiFa1c11cUNtN4QUepXlmsPJJXgCI?=
- =?us-ascii?Q?MmwsC4OBxGX3+vlruNRS0nkSRlyY2mABIh+vwpIgR+ad68yNaw2isR6gSo2E?=
- =?us-ascii?Q?IN5GHarepRdDtKQt5QNN9GvLxJURnXqyVXdXaattguAIe6xg0D2URxSMG59v?=
- =?us-ascii?Q?OehzNhWD8ttsSv5ipszFwtmrSjUFgzdbmEzApXGomr5a/Gt9SyWSTut6MgBm?=
- =?us-ascii?Q?r4o7TAx5QxT/GynKWrQTN1HTbcCvljdRvxVPSOz0a/HpVXjzxu8NbtFJCNbF?=
- =?us-ascii?Q?hGEjZ6ip3GjVCaup5l3UeIOy5EYRzuRCWx2oSE2iXcXyA2YcLeB9wdoVC8cz?=
- =?us-ascii?Q?AcJCnTXDLWXZOisPt+ztnUp+ceocPqyhcOCHgigsnHVJ4EwcP4Nm4nuQ6NBM?=
- =?us-ascii?Q?1EE4xg/Cw248iYyOe5gYuRu3nOF9ejA00zFp8uI969uZQtO7cWqX9WHA8Vu5?=
- =?us-ascii?Q?tuoINWXQd4nUirH5MXj6bFyYhk8Fb5XutV9WrkZ+R6bGOJXLG9xHB4vqCGid?=
- =?us-ascii?Q?X5mQmBPuBnNWjDIOaQr/Ex1yWI/HCoPMmMQSbEzqk13HzVHbDSAJsGfq6jCz?=
- =?us-ascii?Q?+lQtLykgDFrenPt7eQxfuWgYrJQT2LWsMPQoFpE6W0OKGW2wAd9MCOjGu3gA?=
- =?us-ascii?Q?GZMOQzWTeVtmcCXcLv0KM16HDWXW1K+97B6nHzF5nfBsY05yirhN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e99007a-e86d-4803-0376-08df18e0fe42
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 19:37:53.1067
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +Aq3foa3qAfIupRHyE03kmW+9UvV9ZMieDqfvk5u+4ROxJkP94jrrR8YTQY3OqmDcZpSYx58Zj8GTluSbre2dBDgTDck6jjeZThbngb+UPL2tTOFwXGvkH+oxr7/7NKh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6883
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260922-sensors_pm-v1-1-05adf2098b5e@adishatz.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDS0ND3eLUvOL8ouL4glxdcwvz1MRkA8PEREMLJaCGgqLUtMwKsGHRsbW
+ 1ANsznoJcAAAA
+X-Change-ID: 20260911-sensors_pm-787eac01aa18
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, kieran.bingham@ideasonboard.com
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, 
+ =?utf-8?q?C=C3=A9dric_Bellegarde?= <cedric.bellegarde@adishatz.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790105969; l=3415;
+ i=cedric.bellegarde@adishatz.org; s=20260922; h=from:subject:message-id;
+ bh=2GUkSs5ZTpTYdJEpouNGeYCwn+yt9cJWKo+yGU386i0=;
+ b=WCy/B5n3sfbfaG/fqSdZ9GTd0X+RU7kwc006pEqyONRU6BA3RIoWIDSV3Z1GXNUADxRXilAXD
+ qtS0CFI1ebnAODHAbNxapam03am7W1ElfQhdJdtgkR3NQ20fGLO5cpj
+X-Developer-Key: i=cedric.bellegarde@adishatz.org; a=ed25519;
+ pk=CV2g510IJ+UwW/Jd9MIio7NF2st3gLrxcN5YzVnMuMA=
 
-On Sun, Sep 20, 2026 at 08:59:43PM +0200, Linus Walleij wrote:
+When a sensor's fwnode references an ancillary lens or flash device
+(e.g. via the "lens-focus" or "flash-leds" properties),
+v4l2_async_create_ancillary_links() already creates a media controller
+link between the two entities, but their runtime PM states remain
+independent.
 
-suggested subject:
+This is a problem for devices such as VCM lens actuators, which are
+typically spring-loaded: holding a position away from the spring's
+rest point requires continuous power, and the position is not retained
+once power is cut. If such an actuator is allowed to runtime-suspend
+independently of the sensor, the lens can drift back to its rest
+position during an otherwise active capture session.
 
-return IRQ_NONE when no interrupt is pending
+Add V4L2_SUBDEV_FL_PM_LINK to allow an ancillary subdevice to request
+that its runtime PM state be linked to the associated sensor.
 
-> d40_handle_interrupt() returns IRQ_HANDLED even when no terminal-count or
-> error status bit is set. If the line remains asserted without matching
-> status, reporting it as handled prevents the generic interrupt code from
-> detecting the stuck interrupt.
+Signed-off-by: Cédric Bellegarde <cedric.bellegarde@adishatz.org>
+---
+Link runtime PM of ancillary devices such as lens actuators to their associated sensor,
+while allowing actuators to autosuspend when idle.
 
-Looks like it is debug function. The major purpose is return IRQ_NONE should
-be for irq sharing?
+Example usage:
+https://gitlab.com/gnumdk/linux/-/commit/82b2d71415a1d95b2170e19ce025afc8bbdcf145
+---
+ drivers/media/v4l2-core/v4l2-async.c | 18 ++++++++++++++----
+ include/media/v4l2-subdev.h          |  7 +++++++
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
-Frank
->
-> Track whether the handler observes any DMA40 status. Return IRQ_NONE only
-> when none is present, allowing the generic spurious interrupt detector to
-> disable a faulty status-less interrupt line.
->
-> DMA40 channels can be owned by other SoC cores. Their status still explains
-> why the interrupt fired, but Linux must not acknowledge it. Treat foreign
-> status as handled and leave its acknowledgment to the owning core, while
-> acknowledging and dispatching only registered Linux channels.
->
-> Fixes: 8d318a50b3d7 ("DMAENGINE: Support for ST-Ericssons DMA40 block v3")
-> Assisted-by: LLM
-> Signed-off-by: Linus Walleij <linusw@kernel.org>
-> ---
->  drivers/dma/ste_dma40.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-> index bb052d3028cc..4380f9a1b035 100644
-> --- a/drivers/dma/ste_dma40.c
-> +++ b/drivers/dma/ste_dma40.c
-> @@ -1807,6 +1807,7 @@ static void dma_tasklet(struct tasklet_struct *t)
->
->  static irqreturn_t d40_handle_interrupt(int irq, void *data)
->  {
-> +	irqreturn_t handled = IRQ_NONE;
->  	int i;
->  	u32 idx;
->  	u32 row;
-> @@ -1840,6 +1841,12 @@ static irqreturn_t d40_handle_interrupt(int irq, void *data)
->  		row = chan / BITS_PER_LONG;
->  		idx = chan & (BITS_PER_LONG - 1);
->
-> +		/*
-> +		 * Status for a channel owned by another core still explains
-> +		 * the interrupt, but only ACK Linux-owned channels below.
-> +		 */
-> +		handled = IRQ_HANDLED;
-> +
->  		if (il[row].offset == D40_PHY_CHAN)
->  			d40c = base->lookup_phy_chans[idx];
->  		else
-> @@ -1872,7 +1879,7 @@ static irqreturn_t d40_handle_interrupt(int irq, void *data)
->  	if (ret > 0)
->  		pm_runtime_put_autosuspend(base->dev);
->
-> -	return IRQ_HANDLED;
-> +	return handled;
->  }
->
->  static int d40_validate_conf(struct d40_chan *d40c,
->
-> --
-> 2.55.0
->
+diff --git a/drivers/media/v4l2-core/v4l2-async.c b/drivers/media/v4l2-core/v4l2-async.c
+index 460bf3dbbb88..22df627153b8 100644
+--- a/drivers/media/v4l2-core/v4l2-async.c
++++ b/drivers/media/v4l2-core/v4l2-async.c
+@@ -318,6 +318,7 @@ static int v4l2_async_create_ancillary_links(struct v4l2_async_notifier *n,
+ {
+ #if IS_ENABLED(CONFIG_MEDIA_CONTROLLER)
+ 	struct media_link *link;
++	struct device_link *devlink;
+ 
+ 	if (sd->entity.function != MEDIA_ENT_F_LENS &&
+ 	    sd->entity.function != MEDIA_ENT_F_FLASH)
+@@ -331,11 +332,20 @@ static int v4l2_async_create_ancillary_links(struct v4l2_async_notifier *n,
+ 	}
+ 
+ 	link = media_create_ancillary_link(&n->sd->entity, &sd->entity);
+-
+-	return IS_ERR(link) ? PTR_ERR(link) : 0;
+-#else
+-	return 0;
++	if (IS_ERR(link))
++		return PTR_ERR(link);
++
++	if (sd->flags & V4L2_SUBDEV_FL_PM_LINK) {
++		devlink = device_link_add(n->sd->dev, sd->dev,
++					  DL_FLAG_PM_RUNTIME |
++					  DL_FLAG_AUTOREMOVE_CONSUMER);
++		if (!devlink)
++			dev_warn(notifier_dev(n),
++				 "failed to link power management of %s to %s\n",
++				 dev_name(sd->dev), dev_name(n->sd->dev));
++	}
+ #endif
++	return 0;
+ }
+ 
+ static int v4l2_async_match_notify(struct v4l2_async_notifier *notifier,
+diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
+index d256b7ec8f84..9f64b10afd10 100644
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -972,6 +972,13 @@ struct v4l2_subdev_internal_ops {
+  * - Multiple streams per pad are supported
+  */
+ #define V4L2_SUBDEV_FL_STREAMS			(1U << 4)
++/*
++ * Set this flag to keep the subdevice active while its associated sensor is active.
++ *
++ * This is intended for ancillary devices, such as lens actuators, whose
++ * hardware state or physical position cannot be retained while powered off.
++ */
++#define V4L2_SUBDEV_FL_PM_LINK          (1U << 5)
+ 
+ struct regulator_bulk_data;
+ 
+
+---
+base-commit: df2908090cda368b01ff43709f51890076c56157
+change-id: 20260911-sensors_pm-787eac01aa18
+
+Best regards,
+-- 
+Cédric Bellegarde <cedric.bellegarde@adishatz.org>
+
