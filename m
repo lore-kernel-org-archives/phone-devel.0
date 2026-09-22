@@ -1,40 +1,40 @@
 Received: from adishatz.org (ns314768.ip-37-187-26.eu [37.187.26.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D026E4A49B3;
-	Tue, 22 Sep 2026 19:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8491449F132;
+	Tue, 22 Sep 2026 19:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.187.26.192
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790106487; cv=none; b=YrbVZpaK/nL8g/0qN7HVxeRIjsv9jPKcpnnWxPrxAfJ7tNhparreoBnlmphsIthTzpWoZKkNrlzGzl/gzAhlgswtcOB1UNLpdJw0eMiBQ2LxBOwZqOXoBwNZ7Z3bzwBr+6EBrUGyE6Z5In6bfbH2+/hQxZTG+DFzeSIBP7JuC2U=
+	t=1790106551; cv=none; b=Cs0J2P1/4O2cpJXbpFT/Zzy59oz3kaOvhrEnQMcSdMFR8xbxAa0LlfPh8H7tkvym5BLc1V2QO0frvjrWJrRGr1F3UGFp9MyGlLrBwgD8CEzwq8MHCslaBfn/wwTXWCPDsUL2SS8PA1MhuSquV93RWUQ/FiJLRM+Ufqm+ySJP4fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790106487; c=relaxed/simple;
-	bh=2GUkSs5ZTpTYdJEpouNGeYCwn+yt9cJWKo+yGU386i0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tX6nEa4rRpd3AhHIeUp5+4HJLyt5mphsNl6Zurb5GxTWuC47yLY8g45eZSC7z53q8KnRan3IR/vr4hhugN4MgIEdAYueNcZKGbdgy9LzgxIoNVf77r26ILYJGXYAwCw8OxRv+m8xo8xXHp6LSNn+rfCuOZ9KkOC3tk6AL+Rr0wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=adishatz.org; spf=pass smtp.mailfrom=adishatz.org; dkim=pass (2048-bit key) header.d=adishatz.org header.i=@adishatz.org header.b=iFncfHsn; arc=none smtp.client-ip=37.187.26.192
+	s=arc-20240116; t=1790106551; c=relaxed/simple;
+	bh=YoEEUuRI6691UX/tIKQx9uNVNJ9B7AcQkU1ymq7HQ0s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YTHvasWQAoyTXset1Z59k1iWShyE4oSI4P5Ze3wAHSpkqAN0wnArY9qFhEG1rVVJlq9VcdLXjpT7SNC5cq2CnipJ2LoKihauxOLrMNLx7iU2rluUVCqNcB3NEvDd3f7NUy5qPh5jYc3qWFdBgG4ft1Om+JotSn9NQSjEdf6fXEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=adishatz.org; spf=pass smtp.mailfrom=adishatz.org; dkim=pass (2048-bit key) header.d=adishatz.org header.i=@adishatz.org header.b=R+Xtgodc; arc=none smtp.client-ip=37.187.26.192
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=adishatz.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=adishatz.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=adishatz.org header.i=@adishatz.org header.b="iFncfHsn"
+	dkim=pass (2048-bit key) header.d=adishatz.org header.i=@adishatz.org header.b="R+Xtgodc"
 Received: from [192.168.1.197] (88-165-227-194.subs.proxad.net [88.165.227.194])
-	by adishatz.org (Postfix) with ESMTPSA id B6BB14C022F;
-	Tue, 22 Sep 2026 21:39:36 +0200 (CEST)
+	by adishatz.org (Postfix) with ESMTPSA id C97C74C022F;
+	Tue, 22 Sep 2026 21:48:24 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=adishatz.org;
-	s=mail; t=1790105977;
+	s=mail; t=1790106505;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=LGPIgJER122xCLLQSaDkRENXxVHfnMixSv9onUzEXmk=;
-	b=iFncfHsnOQE6Nzy9cVrk0NEcaV0RfZdx35/lAGdRHWhUX1k5LgDCvHSf/ksD1e1RqlSWp9
-	2jsHHbrhnDAXvUJJdrwcBHb9m+G+RnzfXP3/B74a99CKLZkUR0XKjYlOy+06uhwlla6+/5
-	ttLCTLb0bTbtGqMs8edIHc+mlPXQX3lggly3ltHe0wkG4EBPm/YPD87LnICqYCMRFtyen0
-	N+zcUFyglZ0IO0s2joDyIrXbJ9OYgqknvZZoT2mwBDE/yxiqYTjQgosmgSXni7ngpiznYg
-	MFa6MJQqIRhIeGOCmGO3kL9F6JuDo7ya6GCyJOkaweaL1b5NPMNob2dW2WPycg==
+	bh=1jv40DTBjObGb5Uny3NuOxw9UrYwrYBzV7l9G7nolcI=;
+	b=R+XtgodccYINOViyDbCnZjP2Tq/8H3fk3s8VRNip7pylld1ohYxJMJ7NZM8rIPf3j0etnS
+	ob528SSS61HfSgK5ezRQkLdagjhZ+rAg1FNWVcQrCZAci81YcSyusio5pb9KrgR08wm+mV
+	ErzEdyuurufZOi4cw2cFmAAYHKXBd1mLVvmEgXGHTpof5zyd29AcVqUDMZ5d2rrFj4o0+x
+	Fk+7QwnoLpOKpTs0BwUHMKkSm7i3N0SrZYiVFSsN+cus7u+kIXEd1tZ78+AFXDy034v7rV
+	3IcEn06D7c1jC3geD2NpX+s/5My1FcFxvQPuK34o0ks0pTwkkopzxNQ71Nn0uQ==
 Authentication-Results: ORIGINATING;
 	auth=pass smtp.auth=cedric.bellegarde smtp.mailfrom=cedric.bellegarde@adishatz.org
 From: =?utf-8?q?C=C3=A9dric_Bellegarde?= <cedric.bellegarde@adishatz.org>
-Date: Tue, 22 Sep 2026 21:39:12 +0200
-Subject: [PATCH] media: v4l2-async: link ancillary device runtime PM to the
- sensor's
+Date: Tue, 22 Sep 2026 21:48:13 +0200
+Subject: [PATCH] arm64: dts: qcom: sdm845-oneplus-common: Configure MBHC
+ thresholds
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -43,112 +43,54 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260922-sensors_pm-v1-1-05adf2098b5e@adishatz.org>
+Message-Id: <20260922-mbhc-v1-1-bd123e7fb899@adishatz.org>
 X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDS0ND3eLUvOL8ouL4glxdcwvz1MRkA8PEREMLJaCGgqLUtMwKsGHRsbW
- 1ANsznoJcAAAA
-X-Change-ID: 20260911-sensors_pm-787eac01aa18
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, kieran.bingham@ideasonboard.com
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, 
+ vPSU3UzU4B8JSMDIzMDSyMj3dykjGRdYxMjQxOLJOO0FNMkJaDSgqLUtMwKsDHRsbW1AFOmKzB
+ WAAAA
+X-Change-ID: 20260922-mbhc-342148b3fd5b
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  =?utf-8?q?C=C3=A9dric_Bellegarde?= <cedric.bellegarde@adishatz.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790105969; l=3415;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790106497; l=1147;
  i=cedric.bellegarde@adishatz.org; s=20260922; h=from:subject:message-id;
- bh=2GUkSs5ZTpTYdJEpouNGeYCwn+yt9cJWKo+yGU386i0=;
- b=WCy/B5n3sfbfaG/fqSdZ9GTd0X+RU7kwc006pEqyONRU6BA3RIoWIDSV3Z1GXNUADxRXilAXD
- qtS0CFI1ebnAODHAbNxapam03am7W1ElfQhdJdtgkR3NQ20fGLO5cpj
+ bh=YoEEUuRI6691UX/tIKQx9uNVNJ9B7AcQkU1ymq7HQ0s=;
+ b=Gmul3B8QsYq1Oh//v8sU1nvAHFDNQmfcl8w5zAdcLWKtS2LlUoxcsH/AXIBx2+x2zxsFNlGkp
+ KqLAJrRG7kmAaIo8UPsbBbHJr+CsktorfyL9bwnMfARPCrIMKIJ8for
 X-Developer-Key: i=cedric.bellegarde@adishatz.org; a=ed25519;
  pk=CV2g510IJ+UwW/Jd9MIio7NF2st3gLrxcN5YzVnMuMA=
 
-When a sensor's fwnode references an ancillary lens or flash device
-(e.g. via the "lens-focus" or "flash-leds" properties),
-v4l2_async_create_ancillary_links() already creates a media controller
-link between the two entities, but their runtime PM states remain
-independent.
-
-This is a problem for devices such as VCM lens actuators, which are
-typically spring-loaded: holding a position away from the spring's
-rest point requires continuous power, and the position is not retained
-once power is cut. If such an actuator is allowed to runtime-suspend
-independently of the sensor, the lens can drift back to its rest
-position during an otherwise active capture session.
-
-Add V4L2_SUBDEV_FL_PM_LINK to allow an ancillary subdevice to request
-that its runtime PM state be linked to the associated sensor.
+Configure the Multi-Button Headset Control (MBHC) thresholds for the
+WCD9340 audio codec to match the vendor downstream calibration.
 
 Signed-off-by: Cédric Bellegarde <cedric.bellegarde@adishatz.org>
 ---
-Link runtime PM of ancillary devices such as lens actuators to their associated sensor,
-while allowing actuators to autosuspend when idle.
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Example usage:
-https://gitlab.com/gnumdk/linux/-/commit/82b2d71415a1d95b2170e19ce025afc8bbdcf145
----
- drivers/media/v4l2-core/v4l2-async.c | 18 ++++++++++++++----
- include/media/v4l2-subdev.h          |  7 +++++++
- 2 files changed, 21 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/media/v4l2-core/v4l2-async.c b/drivers/media/v4l2-core/v4l2-async.c
-index 460bf3dbbb88..22df627153b8 100644
---- a/drivers/media/v4l2-core/v4l2-async.c
-+++ b/drivers/media/v4l2-core/v4l2-async.c
-@@ -318,6 +318,7 @@ static int v4l2_async_create_ancillary_links(struct v4l2_async_notifier *n,
- {
- #if IS_ENABLED(CONFIG_MEDIA_CONTROLLER)
- 	struct media_link *link;
-+	struct device_link *devlink;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 439779f308e3..8a99c3f55bf6 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -1099,6 +1099,10 @@ &wcd9340 {
+ 	vdd-tx-supply = <&vreg_s4a_1p8>;
+ 	vdd-rx-supply = <&vreg_s4a_1p8>;
+ 	vdd-io-supply = <&vreg_s4a_1p8>;
++	qcom,mbhc-buttons-vthreshold-microvolt = <75000 150000 237000 500000
++						  500000 500000 500000 500000>;
++	qcom,mbhc-headset-vthreshold-microvolt = <1700000>;
++	qcom,mbhc-headphone-vthreshold-microvolt = <50000>;
+ };
  
- 	if (sd->entity.function != MEDIA_ENT_F_LENS &&
- 	    sd->entity.function != MEDIA_ENT_F_FLASH)
-@@ -331,11 +332,20 @@ static int v4l2_async_create_ancillary_links(struct v4l2_async_notifier *n,
- 	}
- 
- 	link = media_create_ancillary_link(&n->sd->entity, &sd->entity);
--
--	return IS_ERR(link) ? PTR_ERR(link) : 0;
--#else
--	return 0;
-+	if (IS_ERR(link))
-+		return PTR_ERR(link);
-+
-+	if (sd->flags & V4L2_SUBDEV_FL_PM_LINK) {
-+		devlink = device_link_add(n->sd->dev, sd->dev,
-+					  DL_FLAG_PM_RUNTIME |
-+					  DL_FLAG_AUTOREMOVE_CONSUMER);
-+		if (!devlink)
-+			dev_warn(notifier_dev(n),
-+				 "failed to link power management of %s to %s\n",
-+				 dev_name(sd->dev), dev_name(n->sd->dev));
-+	}
- #endif
-+	return 0;
- }
- 
- static int v4l2_async_match_notify(struct v4l2_async_notifier *notifier,
-diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
-index d256b7ec8f84..9f64b10afd10 100644
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -972,6 +972,13 @@ struct v4l2_subdev_internal_ops {
-  * - Multiple streams per pad are supported
-  */
- #define V4L2_SUBDEV_FL_STREAMS			(1U << 4)
-+/*
-+ * Set this flag to keep the subdevice active while its associated sensor is active.
-+ *
-+ * This is intended for ancillary devices, such as lens actuators, whose
-+ * hardware state or physical position cannot be retained while powered off.
-+ */
-+#define V4L2_SUBDEV_FL_PM_LINK          (1U << 5)
- 
- struct regulator_bulk_data;
- 
+ &wifi {
 
 ---
-base-commit: df2908090cda368b01ff43709f51890076c56157
-change-id: 20260911-sensors_pm-787eac01aa18
+base-commit: fe2ec83746e501645709761605c2464a44fd2929
+change-id: 20260922-mbhc-342148b3fd5b
 
 Best regards,
 -- 
