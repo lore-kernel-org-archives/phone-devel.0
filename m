@@ -1,161 +1,142 @@
-Received: from mail.fhannenheim.net (mail.fhannenheim.net [188.245.251.181])
+Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7FE477E37;
-	Wed, 23 Sep 2026 09:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.251.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53738517BB8;
+	Wed, 23 Sep 2026 12:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790157053; cv=none; b=GH4kW7eU4+tK8t2hZai5vX2kuIxwS02ehKeervBZaJfJn2hNaixH0Nn37qSGBi+KwfILZZhtLjxsOPUu9o/jCIEevmxMWam8QnD40DuEe57INaqKr8KyuVmNkjhPbnV3oonSHrqY+j/OJ8tHgkt0DCmOezWK4TFQYAm1Xi/XAUU=
+	t=1790165849; cv=none; b=pxm3dpeUGbpOJP+y6yfEbNrwi4mWMr2Zu17xxLV29/O2ArvIViqLSLZqTiKh1Fw3x4BWyMz9MyBfMZJLnDGS8H4ph3ItSBVYklf8fUcma2/o2CBoniJioGhjZlKjnxb8Ij5JOvLD0NUR4nAskptBzSGXk0JVB7o3h6AXfqhkGAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790157053; c=relaxed/simple;
-	bh=3gJrRsmKPB7eJUuw+VZSGY+71yBpCrpZY9rWwKjvMXk=;
+	s=arc-20240116; t=1790165849; c=relaxed/simple;
+	bh=F53p8FKHEPS9OasKbcD3/FVtuvDQj0qYdE0oshV7agY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MScpGiQ+xXAaAp75Ajs9A871qQGhwH0DwV0rSVC1CzIUuI0fZu0i6YQyTcyqyKTgWLxP/8dxLMZBbMcXdu0XanryxFzVUstZ8hqlyya5C3IeNum3rlItFZ1C1xmdrzZQESU4f1+QDpBZaMWlFxnky3CpuJ4m9mSO2f8Afad1iZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net; spf=pass smtp.mailfrom=fhannenheim.net; dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.b=QypCSh9u; arc=none smtp.client-ip=188.245.251.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fhannenheim.net
+	 In-Reply-To:Content-Type; b=ZiF8UXn0EKDi+aDzr36Dm/2kxlBHDgClewSTGtnbdxEoGXscGt+BABKA3Lq+4DPR89PWl/ZBjo94X/WINZ8ihuBpmWP0r+0jRBPQ+INwCqlXzyHBdAi/IDTGZUMdML7FRi00qpi2avLaK5FFBYIxbYI4h4G5lQwgTmM/jymHcMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=AXXSIdbx; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.b="QypCSh9u"
-Message-ID: <52bbd4c5-795f-4901-8b32-a1700d33b66d@fhannenheim.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhannenheim.net;
-	s=mail; t=1790156674;
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="AXXSIdbx"
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 3EE095340957;
+	Wed, 23 Sep 2026 14:17:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1790165829;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hvN63iinQqNBNDu13VGaPnwDGRiYSsSs4VK48OPwTW4=;
-	b=QypCSh9u20oVgMy/CkvVdYqwcgh9FDUV87U/8vaj/KsHSvMmS6nhPT8EILKbOs6dS94Bg/
-	GTOxpRmIVpkjOZrc3FpuPCpJv7hyVe33RqaeN2LVfuUoKbloPTMeuCGmTYx0LtcSZ9hUTS
-	wKwaRrOEMaP1JEDJTxv8MAj6dimkG9U=
-Date: Wed, 23 Sep 2026 11:44:32 +0200
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Cocbgk0yRPtfvE2Id/wgu61HEDljde+Nw92Y3PkSaOk=;
+	b=AXXSIdbx2Dy2w2E1vy9CXSWooMwvcrEhSU3jns/jv75U3JKOsmy0c7kfUWFtSwAeak+901
+	Xrc7hNOG2t53AQvKaqCbGE2MjoTF9GtAgLGM2sSdSJDyM5+h3nEHA0DxoFii9o81dwJ8lq
+	8mMRaC+HxVggYpJxaN/yIFWGCU98PUk=
+Message-ID: <ee8a106a-4700-4a5d-84f8-bb8ba4b084bd@ixit.cz>
+Date: Wed, 23 Sep 2026 14:17:08 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] misc: fastrpc: Don't fail probe when the SDSP memory
- assign fails
-To: david@ixit.cz, Srinivas Kandagatla <srini@kernel.org>,
- Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Xingjing Deng <micro6947@gmail.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260923-fastrpc-fail-slow-v1-1-f3f6fabba6e3@ixit.cz>
-Content-Language: en-US
-From: Frieder Hannenheim <git@fhannenheim.net>
-In-Reply-To: <20260923-fastrpc-fail-slow-v1-1-f3f6fabba6e3@ixit.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: sdm845-oneplus-common: Configure MBHC
+ thresholds
+To: =?UTF-8?Q?C=C3=A9dric_Bellegarde?= <cedric.bellegarde@adishatz.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260922-mbhc-v1-1-bd123e7fb899@adishatz.org>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260922-mbhc-v1-1-bd123e7fb899@adishatz.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-
-
-On 23.09.26 00:38, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 22/09/2026 21:48, Cédric Bellegarde wrote:
+> Configure the Multi-Button Headset Control (MBHC) thresholds for the
+> WCD9340 audio codec to match the vendor downstream calibration.
 > 
-> A failed qcom_scm_assign_mem() aborts fastrpc_rpmsg_probe(). On SDM845 this
-> turns every SLPI subsystem restart into an endless probe failure loop:
-> 
->   remoteproc3: crash detected in slpi: type fatal error
->   remoteproc3: remote processor slpi is now up
->   qcom_scm firmware:scm: Assign memory protection call failed -22
->   qcom,fastrpc 5c00000.remoteproc:glink-edge.fastrpcglink-apps-dsp.-1.-1: probe with driver qcom,fastrpc failed with error -22
->   qcom,fastrpc 5c00000.remoteproc:glink-edge.fastrpcglink-apps-dsp.-1.-1: rpmsg_dev_probe: failed: -22
-> 
-> The first assign succeeds and hands the reserved region to the VMIDs
-> described in qcom,vmids. qcom_scm_assign_mem() reports the resulting
-> owner set back through @srcvm, but the driver discards it, and nothing
-> reverses the assignment in fastrpc_rpmsg_remove(). When the glink
-> channel is re-announced after a subsystem restart, probe passes
-> src_perms = BIT(QCOM_SCM_VMID_HLOS) again, which no longer describes the
-> region, and the firmware rejects the call with -EINVAL.
-> 
-> At that point the region is already assigned, and HLOS is part of the
-> destination VMID list, so both the host and the DSP keep access. Failing
-> the probe only removes /dev/fastrpc-sdsp and makes the remote reopen the
-> channel, repeating the cycle indefinitely. Warn and continue instead
-> 
-> Assisted-by: LLM
-> Cc: stable@vger.kernel.org
-> Fixes: 6a502776f4a4 ("misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe")
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+> Signed-off-by: Cédric Bellegarde <cedric.bellegarde@adishatz.org>
 > ---
-> Tracking the current owner set so the re-assign is issued with the
-> correct source VMIDs is a separate fix, but I assume it would make sense
-> to keep that to someone with more knowledge of fastrpc.
+>   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 4 ++++
+>   1 file changed, 4 insertions(+)
 > 
-> I aim here to reverting into usable state again which can be also
-> backported.
-> 
-> Tested on Pixel 3 and 3 XL.
-> ---
->   drivers/misc/fastrpc.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-> index 90fd669636ec1..41943a3d496af 100644
-> --- a/drivers/misc/fastrpc.c
-> +++ b/drivers/misc/fastrpc.c
-> @@ -2590,17 +2590,19 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> index 439779f308e3..8a99c3f55bf6 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+
+Hello Cédric,
+
+only enchilada has the 3.5 jack, I assume no use for fajita
+... but it doesn't matter much here as it just changes existing default.
+
+Reviewed-by: David Heidelberg <david@ixit.cz>
+
+David
+
+> @@ -1099,6 +1099,10 @@ &wcd9340 {
+>   	vdd-tx-supply = <&vreg_s4a_1p8>;
+>   	vdd-rx-supply = <&vreg_s4a_1p8>;
+>   	vdd-io-supply = <&vreg_s4a_1p8>;
+> +	qcom,mbhc-buttons-vthreshold-microvolt = <75000 150000 237000 500000
+> +						  500000 500000 500000 500000>;
+> +	qcom,mbhc-headset-vthreshold-microvolt = <1700000>;
+> +	qcom,mbhc-headphone-vthreshold-microvolt = <50000>;
+>   };
 >   
->   		err = of_reserved_mem_region_to_resource(rdev->of_node, 0, &res);
->   		if (!err) {
->   			src_perms = BIT(QCOM_SCM_VMID_HLOS);
->   
->   			err = qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
->   				    data->vmperms, data->vmcount);
->   			if (err)
-> -				goto err_free_data;
-> +				dev_warn(rdev,
-> +					 "assign memory to SDSP failed: %d\n",
-> +					 err);
->   		}
->   
->   	}
->   
->   	secure_dsp = !(of_property_read_bool(rdev->of_node, "qcom,non-secure-domain"));
->   	data->secure = secure_dsp;
->   	data->soc_data = soc_data;
->   	data->poll_mode_supported = soc_data->poll_mode_supported ||
+>   &wifi {
 > 
 > ---
-> base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-> change-id: 20260923-fastrpc-fail-slow-4dc839c1685c
+> base-commit: fe2ec83746e501645709761605c2464a44fd2929
+> change-id: 20260922-mbhc-342148b3fd5b
 > 
 > Best regards,
-> --
-> David Heidelberg <david@ixit.cz>
 
-I've had a similar issue on sm8250. There the downstream devicetree 
-mapped fastrpc-mem over the whole memory but only used a small part of 
-it as defined in qcom,iommu-dma-addr-pool. Redefining fastrpc_mem to 
-only use that range fixed the problem.
-
-commit 946f65f7f3300741a2c0b6eb0248ccd19eca1925
-Author: Frieder Hannenheim <git@fhannenheim.net>
-Date:   Thu Aug 6 20:04:08 2026 +0200
-
-     sm8250.dtsi: correct fastrpc_mem
-
-     - fixes spli bringup
-
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi 
-b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index c490815ee3a2..f3ac307ed1db 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -866,9 +866,8 @@ cdsp_secure_heap: memory@8bf00000 {
-
-  		fastrpc_mem: fastrpc {
-  			compatible = "shared-dma-pool";
--			alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
--			alignment = <0x0 0x400000>;
--			size = <0x0 0x2000000>;
-+			alloc-ranges = <0x80000000 0x78000000>;
-+			alignment = <0x400000>;
-  			reusable;
-  		};
-  	};
