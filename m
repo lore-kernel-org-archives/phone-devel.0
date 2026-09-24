@@ -1,35 +1,37 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE1430C618;
-	Thu, 24 Sep 2026 08:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFB330274D;
+	Thu, 24 Sep 2026 12:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790238956; cv=none; b=QZhiqlRza1TuMJjOlRx3TAMjpmS7810J8ewemNXRZubfbv5ChtE+KmofdQ6Nd5wCjStUbxWEWJIcSyJSOKVL40UPlTYY9M1NtpT2WUR0cuFXxuIdx6qbQR65BoBiMf9jID0Jw92vDDHX1VSjJIEkA29cZI6dRijrm298/58YMpA=
+	t=1790254011; cv=none; b=ewLTg0yPp9fhSwFOsHzLlV9PrPb4x9A50KmNV1k0Bp/WiumCLWLjdgks8PbKlEB0EOJ3QLm0PJnqOMt08X+m/Xb7/SbkthOMOJ3K45IoJfRnLQ7wED+qvx5+wMZ86dd+ozw8c1B8eSvwAykn80OyJcLOlgr4igsAPmhEJKKGhFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790238956; c=relaxed/simple;
-	bh=S4S4NgTJmabOnmFLqe5WnNkonLRwbHqb4tvIdxCtFAk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Q3Tt7s+JpPvyLT8f6xWxHicOL3i2g04fqiHtQAI2u5m06jj7OpvmPrZZxYCo9BgicSgRTKgJZ1tDK/Yrwe8nHkIaVbyDv34aVztCDoOldinamHfPnTle+pkynR2XIBJFW/GwUXVshZWTCBDtcR9QZl7cPRdnDKuZG+BEranFa+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdSKaPet; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790254011; c=relaxed/simple;
+	bh=WCww17Nbz5msM318Y+YiigiK/lae/kU3t0OrPKXBYxA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eMVZ7ui6WanhF0yXJ9BHgtFgIGXoqGbVUC9p7JSh81AGXUThZZp/0jsZxk406laS/AW7dqVUE+HUwwWsfEM4E7BltIiaERQDeKlwxXriBQT1SsJHKohU85xRIP4fNh3P0nyF3HFiL2cF3ZRTdNBZYziFH/e0ShAQaj5jfMFEYLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h9QJ88im; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdSKaPet"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA151F000FF;
-	Thu, 24 Sep 2026 08:35:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790238955;
-	bh=0jBmkuuGEvsFmlsJBj6Ibgk9Nlu4rTmc8HC+Fjjcgss=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=RdSKaPet1uALE73WjWWTuy5Eky89z3/c4mcwymkTWg+GV0hhAsfwQbNeqV5a+YMPC
-	 5TH710TVPwJ+K7dBbgK0dQKPYeyLgwypbt9njlyfPx8t24mWvBM9zN6fc29JZsorp/
-	 QCp5trQmX/IGc6sPAIwWMucQFcxaxyK7mBvED4RxAx9bq/HD+DaC/mNRxvTh+jf0JZ
-	 Cagge8Ns6oyCnoMLUau1l0MnQBRg5XuGmC4PNLQxrf22zcEiKDpJnEMopAZo2Waojy
-	 eAaStaYqrXsPDmoMfiH1d7pjgcqJqvoCusKPc+VGWnvKc+CosftbSOfvP+aM8hnd6B
-	 3OtSM4HmJwV6Q==
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 24 Sep 2026 10:35:35 +0200
-Subject: [PATCH v6 23/23] dmaengine: ste_dma40: Validate memcpy
- configuration
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h9QJ88im"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 926F2C2BCB3;
+	Thu, 24 Sep 2026 12:46:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790254010;
+	bh=WCww17Nbz5msM318Y+YiigiK/lae/kU3t0OrPKXBYxA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=h9QJ88imIePzlbdnTRmvPzkjo9bUAFbPcSghL5bzdZQMo8R3uqAImn0SiT58wu2gW
+	 14OfISweK7f8Orze2ZUNim2MS3TfC0h8UyMhcmPdux5NaN5eGfhECisoM3JuFD1EGA
+	 EphoByz3NUJEZokoas48ukt/XBu7nqqxvQmSjiZkSKhO4vHDFzrx1Y9BE6BhOjlp9m
+	 umYGIwfE3z+wCOlXyDuRGxzwytwd8+gXigI6rmAVAORyJKhMNSOWu7AGV/AfGItUPY
+	 QkPDt8qsmImHnnIN9/LcilOjrNknOmGne3vhnRVLNEBcrxzoQyQ1srxjxTE6Nb3Kv3
+	 tn7dX3v2j8SLA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A97FC9830E;
+	Thu, 24 Sep 2026 12:46:50 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v3 0/8] Speakers for Pixel 3 / 3 XL
+Date: Thu, 24 Sep 2026 14:46:44 +0200
+Message-Id: <20260924-pixel3-audio-v3-0-5d06460fc8a9@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -38,80 +40,102 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-dma40-fixes-v6-23-fdb6755020a2@kernel.org>
-References: <20260924-dma40-fixes-v6-0-fdb6755020a2@kernel.org>
-In-Reply-To: <20260924-dma40-fixes-v6-0-fdb6755020a2@kernel.org>
-To: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
-Cc: dmaengine@vger.kernel.org, phone-devel@vger.kernel.org, 
- Linus Walleij <linusw@kernel.org>, sashiko-bot@kernel.org
-X-Mailer: b4 0.14.3
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/12Oyw6CMBBFf8V0bU0fUqgr/8O4oHQqkxjAFhqU8
+ O8WWaAu752cc2ciATxCIKfdRDxEDNg2Kcj9jlR12dyAok2ZCCYUU1zSDke4S1oOFltqrHHmqKF
+ gMicJ6Ty4dF90l+uaPTyGZO23ssbQt/75mYx8aVd7zrJfe+SUUWmUclIWmXb8jCP2h+pFFk0UG
+ 6rZ32NRJDSvhACreSb0FzrP8xveBPUs9gAAAA==
+X-Change-ID: 20260613-pixel3-audio-bdbfb49e8037
+To: Srinivas Kandagatla <srini@kernel.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ David Rhodes <david.rhodes@cirrus.com>, 
+ Richard Fitzgerald <rf@opensource.cirrus.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ David Rhodes <drhodes@opensource.cirrus.com>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, patches@opensource.cirrus.com, 
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>, 
+ Charles Keepax <ckeepax@opensource.cirrus.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2368; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=WCww17Nbz5msM318Y+YiigiK/lae/kU3t0OrPKXBYxA=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtRu33V70vGPgoK9kRrmF2zP8lixWUhtWMOIjj
+ QJMDZckuYqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCarUbtwAKCRBgAj/E00kg
+ csAxEAC2My1jTW1COPi529iCest+b+a27uNQ3d8MeloVj0nrXvwqgpr3nAGkGivckem3Mdet8Sa
+ r77/Vy4C77CGHjL/LJp/t2rDg3J0rKk1bltL8M7Grrmbng6NuQadd1MxVhwKo+/7gJH+UQOz+v+
+ LXzKf0Aod8+BlwK+ZTWKm/jYyoKz75yLJUOvgeYUcCAfz/WsqX30THqSr+uFc/kzP/H1igtGto6
+ Caeq4tj0Wm7v9y6TWEPpfdjvI6o+NCWwHl29K5fDP/LwvJcYPjOWJ8w/306C/EJYnzGHihTwOmi
+ op/7tUxtHEHXTfgKeYS2wny2elDUyapRfXvHrMrqv/FLDLVb/yHF9rHYygtevti86TM2B1tKhD6
+ okd13WI5/WwJR7pE0NCvDIHaXq9XMvQ7h3jhiDa6kOOx1CxVm9RXL6NmKIauN1fJ+vh0QFgvyCD
+ AIvUpd+sxxY4LO9Rdc9hbhzdZmWlrOmGTK+ryoTpqJhBo/wSrGAXRBPQEZwfZM4NXZcQtI3cjoz
+ LeF+a96vKlumc3Ol6SmhRo8d8qg+T9u35M8F7kRmYfkxxcnfXXp3gDtNni+zfgOq5VjldjpVKtO
+ Nk4W2nD3EVJQ8TBryNGGAjuPxuKvEVZjBTRzAyWVN24EG1BFbe6kmhLtnTimGBrQ6ejL8gp9fg1
+ t/Gn1A0qp4i+svQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-d40_config_memcpy() builds a default memcpy configuration without passing
-it through d40_validate_conf(). A dev_type supplied through the
-memcpy-channels device tree property can therefore bypass the bounds
-checks added for client configurations.
+This series address:
 
-The generic DMA direction enum assigns zero to DMA_MEM_TO_MEM, unlike
-DMA40's old private enum. Allow memory-to-memory directions in the
-validator so checking the generated configuration does not reject all
-memcpy channels.
+0. demistify the hex to BIT() macro and add left/right rx spk
+1. most likely wrongly set DSP_B in sdm845.c
+   my guess this is because TDM was never used in the mainline with
+   sdm845
+2. applying correct mask to left/right speaker for the TDM in sdm845.c,
+   so both speakers can work simultaneusly
+3. setting sysclk at startups, which some codecs need (such as cs35l36)
+4. setting proper tdm slot in the cs35l36 driver
+5. device-tree wiring for Pixel 3 / 3 XL
 
-Validate the generated memcpy configuration before deriving logical
-channel registers or allocating the channel.
+As per previous discussion not seding patch removing the "Input Mux"
+which now interferes with TDM callback. If wanted, I can send it as a
+follow-up.
 
-Fixes: 2c2b62d5d911 ("dmaengine: ste_dma40: Replace ST-E's home-brew DMA direction defs with generic ones")
-Reported-by: sashiko-bot@kernel.org
-Closes: https://lore.kernel.org/dmaengine/20260819225008.5F9651F000E9@smtp.kernel.org/
-Assisted-by: LLM
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/dma/ste_dma40.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+Changes in v3:
+- De-RFC, applied Reviewed-by tag.
+- Link to v2: https://patch.msgid.link/20260903-pixel3-audio-v2-0-7c22ed915291@ixit.cz
 
-diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-index d65bf6cfea53..c10012026ea0 100644
---- a/drivers/dma/ste_dma40.c
-+++ b/drivers/dma/ste_dma40.c
-@@ -1897,7 +1897,8 @@ static int d40_validate_conf(struct d40_chan *d40c,
- 	    d40c->base->gen_dmac.num_event_groups)
- 		invalid_dev_type = true;
- 
--	if (!conf->dir) {
-+	if (conf->dir != DMA_MEM_TO_MEM &&
-+	    !is_slave_direction(conf->dir)) {
- 		chan_err(d40c, "Invalid direction.\n");
- 		res = -EINVAL;
- 	}
-@@ -2171,12 +2172,17 @@ static int d40_allocate_channel(struct d40_chan *d40c, bool *first_phy_user)
- static int d40_config_memcpy(struct d40_chan *d40c)
- {
- 	dma_cap_mask_t cap = d40c->chan.device->cap_mask;
-+	int ret;
- 
- 	if (dma_has_cap(DMA_MEMCPY, cap) && !dma_has_cap(DMA_SLAVE, cap)) {
- 		d40c->dma_cfg = dma40_memcpy_conf_log;
- 		d40c->dma_cfg.dev_type =
- 			d40c->base->plat_data->memcpy_channels[d40c->chan.chan_id];
- 
-+		ret = d40_validate_conf(d40c, &d40c->dma_cfg);
-+		if (ret)
-+			return ret;
-+
- 		d40_log_cfg(&d40c->dma_cfg,
- 			    &d40c->log_def.lcsp1, &d40c->log_def.lcsp3);
- 
-@@ -2184,6 +2190,10 @@ static int d40_config_memcpy(struct d40_chan *d40c)
- 		   dma_has_cap(DMA_SLAVE, cap)) {
- 		d40c->dma_cfg = dma40_memcpy_conf_phy;
- 
-+		ret = d40_validate_conf(d40c, &d40c->dma_cfg);
-+		if (ret)
-+			return ret;
-+
- 		/* Generate interrupt at end of transfer or relink. */
- 		d40c->dst_def_cfg |= BIT(D40_SREG_CFG_TIM_POS);
- 
+Changes in v2:
+- Device-tree name sorting, with exception keeping mm1-dai-link in it's
+  place. (Konrad)
+- Make set_tdm_slot cleaner and less leveled. (Konrad)
+- Added TDM MIC defines in sdm845.c.
+  Should we in capture use speaker mask?
+- Renamed model from 'Google Pixel 3' to 'blueline', I would love to
+  hear feedback on this one.
+- Link to v1: https://lore.kernel.org/r/20260705-pixel3-audio-v1-0-3b66f33859f1@ixit.cz
 
--- 
-2.55.0
+---
+David Heidelberg (8):
+      ASoC: qcom: sdm845: Demystify TDM masks a bit
+      ASoC: qcom: sdm845: use DSP_A format for TDM codec DAIs
+      ASoC: qcom: sdm845: Use per-speaker RX masks for TDM slot assignment
+      ASoC: qcom: sdm845: Set codec dai and component sysclk during startup
+      ASoC: cs35l36: Implement set_tdm_slot to program RX and TX slots
+      arm64: dts: qcom: sdm845-google: Add basic audio support
+      slimbus: qcom-ngd-ctrl: Remove data channels on stream disable
+      arm64: dts: qcom: sdm845-google: Add WCD9340 codec and microphone capture
+
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 195 ++++++++++++++++++++-
+ drivers/slimbus/qcom-ngd-ctrl.c                    |  81 +++++++++
+ sound/soc/codecs/cs35l36.c                         |  44 +++++
+ sound/soc/qcom/sdm845.c                            |  49 ++++--
+ 4 files changed, 357 insertions(+), 12 deletions(-)
+---
+base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
+change-id: 20260613-pixel3-audio-bdbfb49e8037
+
+Best regards,
+--  
+David Heidelberg <david@ixit.cz>
+
 
