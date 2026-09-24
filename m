@@ -1,230 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8158347F2D0;
-	Thu, 24 Sep 2026 12:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B302477282;
+	Thu, 24 Sep 2026 13:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790254011; cv=none; b=WMB4l2X4TLuux+RwdfJBUVaCN0/wl6dapOYMjXiva0lkItIGPqlHvHncB3FZUeuplxnUE7SYs+tXQbaDetkkscLSan1GMemHD5y5gMs15NotlaPp+1t2dzk2ekZWwFZjVWTh+TTHSvdVqV9+erY1g0B3d6c5Lgq+H2AerhINax8=
+	t=1790255066; cv=none; b=OGjOjxGukEIAIdtHS51/0mvHzHWKMsSZhnaeVr15YghNEPRPaNs9IfGnXhc9HrqRQY6l5GGgjdS8RPFKbrP5w5JBNmxt9TbAERDoOXAf/KjnXQ9BXsQWgUR5m0ITLZgwYrkuMustyax0KGv7ID8p4gE2vBG/U5E/zC4LTG5dWes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790254011; c=relaxed/simple;
-	bh=NXY2VtXdHHWDm2uYX1AHzsYINWPs87ztTHrId+T8b/M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Hrobt5n9TTq/qVgDbJ28G9K33VtrJ1Ol/5ra8QPKvNjVL/iD2cfxDL4NZxtmiCE3wHxcN733EstAT0VBH1pX8Xn7uQa57saXG1YVn0vdxvb/azowJl7FWEVW1GcBkBaY+keJT+wmrYcbkvrvbhVoT0LNPcFwLWSHVd0xm4XwiRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KNja/QbT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790255066; c=relaxed/simple;
+	bh=rNu89Yhc+Z9bVkPK9PF6TItjbBoRfGHp7PDcuI7xSTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=goWVHhEtYaKAiGpGd9ISoThlm2RL2M4n4bZ/TNBkdwmvuu5EdyuT/tuDnqayT6rpsAm3hMCtzuyIBcYhXa0O12h8P52LzRjEsnUldj4JD6qo0+cxoX8ghDP/+7BEXi9kUpl2BKl6VlPEJBWbjMcTCDPCHUiG5ACaJkv/rpcpsT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T/9LBLXx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KNja/QbT"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0691FC4AF50;
-	Thu, 24 Sep 2026 12:46:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790254011;
-	bh=NXY2VtXdHHWDm2uYX1AHzsYINWPs87ztTHrId+T8b/M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=KNja/QbTcr638hXkcROY12x7DO85KEz15t05+TNdjWcT7SDM4u9BgPORhNR3xJVga
-	 6rd61oB4u4JR0U/vDuGf6yhrGEL+PwbO49EIPBl2NuPupeMl4JXvgGEdakYwjoiKH7
-	 zYJKIyfLZQOSTCvlQV87mlAmqI6E0hB4DwRJI/GyU+a8NEPhPf5LFQVx0wygK1bxzr
-	 UHPq3vu25JQ76ZLlOZpT5x9UccoLFVcQHqs6gLb71EjB1ZULzuNtQl33t7xrzhnzIY
-	 5eQ1V3mS5kwiv8+b+hPrYizeMQC1vZOBVbz7aI1bjivCYAhKTUgyfkfKtTELtEPXpR
-	 jJAq+xhBd4+qQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4A61C9831E;
-	Thu, 24 Sep 2026 12:46:50 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Thu, 24 Sep 2026 14:46:51 +0200
-Subject: [PATCH v3 7/8] slimbus: qcom-ngd-ctrl: Remove data channels on
- stream disable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T/9LBLXx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4C61F000FF;
+	Thu, 24 Sep 2026 13:04:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790255056;
+	bh=rNu89Yhc+Z9bVkPK9PF6TItjbBoRfGHp7PDcuI7xSTQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=T/9LBLXxYdZbXqdvqhyPAafY9mUOQs/2jx+g9USrrlmRZA/52Cs4VCLIebSeKug+2
+	 +bwN6+Ll2QeJ8zyL8JwstQVikYnYAgaZWMxVupL/AcjMhFaTz195dotVOLwrFi6K5n
+	 Vw+lsw4wGSdNCsm3C59J6yrquOSfYhyzXwXdeRTrvHixYRvPvvrVgxdeccUD+FwvMN
+	 MmqgRUYkqEHaQJWJRIqb/TRj+5b2Fa5OB48fFgCWkZvj0XtSLY1N85nwPnjmrjkLQW
+	 Bn313gUP4nvTzKimHvBV0sTPMPuPGK/swklEI4CNYTM4euGWQ4W4Jpe8t3Zl8pgsNf
+	 Llqb9IbGg+2fA==
+Date: Thu, 24 Sep 2026 14:04:10 +0100
+From: Mark Brown <broonie@kernel.org>
+To: david@ixit.cz
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	David Rhodes <drhodes@opensource.cirrus.com>,
+	Conor Dooley <conor+dt@kernel.org>, linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	patches@opensource.cirrus.com, devicetree@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v3 0/8] Speakers for Pixel 3 / 3 XL
+Message-ID: <249d5240-f2cb-4f1a-8f22-449a516e28f6@sirena.org.uk>
+References: <20260924-pixel3-audio-v3-0-5d06460fc8a9@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-pixel3-audio-v3-7-5d06460fc8a9@ixit.cz>
-References: <20260924-pixel3-audio-v3-0-5d06460fc8a9@ixit.cz>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="G9ep3mMsX08Fo81X"
+Content-Disposition: inline
 In-Reply-To: <20260924-pixel3-audio-v3-0-5d06460fc8a9@ixit.cz>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- David Rhodes <drhodes@opensource.cirrus.com>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, patches@opensource.cirrus.com, 
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4926; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=L1zZgtGEouYGzKgRZLVxO9EXpSlpZurV4JACrcU/HQI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtRu4+QTbcZHOnBlR7xwF3SE+KknAz7FJPPKFE
- DXTWA8J8gyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCarUbuAAKCRBgAj/E00kg
- cvR6EADED+5bZiFOKpq2r2N3R48F7+/fGlxFAbHT0knkdDqR8M1/+BYdFeSgGH/N+/oK3toPvpd
- dUam1+CHPv9dUUaG6CuwkiTqIDw23wJgbLtapXV9KqfZw2MhBGV3CjLHkibk8cHTI4UeqqS7UFh
- 3kGdppFpGBs0npR7RuaOHU7h3vbsyBuAe/thGXEpBMdt342zzSHmKz53cj1nk9Fg4Pp0kQKjj2l
- 1lB/G/q+2sotI+yy581UFKk1M8BNT7kDUw5DrY8kSc48JEltllGeSPRMUAbMZHUvJN+Xb78/G5T
- NWMtDMjDrGEU4E4I04WvMF31sWrIQch4UNqpf4zE/I07EiQK1yppGD/Wz1gtEEuhld2hEphgjWo
- RUetDmnq3Msge3zXOrSgwVhGQcud18JFUsKM1RIq/HiCvwTXCR+hwHQsIMqfKHP2/yYbDQUpkRe
- 5IWtQz9hKJYaRHir2aWBhdWUzd0L0xnC+oNNFU2VbABpBBzehKn54Y7bW0OGP0qwa0sJcvVdEFT
- B2PaTwUeorUmH5u5Yj3rL/Y4v+76K5l5QtFLmjH0Foo+HOYImzKQQ9Q+odBP6BqbfppcKkB61oS
- hs9hwfRddV32TcC7eRVVCEduKTP6xFRrVsbVwAbYZ4NbgX0tT/s3wmUa4PTzBmNBDLzVb0l2lI0
- xhQok0HIde1YI6A==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-
-From: David Heidelberg <david@ixit.cz>
-
-qcom_slim_ngd_xfer_msg() silently returns success for every core
-reconfiguration message, so the generic channel removal done by
-slim_stream_disable() never reaches the ADSP SLIMbus master. The
-master therefore keeps the channels of a closed stream. When the next
-stream defines the same channel numbers again, the WCD9340 capture
-completes without any error but records only zeros; removing the
-channels explicitly when the stream is disabled makes it work again.
-
-Implement the disable_stream controller op with the sequence the
-downstream NGD driver sends for channel removal, CHAN_CTRL(REMOVE)
-listing the stream's channels followed by RECONFIG_NOW. Like
-downstream, treat -EREMOTEIO from the removal as success: it means the
-controller is being restarted and the channels are gone anyway.
-
-Based on work done by Casey Tunturi.
-
-Assisted-by: Claude:claude-fable-5-1
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/slimbus/qcom-ngd-ctrl.c | 81 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
-
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index 934c44c5bc1a9..c91f55036dd55 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1080,16 +1080,96 @@ static int qcom_slim_ngd_enable_stream(struct slim_stream_runtime *rt)
- 		slim_free_txn_tid(ctrl, &txn);
- 		dev_err(&sdev->dev, "TX timed out:MC:0x%x,mt:0x%x", txn.mc,
- 				txn.mt);
- 	}
- 
- 	return ret;
- }
- 
-+/* CHAN_CTRL operation, bits [7:6] of the first payload byte */
-+#define SLIM_USR_CHAN_CTRL_REMOVE	2
-+
-+static int qcom_slim_ngd_disable_stream(struct slim_stream_runtime *rt)
-+{
-+	struct slim_device *sdev = rt->dev;
-+	struct slim_controller *ctrl = sdev->ctrl;
-+	struct slim_val_inf msg =  {0};
-+	u8 wbuf[SLIM_MSGQ_BUF_LEN];
-+	u8 rbuf[SLIM_MSGQ_BUF_LEN];
-+	struct slim_msg_txn txn = {0,};
-+	int i, ret;
-+
-+	txn.mt = SLIM_MSG_MT_DEST_REFERRED_USER;
-+	txn.dt = SLIM_MSG_DEST_LOGICALADDR;
-+	txn.la = SLIM_LA_MGR;
-+	txn.ec = 0;
-+	txn.msg = &msg;
-+	txn.msg->num_bytes = 0;
-+	txn.msg->wbuf = wbuf;
-+	txn.msg->rbuf = rbuf;
-+
-+	/*
-+	 * The NGD drops the core reconfiguration messages that
-+	 * slim_stream_disable() uses to remove channels, so ask the master
-+	 * to remove them the way the downstream NGD driver does:
-+	 * CHAN_CTRL(REMOVE) listing every channel, then RECONFIG_NOW.
-+	 * Without this the master keeps the channels active and a later
-+	 * DEF_ACT_CHAN with the same channel numbers is a no-op, so the
-+	 * data path is never re-armed and a reopened stream moves no data.
-+	 */
-+	/* 5-bit client number, operation in bits [7:6] */
-+	wbuf[txn.msg->num_bytes++] = (SLIM_USR_CHAN_CTRL_REMOVE << 6) |
-+				     (sdev->laddr & 0x1f);
-+
-+	ret = slim_alloc_txn_tid(ctrl, &txn);
-+	if (ret) {
-+		dev_err(&sdev->dev, "Fail to allocate TID\n");
-+		return ret;
-+	}
-+	wbuf[txn.msg->num_bytes++] = txn.tid;
-+
-+	for (i = 0; i < rt->num_ports; i++)
-+		wbuf[txn.msg->num_bytes++] = rt->ports[i].ch.id;
-+
-+	txn.mc = SLIM_USR_MC_CHAN_CTRL;
-+	txn.rl = txn.msg->num_bytes + 4;
-+	ret = qcom_slim_ngd_xfer_msg_sync(ctrl, &txn);
-+	if (ret) {
-+		slim_free_txn_tid(ctrl, &txn);
-+		/* Controller restarting, the channels are gone anyway */
-+		if (ret == -EREMOTEIO)
-+			return 0;
-+		dev_err(&sdev->dev, "TX timed out:MC:0x%x,mt:0x%x", txn.mc,
-+				txn.mt);
-+		return ret;
-+	}
-+
-+	txn.mc = SLIM_USR_MC_RECONFIG_NOW;
-+	txn.msg->num_bytes = 2;
-+	wbuf[1] = sdev->laddr;
-+	txn.rl = txn.msg->num_bytes + 4;
-+
-+	ret = slim_alloc_txn_tid(ctrl, &txn);
-+	if (ret) {
-+		dev_err(ctrl->dev, "Fail to allocate TID\n");
-+		return ret;
-+	}
-+
-+	wbuf[0] = txn.tid;
-+	ret = qcom_slim_ngd_xfer_msg_sync(ctrl, &txn);
-+	if (ret) {
-+		slim_free_txn_tid(ctrl, &txn);
-+		dev_err(&sdev->dev, "TX timed out:MC:0x%x,mt:0x%x", txn.mc,
-+				txn.mt);
-+	}
-+
-+	return ret;
-+}
-+
- static int qcom_slim_ngd_get_laddr(struct slim_controller *ctrl,
- 				   struct slim_eaddr *ea, u8 *laddr)
- {
- 	struct slim_val_inf msg =  {0};
- 	u8 failed_ea[6] = {0, 0, 0, 0, 0, 0};
- 	struct slim_msg_txn txn;
- 	u8 wbuf[10] = {0};
- 	u8 rbuf[10] = {0};
-@@ -1619,16 +1699,17 @@ static int qcom_slim_ngd_ctrl_probe(struct platform_device *pdev)
- 	ctrl->framer.rootfreq = SLIM_ROOT_FREQ >> 3;
- 	ctrl->framer.superfreq =
- 		ctrl->framer.rootfreq / SLIM_CL_PER_SUPERFRAME_DIV8;
- 
- 	ctrl->ctrl.a_framer = &ctrl->framer;
- 	ctrl->ctrl.clkgear = SLIM_MAX_CLK_GEAR;
- 	ctrl->ctrl.get_laddr = qcom_slim_ngd_get_laddr;
- 	ctrl->ctrl.enable_stream = qcom_slim_ngd_enable_stream;
-+	ctrl->ctrl.disable_stream = qcom_slim_ngd_disable_stream;
- 	ctrl->ctrl.xfer_msg = qcom_slim_ngd_xfer_msg;
- 	ctrl->ctrl.wakeup = NULL;
- 	ctrl->state = QCOM_SLIM_NGD_CTRL_DOWN;
- 
- 	mutex_init(&ctrl->tx_lock);
- 	mutex_init(&ctrl->ssr_lock);
- 	spin_lock_init(&ctrl->tx_buf_lock);
- 	init_completion(&ctrl->reconf);
-
--- 
-2.55.0
+X-Cookie: Oh, so there you are!
 
 
+--G9ep3mMsX08Fo81X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Sep 24, 2026 at 02:46:44PM +0200, David Heidelberg via B4 Relay wro=
+te:
+> This series address:
+>=20
+> 0. demistify the hex to BIT() macro and add left/right rx spk
+
+This doesn't apply against current code, please check and resend.
+
+--G9ep3mMsX08Fo81X
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq1H8kACgkQJNaLcl1U
+h9BXvQf/Zmscl1waRO7LosF4Jp8xx7lD/0hx8dWhpFlqzU+OWTSkGZn2BKhBhSR+
+pinNP2qKMK/tJOl8+eOldL4k1qvZGxMoa+GjAVXd09qxhb9T4tFzcpwkJZPI6Fd1
+jvaX53YzGufycRbN5HxvcbND12LO8jPGrLnV0m+bi5vt+5XkQ1fNs6DGME8Zx8ns
+1KPY13moMVlPtEpzoyY9y3A+n3qn3dLAwUFB7KdMPCKOdNGZwYpPHAer40tdVMZf
+lOAXj+rKxewYgc9jGIN4fBlCgrzmVj0ZHjLr5LNhAA43BFnYqHVV0Ww7MKKxFos/
+p1IBPVdjKwZouAbERZqTWXYEqP2MUA==
+=cQ8a
+-----END PGP SIGNATURE-----
+
+--G9ep3mMsX08Fo81X--
