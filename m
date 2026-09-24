@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259DD37D124;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8471037F72F;
 	Thu, 24 Sep 2026 14:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790258496; cv=none; b=hQZLpX3rQluc6rqUT+cmjIpygfXoJPQFxsxQ6v9ll5m2rvRUrv4XtEeOeL2UnftBITV/1K1exOcMklFfFE6yDNTQ1+kLB1mWL713I1p2uAqzu+E2hfSI3E+JyvhvELkgIJtoEtb4Ava1a+GVjOrz2o8k7xMhG5nZDrwzRhIUbIw=
+	t=1790258496; cv=none; b=s7PTU6BiIDp6D+b62vZPaawgPgaeWtu2D+N8dIFQ6Jeeb+fNA2aA10GFoFXMF/Bo9mgJ3OMYLXWilWb9T/VJI5yuJQRgfbbEDEBrzkPeteFbAHTYe3/CJkCZRgtjp+Ll9b7imAjNc/HVNHaNYQRAd/LLi5YWf9t/ucbF1iHR++k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790258496; c=relaxed/simple;
-	bh=HQO6s5NSPIkZ8lJjSMxREoTe6x3ksQXgpWt1Xk24wJ4=;
+	bh=HE239/SHw9ZI/FxXzNB9du3RZpPCBn955n0wNsqIkaw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SQSp8WHkFoCeIDFQjMTziwc0V/7WeiV4HdgGowdQEYnIbPvg6XlJJaEQ64z0Mu5cV/rljCcIzKRvY/gNwfkLvng2VJ1imqlsJ/JBvgdkCXKCbVRh1Z4fXnl9YP29X6m+0wE+jjVN94wbs6MbTVkiUOALlp4pqQOUb8ptqAJ7l44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2xx/w1M; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=J19XKdjNrO3ZKvDCRBKyvi++qiXTXdvbT3FgVM4mkMTknxeeucuqa4pTcb6G37am5Y6nWDF/xMjPXzKrP+0RRf6ORWMU8S9bZs4E7nnqaGPh1udsFvoNXPFgrdmbX/K/OI8KoynTLjzWfSTOdxfYnl2epORzXC83MNwU9SVU1Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKK3FGIl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2xx/w1M"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C1B92C2BD00;
-	Thu, 24 Sep 2026 14:01:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKK3FGIl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0393FC2BCFF;
+	Thu, 24 Sep 2026 14:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790258495;
-	bh=HQO6s5NSPIkZ8lJjSMxREoTe6x3ksQXgpWt1Xk24wJ4=;
+	s=k20201202; t=1790258496;
+	bh=HE239/SHw9ZI/FxXzNB9du3RZpPCBn955n0wNsqIkaw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=e2xx/w1MON657rJKlDZfCW7LHRDXJsaIY5BuMVkEesy7eKoB/ElTNt2K7k4uIVxVT
-	 bjEh2NJ1dwoRFKLzXCTHTpPMw7yELf+a5Q3KoSk1PHy2b3AKg+cwDTDDzGR3VQli/m
-	 8DveYG9n4u4cDTts83uQ6mnTifg2tzFJLxwBWdeNOLv8BUnmOomxRQp/ioNF/cz1JP
-	 fbz9TBlok05ln0pB3qn1R4F6nyGlaQtho+9JEx30EqCB6m/lG0kzokEV6/ErUnF/kK
-	 xDvoZziZX+DI5numLHPxCq6t1E887M0MT/r31JX64v4LCEkowmHsFimrHluADHVK+p
-	 xQgcyQ2i1ofMA==
+	b=hKK3FGIlXeULHoJalJFDJJwLofPAh7O89Rs+NcPGhbfy76JPzW3qMZjFpybi+s6SV
+	 8swsUom43KGpg5ExRjLeZ9eaEFF//Wh1yv0qO/ywkoJvdJs/Ba/71FvppvgETOkIlG
+	 iXMdHll3V+FeiACGzac/L8Eo1LxbYZ0+ZqEc7fmAAGr6l4J1DtvJkfXx9b6hzb/P5H
+	 KcUGS6El8XxGm00wGeeMd1PGPZoHeAjmX/1zOxP+ANrAtZSqSNf1h84J1cEP7VP6JR
+	 dBwuRAehxBcLKxHa0o7LMvaVnFdGHtu3tFgoq7SgJZXOyvnjTbxJTKppVEiLd8obrt
+	 9rBk713RLQtPg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC2D4C98317;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2EEEC9831E;
 	Thu, 24 Sep 2026 14:01:35 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Thu, 24 Sep 2026 16:01:31 +0200
-Subject: [PATCH v2 03/11] drm/panel: s6e3ha8: Really assert reset on the
- failure
+Date: Thu, 24 Sep 2026 16:01:34 +0200
+Subject: [PATCH v2 06/11] drm/panel: s6e3ha8: Correct the polarity logic
+ within
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-crosshatch-panel-v2-3-08d5c7bf72fc@ixit.cz>
+Message-Id: <20260924-crosshatch-panel-v2-6-08d5c7bf72fc@ixit.cz>
 References: <20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz>
 In-Reply-To: <20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz>
 To: Dzmitry Sankouski <dsankouski@gmail.com>, 
@@ -56,23 +56,23 @@ To: Dzmitry Sankouski <dsankouski@gmail.com>,
 Cc: Petr Vorel <petr.vorel@gmail.com>, dri-devel@lists.freedesktop.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, stable@vger.kernel.org
+ David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1446; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5082; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=sUy0BR5Bzr/Y22ddFb/f+LRIKy5v8DuL6NuaUod5V1U=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtS08wHR9zYSx/3A2hmDQ05c0FOMS965h5V6ML
- hEg8/cxi+CJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCarUtPAAKCRBgAj/E00kg
- cq8JD/4wsfSqoqairaLYwA3fSUe7IyhRf9Us7/9/0O2w6U4oV58WwpwXYz1aF/oR2Ld+37tSCrp
- 9f8AZsVIKqLL8ykHh45L9s6XcAFc1SoXhVes5WdbyQq+HweLzf0McOYZIG/sKup4nQJovUTuQft
- O2S4j5tQzrlA/rJr5TQmYYb4oCioOuahLb4Lzp0ezRsBBnXo17UieJnKvp6dZD5vSbq2ZnBpHG0
- v/AbASTfUczXTkMMQzZL4N+62ZdpLd4BZ396DWNNHQs2AayCWC4lt3ZWHOYtHS+ZqtuMR37KUVl
- kPRZmdcyK5wrZny7vW3aqgBcUo4dHDdlLKQaQM6Bp0UiITCP1nc9mREDTt4zjNFpXZ3ECVcQXCe
- Xrb0YH7Jx8liPGpFyU1J0zJTiWUBTpg3f0QH+kN5WIxKTcvM8TBEkFF/SeoS5NldFDntmA3i/l2
- 8OInuoHyvsuIGht01GzUACKMnXs/YBwcCZqhHimQE6w8GOg4OD9w3fV546/yEaexNDHAXSUYgfj
- zYaX8qVMhz+Gh/YGxF4rgo5ndFrNPYZq7WL6VkJvFlXznIpJaO/Mu9+35hYxkOKcubVrXqWldo8
- nTwVqvux6WJjac/UKMLn30L4acxcxHNArJVUibYYTMSmG+2kUUadYdullZU3DooMhnOXDwIHbSj
- OTZavnrCWCIaX4Q==
+ bh=DLxgExC/ubt9DvOb6KNIBkLWqCpMn1GUMvkzxEC1Z0g=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtS09Druyn9eas2TeVvjAHsO4zLdMlXs4CLflp
+ 7u5tZes5s+JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCarUtPQAKCRBgAj/E00kg
+ ctgVD/9ngi+OWzDYMDBpST/DNYZKtI5doaSsAgY9oHQnmXjPP7El7OzyvbgngFRNMZN6OQLMLqs
+ lXvN2XI1DWDNogMgIldwR4dnJbBChvMGzacCWTOADz5Cvn1O0Ygm6NwqKifBnFZfDXI95ju2RB0
+ BXiGOvblHtiw3APZDcvB627s0uXWo3ZqF/Jo1c32tqOVeHmZMfNmJrCKjBlACC9IU23jZsRWZ0Q
+ /s16MGBaUS/2j0ZWdfbfxmi9qrE4jrmxre05s0c3pmwy4Xyb4wZwVZOS2EuQg00qT0r68m2PDgK
+ fz1hHGFejG6ihuPx9d06wBxny9PA+Vget7+NerP/VWeQOjH0cRza8n60gtvihFjsmEBF1YEclz+
+ 3tmaKMm6DBWgCxRugzcE/Ikj74Ii6bU9Rl1QrTqu0/w3lHkJM+5ijJUWHbS6X/qy2UU6XxkZbFx
+ pT50wcBI55WECC1v5y/avEhiS5Az4hgw36enLy7gxy3AGFttaootqfm/KwhFkkAT23uw0amo1t2
+ Rffk6AD0ZJaDiFJEPESylv4bFG2d8a0dnN6ZYee0MrrpsHNBtQTppACEo1vrXcOCRsrFwfJW2sO
+ HaHhffoE6tKhc4yKzTX1eGwJpt7g0+ixJEWW5QyMX3ca7P03k/aF/6nFIWGqkTuHLWKX/YD7Y+p
+ QKgpcoVc/sMyo+g==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -81,27 +81,68 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Due to incorrect implementation 0 == asserted, thus when driver fails it
-needs to assert reset.
+The reset was introduced with wrong polarity. Correct for the future
+compatibles and keep current with reverted logic.
 
-Minimal fix for stable; the polarity convention is corrected properly
-later in this series.
+Old DTs keep GPIO_ACTIVE_HIGH and are fixed up via
+gpiod_toggle_active_low() on the deprecated compatible.
 
-Fixes: 779679d3c1640 ("drm/panel: Add support for S6E3HA8 panel driver")
-Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c b/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
-index 078523df48860..835121b322f4a 100644
+index 5e1e997b83b36..99290913de69a 100644
 --- a/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
 +++ b/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
-@@ -179,17 +179,17 @@ static int s6e3ha8_amb577px01_wqhd_prepare(struct drm_panel *panel)
- 	ret = regulator_bulk_enable(ARRAY_SIZE(s6e3ha8_supplies), priv->supplies);
+@@ -20,16 +20,17 @@
+ #include "panel-samsung-dsi.h"
+ 
+ struct s6e3ha8_desc {
+ 	const struct drm_panel_funcs *funcs;
+ 	const struct drm_display_mode *mode;
+ 	unsigned long mode_flags;
+ 	const struct regulator_bulk_data *supplies;
+ 	unsigned int num_supplies;
++	bool broken_reset_polarity;
+ };
+ 
+ struct s6e3ha8 {
+ 	struct drm_panel panel;
+ 	struct mipi_dsi_device *dsi;
+ 	const struct s6e3ha8_desc *desc;
+ 	struct drm_dsc_config dsc;
+ 	struct gpio_desc *reset_gpio;
+@@ -62,22 +63,22 @@ static int s6e3ha8_unprepare(struct drm_panel *panel)
+ {
+ 	struct s6e3ha8 *priv = to_s6e3ha8(panel);
+ 
+ 	return regulator_bulk_disable(priv->desc->num_supplies, priv->supplies);
+ }
+ 
+ static void s6e3ha8_amb577px01_wqhd_reset(struct s6e3ha8 *priv)
+ {
+-	gpiod_set_value_cansleep(priv->reset_gpio, 1);
+-	usleep_range(5000, 6000);
+ 	gpiod_set_value_cansleep(priv->reset_gpio, 0);
+ 	usleep_range(5000, 6000);
+ 	gpiod_set_value_cansleep(priv->reset_gpio, 1);
+ 	usleep_range(5000, 6000);
++	gpiod_set_value_cansleep(priv->reset_gpio, 0);
++	usleep_range(5000, 6000);
+ }
+ 
+ static int s6e3ha8_amb577px01_wqhd_on(struct s6e3ha8 *priv)
+ {
+ 	struct mipi_dsi_device *dsi = priv->dsi;
+ 	struct mipi_dsi_multi_context ctx = { .dsi = dsi };
+ 
+ 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+@@ -203,17 +204,17 @@ static int s6e3ha8_amb577px01_wqhd_prepare(struct drm_panel *panel)
+ 	ret = regulator_bulk_enable(priv->desc->num_supplies, priv->supplies);
  	if (ret < 0)
  		return ret;
  	mipi_dsi_msleep(&ctx, 120);
@@ -109,8 +150,8 @@ index 078523df48860..835121b322f4a 100644
  
  	ret = s6e3ha8_amb577px01_wqhd_on(priv);
  	if (ret < 0) {
--		gpiod_set_value_cansleep(priv->reset_gpio, 1);
-+		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+-		gpiod_set_value_cansleep(priv->reset_gpio, 0);
++		gpiod_set_value_cansleep(priv->reset_gpio, 1);
  		goto err;
  	}
  
@@ -119,6 +160,73 @@ index 078523df48860..835121b322f4a 100644
  	samsung_dsi_test_key_on_lvl1(&ctx);
  	mipi_dsi_picture_parameter_set_multi(&ctx, &pps);
  	samsung_dsi_test_key_off_lvl1(&ctx);
+@@ -243,16 +244,27 @@ static const struct drm_display_mode s6e3ha8_amb577px01_wqhd_mode = {
+ static const struct drm_panel_funcs s6e3ha8_amb577px01_wqhd_panel_funcs = {
+ 	.prepare = s6e3ha8_amb577px01_wqhd_prepare,
+ 	.unprepare = s6e3ha8_unprepare,
+ 	.get_modes = s6e3ha8_get_modes,
+ 	.enable = s6e3ha8_amb577px01_wqhd_enable,
+ 	.disable = s6e3ha8_amb577px01_wqhd_disable,
+ };
+ 
++static const struct s6e3ha8_desc s6e3ha8_amb577px01_wqhd_desc_legacy = {
++	.funcs = &s6e3ha8_amb577px01_wqhd_panel_funcs,
++	.mode = &s6e3ha8_amb577px01_wqhd_mode,
++	.mode_flags = MIPI_DSI_CLOCK_NON_CONTINUOUS |
++		MIPI_DSI_MODE_VIDEO_NO_HFP | MIPI_DSI_MODE_VIDEO_NO_HBP |
++		MIPI_DSI_MODE_VIDEO_NO_HSA | MIPI_DSI_MODE_NO_EOT_PACKET,
++	.supplies = s6e3ha8_vddr_supplies,
++	.num_supplies = ARRAY_SIZE(s6e3ha8_vddr_supplies),
++	.broken_reset_polarity = true,
++};
++
+ static const struct s6e3ha8_desc s6e3ha8_amb577px01_wqhd_desc = {
+ 	.funcs = &s6e3ha8_amb577px01_wqhd_panel_funcs,
+ 	.mode = &s6e3ha8_amb577px01_wqhd_mode,
+ 	.mode_flags = MIPI_DSI_CLOCK_NON_CONTINUOUS |
+ 		MIPI_DSI_MODE_VIDEO_NO_HFP | MIPI_DSI_MODE_VIDEO_NO_HBP |
+ 		MIPI_DSI_MODE_VIDEO_NO_HSA | MIPI_DSI_MODE_NO_EOT_PACKET,
+ 	.supplies = s6e3ha8_vddr_supplies,
+ 	.num_supplies = ARRAY_SIZE(s6e3ha8_vddr_supplies),
+@@ -283,16 +295,19 @@ static int s6e3ha8_probe(struct mipi_dsi_device *dsi)
+ 		return ret;
+ 	}
+ 
+ 	priv->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(priv->reset_gpio))
+ 		return dev_err_probe(dev, PTR_ERR(priv->reset_gpio),
+ 				     "Failed to get reset-gpios\n");
+ 
++	if (priv->desc->broken_reset_polarity)
++		gpiod_toggle_active_low(priv->reset_gpio);
++
+ 	priv->dsi = dsi;
+ 	mipi_dsi_set_drvdata(dsi, priv);
+ 
+ 	dsi->lanes = 4;
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+ 	dsi->mode_flags = priv->desc->mode_flags;
+ 
+ 	priv->panel.prepare_prev_first = true;
+@@ -323,17 +338,17 @@ static int s6e3ha8_probe(struct mipi_dsi_device *dsi)
+ 
+ 	return 0;
+ }
+ 
+ static const struct of_device_id s6e3ha8_of_match[] = {
+ 	{
+ 		/* deprecated */
+ 		.compatible = "samsung,s6e3ha8",
+-		.data = &s6e3ha8_amb577px01_wqhd_desc,
++		.data = &s6e3ha8_amb577px01_wqhd_desc_legacy,
+ 	}, {
+ 		.compatible = "samsung,s6e3ha8-amb577px01",
+ 		.data = &s6e3ha8_amb577px01_wqhd_desc,
+ 	},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, s6e3ha8_of_match);
+ 
 
 -- 
 2.55.0
