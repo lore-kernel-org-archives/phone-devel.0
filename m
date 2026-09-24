@@ -1,68 +1,68 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3C2485CEF
-	for <phone-devel@vger.kernel.org>; Thu, 24 Sep 2026 13:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B91D481FA0
+	for <phone-devel@vger.kernel.org>; Thu, 24 Sep 2026 13:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790256296; cv=none; b=HnlJ9sZ2NYnLhxboBHNrlLM1FU0IavV2dP5GB/0BYBlWBIJtoTeMDm7CToqonRnLfEQwNz6qEUewHevqKRJugLkMGdzEOJUXcuJ8rKP2XxYawTk9867TZr5KYBy/D6gn1ZneR3L3XdzldCg/QgOFBQfh5+1t3OfibcSIYfnB4xA=
+	t=1790256311; cv=none; b=blAh31nV8yAnVQ1qqkmU1Amfn67lfoPaDX0/1CaXVtwtoDWrXP6oMpEZYMLV6S90epOxEfAIJYeKCjbP9HZq2tRSj5GZXfT6RnmICnkQ7E+lJLv2fpDDZScDanpNCfvIc5+zQ4tmZtewgjTBZ9YBDonhqhDzM/qPIcdez/c+kZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790256296; c=relaxed/simple;
-	bh=muoWNoHX3fssJg0zq0lI4V174aDyR3uc8zoA3RzoEdQ=;
+	s=arc-20240116; t=1790256311; c=relaxed/simple;
+	bh=1lKEbT3Vwes2mCIfD5mDQ8Gnhy2Ecw2AIB6EyVXityg=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rufDZsUO56kD5oZ4JOuyOZoGWI1tjcyQ3QStTPkeTi2U3sPbKYeZPdvW8cuIPnM0hRKsayyON5S4I1olO53jjWUCV57E/OoZzjIcIra0lIlHFRnbGYxokz5tjIt6YsI3uJwBVZnqi2dRfi3c4YC9lxEa4oC2yGtDOA8nOqnYbL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=V71OM+4k; arc=none smtp.client-ip=74.125.225.141
+	 In-Reply-To:Content-Type; b=WtCzBaeW+JVW/Xa+BLA4DsB1RxeN2YtxN0bplk0PSSHYZN8wn17E35egKWpZGhJjgMHu1bqk0Bvala41jD9Z1daJ1Y60p8ISS+G/NP8zdrttI7TNcwf5Ai2rxBOEPDcIQXZTQ2PVlT5NidjMMcf9WtjdnKGaiM4ydTUN20woUow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EmPrMGjh; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="V71OM+4k"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e6c0fce17so11233695e9.1
-        for <phone-devel@vger.kernel.org>; Thu, 24 Sep 2026 06:24:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EmPrMGjh"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49d097b4939so11494335e9.0
+        for <phone-devel@vger.kernel.org>; Thu, 24 Sep 2026 06:25:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1790256287; x=1790861087; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1790256304; x=1790861104; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :autocrypt:content-language:references:cc:to:subject:reply-to:from
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LpEBMkeydz8CmhOZ6U5BSNu3mfpAMZA4ZhmbrftMEAM=;
-        b=V71OM+4ktZNnwKRr9HvfJNfn2rLNnrkSpVFE39yoraTRjGgPx5R09VChLUzyFJqinW
-         y4OUk2QkBpG7ViQ0O4n67kXLpdTuPRT/T73FVhvWB4/J31P8uWeGwezd6DzN651CJX+f
-         /OwAv6JsUV4BLToq3QW5FUzOhMjl0AJ4BlqYZ3zNLq2acj+r3vcQKHrvTOVLFtN0DAq0
-         1qs5opU3LzG8r8qeFGni26KGTCcBGOltf0Uag1Nc8whWP7HJ/9pd5pXnz2yLYOqdoCoe
-         LBh+z5lcEJ1N06Wa2OlNTZIGUecR83kkSmC94eE7OaZuKGjT+vvW8NY8L9DoEcXEhfpk
-         U+dg==
+        bh=yYQCACi0L+UzO/UuTx/CBlh8yUR2BDqMNext39iQHo4=;
+        b=EmPrMGjh5QVOAzwnmaXHPtL15Ik19FxZMJa7x5WqjIatGa+48Ai55LO8s2nnwB9DG1
+         ySxgN0C2mKCoiMUYEcJqRMAKkZXTywQSVJf6Jvirn2YB42hWHRmC78d44euS+eR1d8hk
+         vdmL2JELgARxosKlUsS5Vvgh7C+sQLbmCg3F51auEgekEyH/t+CAK/0He8AeQRbi+Z94
+         8m5bxJJi4E7R+ajxVgaH20QbHWAb61757OGd0SK8ht7ml+p+c9WdZS3pS1cOo11PnPtJ
+         BRFIZbqLklSpBp//inmsS8c8PLAaVSPl9GvRRLkaAixHvmyrYSRYeNFcMFw4hMQ0MrG9
+         blDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790256287; x=1790861087;
+        d=1e100.net; s=20260707; t=1790256304; x=1790861104;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :autocrypt:content-language:references:cc:to:subject:reply-to:from
          :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LpEBMkeydz8CmhOZ6U5BSNu3mfpAMZA4ZhmbrftMEAM=;
-        b=qguNJw7xUSTS03ytc4eblP0ieaxQKs5n7GWttnHEpqZ9HSCd7MiQ8NxiChOqKnJUB1
-         8N4qk0bNicH1ldVXdvdEEucr9fdrqSrvnimdv2GDdJ/fmt7gem/ONeonR3oOz3mIJw4m
-         sSTHKz2ozuZys5ZHyxnRPwq4lcoMJAC3tswij8ml4JNkz3lRTceuEAChs3/+G3wQu1M8
-         OQxeJvZM/1rPKOFj2ZF8uuYmG25DOLHs55XDEdkaCEQMX9uUb8MeCC+sveIHe7chZgXn
-         ASfxyQlSsDRZ2xBEkMWibfUpyWjcYhidR9nK5UVEeAcUHzkx+R+Qm1+Vung+CTgWf3U1
-         b0jA==
-X-Forwarded-Encrypted: i=1; AKwUvByvANq6Lx7bqxAQFMlI9ZKZ89a9bmw12rO2INeZv+oq5uLDkH50wAJkrAUkln//SodvAPEhwZqWqw7AGQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++nvCes/u1aNk6hU2uRsVOJkRw72KLQZHTEUicK2YzMEQMvqTE0x
-	dpE86wn8SlFlBZE6BQqq4SeGMLptizCNnN2ZhbCsT6uOa0JWyYZSv9KNCidms/OkAMU=
-X-Gm-Gg: AYBFou2Y/NXhfnueGM5GYuis1CrZ+TvqHpvo2XLrupVi1lDMQnufKhnmea4gE7G8T85
-	9Bo0k39/cnn32csrfOtuKzyqOTRa65PFQzxtGrR2DS55I0FP8ZLKakgfGye4Gw4MSQ+gzLz2ylv
-	KuOwDMRM9lyuxBqPAgwTsVFGGAXRLJ7MgSgUQjQaxLmcHK2vROTMN3S5Yq8MgseQZSLNNWfREVp
-	8fQlQDPiS/w0JpZJ8/SnuNWnkiBwMf0Dux+s5k6SeCiEyEVJKC70p1GUf0rKIUAEQcVdlHoXmmu
-	LCQJ9Opu5YYD0ojiFquIUmzSsDu5jCO/vG21A/JlRH2AKSrOY8Iae7AwmEE+y1hBmVkKUElhZ9M
-	4VQa6NY+OsaM14oVWARrwFS/EzPLhCrS01LlK0FLD8qcXvoNTe2BADO85bxD9ayJbvqqmA6u+hH
-	YOOox4EYqjaFyzF9eTwahlnopZvUIbVNo3nAsAFXyxRTqY+V+5pbWRn5ai7cqUueWmHrQihFTuO
-	AfNA6HBO0tfN5w+MHUgENWW0HTrGl8xMAV9JBCaZPRhxrxHILeaqtpMr5yFM+QB
-X-Received: by 2002:a05:600c:8b74:b0:49c:fc6e:a3d7 with SMTP id 5b1f17b1804b1-49fe66e87damr41701145e9.22.1790256287127;
-        Thu, 24 Sep 2026 06:24:47 -0700 (PDT)
+        bh=yYQCACi0L+UzO/UuTx/CBlh8yUR2BDqMNext39iQHo4=;
+        b=ezvTj0v6G+0yNyfsVq7SPdIwTgTA9m/b29zQHo3sMnqNxTP8lpdID0WEoNSxS9apaz
+         261EGwmU2IPj3mStDIRS6erXoEMPUjWHpaCKYHQKKkAg3vBqw8YwrMgr3FWMjwBysdZz
+         9X6ItxQdQTQc/jILPie2wD/z+EmMOqGbMTQp7FP5WpCQQZbb+sFPQ3u0Tb3VlmX1feMv
+         lvIdzUKtq1yM3dv/qidzoTnQPiZYkty80Wsxi7qSBZchuCdz259+pjlTxLZ+XUSvmQ/e
+         /nNvZ2dObGfPZwux+P9J89Rv0flwQCktKinfBGMtHbCORSkTgKZhbpz5GqU1MmjdWOqJ
+         1FHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy131bazbnYBe6LTozw2wWnwaYDF/A4bX3vLoucbFAbXQR3yFCupxyNyJFl1325Gs89tPiYFgdDwEz8Vg==@vger.kernel.org
+X-Gm-Message-State: AFuF++lGwttoyCcVlA4Y8M4g07IgQtKICh0uylPLi1JDTfS1klRcpzfj
+	lNbJIDcRkG0iCETrjkgwfbqoz19N//dHDPSg5Xl1qUBxsG+WFsEC15qbAHHwSNhOtaI=
+X-Gm-Gg: AYBFou1Ee1gGT9iQwRBGeAY2574JNL/QUkZhtF186NBixWZPbNskxuvu13GeWyGbccO
+	UelMeiLNaAmzZZVOZOziEjieNPEGx5dSOnHdALl09Z6XH72Is/DOzT02adcMpJlBwGdOjVO/hnv
+	ykdrv+ZBCTe5TjOdXjRoKvdSOF13rGkp3E17A8nq3uCONUctqj7FJ2YOCeKmefFrx3ZvCF3dtvK
+	WQ/EqcICnItIOSYupPTFvZOw3g7SDqPlNrPuRv6Xg+Q3t+uUbmXt8Pqtz2ySGXFBlVGRhcIP52E
+	6Lw4hG/V6SEb5u5kTTTMS58pHGGW9cNSPYBjnKsIdd7NGG5xKG5RJzZPBSuftglZ/B0uXhhCwsP
+	jhieJ2P64FYL4rKZtvKK2jhmDJXSLmK92nWi+CPLT9fRN6fXS5X0udGpqBBviAa/5zxH8DekMye
+	MxHqnJmYv3atSkY5LOjSH9BxStCXnWKYS+CBeRpxYJD1r1zkCVoFzZF8f0ePnnRMf6MQUmaDbpr
+	r4V3G2uOQDypETv+yJL1SAehCBL71me9XE9RlR1Wq4bDk8ObFTEyFEu
+X-Received: by 2002:a05:600c:630a:b0:49e:719e:e215 with SMTP id 5b1f17b1804b1-49fe66fa3d9mr40160945e9.26.1790256304008;
+        Thu, 24 Sep 2026 06:25:04 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:106d:1080:336e:a1a0:8f96:9f7a? ([2a01:e0a:106d:1080:336e:a1a0:8f96:9f7a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5b47da1sm72841405e9.0.2026.09.24.06.24.45
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5de4de4sm74069035e9.8.2026.09.24.06.25.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 06:24:46 -0700 (PDT)
-Message-ID: <2f3d939e-8de6-45f2-92ff-4aeae4d9af54@linaro.org>
-Date: Thu, 24 Sep 2026 15:24:45 +0200
+        Thu, 24 Sep 2026 06:25:03 -0700 (PDT)
+Message-ID: <339d4a24-29b6-49c1-ba3a-85fc62f093d2@linaro.org>
+Date: Thu, 24 Sep 2026 15:25:02 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -72,8 +72,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH 03/11] drm/panel: s6e3ha8: Really assert reset on the
- failure
+Subject: Re: [PATCH 04/11] drm/panel: s6e3ha8: Introduce AMB577PX01 panel
+ compatible
 To: david@ixit.cz, Dzmitry Sankouski <dsankouski@gmail.com>,
  Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
  Simona Vetter <simona@ffwll.ch>,
@@ -84,9 +84,9 @@ To: david@ixit.cz, Dzmitry Sankouski <dsankouski@gmail.com>,
  Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>
 Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- phone-devel@vger.kernel.org, stable@vger.kernel.org
+ phone-devel@vger.kernel.org
 References: <20260920-crosshatch-panel-v1-0-de6e9512da96@ixit.cz>
- <20260920-crosshatch-panel-v1-3-de6e9512da96@ixit.cz>
+ <20260920-crosshatch-panel-v1-4-de6e9512da96@ixit.cz>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -113,50 +113,47 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20260920-crosshatch-panel-v1-3-de6e9512da96@ixit.cz>
+In-Reply-To: <20260920-crosshatch-panel-v1-4-de6e9512da96@ixit.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 9/20/26 13:05, David Heidelberg via B4 Relay wrote:
 > From: David Heidelberg <david@ixit.cz>
 > 
-> Due to incorrect implementation 0 == asserted, thus when driver fails it
-> needs to assert reset.
+> S6E3HA8 is the DDIC, while the panel used on the Samsung Galaxy S9 is
+> the Samsung AMB577PX01. Match on the new panel compatible, and keep
+> the deprecated DDIC-only one working for existing devicetrees.
 > 
-> Minimal fix for stable; the polarity convention is corrected properly
-> later in this series.
-> 
-> Fixes: 779679d3c1640 ("drm/panel: Add support for S6E3HA8 panel driver")
-> Cc: stable@vger.kernel.org
 > Assisted-by: LLM
 > Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->   drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c b/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
-> index 078523df48860..835121b322f4a 100644
+> index 835121b322f4a..a0015ac0e2782 100644
 > --- a/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
 > +++ b/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
-> @@ -179,17 +179,17 @@ static int s6e3ha8_amb577px01_wqhd_prepare(struct drm_panel *panel)
->   	ret = regulator_bulk_enable(ARRAY_SIZE(s6e3ha8_supplies), priv->supplies);
->   	if (ret < 0)
+> @@ -296,17 +296,18 @@ static int s6e3ha8_amb577px01_wqhd_probe(struct mipi_dsi_device *dsi)
+>   		dev_err(dev, "Failed to attach to DSI host: %d\n", ret);
 >   		return ret;
->   	mipi_dsi_msleep(&ctx, 120);
->   	s6e3ha8_amb577px01_wqhd_reset(priv);
->   
->   	ret = s6e3ha8_amb577px01_wqhd_on(priv);
->   	if (ret < 0) {
-> -		gpiod_set_value_cansleep(priv->reset_gpio, 1);
-> +		gpiod_set_value_cansleep(priv->reset_gpio, 0);
->   		goto err;
 >   	}
 >   
->   	drm_dsc_pps_payload_pack(&pps, &priv->dsc);
+>   	return 0;
+>   }
 >   
->   	samsung_dsi_test_key_on_lvl1(&ctx);
->   	mipi_dsi_picture_parameter_set_multi(&ctx, &pps);
->   	samsung_dsi_test_key_off_lvl1(&ctx);
+>   static const struct of_device_id s6e3ha8_amb577px01_wqhd_of_match[] = {
+> -	{ .compatible = "samsung,s6e3ha8" },
+> +	{ .compatible = "samsung,s6e3ha8" }, /* deprecated */
+> +	{ .compatible = "samsung,s6e3ha8-amb577px01" },
+>   	{ /* sentinel */ }
+>   };
+>   MODULE_DEVICE_TABLE(of, s6e3ha8_amb577px01_wqhd_of_match);
+>   
+>   static struct mipi_dsi_driver s6e3ha8_amb577px01_wqhd_driver = {
+>   	.probe = s6e3ha8_amb577px01_wqhd_probe,
+>   	.driver = {
+>   		.name = "panel-s6e3ha8",
 > 
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
