@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E8E37BE86;
-	Thu, 24 Sep 2026 14:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2594037C0ED;
+	Thu, 24 Sep 2026 14:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790258496; cv=none; b=jOYuJpYB4moykLoNzNBNl1/fvGUNWDEfwru3yz27457zXiFh0BXRqTASnOuUDsPsBdutgYC22PUDlBtP6XDc/Q0TgkpzPhRZIj0MtfTcYnCAQBzzQgt3ZFHfbNoKZ+m4evTKrrXB1LFyGqAASgtH+7jmSRgwMO/3Uj7CcRAD/QQ=
+	t=1790258496; cv=none; b=eF3yoHT9HleBkkEon9JMZcUlnClP2D5oaffDguEymwUnEzd5m0PjrV2iDY3sVdZ+2EhqGpVj0ftIv/vIVJDAUEHEGvYjzbDv5uTEXgOf8gX2fvlqmlnpKH9JGOLW4Npb2ovGVJO2OMTlI6h81S5vrpu4h6Z9iUMA8NLWrgyGtKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790258496; c=relaxed/simple;
-	bh=6JGHabwRWmpDCBWI59Z99X50itb/iYbgKpJnZE32Ln0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W7zPAOvPfZj05ht/5XxT4ONpJLi7OLMdJJgXYG+bRvjd4gJqOyMfJED/tvy9JdUDmC9z4JAlMa6vD6bfp2rGaIDaoWik2Ro0/evYPKrNQfwkzXJv+/gr1wPydtUCgHtDEMBEPbp0xBGeIsR4BXYUyy2ZSvrzQasy88tWmegGw14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIW0kLP/; arc=none smtp.client-ip=10.30.226.201
+	bh=rtR6voWlBp6nmy7r/Mw5s0EqVFPdv3nDJeJ4GzojCQ4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=TG5rG7jJZ3Xw+uUhVe83NuHe1yywkqyX4OqCZRZYzkJO7qpDhWmixm+KXBwyBr6Ho7/wwACXYe6gIsGNQROpxptyKytPuraNS40QNkbKYns/iPZ1cEfa655M8Mp8OpB7zX27tBdwgwHk8naOX0ZsV4sqGNOaHrSG0Nl41jdT4a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOELeOTl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIW0kLP/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B356C2BCB3;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOELeOTl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B8255C2BCFC;
 	Thu, 24 Sep 2026 14:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790258495;
-	bh=6JGHabwRWmpDCBWI59Z99X50itb/iYbgKpJnZE32Ln0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=kIW0kLP/5mtTw1DHR0DzSRw6j5wuwduiGycKnDjmwyBTu950qxjFZJu/U1nwBFfoH
-	 qfaCyGO0WLa9z1bksbWkLtuKiCayPtA7LtZ+BSOOb338sECbiNmuMOMDJk/mCmbeFL
-	 5QoVuu/2Jz59C/npUVwRfGkXs2JxS8LVy/y8quX3KczZ+qm0mjBakcdITfuxjf6jOY
-	 9he+8vE3YgQLgdLs6fKg0sKfARTvcAF/Fnwcu8+bwN5f20KEzgqCPpIWl53h2ebKs1
-	 DFiBnWmP/7OQiV42vc+Q78JF1sFvHHNmhfx16PtrbdI5u5RE/LZM0s6J+Xd5tFpq4w
-	 PMgufql8o56rg==
+	bh=rtR6voWlBp6nmy7r/Mw5s0EqVFPdv3nDJeJ4GzojCQ4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=rOELeOTlQMEQ20LhH9sN776dl9/JoPloOQkb8zH8GBLZ0uieCpOSw9oR51yGQFB3o
+	 fTo1YxXy4jZ1gmrph981EO270zVpVgRVZiWQhuV5t8L1yAOPGhHHUafrq28bJ7Kl93
+	 452ftRHw399QgA/tJlolvW6Apz8jbf1NDycyJJ/tImS5ittU3GURMy13LcyAJ3S6So
+	 eLD4w7HcmX3pKMxEiR5JmfNPJFCeIDOqp7mkcPgfHlCbFJos7dKEI8h+kRr7Jvbu+7
+	 uY7dyIkrQWYC2uLFJXZIxWe+nipIQm/J7kBrMFYu4sRcxa+4xEhI/j83idogpoL9/q
+	 U6NuHhIl0MAsA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73C3FC9831E;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A0E3C9831F;
 	Thu, 24 Sep 2026 14:01:35 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH v2 00/11] Pixel 3 XL display panel support
-Date: Thu, 24 Sep 2026 16:01:28 +0200
-Message-Id: <20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz>
+Date: Thu, 24 Sep 2026 16:01:30 +0200
+Subject: [PATCH v2 02/11] dt-bindings: display: panel: samsung,s6e3ha8: Add
+ AMB630QY01 panel
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,11 +41,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WNyw6CMBBFf4XM2pq2iZW68j8Ii9IOdowB0qkEJ
- fy7PJYuT3LuuTMwJkKGWzFDwpGY+m4FfSrAR9c9UFBYGbTURpZSCZ965uiyj2JwHb6ENB5LZ2z
- bXFtYZ0PClqY9WdUH87t5os9bZzMice7TZ/8c1eYdeavlf35UQoqABu1F6eCsudNE+ey/UC/L8
- gOjaRtowAAAAA==
-X-Change-ID: 20260801-crosshatch-panel-06ce8a69fb7f
+Message-Id: <20260924-crosshatch-panel-v2-2-08d5c7bf72fc@ixit.cz>
+References: <20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz>
+In-Reply-To: <20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz>
 To: Dzmitry Sankouski <dsankouski@gmail.com>, 
  Neil Armstrong <neil.armstrong@linaro.org>, 
  Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
@@ -57,71 +56,124 @@ To: Dzmitry Sankouski <dsankouski@gmail.com>,
 Cc: Petr Vorel <petr.vorel@gmail.com>, dri-devel@lists.freedesktop.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, stable@vger.kernel.org
+ David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1970; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2442; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=6JGHabwRWmpDCBWI59Z99X50itb/iYbgKpJnZE32Ln0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtS08Dk8l2uXKE36uyRLVWoZjZkieSzDdrqR9I
- dCdfi2WxOWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCarUtPAAKCRBgAj/E00kg
- cuyAD/9osXGW+rWDY7F1S0MsR2H7g77JFd+exO2DFA+ZAx91qW6Xp2her/gV3xXiSEuPezjMNTv
- H1bLed5aS3whJwxlsKSciLtJmGyplhv+b1Qk2+F7Qsv1Xz5ov06UmUciBgD7jtzn8scUvY0Lh0u
- 1Dd2a+/551xTYi5ux16P5ib9GjgZnUn7IXMtH/05Y0ENdoQXwdSb7Bi4Dfbdz8k1YHKc8HOuYUg
- IbPoyCCQfP8XSP3OCKff4p8//ym3pufbmuKHEKpYBwP6LKpCUYVTNHSg+2UZ9GTdcJHdjtzqwIh
- TAkkM7/z/YEZebQXpuuHMAP79+u1PCyEpLLiv10LlTrGsN3n8Hz1JJezr8p9LwNfhJfRC+uKDlr
- ZpaLY+X0CpIQ0FnFqgrIYMyLlm//P+w3hVJJveFnn9AOb6ylWiJxNoREeKr16sWgTassOPv7ngT
- 4CY2n/559U6BTW5G7iSbDlWohGWVo0EE+5ffuu2GZSr7JQr6m3FaruD9gOefIA0k89UHyg1dw7f
- zLLzJeYKVjvFhi76gwK/Ek+JFzV7/Nw6G+77iOTgtCk2YuV79iKFXwpn0RQUzFk3hUTI6aeXcuI
- CXNS77L2XgwCAXFmt5MGq0n1pgILXLCaoGKcKGoW4NtnagpeXPl1RETZu0q0WhIZaBPSQnJjY9p
- LDFbM71z6ruTaOw==
+ bh=K2rs3ud3gazsmGeLP5fMP4q2yS8qRIDd3AISDM3ybSU=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtS08VkRqj0WEof9HjRjSR4hVLdlW/AsFGAVOI
+ v956XP148aJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCarUtPAAKCRBgAj/E00kg
+ cs7FEACsE94bBqkeYjQN+BTrH6kDai9p8lc8cqqrU7PHbqyH8sLrTIvvhtgGH49qKVqN2IugIMS
+ G292zBUb6rYISii85x84mq742Zi8XDzVYCTzF2ohFsJK3MBloQHJTO/iSTOqlnWF2et7gd4YLd1
+ 4PG/1VHEy1eDkRo4UsmWwi0UbaiZ3HPzLjv6FnImaLnLefu8yDzTm1P5tQW/8fw8p8/Gc9hS35h
+ 09M21IGprFKpbEDZ5RtUDWIHUD8tqBgS3bXyKtVm3MF7Lh1rmnXuePierlITiwrs3mY/wYTgenu
+ rPt3GLYWNHIrBcdUGbBnEms3TxdnuMVOlK2h8bcM429Tvrn4kT9vB76ZWhCYI3SijO3fxaQSfpr
+ pJYBLUd8Da/lCKIBjWA/3Z/V6S5rwcKbgz8WT7BKaqoOH8FK8CRSmAHY/lLHz2YS7xWMIDQlezY
+ qYrxxQouNm7luEfT8QYTJuJVGnPtdtRb6FykVEvpJXHkOB8S22QXq7ty7VGL/fdjV4StdjYos+P
+ RwAjyPIVT60RO+Lg9nK1pIB1GFxX/TfvDX1dQyYescQ8WSuX3isJcLXZu+vY1rhqAXzbKBzGRK7
+ X1ZWyywrWx9Hw48jHUGTuVv97Qd5r+Hgc+Q0KmaOPjpeEVAhXQQ9yYQUJQ2nggRDqFDzsbw9KfE
+ bAWQMyXnTExmCKA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-Introduce Samsung AMB630QY01 (Google Pixel 3 XL) panel.
+From: David Heidelberg <david@ixit.cz>
 
-Includes refactoring and improvements to the S6E3HA8 DDIC which is also
-used by Samsung S9 (Korea version).
+The Google Pixel 3 XL (crosshatch) uses a Samsung AMB630QY01 6.3"
+1440x2960 flexible AMOLED panel.
 
-Patches 9 and 11 switch to the new compatibles, so they must not reach
-the qcom tree before the driver patches land.
-
+Assisted-by: LLM
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Changes in v2:
-- Rebase on top of next-20260923.
-- Cosmetic fix s/Cosmtetic/Cosmetic/ fix in the commit msg. (Neil)
-- Link to v1: https://patch.msgid.link/20260920-crosshatch-panel-v1-0-de6e9512da96@ixit.cz
+ .../bindings/display/panel/samsung,s6e3ha8.yaml    | 31 ++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
----
-David Heidelberg (11):
-      dt-bindings: display: panel: s6e3ha8: Adjust to reflect the DDIC and panel used
-      dt-bindings: display: panel: samsung,s6e3ha8: Add AMB630QY01 panel
-      drm/panel: s6e3ha8: Really assert reset on the failure
-      drm/panel: s6e3ha8: Introduce AMB577PX01 panel compatible
-      drm/panel: s6e3ha8: Prepare for supporting multiple panels
-      drm/panel: s6e3ha8: Correct the polarity logic within
-      drm/panel: s6e3ha8: Assert reset GPIO in unprepare
-      drm/panel: s6e3ha8: add Samsung AMB630QY01 (Google Pixel 3 XL) panel
-      arm64: dts: qcom: sdm845-samsung-starqltechn: Update panel compatible
-      arm64: dts: qcom: sdm845-google: Move panel pins into common
-      arm64: dts: qcom: sdm845-google-crosshatch: Add display panel
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+index ca250b1b91712..acc2ea2969298 100644
+--- a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
++++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+@@ -7,48 +7,75 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Samsung s6e3ha8 AMOLED DSI panel
+ 
+ description: |
+   The s6e3ha8 is a display driver IC used in 1440x2960 AMOLED panels from
+   Samsung Mobile Displays (SMD).
+ 
+   Known panels:
+     - AMB577PX01, 5.77", Samsung Galaxy S9 (samsung,s6e3ha8-amb577px01)
++    - AMB630QY01, 6.3", Google Pixel 3 XL (samsung,s6e3ha8-amb630qy01)
+ 
+ maintainers:
+   - Dzmitry Sankouski <dsankouski@gmail.com>
+ 
+ allOf:
+   - $ref: panel-common.yaml#
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - samsung,s6e3ha8
++              - samsung,s6e3ha8-amb577px01
++    then:
++      required:
++        - vddr-supply
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: samsung,s6e3ha8-amb630qy01
++    then:
++      required:
++        - vddpos-supply
++        - vddneg-supply
+ 
+ properties:
+   compatible:
+     oneOf:
+-      - const: samsung,s6e3ha8-amb577px01
++      - enum:
++          - samsung,s6e3ha8-amb577px01
++          - samsung,s6e3ha8-amb630qy01
+       - const: samsung,s6e3ha8
+         deprecated: true
+ 
+   reg:
+     maxItems: 1
+ 
+   vdd3-supply:
+     description: VDD regulator
+ 
+   vci-supply:
+     description: VCI regulator
+ 
+   vddr-supply:
+     description: VDDR regulator
+ 
++  vddpos-supply:
++    description: positive boost supply regulator (ELVDD)
++
++  vddneg-supply:
++    description: negative boost supply regulator (ELVSS)
++
+ required:
+   - compatible
+   - reset-gpios
+   - vdd3-supply
+   - vci-supply
+-  - vddr-supply
+ 
+ unevaluatedProperties: false
+ 
+ examples:
+   - |
+     #include <dt-bindings/gpio/gpio.h>
+ 
+     dsi {
 
- .../bindings/display/panel/samsung,s6e3ha8.yaml    |  46 +++-
- .../arm64/boot/dts/qcom/sdm845-google-blueline.dts |  18 --
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi |  16 ++
- .../boot/dts/qcom/sdm845-google-crosshatch.dts     |  60 +++-
- .../boot/dts/qcom/sdm845-samsung-starqltechn.dts   |   4 +-
- drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c      | 304 +++++++++++++++++----
- 6 files changed, 367 insertions(+), 81 deletions(-)
----
-base-commit: 3d7783543c2646af69ad65825e810060494bea21
-change-id: 20260801-crosshatch-panel-06ce8a69fb7f
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+-- 
+2.55.0
 
 
