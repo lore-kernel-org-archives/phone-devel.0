@@ -1,110 +1,198 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F66471258
-	for <phone-devel@vger.kernel.org>; Wed, 23 Sep 2026 22:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CA53FDC06;
+	Thu, 24 Sep 2026 08:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790203877; cv=none; b=K62zTxQSIbFYMp3whUuqv8rdqlWLrNvVbW5svdigrDXcQieFMssA29Xe0Y7GXnPGpsCOmlaNd5IVLcWdmtRBOm7awNAZlk1CZkuD2s1K0qGPzIFoiLtN7nmlXIJT+LQuXcKSsP4YVAR8cP9+xrV51GolAuqdvcu44OCjrKuyQWU=
+	t=1790238919; cv=none; b=V3tuLCVeeJW5CyjZ+vl3dp+JPW/csufZ+fE3TJdJfCzrVKycQ4DPp7HnxMo6+eiRw2RNXB6JaKlWzNhicCtWnekMHWotEODW/0O3AoayxOuvLnjgkaKLPtE5ZKBstEeyqZ5lp4JWgsO4j42iiK1xWnKenZCOkEngmICNwfsp4BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790203877; c=relaxed/simple;
-	bh=EKX35ie9/USsn0Lh1pIBDFxv7amLEruPOvFxMnWeGnI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDzDrJEQ7Uto7n0UsSpzDkPrXtXU/s9SMgtGhlIC/pHEKrQM0Qy6ZhHJKQ75wwYY1U0QkO8N2ursgaDq+tA895iWlYm5ExvTczsdxpGuzrKbitRTRReDqkj4899QdAOp7fYDERrF3vEDgzCpixfhKcUlL9PjAVpUBDkKIk20Ups=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q7P36F21; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790238919; c=relaxed/simple;
+	bh=hGVtWnnMRA8rdygAPgS8BLQ5m+G+Xk9yg+RuddzAoI4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ty+OBtCWrTaAiskYWGhkol470b3ekHcwFLUDuaQj0KglHcRVTD2+GVUAEB8UQtbPzXJvdp9F3m1dfSZMK3smtJyCHNxUPtfvqJCd9w8iu4vruYV5spgRKQVI4ItXqF0u53TCgMbFjwwV8s+KysSG49rdIpKjkRMOWrTX3Tcdh5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dbA2N6+G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q7P36F21"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48442ea8f59so169739f8f.1
-        for <phone-devel@vger.kernel.org>; Wed, 23 Sep 2026 15:51:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790203874; x=1790808674; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mI1/ZYE5YHBF2sXaFTZzYUzCnN//3DiBm/zH9LcBkPw=;
-        b=q7P36F21o8SR9xcYCLCdLlzodnr/WLXRH3eQy77uiPD1la8KmWVLJpczwS36SDjxz3
-         WjqMrm3e5Tq+zY7m8dB92immHr+Y52qat2rwiCO5ILWnABEd9eWCZoDfaIe4omahsXu4
-         OEyRfurBc01MmD7qj7GxH4PDciCVoXOM+L4Ul1Ayod71ZYCiz6wLApQqHtMG3ZaJjRsy
-         On+ey/i6RvKmYhd7sNIR3gHrKWi88u5i9NTXBmjtsx3q/2V8X7LeBOvXkvR+zFk3PZul
-         maCDCs6yQjo8ZPVFJSFmwZ0D4DF5MM9/Tk0ICrQ4FRxa3Rmb6tI7fNeXlBgD+S7xnZVJ
-         BEMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790203874; x=1790808674;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mI1/ZYE5YHBF2sXaFTZzYUzCnN//3DiBm/zH9LcBkPw=;
-        b=05zb1OsgLaEXizrh02exuk4oEsgkMnnV82AWxr2/q6yM3fw1dIe+hCOf7aKS0nb6W7
-         irm84mMbOzIwZSanwqgVSRUI6HGPlFaMCXGruxJvrsdr9Wsa+kboofjg1XT5DD/iWDbC
-         y8Bt3k55wUTUP9E6BMGrZjCrpecLm+6/JQvTyp7y/RaEQXvxCUmhX7kk2mbKv7yPVWI3
-         2pZDh0MtGs0J9xQ8eZPiHTqOAXoohAlhXVuAc0/qOPubrMSVLuXda8FuIxHAWcrgCHe3
-         lQIrZt77VleuOk+iLBETs10twJ8Moc+GjYdkimxZSYK69Gt1g19sF3eQ1uvAdABqvuMk
-         nB9g==
-X-Forwarded-Encrypted: i=1; AKwUvBxBN2W9RM6pMqZUpI57sUovtl9SLkBAT8ixIeVCea6SvL247yabXNoaOlZIL2fyvM1hiyigGsSmtj0KdA==@vger.kernel.org
-X-Gm-Message-State: AFuF++lPULyhq/fwqx9JuX+ibfcYQMwdB1MyFxkE0jkqoKlRIfLGK6QW
-	a4RDgLpL5KGxlmwTbefE+aJ7RRB1TPr/XzEXdnyNieb8Tv29sgMxPnCH
-X-Gm-Gg: AYBFou1TntRptm/4v/747NSKfRQIgjurPeClgRRJd0uSCE97NajlLJTb8Ti8CLu01hw
-	lAE/Yl8fe3mW4jKtgAAPzctOElXeuxGZP0E5qpft+hL9sBVX3S+T1XqvmwBqB3TNYyNf18JqSZQ
-	Eixoy1cIpglGPdnUKTcEAh+LOOMvfcLWIw9BtfwRYjWgAlrP88ewX+VvSVFo2I1qjwUgGSYCBm1
-	YOk0MFNwJ+vnG883pLEhq49yolaOGdLzWOvFfqRP9DKMLtZnS5oFyyBx2CkntkTDc7ybgb/hDy9
-	f7Az0jW83UWLYua74emw38p7aSFPWZQ/khMe1/QnXsiN5mgMLsMI6ycUM8RYeCZ+/Gu4d9PChn6
-	Vpm40GOWgtpeDlHJuRZxRK+th4RLbQTsmPOJUxUmH0CcHwkzAM+kkSnjg0euzRe0fS7VGXLa5n8
-	vKKxDy8LAawfXg+GSYaCuuSnyuPpO7FmyCjFtVwOzqkxna8VdRLWo0XTpEMJdF3Z+gOiJ9Xu3bo
-	xyW6rDfgDRnUNjP4WLnoLCnbkJwwwRxHA==
-X-Received: by 2002:a05:600d:8642:10b0:49f:c305:f4ce with SMTP id 5b1f17b1804b1-49fe6705708mr6898435e9.16.1790203873928;
-        Wed, 23 Sep 2026 15:51:13 -0700 (PDT)
-Received: from x230 (gw1.ms-free.net. [185.243.124.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488682673bdsm9822109f8f.2.2026.09.23.15.51.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 15:51:12 -0700 (PDT)
-From: Petr Vorel <petr.vorel@gmail.com>
-To: devnull+david.ixit.cz@kernel.org
-Cc: abelvesa@kernel.org,
-	airlied@gmail.com,
-	andersson@kernel.org,
-	conor+dt@kernel.org,
-	david@ixit.cz,
-	devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dsankouski@gmail.com,
-	jesszhan0024@gmail.com,
-	konradybcio@kernel.org,
-	krzk+dt@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	neil.armstrong@linaro.org,
-	phone-devel@vger.kernel.org,
-	robh@kernel.org,
-	simona@ffwll.ch,
-	tzimmermann@suse.de,
-	Petr Vorel <petr.vorel@gmail.com>
-Subject: Re: [PATCH 04/11] drm/panel: s6e3ha8: Introduce AMB577PX01 panel
-Date: Thu, 24 Sep 2026 00:51:07 +0200
-Message-ID: <20260923225107.191388-1-petr.vorel@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260920-crosshatch-panel-v1-4-de6e9512da96@ixit.cz>
-References: <20260920-crosshatch-panel-v1-4-de6e9512da96@ixit.cz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dbA2N6+G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0879F1F000FF;
+	Thu, 24 Sep 2026 08:35:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790238917;
+	bh=3vKZEKuEETygG20gblUiV9ADmUUdeqOco4s6nx6GvmE=;
+	h=From:Subject:Date:To:Cc;
+	b=dbA2N6+GDYeOSkUFWYbvXsNgVjDe0iiRgU3Kuv4xIkAHyeerk+ZSTh0m2eXpmZEgh
+	 w+O48vzJHy+nEsPkgIM4O1p7Tu8JqThq2IhZEijSYq3oiSgjsCWKCuRI3CValFA1YC
+	 V6xFTXGN67l2OYupsjkxWaJp4/xokd1oQdZ17UgUHREV8tj153p4Rehbg3EqMYiu3w
+	 b0P6wXCiKrS+HFEHGnm8PajGwMSyI6G1YbyBDxALIf586dXNbXWficdMnOi/K69hEf
+	 zRHHpgJZEqP0qEtSf5NeQ7m8Pm46IIAy+PFLciolnVmHKw7jlpLZLgvUfZp3JheETw
+	 AkaSBBQuRUPpw==
+From: Linus Walleij <linusw@kernel.org>
+Subject: [PATCH v6 00/23] dmaengine: ste_dma40: Fix numerous accumulated
+ bugs
+Date: Thu, 24 Sep 2026 10:35:12 +0200
+Message-Id: <20260924-dma40-fixes-v6-0-fdb6755020a2@kernel.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33PTY7CMAwF4KugrAlynJ8mrLjHiEWbOBABLUpQN
+ Qj17pOyGZiOWD5b37P8YIVyosK2qwfLNKaShr4Gs14xf2z7A/EUamYIaMAi8HBpFfCYvqnwzrk
+ 2GgOAXWRVXDM9FxV87Ws+pnIb8v1ZPop5+n/PKDhwTUJZodtgrNudKPd03gz5wOaiET9grNhIl
+ FZK5RtoFlj+YifsO5YV2xCs0mCMI7vA6gX/vawqDo0WHQbnUcYF1h+wnn/2WvvQRIfx/edpmn4
+ AqhGsupsBAAA=
+X-Change-ID: 20260820-dma40-fixes-b99af66002bf
+To: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
+Cc: dmaengine@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Linus Walleij <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Frank Li <Frank.li@oss.nxp.com>, sashiko-bot@kernel.org
+X-Mailer: b4 0.14.3
 
-...
-> +++ b/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
-...
->  static const struct of_device_id s6e3ha8_amb577px01_wqhd_of_match[] = {
-> -	{ .compatible = "samsung,s6e3ha8" },
-> +	{ .compatible = "samsung,s6e3ha8" }, /* deprecated */
-> +	{ .compatible = "samsung,s6e3ha8-amb577px01" },
+This series fixes 26 DMA40 bugs.
 
-Reviewed-by: Petr Vorel <petr.vorel@gmail.com>
+12 were found while reviewing the Ux500 LCLA SRAM power-domain conversion.
 
-Kind regards,
-Petr
+The cyclic transfer residue bug was exposed by Ux500 audio playback.
+
+13 more issues were identified during review and hardware-manual audit.
+
+The method taken is: whenever Sashiko complains: fix the bug it complains
+about if possible.
+
+This has been boot tested on the Samsung Skomer device: DMA for MMC,
+wireless SDIO and UART still works after these patches, and DMA for audio
+started working.
+
+Assisted-by: LLM
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+Changes in v6:
+- Simplify termination and channel-release runtime PM balancing by releasing
+  temporary references in the successful resume paths. Descriptor cleanup
+  remains unconditional because it does not access DMA40 registers.
+- Name and document the three-attempt cyclic-residue pointer sampling bound,
+  and remove an unrelated whitespace-only change from that patch.
+- Replace probe-local runtime PM bookkeeping with
+  devm_pm_runtime_set_active_enabled(), keeping IRQ registration after
+  runtime PM is enabled.
+- Link to v5: https://lore.kernel.org/r/20260920-dma40-fixes-v5-0-5c55cd7f92f9@kernel.org
+
+Changes in v5:
+- Respin to fix some further corner cases found by Sashiko as well
+  as can be done.
+- Resynchronize cyclic callback tracking after failed hardware-pointer samples
+  and limit unchanged-pointer interrupts to one callback. DMA40 has only one
+  latched terminal-count bit, so extra periods coalesced while the pointer is
+  unavailable and exact one-or-more full-buffer laps cannot be recovered
+  without risking spurious callbacks.
+- Count DMA40 status from channels owned by other SoC cores as handled
+  without acknowledging it, so only status-less interrupts return IRQ_NONE
+  and foreign DMA traffic cannot trigger spurious-IRQ disabling.
+  This is REALLY FRINGE but let's do our best anyway!
+- Link to v4: https://lore.kernel.org/r/20260920-dma40-fixes-v4-0-d751b2d9c23f@kernel.org
+
+Changes in v4:
+- Rework cyclic-transfer residue reporting to use the current memory-side
+  hardware pointer and reject periods that need more than one LLI.
+- Add cyclic callback recovery when terminal-count interrupts coalesce.
+- Retire all issued descriptors and release software channel state when a
+  runtime PM resume fails, while avoiding inaccessible hardware registers.
+- Validate physical event IDs against the variant event-group limit rather
+  than the physical channel count, as confirmed by the DB8500 manual.
+- Link to v3: https://lore.kernel.org/r/20260918-dma40-fixes-v3-0-8dd8450669e8@kernel.org
+
+Changes in v3:
+- Add a fix so physical channels advertise their existing cyclic support.
+- Add a cyclic-transfer residue fix so DMAengine PCM reports the correct
+  hardware pointer and Ux500 audio playback does not stop with -EIO.
+- In patch 3, preserve cookie completion order when the next queued
+  transfer fails to start and retire failed cyclic descriptors.
+- In patch 4, enable runtime PM before requesting the IRQ so pending
+  interrupts can be acknowledged during probe.
+- In patch 5, keep valid interrupt handling with CONFIG_PM disabled and
+  only drop a runtime PM reference when one was acquired.
+- Add checked runtime PM resume handling to channel operations.
+- Add an IRQ status patch returning IRQ_NONE when no DMA40 interrupt was
+  acknowledged.
+- In patch 8, keep the IRQ disabled until hardware initialization has
+  configured and cleared the DMA40 interrupt state.
+- In the DMA registration unwind patch, free the IRQ before unregistering
+  the DMA devices and drain initialized tasklets before releasing storage.
+- Add a fix releasing the LCPA SRAM node reference after reading it.
+- Move the disabled-channels binding restoration to its own series.
+- Store memcpy channel mappings per controller and check the property read.
+- Add validation for disabled physical channel indexes.
+- Reject DMA specifiers that do not contain exactly three cells.
+- Reject transfer direction changes after channel allocation so logical
+  channel resource masks are released correctly.
+- In the event-group bounds patch, use variant-specific limits so DB8540
+  event group 4 remains available.
+- Add fixed-channel fixes that search later physical blocks and validate
+  configured physical channel indexes.
+- Move the generic DMAengine debugfs naming fix to its own series.
+- Use `Assisted-by: LLM` for the existing assistance trailers.
+- Rebase onto v7.3-rc1.
+- Link to v2: https://lore.kernel.org/r/20260820-dma40-fixes-v2-0-63238334c707@kernel.org
+
+Changes in v2:
+- In patch 1, complete the failed-start descriptor through the normal
+  tasklet path and drop the runtime PM reference instead of freeing the
+  submitted descriptor directly.
+- Add an IRQ fix to avoid register access when DMA40 is runtime suspended.
+- Add a probe ordering fix so DMA40 hardware is initialized before
+  DMAengine devices are registered.
+- Add a probe unwind fix so DMAengine registrations are released before
+  freeing IRQ and LCLA resources.
+- Add an LCLA allocation fix so __get_free_pages() and free_pages() use an
+  allocation order instead of a raw page count.
+- Add a probe unwind fix so ESRAM LCLA mappings are not released with
+  free_pages().
+- Add a device tree parsing fix so memcpy-channels cannot overflow the
+  memcpy channel array.
+- Add a dev_type bounds fix so derived event groups cannot overflow
+  phy_res or the priority/realtime register window.
+- Add validation for fallback memcpy configurations so memcpy-channels
+  entries cannot bypass the dev_type bounds checks.
+- Add a DMAengine debugfs naming fix so drivers registering several
+  DMAengine devices for one parent device do not trigger duplicate-name
+  warnings.
+- Link to v1: https://lore.kernel.org/r/20260820-dma40-fixes-v1-0-5e14815ad689@kernel.org
+
+---
+Linus Walleij (23):
+      dmaengine: ste_dma40: Fix physical cyclic capability
+      dmaengine: ste_dma40: Fix cyclic transfer residue
+      dmaengine: ste_dma40: Recover coalesced cyclic callbacks
+      dmaengine: ste_dma40: Fix failed start cleanup
+      dmaengine: ste_dma40: Fix probe runtime PM disable
+      dmaengine: ste_dma40: Check runtime PM in IRQ
+      dmaengine: ste_dma40: Handle runtime PM resume errors
+      dmaengine: ste_dma40: Return IRQ_NONE when no interrupt is pending
+      dmaengine: ste_dma40: Init hardware before registration
+      dmaengine: ste_dma40: Fix probe IRQ leak
+      dmaengine: ste_dma40: Fix DMA registration unwind
+      dmaengine: ste_dma40: Fix LCLA allocation order
+      dmaengine: ste_dma40: Fix probe LCLA free
+      dmaengine: ste_dma40: Put the LCPA SRAM node
+      dmaengine: ste_dma40: Fix memcpy channel parsing
+      dmaengine: ste_dma40: Validate disabled channel indexes
+      dmaengine: ste_dma40: Validate DMA specifier length
+      dmaengine: ste_dma40: Reject direction changes after allocation
+      dmaengine: ste_dma40: Fix logical channel bounds check
+      dmaengine: ste_dma40: Fix event group bounds
+      dmaengine: ste_dma40: Search all blocks for fixed logical channels
+      dmaengine: ste_dma40: Validate fixed physical channel indexes
+      dmaengine: ste_dma40: Validate memcpy configuration
+
+ drivers/dma/ste_dma40.c | 562 +++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 436 insertions(+), 126 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260820-dma40-fixes-b99af66002bf
+
+Best regards,
+-- 
+Linus Walleij <linusw@kernel.org>
+
