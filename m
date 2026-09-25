@@ -1,66 +1,66 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03094470EB4
-	for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 19:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5411448B9A
+	for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 19:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790364076; cv=none; b=S86aCdkQrlapE8qSWoo/CF6Mi/rziz6pTzXN6Jlmv0Y+IAbZjXdgK6EniyUumY5MWTDEQrdD0tYb/WQA8k25sMqpL6Sxw4wL4UMXTHH6w6K63s1K3vyZscLrtDzb+6GiuDW5pn6VOw4F/e9gi74pv1MRojMA/o1BBK2xoSBJo8I=
+	t=1790364464; cv=none; b=u9SDhTuT6UHjmdjEOoLwZqjvy+0fnt0lL8bpoF3llSKSZzJfTLnazG7QlJ0aqJP9VfdHDT2yprie1t9InfMCxko05zEQBj2GMyQcYzFqjtUBrzgvncWMfMlS9sBtHDF3FHBrwdS6PEJgYbzRN2NZ+OAgHDqBwQjbn5VbqMoZrA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790364076; c=relaxed/simple;
-	bh=KAeKmkNkjuzZG9TiPoOsXDj84d0lGdVN5Hwuzhdo3zg=;
+	s=arc-20240116; t=1790364464; c=relaxed/simple;
+	bh=6SU9XvusmasAr35BYeFHgnzOH+gX4OvUuLSAZmMQ2ho=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mVmRTVYrLixKEXCdNVmSMgnKjdnizvLZIPG436qXRPbwVr4GVJgcd9LT3zlqzfUGT/Frbvg1S/ubeioQQ4Vf8ogJ6g16iBNSY+jSWC1lYFomm07ixUqHzwNG4IiXakyjjTKwB6xEV/he5N543k/sHC/3MnPdIUx8OTkmmZNdhvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=asnoedmm; arc=none smtp.client-ip=74.125.229.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=BVNsSCL6j/VC73Wzt/CwnbfHTtFCGb+ycjLLMyn3RTZYOcmq9OjcHRE8VrTM0HqdFfrZ2QpnZhtOo2uk8H3mHeymHoNcsKHuqFqkfvgcAWOSd5tZvb7tUOZFNEw3BXR3QwZl84oWQlJkOjBa1zaARwW0A6gHsrjxRdTT5CKWrk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xv6dVm3M; arc=none smtp.client-ip=74.125.229.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asnoedmm"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-3381a6a05c9so755935eec.1
-        for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 12:21:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xv6dVm3M"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-341d0522b4dso1402378eec.1
+        for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 12:27:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790364073; x=1790968873; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790364462; x=1790969262; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=1AlSXbEjro2stcGQ4JnkFbJoY4FQMoz5yKwywTEmVVk=;
-        b=asnoedmmhW/NUgBMm4aBxVE8jnMtXHZduRTjnB9dHZOs+nq3V1NZUKbuLsae4L4pNs
-         0lDYM/GFZFz7WCAEWX2h+4B0/VRo3iPsh6nAwt9jNhrj8YNaB7hj8IonGtdWigySKwSP
-         2Dsw9Wg4WOImILktjwM7YSrdpU5d448GgHLjB1wZ/XLMGFaW6w3pdz+PJizTZ68OGam1
-         wUmHY9vSsdkT/6DatSVcBALStHe5faJmI36urSzWK44YbLUONVANz+RHM4ip++IZ56Do
-         GaqWZwcUsR2lLwAn1GEUazWbXYXKjHmdhrbtplL7plnddVWgJ1QFcsFAmiquxIUcLzhL
-         OaNQ==
+        bh=RWDSKWZuEkPlk2u1p84ALBilVUhoSm1EjrDy3t/LqSE=;
+        b=Xv6dVm3M9sree4WnoqgszAszL6cjx9VZVK8h2qE8l4YBo7bfBOi17WM0NCuy9lB+N9
+         Ew+rC11bB1Mj8hPezFuX9HLdQt5N7uTCybS7eFTsrJiwdJVvHjsglG9/rO2itkuEaGRv
+         in351Yt4wQEb354KFefOAJRlSg7ROYWoD4guWvS4I9lRs8338YxyWLyRkhaJdQcaP5k6
+         cusGF1n32FDdSsq168qLJpcp6z89Ka/U5ctkVkaQ0LTUKMyWmBALqmIy6ViXQsE5pWmn
+         DypVsistOIlds4DJiiw9wgYGcnMxgBm6IWxNTFOrE0J0MX3HsY2EYJucubpm+WrMIs2t
+         Ri3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790364073; x=1790968873;
+        d=1e100.net; s=20260707; t=1790364462; x=1790969262;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1AlSXbEjro2stcGQ4JnkFbJoY4FQMoz5yKwywTEmVVk=;
-        b=wthEK53uWPvDNeuLqzRBBavaBMtQb5KcRZjP0izhbweBubNgV4FiEWUZrTXsqzjbyq
-         /OhkPWcX4ZPFAAiw2SvdLS8IGQ33Qj6SPVaCmDyJ649OvrgOneF1gG5136hOAenZDLXG
-         NwhPm+jkvgia7zQHJzJdfMz7j3i9LWvpJ3RGnOwsJSDUh9fI7QUekNcpvClhy4xYiG50
-         StgIxaQVTRKKEaMrs1ynrr44fg9TgNkMjQRwX6Cfq7mHgocn1FZa7RYsNPymR052GQT2
-         D8JbsGu4jewKTtr1nRKbctL48yrHLb+ARR/PqWYkquKndtWRcPNxVhHS62ZfyXCRlrDJ
-         f2xg==
-X-Forwarded-Encrypted: i=1; AKwUvBxZyNYdFbSzQrhbrLyOcKhUkihKCyUYwkZlE6cPmuQz5lgxmBH6sNfRIO8MaLbI4Q54TYGi2My4oeeCgw==@vger.kernel.org
-X-Gm-Message-State: AFuF++mC2FpjwBSUdoaWOqe6kSScqBkXp+7pq+Eox1bvtiFaddlVaCng
-	AJeYcttjx2Oa7kxwy+3f7B1cSbMA30BAwR8mzRL0e8AXuFaPPTHvnoEi4ZaE2ytY
-X-Gm-Gg: AYBFou1mAjPW1kFmCyjbpkyCvKUv7Q3nohmplqsd8qWtd3FLCmjh+vULkvTQFIfzp63
-	fqoqzVnGeOHJjLd4OvFNXGNz4CaiwLaDhpQ6wUGF7y5WCeSuxt7XA3WIRpIzc3AQkL0OZdvZnxy
-	+cjP/e9DBQWPwC3wqIrhGZy+RRTKrRX5KeixSphXSc8c5zCCKJZXw8Wc8Eo6Nit6tnMyCeu/4rk
-	8ZEcg8DoDOqGLoBsTWnT99siLyXTAn7oK8WBzs9D1H3z7Yqu/pIP5T0NXk+ljAxaopv92ssTQes
-	DdSFPFNwzWXh0aePB4Gs4RK8r5yPBw8easFJWHys0VmywUxWg03imhTttX3SU/9rhk2U1NJQBJe
-	ifOMIULi/ikid/FlFKjVtKwvJspvd6B30Un5AfdoawOmytyPp2T10QMK1ONzDCamazwvreZKHhh
-	ygxeQWKpGjMDBNdDau/0UGm5W5jyJGz8FNtioYbUM9r54XDH0IDyNLenOqJPvQrthr/HAkOHrmr
-	GL2kqmGVz1rlOLJ3Rg9vHnK56dCcOcvvhNHpsU=
-X-Received: by 2002:a05:7022:7e85:b0:143:3242:6301 with SMTP id a92af1059eb24-146ce29fde5mr1024848c88.4.1790364071957;
-        Fri, 25 Sep 2026 12:21:11 -0700 (PDT)
+        bh=RWDSKWZuEkPlk2u1p84ALBilVUhoSm1EjrDy3t/LqSE=;
+        b=RKv1CfWRZXNn9tmxaIJOlKqAN02lvg79HZFtftw22/WugPHPn/E0YgHsr8ST82JqGw
+         eN5wBil4oAPPWIcxvlAMWAi3wf71yteanuPWnIByO8VI4oBb1BnqkHbDQtLzagk3rE5a
+         fFFtenIvmiSHLcMoJQQBkuGehH9aMecLeJKL24NMHmu/WC3JREL8W4dIvM3zcEF8mYad
+         O13ltVCqFTmE5cfCbYaXS4GDj/7gsQmi3rACb4ZGqWDx1gWT1g7Xe9b0EZJokMqrCMMC
+         dJiABRS4aYFlGkAtlXHfh0HNDXkpfY/NyvGoTITgIBwjth88C2da89hZsTetxqJtukj7
+         /K0A==
+X-Forwarded-Encrypted: i=1; AKwUvBw+vyxepZrRXd4nbiLuKHwwzqeYjEmttJZYETSqU6v7XfGffHPmoM1ERO4ZgiHo5TYXK78uUz0cki+mnA==@vger.kernel.org
+X-Gm-Message-State: AFuF++mdITCfwD5mima6lhZ1Vcw7djerlmQltpkWiouDBPycyI4Lyhms
+	BGLkQeg2EXpjJ33BRqp1jB7imhwMNTVKc3VbivlBoEBKZC8RugfRtlPL
+X-Gm-Gg: AYBFou2DdMgaPXVA+k+Fwz1SZv7/xJo9kzHQxQMmEJPsvBTi000CQyYK+2c7TkqVh6l
+	goFyjSKENkkCQfL+ZuQBU0dKvpDQI8Nxh+Crt2NXeTC29vW1eZ3hTSggWiL14Ag1EZE92OxgA5p
+	AjTcaC/l82GRKChTlAluvK2q8gNhlK3FrvJ5hrqq+gr+YGxfPUY+WnORnxKx1HNS5j991A2XEOQ
+	xZGgrIhuriQ0E1ypSirrgHJoiVTtzkWaPce6MGPH8i+Wn0stigHfAvl7iXbd0fDsfC1GIhRQ9Us
+	1S6K8TI7eBZkFkrnya9SYqQAnJ2El3Ovmt5rRNnv3UXKY80xzsE5/nYl9Uz5TsLkdt0tIqucaMB
+	3JoeP+FNDeTgTYr0zr3fwI9j9QllUiHbmvgcy1oq1ZUTFqhSnYRYLitIOxSXS/FZUFYUxp+HVJa
+	sC1Agd6JWZDcQLsCSXeXT1DPbcg+7+yN26zqQMRpFTKt6y4jTd/oO/lvIK3s8VObMjXZfjl6Rjf
+	465OaqrZYc5AOobJgxb0H9BuLeg1xOyJ9o1diY=
+X-Received: by 2002:a05:7300:ae23:b0:342:890a:40a8 with SMTP id 5a478bee46e88-342890a4389mr792661eec.30.1790364461569;
+        Fri, 25 Sep 2026 12:27:41 -0700 (PDT)
 Received: from google.com ([2a00:79e0:2ebe:8:375:19cf:5fee:be32])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-146bb6551d9sm1708481c88.9.2026.09.25.12.21.09
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341460f5166sm7801383eec.29.2026.09.25.12.27.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 12:21:10 -0700 (PDT)
-Date: Fri, 25 Sep 2026 12:21:07 -0700
+        Fri, 25 Sep 2026 12:27:40 -0700 (PDT)
+Date: Fri, 25 Sep 2026 12:27:37 -0700
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: david@ixit.cz
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -71,11 +71,12 @@ Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v7 3/4] Input: stmfts - support FTS5
-Message-ID: <arbJQezIkyvCf1rR@google.com>
+	phone-devel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v7 1/4] Input: stmfts - wait for controller ready after
+ reset
+Message-ID: <arbJrK9zfoO1dGzy@google.com>
 References: <20260907-stmfts5-v7-0-4a53381cd038@ixit.cz>
- <20260907-stmfts5-v7-3-4a53381cd038@ixit.cz>
+ <20260907-stmfts5-v7-1-4a53381cd038@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -84,35 +85,136 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260907-stmfts5-v7-3-4a53381cd038@ixit.cz>
+In-Reply-To: <20260907-stmfts5-v7-1-4a53381cd038@ixit.cz>
 
 Hi David,
 
-On Mon, Sep 07, 2026 at 12:50:21PM +0200, David Heidelberg via B4 Relay wrote:
-> +static int stmfts5_setup_input(struct stmfts_data *sdata)
-> +{
-> +	struct device *dev = &sdata->client->dev;
+On Mon, Sep 07, 2026 at 12:50:19PM +0200, David Heidelberg via B4 Relay wrote:
+>  
+> -static void stmfts_reset(struct stmfts_data *sdata)
+> +static int stmfts_reset(struct stmfts_data *sdata)
+>  {
+>  	gpiod_set_value_cansleep(sdata->reset_gpio, 1);
+>  	msleep(20);
+>  
+> +	reinit_completion(&sdata->cmd_done);
+>  	gpiod_set_value_cansleep(sdata->reset_gpio, 0);
+> -	msleep(50);
+> +	enable_irq(sdata->client->irq);
 > +
-> +	sdata->mode_switch_gpio = devm_gpiod_get_optional(dev, "mode-switch",
-> +							  GPIOD_OUT_HIGH);
-> +	if (IS_ERR(sdata->mode_switch_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(sdata->mode_switch_gpio),
-> +				     "Failed to get GPIO 'switch'\n");
+> +	if (!wait_for_completion_timeout(&sdata->cmd_done,
+> +					 msecs_to_jiffies(STMFTS_RESET_TIMEOUT_MS)))
+> +		return -ETIMEDOUT;
 > +
-> +	/* Set resolution for accurate calibration */
-> +	if (!input_abs_get_res(sdata->input, ABS_MT_POSITION_X)) {
-> +		input_abs_set_res(sdata->input, ABS_MT_POSITION_X, 10);
-> +		input_abs_set_res(sdata->input, ABS_MT_POSITION_Y, 10);
+> +	return 0;
+>  }
+>  
+>  static int stmfts_configure(struct stmfts_data *sdata)
+>  {
+>  	int err;
+>  
+>  	err = stmfts_command(sdata, STMFTS_SYSTEM_RESET);
+>  	if (err)
+> @@ -593,42 +602,47 @@ static int stmfts_power_on(struct stmfts_data *sdata)
+>  		return err;
+>  
+>  	/*
+>  	 * The datasheet does not specify the power on time, but considering
+>  	 * that the reset time is < 10ms, I sleep 20ms to be sure
+>  	 */
+>  	msleep(20);
+>  
+> -	if (sdata->reset_gpio)
+> -		stmfts_reset(sdata);
+> +	if (sdata->reset_gpio) {
+> +		err = stmfts_reset(sdata);
+> +		if (err) {
+> +			dev_err(&sdata->client->dev,
+> +				"controller not ready after reset: %d\n", err);
+> +			goto err_disable_irq;
+> +		}
+> +	} else {
+> +		enable_irq(sdata->client->irq);
+> +		msleep(50);
 > +	}
-> +
-> +	input_set_abs_params(sdata->input, ABS_MT_DISTANCE, 0, 255, 0, 0);
+>  
+>  	err = stmfts_read_system_info(sdata);
+>  	if (err)
+> -		goto err_disable_regulators;
+> -
+> -	enable_irq(sdata->client->irq);
+> -
+> -	msleep(50);
+> +		goto err_disable_irq;
 
-You need
 
-	input_set_abs_params(sdata->input, ABS_MT_TOOL_TYPE,
-			     0, MT_TOOL_PALM, 0, 0);
+I think the logic is becoming quite convoluted here, and factored out
+stmfts_reset() does not help. How about we make it look like this:
 
-here, otherwise input core will drop ABS_MT_TOOL_TYPE events.
+static int stmfts_power_on(struct stmfts_data *sdata)
+{
+	int err;
+
+	if (sdata->reset_gpio) {
+		gpiod_set_value_cansleep(sdata->reset_gpio, 1);
+		/* a short delay before powering up */
+		usleep_range(1000, 1500);
+	}
+
+	err = regulator_bulk_enable(ARRAY_SIZE(stmfts_supplies),
+				    sdata->supplies);
+	if (err)
+		return err;
+
+	if (sdata->reset_gpio) {
+		reinit_completion(&sdata->cmd_done);
+
+		/*
+		 * The datasheet does not specify the power on time, but
+		 * considering that the reset time is < 10ms, sleep for 20ms
+		 * to be sure before releasing reset line.
+		 */
+		msleep(20);
+		gpiod_set_value_cansleep(sdata->reset_gpio, 0);
+
+		enable_irq(sdata->client->irq);
+
+		if (!wait_for_completion_timeout(&sdata->cmd_done,
+						 msecs_to_jiffies(STMFTS_RESET_TIMEOUT_MS))) {
+			dev_err(&sdata->client->dev, "controller not ready after reset");
+			err = -ETIMEDOUT;
+			goto err_disable_irq;
+		}
+	} else {
+		/*
+		 * We do not know the real controller state (was it powered
+		 * off or reset). Let's hope that this is enough time to
+		 * initialize.
+		 */
+		msleep(70);
+
+		enable_irq(sdata->client->irq);
+	}
+
+	err = sdata->ops->configure(sdata);
+	if (err)
+		goto err_disable_irq;
+
+	/*
+	 * At this point no one is using the touchscreen
+	 * and I don't really care about the return value
+	 */
+	(void)i2c_smbus_write_byte(sdata->client, STMFTS_SLEEP_IN);
+
+	return 0;
+
+err_disable_irq:
+	disable_irq(sdata->client->irq);
+
+	regulator_bulk_disable(ARRAY_SIZE(stmfts_supplies), sdata->supplies);
+	return err;
+}
+
 
 Thanks.
 
