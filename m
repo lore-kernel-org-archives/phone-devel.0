@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15E74CE663;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17794CE681;
 	Fri, 25 Sep 2026 15:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790350088; cv=none; b=bCp6A+RnNjHBzV33vqDH4gz5DZhTfbQEIuZo6AchtZQi9VxLC/uttWJ1HOU20iy12LXTAPZsspImnQA+lScVh2Au1oC16uDIFT5zH43/RodSJoNxpBLDcHKPsEdWk2GCH6MpYmtN/pVGBuOYetG9tV6mD6C4FxxZ/yN/P/tZw4g=
+	t=1790350088; cv=none; b=dHk1aGlEpcbY9ONXrERLZH0qKAI2o+rmu4ypaVb4fm4tuhKgraBc4tv6fkklXuKUzepumJF4dh4r+SuILF1fWyrcSwvid1SR78zce66AhG1C43Bd4XjFI2JjgLu1laXPmdyeHJ0TBXIHDKBbDLl+VPkv7kweGqhT82XwYouhIEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790350088; c=relaxed/simple;
-	bh=6/mDj/MdwcFfMPvPwgKItcrvAfwEbVC42umbKoJP8GU=;
+	bh=IYoA1cg8+/C/GmFktSMjB5+j4IZ/5Pj7xCHsaKvuGZ0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b4Agl/jlXuePePr9pOz66ChdfepmqcROASJS60nFUTgJtV5/kFSHzCsrfeWnrd1Zk5SG13D+K3YVWPBP+83zLbQVltNRFk6JKhsL40d7QBFF+yFwmPbgLaXYT6fZpmsDg4+EVwF+qPnUVd1VxAOtuHizUCDl7qAkvrbxfK2mGEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkK/tGEP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=mdO22uJ3vLUeMxejShUpNk0COy94RnqJAtDIkwPXlfeLhp0RlRkKLX+LoUFurZB4NZa0TR3hVjZ/X8DWdwC0IK+Jd74MmSJ6akWPjr2htiwwPP/EPhaVT1Gq9VBTFoEkvqe+2AtG8qMIZzuyMWLUhjfiFGh6t8YpTbFbJdXW1WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRKZfi/2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkK/tGEP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3D686C2BCF6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VRKZfi/2"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5FC89C2BCFD;
 	Fri, 25 Sep 2026 15:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790350088;
-	bh=6/mDj/MdwcFfMPvPwgKItcrvAfwEbVC42umbKoJP8GU=;
+	bh=IYoA1cg8+/C/GmFktSMjB5+j4IZ/5Pj7xCHsaKvuGZ0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=QkK/tGEPyJioJ3GZhdEtEFXdbMX0Qm60NRTHYpxOFkPU45cFso7oIvsAfSrriy5w4
-	 0XhmMEdu1blTfmcSObqsYfSKowr3LIhEgy7REeZsk+XZK+39TlZMFam1AR9OcNP7sm
-	 Wi1QjLe2dojciW2b6KQ8pgjVKk+hIhW9opj0NUmSlZmkaweScdw4MiFU6s92yBLHYO
-	 8zf2SlNxT8RKcbExpJ4lupGubD8pTmMMAV9JMEGG0jW/EkFElvZz4fcuczNPOMksHC
-	 pN4xIVsegfVzrwPZRrtvUd2XSM/bFGLk6QbuiqqOEQhJiNvfYGBEoWcbyxJCCRI6Uf
-	 qOKeep3yzXOow==
+	b=VRKZfi/2Rsjwx9+txPjaIVwC5HheUQJM9a881CjjC4TzYgyEt80UPPZDQTC5/N/Ga
+	 M+wyjXDl2Ai8bLfVdrYtwnbBMRmbaA7ZHF5eyNr6lRkM9CJ94ylbE5bpf2FSq49VDz
+	 AO4rvRfIkcdfx8Ast2QKLSYyfQgik4c++OgkpoAqg7w1MqbnbO9aHKn3XeDAVrJJPL
+	 5cSMco7TJ1qVWXUz0+8Nth4z5obaUFA/T4JbNTGLoWpf9XxDcSHvxbOszbDsOIBoRX
+	 Xn49FNpAJRIeAX82sn9SFBXBmDN2sqf0sCLf7zGDLS9cxooQN6lAUcTRoz1Vv86BNN
+	 ptXh0eiZphJhQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CAE5C98321;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43567C9832A;
 	Fri, 25 Sep 2026 15:28:08 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 25 Sep 2026 17:28:02 +0200
-Subject: [PATCH v5 1/7] ASoC: qcom: sdm845: Demystify TDM masks a bit
+Date: Fri, 25 Sep 2026 17:28:04 +0200
+Subject: [PATCH v5 3/7] ASoC: qcom: sdm845: Use per-speaker RX masks for
+ TDM slot assignment
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-pixel3-audio-v5-1-7ffb32c980bf@ixit.cz>
+Message-Id: <20260925-pixel3-audio-v5-3-7ffb32c980bf@ixit.cz>
 References: <20260925-pixel3-audio-v5-0-7ffb32c980bf@ixit.cz>
 In-Reply-To: <20260925-pixel3-audio-v5-0-7ffb32c980bf@ixit.cz>
 To: Srinivas Kandagatla <srini@kernel.org>, 
@@ -60,21 +61,21 @@ Cc: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
  devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2760; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1712; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=OBe52DHgRUl+sZAYSKZs/z/tb5vA9VGkR+bezPzuldo=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtpMFUNOMOPKIzduzGIgENmg75SgpxDjPEPhjw
- bcu0O2CFUaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaraTBQAKCRBgAj/E00kg
- ciDmD/9p+qBoC4RWKX0CpMecPNtRpZkL97QNBAMkYpBSikF42SuIj0govDX5HTrbR6qI/gcWhnB
- fBROITVmMu30i3tHU7yLdctMegcRBRCntSsDU2xPua3+3jM1scN4DhrppIsqyWbUp+i0zV6YSP4
- dEAHSKqx9P2zYZ/4ylSG8SfW+kxNR34aKnWJ51wgLvkjh74zoGsEQLbBHVDUazf1ZHyMZ0j2Vtz
- dwkhSj2ehBWAhlxdAs8RN4rE2xg6ZFRwF4ODJZFOo1PGw+ZSjh+oflX1s8LyfjgYECepu23gRYq
- YK9KNfhH4GouUabJZXwAMJbcmjeNpsztQbGrgFEjlfhXB3idzcYZ24erAE/0zUJFp4m3jvGuIzt
- WSHlAMCy2KGvMWnFG9uYe+hPq8bdJA7YAZmIk+WAm9yzI89PpqOsU74pBKqECfiv/2N77uNAPQs
- 2CfisQ+jzs+4UiJmIyLjs3Oi21x4Uz1Bfmw0/cuPQB33cRmhmbjHunkay18FQlhVU9vI3j5UOKV
- xNksTuoi58hR43Q3fxLUK0/MjYO4ly6dK2B2YD+CGskCUE65lCys85XJY7s4dXkg0W+c11CDfUB
- kNBc/AsG07WNlwCCkuMEJK8M5St8ifEDp7iKAGubB7WFlKwk46cyzJbUCdg6ya0tqKTR4wiGtP6
- lFWnSRhCgxaiJKA==
+ bh=14A2phcTaq+n5b5vOgbuu/Iv8VqqmG6tBsmNAD8ddoE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtpMFvDo534yviiiVsnPJ82ZpF7xhVWf90jNPE
+ 3KmP1yqV36JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaraTBQAKCRBgAj/E00kg
+ cmlyD/9PhzS18ZH69Wc82yA4rsly/gtlTFO12SlAfU26bAZxsn5GfCWR9kcZCguMbgNi34WcuFk
+ 476QMrhaTdMbX9RbXMhrwqtfWQ5fmu5xy0ERLBmoDu9AH2CUrEDVsL8Gu9ILLsB3de/641+n/zz
+ dJe1Wbi/rSoto+rC0q96e0Lyq+44EW+5YOtMwQWyWpVpVHnmedDJYZZadOJBB7yoxaohFpwYVUP
+ XsbJYq92eEO5D4aM97QJbCj9eourUgVAubXLZPXb72I3ZoqKsOqI9nj8c+8HBtnwcabGxtgxaoi
+ ji4TrRcolsRkXFSpYJJ7a4JGRImwOLQFxiRJOMifuk0BYowDXesXlpR61yQVirHmXJ1vtHsiEkB
+ z/JSBtHXGQBzt9zMadVlV6iyfxpSkhIffah4GmDkmitu5iFbHnNbBT5K5FsM/SooQgMmWvq6nTC
+ KbH4KMZOsY5tKTIHLian2yitBXeDpG6M3yJiCU4vIbkcUdhAjbwCYYOtt39V3gBtw3ed++cd8L3
+ eVdpTvwyuRlwVY0D5lyfWIMkAXehxReRqe9xcql1E0ziH6d/gh4w/ybNDY0ZChMxPbITZOcQJew
+ nyvw4Z6vll02xAveUe99I44lnz5aJ76bs4Wp4zTLFUlEWSuBKbsmyRMOuq120+cZh6OP9UAX6UP
+ lUlcQeImLnttTTw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -83,87 +84,60 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Describe the mask with the bits used for each RX/TX.
+Both Left and Right codec DAIs were passing the same SPK_TDM_RX_MASK,
+both speakers ended up on slot 0, breaking the one speaker in
+configuration such as on Pixel 3.
 
+Split SPK_TDM_RX_MASK into per-speaker masks so that the Left codec
+gets slot 0 (rx_mask=0x01) and the Right codec gets slot 1
+(rx_mask=0x02).
+
+This commit is here, so later CS35L36 receives correct slot for right
+and left speakers.
+
+Assisted-by: LLM
 Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- sound/soc/qcom/sdm845.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ sound/soc/qcom/sdm845.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/qcom/sdm845.c b/sound/soc/qcom/sdm845.c
-index 6843ab8ba017e..0ce8265ab1c1f 100644
+index d1cc825fc5cdc..59cfa3b26cd4d 100644
 --- a/sound/soc/qcom/sdm845.c
 +++ b/sound/soc/qcom/sdm845.c
-@@ -18,19 +18,24 @@
- #include "sdw.h"
- #include "../codecs/rt5663.h"
- 
- #define DRIVER_NAME	"sdm845"
- #define DEFAULT_SAMPLE_RATE_48K		48000
- #define DEFAULT_MCLK_RATE		24576000
- #define TDM_BCLK_RATE		6144000
- #define MI2S_BCLK_RATE		1536000
--#define LEFT_SPK_TDM_TX_MASK    0x30
--#define RIGHT_SPK_TDM_TX_MASK   0xC0
--#define SPK_TDM_RX_MASK         0x03
-+#define LEFT_SPK_TDM_RX_MASK	BIT(0)
-+#define RIGHT_SPK_TDM_RX_MASK	BIT(1)
-+#define SPK_TDM_RX_MASK		(LEFT_SPK_TDM_RX_MASK | RIGHT_SPK_TDM_RX_MASK)
-+#define MIC1_TDM_RX_MASK	BIT(2)
-+#define MIC2_TDM_RX_MASK	BIT(3)
-+#define MIC_TDM_RX_MASK		(MIC1_TDM_RX_MASK | MIC2_TDM_RX_MASK)
-+#define LEFT_SPK_TDM_TX_MASK	(BIT(4) | BIT(5))
-+#define RIGHT_SPK_TDM_TX_MASK	(BIT(6) | BIT(7))
- #define NUM_TDM_SLOTS           8
- #define SLIM_MAX_TX_PORTS 16
- #define SLIM_MAX_RX_PORTS 13
- #define WCD934X_DEFAULT_MCLK_RATE	9600000
- 
- struct sdm845_snd_data {
- 	struct snd_soc_jack jack;
- 	bool jack_setup;
-@@ -107,34 +112,36 @@ static int sdm845_tdm_snd_hw_params(struct snd_pcm_substream *substream,
- 	default:
- 		dev_err(rtd->dev, "%s: invalid param format 0x%x\n",
- 				__func__, params_format(params));
- 		return -EINVAL;
+@@ -152,29 +152,29 @@ static int sdm845_tdm_snd_hw_params(struct snd_pcm_substream *substream,
+ 		}
  	}
  
- 	channels = params_channels(params);
- 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
--		ret = snd_soc_dai_set_tdm_slot(cpu_dai, 0, 0x3,
--				8, slot_width);
-+		ret = snd_soc_dai_set_tdm_slot(cpu_dai, 0, SPK_TDM_RX_MASK,
-+					       NUM_TDM_SLOTS, slot_width);
- 		if (ret < 0) {
- 			dev_err(rtd->dev, "%s: failed to set tdm slot, err:%d\n",
- 					__func__, ret);
- 			goto end;
+ 	for_each_rtd_codec_dais(rtd, j, codec_dai) {
+ 
+ 		if (!strcmp(codec_dai->component->name_prefix, "Left")) {
+ 			ret = snd_soc_dai_set_tdm_slot(
+ 					codec_dai, LEFT_SPK_TDM_TX_MASK,
+-					SPK_TDM_RX_MASK, NUM_TDM_SLOTS,
++					LEFT_SPK_TDM_RX_MASK, NUM_TDM_SLOTS,
+ 					slot_width);
+ 			if (ret < 0) {
+ 				dev_err(rtd->dev,
+ 					"DEV0 TDM slot err:%d\n", ret);
+ 				return ret;
+ 			}
  		}
  
- 		ret = snd_soc_dai_set_channel_map(cpu_dai, 0, NULL,
- 				channels, tdm_slot_offset);
- 		if (ret < 0) {
- 			dev_err(rtd->dev, "%s: failed to set channel map, err:%d\n",
- 					__func__, ret);
- 			goto end;
+ 		if (!strcmp(codec_dai->component->name_prefix, "Right")) {
+ 			ret = snd_soc_dai_set_tdm_slot(
+ 					codec_dai, RIGHT_SPK_TDM_TX_MASK,
+-					SPK_TDM_RX_MASK, NUM_TDM_SLOTS,
++					RIGHT_SPK_TDM_RX_MASK, NUM_TDM_SLOTS,
+ 					slot_width);
+ 			if (ret < 0) {
+ 				dev_err(rtd->dev,
+ 					"DEV1 TDM slot err:%d\n", ret);
+ 				return ret;
+ 			}
  		}
- 	} else {
--		ret = snd_soc_dai_set_tdm_slot(cpu_dai, 0xf, 0,
--				8, slot_width);
-+		ret = snd_soc_dai_set_tdm_slot(cpu_dai,
-+					       SPK_TDM_RX_MASK |
-+					       MIC_TDM_RX_MASK, 0,
-+					       NUM_TDM_SLOTS, slot_width);
- 		if (ret < 0) {
- 			dev_err(rtd->dev, "%s: failed to set tdm slot, err:%d\n",
- 					__func__, ret);
- 			goto end;
- 		}
- 
- 		ret = snd_soc_dai_set_channel_map(cpu_dai, channels,
- 				tdm_slot_offset, 0, NULL);
+ 	}
 
 -- 
 2.55.0
