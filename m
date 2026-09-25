@@ -1,66 +1,66 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35ABA4CE688
-	for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 19:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03094470EB4
+	for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 19:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790363968; cv=none; b=kE2GLqU6GLX2xge7D7jdAsZjPncnFJ23s1TEJU2Iova6iNjD3JSTE0mY9zwTPxi/le33G2o8gz/CytVkj0h2iOxlsad1wOuK/yQbz2Xw+t7oiCtLL1UFIXvqNGpFt4dLsr4ZIPUpfMJpeCQISi+aq3orRog5PHlImvlgoZDvB/o=
+	t=1790364076; cv=none; b=S86aCdkQrlapE8qSWoo/CF6Mi/rziz6pTzXN6Jlmv0Y+IAbZjXdgK6EniyUumY5MWTDEQrdD0tYb/WQA8k25sMqpL6Sxw4wL4UMXTHH6w6K63s1K3vyZscLrtDzb+6GiuDW5pn6VOw4F/e9gi74pv1MRojMA/o1BBK2xoSBJo8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790363968; c=relaxed/simple;
-	bh=MQT39MSNydZOoQLfZLVQEPg1603ry0TvR1TtvSQECZE=;
+	s=arc-20240116; t=1790364076; c=relaxed/simple;
+	bh=KAeKmkNkjuzZG9TiPoOsXDj84d0lGdVN5Hwuzhdo3zg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GZWZuVzMKCurebkZe4LP4b60tY/FPJl2vrDlQUQCNWofiXvVXPsPkt+gGg2yI0ceQgo+uzcXrQz0pVOGIubXF1hMe0WCjBcEa3Lj0rfzIH+7Btj0g8g0cXeRxe7nNNktCj472SpQJO8sC0Kinp+QqGF95VTy3W7+QF79kZ0nfyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xc0nRRdl; arc=none smtp.client-ip=74.125.229.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=mVmRTVYrLixKEXCdNVmSMgnKjdnizvLZIPG436qXRPbwVr4GVJgcd9LT3zlqzfUGT/Frbvg1S/ubeioQQ4Vf8ogJ6g16iBNSY+jSWC1lYFomm07ixUqHzwNG4IiXakyjjTKwB6xEV/he5N543k/sHC/3MnPdIUx8OTkmmZNdhvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=asnoedmm; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xc0nRRdl"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c3735125bso721003eec.3
-        for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 12:19:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asnoedmm"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-3381a6a05c9so755935eec.1
+        for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 12:21:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790363966; x=1790968766; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790364073; x=1790968873; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=cVQAurF+MYZJ7WaK0MhKpEumwF6uK/6mS+d/0X+gZ3g=;
-        b=Xc0nRRdlq9Nl6Ixk9/tRe/DWFp8LHtdb3YHd+TrJrDZFahVtjdCCx1n1uhksP5F5wW
-         RxIh0Jc1kY8f+fwa7zzuoS4R3BRdrNyZVHCAfoMn2S4XNdfrvjv8PTg+Pn5eHkGpPmLd
-         yduidtXJZwK7KUGu7fHRzlwuQrNKTmxz5gNGpA4GTV7FYBZjNvMDtebj3ombpAzFKUuU
-         5DxYX8eZfmI/OchqqKDrcx2+Cay3G3uROGU9l+GkNWo8b7UFijIG84fZ5K/4AzM+6A2c
-         bz6lDe4pOVGfP2BERnjsI81iI5HHcz+YoeC1qDNWwRSref0NvIpzXVmvgPLT45BlZWtU
-         5TFg==
+        bh=1AlSXbEjro2stcGQ4JnkFbJoY4FQMoz5yKwywTEmVVk=;
+        b=asnoedmmhW/NUgBMm4aBxVE8jnMtXHZduRTjnB9dHZOs+nq3V1NZUKbuLsae4L4pNs
+         0lDYM/GFZFz7WCAEWX2h+4B0/VRo3iPsh6nAwt9jNhrj8YNaB7hj8IonGtdWigySKwSP
+         2Dsw9Wg4WOImILktjwM7YSrdpU5d448GgHLjB1wZ/XLMGFaW6w3pdz+PJizTZ68OGam1
+         wUmHY9vSsdkT/6DatSVcBALStHe5faJmI36urSzWK44YbLUONVANz+RHM4ip++IZ56Do
+         GaqWZwcUsR2lLwAn1GEUazWbXYXKjHmdhrbtplL7plnddVWgJ1QFcsFAmiquxIUcLzhL
+         OaNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790363966; x=1790968766;
+        d=1e100.net; s=20260707; t=1790364073; x=1790968873;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cVQAurF+MYZJ7WaK0MhKpEumwF6uK/6mS+d/0X+gZ3g=;
-        b=zCOp7Lqg3zKmkfMP6lq193ou+J085cB3qrb96U6zabmgC0YxN2SyYcVhasPTaMvvm8
-         LRxfjNOCWncgyF1/kEnsGrlrolyqLELTbduTr9IwBmblU842Thh8ekbJzFdJqvO75Qkn
-         N1b1Oqn/RdXvJYFRAf9MLyti/3sXI8y6z0PIMSBhZOZb3LRxX5Ah629iMuUzfBvgMUek
-         /Hi6o7y+UudiS/+dAHHmsBt4O9xauKB/iUTLFqeRZyl+NhNddrn6Sa8ewcAUKZ2p6LUj
-         A7AdRJBHGjSh7Yk3SxIzFRK+Xd79omJWnszjrVthrqE9JQgRl8Tu3y28BMcpnnzb59nI
-         eDNg==
-X-Forwarded-Encrypted: i=1; AKwUvBwr15l4cN3VlfdZ0f/8XWOl4KEATJPay5CeAXPNYQIH4PEiMqJlMQPgYC6D0y96sdabx0CB8aF+pZtyKQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++lTkjAhW6PZIuq38gXNgeisr0cLVbsC0EIhRsf2Xblnq65W1Q7S
-	Xxlgf84oCnLQZoq3SUERLliDy0FhTdsYOYLUOKN6pYoFK8ibz8a6PWAL
-X-Gm-Gg: AYBFou3Gu2VogVmrmxHf20PCtgBjjTXM9KslIqzoMwWUNe6wQJUuhlsW+4425goLFCZ
-	z2Vm+nCXAd5pi4jcARhvMVMrqouYXISuDGZHVY30dkpEh71BLDTLcflKXQzel2iCsN5AshktWob
-	nK37Zce7Ts+HuDaNw9B5+4MrXxh8q5RNJfF+lyNH9E0p5CoMtudk/uWiAEB9ZQbBM8cTUo1xtsw
-	EIdswPj8jCP5kKLDi8UUwbEAdMkpTbdY8xW1molu9WHegKBAG4EIPY8bXGgPRMZxYmBHkoInaH/
-	wlqtldmxxYzBjPLfOqTcRFoA97MNqT/EwkMLd1yQoIeorzzD5ZVGcTVuAtBjQ8MrHp0YKp4Crsu
-	4nv0YNps4RV0VQXYsBmR6EzH8p6HIFwrnJ5njegXm29yscfctbLbUCJddJfkJuN5MvsCH0FAywn
-	SgXbwbDnhfNs3jaz4qJwu15yos0vaurZp/LKkp5gd345qqezYoryzutvmahFWBsawXTZ7syey1d
-	EV4S/2dXsj8WByZPpYIv2YSMBaIPPjpAWL3skA=
-X-Received: by 2002:a05:7300:b193:b0:339:7e66:5c9b with SMTP id 5a478bee46e88-34271d8cba9mr957272eec.23.1790363965982;
-        Fri, 25 Sep 2026 12:19:25 -0700 (PDT)
+        bh=1AlSXbEjro2stcGQ4JnkFbJoY4FQMoz5yKwywTEmVVk=;
+        b=wthEK53uWPvDNeuLqzRBBavaBMtQb5KcRZjP0izhbweBubNgV4FiEWUZrTXsqzjbyq
+         /OhkPWcX4ZPFAAiw2SvdLS8IGQ33Qj6SPVaCmDyJ649OvrgOneF1gG5136hOAenZDLXG
+         NwhPm+jkvgia7zQHJzJdfMz7j3i9LWvpJ3RGnOwsJSDUh9fI7QUekNcpvClhy4xYiG50
+         StgIxaQVTRKKEaMrs1ynrr44fg9TgNkMjQRwX6Cfq7mHgocn1FZa7RYsNPymR052GQT2
+         D8JbsGu4jewKTtr1nRKbctL48yrHLb+ARR/PqWYkquKndtWRcPNxVhHS62ZfyXCRlrDJ
+         f2xg==
+X-Forwarded-Encrypted: i=1; AKwUvBxZyNYdFbSzQrhbrLyOcKhUkihKCyUYwkZlE6cPmuQz5lgxmBH6sNfRIO8MaLbI4Q54TYGi2My4oeeCgw==@vger.kernel.org
+X-Gm-Message-State: AFuF++mC2FpjwBSUdoaWOqe6kSScqBkXp+7pq+Eox1bvtiFaddlVaCng
+	AJeYcttjx2Oa7kxwy+3f7B1cSbMA30BAwR8mzRL0e8AXuFaPPTHvnoEi4ZaE2ytY
+X-Gm-Gg: AYBFou1mAjPW1kFmCyjbpkyCvKUv7Q3nohmplqsd8qWtd3FLCmjh+vULkvTQFIfzp63
+	fqoqzVnGeOHJjLd4OvFNXGNz4CaiwLaDhpQ6wUGF7y5WCeSuxt7XA3WIRpIzc3AQkL0OZdvZnxy
+	+cjP/e9DBQWPwC3wqIrhGZy+RRTKrRX5KeixSphXSc8c5zCCKJZXw8Wc8Eo6Nit6tnMyCeu/4rk
+	8ZEcg8DoDOqGLoBsTWnT99siLyXTAn7oK8WBzs9D1H3z7Yqu/pIP5T0NXk+ljAxaopv92ssTQes
+	DdSFPFNwzWXh0aePB4Gs4RK8r5yPBw8easFJWHys0VmywUxWg03imhTttX3SU/9rhk2U1NJQBJe
+	ifOMIULi/ikid/FlFKjVtKwvJspvd6B30Un5AfdoawOmytyPp2T10QMK1ONzDCamazwvreZKHhh
+	ygxeQWKpGjMDBNdDau/0UGm5W5jyJGz8FNtioYbUM9r54XDH0IDyNLenOqJPvQrthr/HAkOHrmr
+	GL2kqmGVz1rlOLJ3Rg9vHnK56dCcOcvvhNHpsU=
+X-Received: by 2002:a05:7022:7e85:b0:143:3242:6301 with SMTP id a92af1059eb24-146ce29fde5mr1024848c88.4.1790364071957;
+        Fri, 25 Sep 2026 12:21:11 -0700 (PDT)
 Received: from google.com ([2a00:79e0:2ebe:8:375:19cf:5fee:be32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3413fc2413dsm7509986eec.0.2026.09.25.12.19.24
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-146bb6551d9sm1708481c88.9.2026.09.25.12.21.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 12:19:25 -0700 (PDT)
-Date: Fri, 25 Sep 2026 12:19:21 -0700
+        Fri, 25 Sep 2026 12:21:10 -0700 (PDT)
+Date: Fri, 25 Sep 2026 12:21:07 -0700
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: david@ixit.cz
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
@@ -72,11 +72,10 @@ Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
 	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v7 2/4] dt-bindings: input: touchscreen: st,stmfts:
- Introduce STM FTS5
-Message-ID: <arbIsdvRzPCqPXfs@google.com>
+Subject: Re: [PATCH v7 3/4] Input: stmfts - support FTS5
+Message-ID: <arbJQezIkyvCf1rR@google.com>
 References: <20260907-stmfts5-v7-0-4a53381cd038@ixit.cz>
- <20260907-stmfts5-v7-2-4a53381cd038@ixit.cz>
+ <20260907-stmfts5-v7-3-4a53381cd038@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -85,33 +84,35 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260907-stmfts5-v7-2-4a53381cd038@ixit.cz>
+In-Reply-To: <20260907-stmfts5-v7-3-4a53381cd038@ixit.cz>
 
 Hi David,
 
-On Mon, Sep 07, 2026 at 12:50:20PM +0200, David Heidelberg via B4 Relay wrote:
->          touchscreen@49 {
->              compatible = "st,stmfts";
->              reg = <0x49>;
-> -            interrupt-parent = <&gpa1>;
-> -            interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
-> -            touchscreen-size-x = <1599>;
-> -            touchscreen-size-y = <2559>;
-> +            interrupts-extended = <&gpa1 1 IRQ_TYPE_LEVEL_LOW>;
-> +            touchscreen-size-x = <1600>;
-> +            touchscreen-size-y = <2560>;
+On Mon, Sep 07, 2026 at 12:50:21PM +0200, David Heidelberg via B4 Relay wrote:
+> +static int stmfts5_setup_input(struct stmfts_data *sdata)
+> +{
+> +	struct device *dev = &sdata->client->dev;
+> +
+> +	sdata->mode_switch_gpio = devm_gpiod_get_optional(dev, "mode-switch",
+> +							  GPIOD_OUT_HIGH);
+> +	if (IS_ERR(sdata->mode_switch_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(sdata->mode_switch_gpio),
+> +				     "Failed to get GPIO 'switch'\n");
+> +
+> +	/* Set resolution for accurate calibration */
+> +	if (!input_abs_get_res(sdata->input, ABS_MT_POSITION_X)) {
+> +		input_abs_set_res(sdata->input, ABS_MT_POSITION_X, 10);
+> +		input_abs_set_res(sdata->input, ABS_MT_POSITION_Y, 10);
+> +	}
+> +
+> +	input_set_abs_params(sdata->input, ABS_MT_DISTANCE, 0, 255, 0, 0);
 
-Krzysztof questioned this change. You need to explain why this is being
-changed (and potentially split it into a separate patch as it does not
-seem to be related to STMFT5 introduction).
+You need
 
->              touch-key-connected;
->              avdd-supply = <&ldo30_reg>;
->              vdd-supply = <&ldo31_reg>;
->              ledvdd-supply = <&ldo33_reg>;
->          };
->      };
-> 
+	input_set_abs_params(sdata->input, ABS_MT_TOOL_TYPE,
+			     0, MT_TOOL_PALM, 0, 0);
+
+here, otherwise input core will drop ABS_MT_TOOL_TYPE events.
 
 Thanks.
 
