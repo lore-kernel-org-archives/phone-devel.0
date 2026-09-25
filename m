@@ -1,121 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5C84D9F75;
-	Fri, 25 Sep 2026 18:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35ABA4CE688
+	for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 19:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790360622; cv=none; b=K77/asWSjcdDOvGIux3xbl50xlMk+OyOftipp7UxtzdsQ8MUgpV1NLFUG2/utePIMTZxn61zg16k4rAcZNMvSweZ4WN4P4HgLBs+XVKpZ7lQsciaeJ5ISvFbUdeXzU3ihFbqvWFMQD6CBCH/OG6YiOl41HaV1u+K/k8IcFnxO0s=
+	t=1790363968; cv=none; b=kE2GLqU6GLX2xge7D7jdAsZjPncnFJ23s1TEJU2Iova6iNjD3JSTE0mY9zwTPxi/le33G2o8gz/CytVkj0h2iOxlsad1wOuK/yQbz2Xw+t7oiCtLL1UFIXvqNGpFt4dLsr4ZIPUpfMJpeCQISi+aq3orRog5PHlImvlgoZDvB/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790360622; c=relaxed/simple;
-	bh=h1WnzZmi3pyewV9/vCrQ0MdXk6vxiZtPSBs0IU8k0EM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Ay1eK+gPp9jEaymdpY2qLuzxy+WocAzzVemeI/GkrG5j2lKLOhUIEeKZ/zxV8jN/iDamrAMUyffs5WxyBE1UBYPcEiJQ23KBWVpawz8MbrJdmaQkYuoks3ZlDiKJJ1Hve7aCRhSRlQ+eaJBivSt9QTCK1JUJzQVMzcuDLLRPD6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mA37eq20; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790363968; c=relaxed/simple;
+	bh=MQT39MSNydZOoQLfZLVQEPg1603ry0TvR1TtvSQECZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GZWZuVzMKCurebkZe4LP4b60tY/FPJl2vrDlQUQCNWofiXvVXPsPkt+gGg2yI0ceQgo+uzcXrQz0pVOGIubXF1hMe0WCjBcEa3Lj0rfzIH+7Btj0g8g0cXeRxe7nNNktCj472SpQJO8sC0Kinp+QqGF95VTy3W7+QF79kZ0nfyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xc0nRRdl; arc=none smtp.client-ip=74.125.229.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mA37eq20"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D471F000FF;
-	Fri, 25 Sep 2026 18:23:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790360621;
-	bh=YXD/bcemTBzmK3LtpaIyAjbwDuPz3nvXg3CfboN6GTQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=mA37eq20O1YEAWpJjBKxtTbXtkkBgoE50aP2A7xAjpu91C4KOyM1M1JBylcPUnKx5
-	 D+eVBUF8lbR2+gzSgKo0eDOoL04OpJo5IbV+25xBrnuV8rrWg0O1142R4l9JzfcWnc
-	 Tu2iQDPrnXMXjHHPma0v1l+74kudxCo2EIWgFLeAgyB96g08YMmKkVp3tPOG7Fix9t
-	 9DzrcjPPc6j7bBtBaj3ItZr2ki2w8NkjetA8MqvXntUtWFRB4HvIN6ZIpkdG8/jps8
-	 pYKeNO07vEf/ia9AU7HRHwnu4ot0ng1p45icNpd1vAEPNmkJp5cRgVqzHbVv0lJMpM
-	 5w8zisdxczKCQ==
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- David Rhodes <drhodes@opensource.cirrus.com>, 
- Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, patches@opensource.cirrus.com, 
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
- Charles Keepax <ckeepax@opensource.cirrus.com>
-In-Reply-To: <20260924-pixel3-audio-v4-0-85b5d133aa5e@ixit.cz>
-References: <20260924-pixel3-audio-v4-0-85b5d133aa5e@ixit.cz>
-Subject: Re: (subset) [PATCH v4 0/8] Speakers for Pixel 3 / 3 XL
-Message-Id: <179033512686.204944.16990313455275309471.b4-ty@b4>
-Date: Fri, 25 Sep 2026 12:18:46 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xc0nRRdl"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c3735125bso721003eec.3
+        for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 12:19:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790363966; x=1790968766; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cVQAurF+MYZJ7WaK0MhKpEumwF6uK/6mS+d/0X+gZ3g=;
+        b=Xc0nRRdlq9Nl6Ixk9/tRe/DWFp8LHtdb3YHd+TrJrDZFahVtjdCCx1n1uhksP5F5wW
+         RxIh0Jc1kY8f+fwa7zzuoS4R3BRdrNyZVHCAfoMn2S4XNdfrvjv8PTg+Pn5eHkGpPmLd
+         yduidtXJZwK7KUGu7fHRzlwuQrNKTmxz5gNGpA4GTV7FYBZjNvMDtebj3ombpAzFKUuU
+         5DxYX8eZfmI/OchqqKDrcx2+Cay3G3uROGU9l+GkNWo8b7UFijIG84fZ5K/4AzM+6A2c
+         bz6lDe4pOVGfP2BERnjsI81iI5HHcz+YoeC1qDNWwRSref0NvIpzXVmvgPLT45BlZWtU
+         5TFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790363966; x=1790968766;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cVQAurF+MYZJ7WaK0MhKpEumwF6uK/6mS+d/0X+gZ3g=;
+        b=zCOp7Lqg3zKmkfMP6lq193ou+J085cB3qrb96U6zabmgC0YxN2SyYcVhasPTaMvvm8
+         LRxfjNOCWncgyF1/kEnsGrlrolyqLELTbduTr9IwBmblU842Thh8ekbJzFdJqvO75Qkn
+         N1b1Oqn/RdXvJYFRAf9MLyti/3sXI8y6z0PIMSBhZOZb3LRxX5Ah629iMuUzfBvgMUek
+         /Hi6o7y+UudiS/+dAHHmsBt4O9xauKB/iUTLFqeRZyl+NhNddrn6Sa8ewcAUKZ2p6LUj
+         A7AdRJBHGjSh7Yk3SxIzFRK+Xd79omJWnszjrVthrqE9JQgRl8Tu3y28BMcpnnzb59nI
+         eDNg==
+X-Forwarded-Encrypted: i=1; AKwUvBwr15l4cN3VlfdZ0f/8XWOl4KEATJPay5CeAXPNYQIH4PEiMqJlMQPgYC6D0y96sdabx0CB8aF+pZtyKQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++lTkjAhW6PZIuq38gXNgeisr0cLVbsC0EIhRsf2Xblnq65W1Q7S
+	Xxlgf84oCnLQZoq3SUERLliDy0FhTdsYOYLUOKN6pYoFK8ibz8a6PWAL
+X-Gm-Gg: AYBFou3Gu2VogVmrmxHf20PCtgBjjTXM9KslIqzoMwWUNe6wQJUuhlsW+4425goLFCZ
+	z2Vm+nCXAd5pi4jcARhvMVMrqouYXISuDGZHVY30dkpEh71BLDTLcflKXQzel2iCsN5AshktWob
+	nK37Zce7Ts+HuDaNw9B5+4MrXxh8q5RNJfF+lyNH9E0p5CoMtudk/uWiAEB9ZQbBM8cTUo1xtsw
+	EIdswPj8jCP5kKLDi8UUwbEAdMkpTbdY8xW1molu9WHegKBAG4EIPY8bXGgPRMZxYmBHkoInaH/
+	wlqtldmxxYzBjPLfOqTcRFoA97MNqT/EwkMLd1yQoIeorzzD5ZVGcTVuAtBjQ8MrHp0YKp4Crsu
+	4nv0YNps4RV0VQXYsBmR6EzH8p6HIFwrnJ5njegXm29yscfctbLbUCJddJfkJuN5MvsCH0FAywn
+	SgXbwbDnhfNs3jaz4qJwu15yos0vaurZp/LKkp5gd345qqezYoryzutvmahFWBsawXTZ7syey1d
+	EV4S/2dXsj8WByZPpYIv2YSMBaIPPjpAWL3skA=
+X-Received: by 2002:a05:7300:b193:b0:339:7e66:5c9b with SMTP id 5a478bee46e88-34271d8cba9mr957272eec.23.1790363965982;
+        Fri, 25 Sep 2026 12:19:25 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:375:19cf:5fee:be32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3413fc2413dsm7509986eec.0.2026.09.25.12.19.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 12:19:25 -0700 (PDT)
+Date: Fri, 25 Sep 2026 12:19:21 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: david@ixit.cz
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Henrik Rydberg <rydberg@bitmath.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Petr Hodina <petr.hodina@protonmail.com>, 
+	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v7 2/4] dt-bindings: input: touchscreen: st,stmfts:
+ Introduce STM FTS5
+Message-ID: <arbIsdvRzPCqPXfs@google.com>
+References: <20260907-stmfts5-v7-0-4a53381cd038@ixit.cz>
+ <20260907-stmfts5-v7-2-4a53381cd038@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2152; i=broonie@kernel.org;
- h=from:subject:message-id; bh=h1WnzZmi3pyewV9/vCrQ0MdXk6vxiZtPSBs0IU8k0EM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqtrwmZJjTUy9mi4xOWCYdUDcLFZ0FI7ejsKp1d
- XYSpKhfHomJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCara8JgAKCRAk1otyXVSH
- 0EJXCACHAXZzQJLSmm2F8tvsa9eZCAbaljZmp6TzvJQYT84xmk5ldGmiVssXgmZF0bkU/SlWArG
- TKl3kdVHID43faOm04jIZVT17+2Ii7iE71xRC/1KnmeFwhNcJLUObD9oj3Ot/2zcCQLeGM7T++c
- Xql7S5zUnX+piEmUgnpqlav/Zlc//xuJd0pOiPluLkUpER4FCgRrpzHTI4XybLb1KckELoPY32+
- u96ViCIbhTcqg1jo1MWm1dY6S0YMwmIDb7gaag9nAfgXUNf5bQM726v45xB4bvioi3LlG89PZSM
- EgXbRZwkYq8rf3JdG9vZ2kKqDmE8QP20SCiuA+Xlzo1t3ff+
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260907-stmfts5-v7-2-4a53381cd038@ixit.cz>
 
-On Thu, 24 Sep 2026 15:24:05 +0200, David Heidelberg wrote:
-> Speakers for Pixel 3 / 3 XL
+Hi David,
+
+On Mon, Sep 07, 2026 at 12:50:20PM +0200, David Heidelberg via B4 Relay wrote:
+>          touchscreen@49 {
+>              compatible = "st,stmfts";
+>              reg = <0x49>;
+> -            interrupt-parent = <&gpa1>;
+> -            interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
+> -            touchscreen-size-x = <1599>;
+> -            touchscreen-size-y = <2559>;
+> +            interrupts-extended = <&gpa1 1 IRQ_TYPE_LEVEL_LOW>;
+> +            touchscreen-size-x = <1600>;
+> +            touchscreen-size-y = <2560>;
+
+Krzysztof questioned this change. You need to explain why this is being
+changed (and potentially split it into a separate patch as it does not
+seem to be related to STMFT5 introduction).
+
+>              touch-key-connected;
+>              avdd-supply = <&ldo30_reg>;
+>              vdd-supply = <&ldo31_reg>;
+>              ledvdd-supply = <&ldo33_reg>;
+>          };
+>      };
 > 
-> This series address:
-> 
-> 0. demistify the hex to BIT() macro and add left/right rx spk
-> 1. most likely wrongly set DSP_B in sdm845.c
->    my guess this is because TDM was never used in the mainline with
->    sdm845
-> 2. applying correct mask to left/right speaker for the TDM in sdm845.c,
->    so both speakers can work simultaneusly
-> 3. setting sysclk at startups, which some codecs need (such as cs35l36)
-> 4. setting proper tdm slot in the cs35l36 driver
-> 5. device-tree wiring for Pixel 3 / 3 XL
-> 
-> [...]
 
-Applied to
+Thanks.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.4
-
-Thanks!
-
-[1/8] ASoC: qcom: sdm845: Demystify TDM masks a bit
-      https://git.kernel.org/broonie/sound/c/090991b292c6
-[2/8] ASoC: qcom: sdm845: use DSP_A format for TDM codec DAIs
-      https://git.kernel.org/broonie/sound/c/ed41c80271e6
-[3/8] ASoC: qcom: sdm845: Use per-speaker RX masks for TDM slot assignment
-      https://git.kernel.org/broonie/sound/c/84c3a8e05ce8
-[4/8] ASoC: qcom: sdm845: Set codec dai and component sysclk during startup
-      https://git.kernel.org/broonie/sound/c/5e9f324509a7
-[5/8] ASoC: cs35l36: Implement set_tdm_slot to program RX and TX slots
-      https://git.kernel.org/broonie/sound/c/f390794e6354
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Dmitry
