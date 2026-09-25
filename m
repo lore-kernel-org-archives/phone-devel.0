@@ -1,38 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793284D37AC;
-	Fri, 25 Sep 2026 15:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5C84D9F75;
+	Fri, 25 Sep 2026 18:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790350089; cv=none; b=Cw18/3bQzsigwJhGE/XZkAQqsHm6hyVb+G2v4vG5zVvww4EiiA4PFnIPrZVOq9qTfRlnHQYqpEj8J6lTI9l3Po/1O7HqRBU8Vwc9L9ThzZMTO/hJ8s/0Twb8fBUSyaxwPAsGsXP1kqFiywY1FRF2o1+N0Xt6HoEBGyLHY60M+aY=
+	t=1790360622; cv=none; b=K77/asWSjcdDOvGIux3xbl50xlMk+OyOftipp7UxtzdsQ8MUgpV1NLFUG2/utePIMTZxn61zg16k4rAcZNMvSweZ4WN4P4HgLBs+XVKpZ7lQsciaeJ5ISvFbUdeXzU3ihFbqvWFMQD6CBCH/OG6YiOl41HaV1u+K/k8IcFnxO0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790350089; c=relaxed/simple;
-	bh=QNAGBiWdKd8lXUSWrJy14KTJktuXjBh8qxz5ZD1Czqw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pEmgF95mffjsJqz86WAMioN240NORhj84RCAxNAJUQatGPN0bKdekvwN4XaP43pVZ1INEW+QgEiPwZswKv6DfT2rBICXs79sXbMzV3PpaKzR6bQFwahdAtG4C3/CjrQRTMzyWrsdU5oifsuAT+usFQNUp8xvXtYhiQ/L2SvWHl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndaIeT50; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790360622; c=relaxed/simple;
+	bh=h1WnzZmi3pyewV9/vCrQ0MdXk6vxiZtPSBs0IU8k0EM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Ay1eK+gPp9jEaymdpY2qLuzxy+WocAzzVemeI/GkrG5j2lKLOhUIEeKZ/zxV8jN/iDamrAMUyffs5WxyBE1UBYPcEiJQ23KBWVpawz8MbrJdmaQkYuoks3ZlDiKJJ1Hve7aCRhSRlQ+eaJBivSt9QTCK1JUJzQVMzcuDLLRPD6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mA37eq20; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndaIeT50"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A1169C4AF62;
-	Fri, 25 Sep 2026 15:28:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790350088;
-	bh=QNAGBiWdKd8lXUSWrJy14KTJktuXjBh8qxz5ZD1Czqw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ndaIeT50NjECFHnO8ZlACwfDR/YM2ZwV02iRwVVUoiQkBAfKJqFjJsutgrhy17D+9
-	 uwyD74/QtS8LX4KA/PwSTsgzKULlAy01gWePCCEpKVR7knzXjzZnLTj+vTyaazS2zg
-	 QoebQp4t6dKzQnIViTGHViwDfEEqYk9zDx65E9t02tzZQZuA6ycqesG1KHDzvfKXq4
-	 IUFZi8xDshra0NWPKP5QSGAwY3r35bX8NaHp2SWHp+fJoMrmsXB4uPiNnYN8M0iw1w
-	 ixTpIG5ATfdhBBOffy6y977jHXkQg6t3B1ahebte2UJZrij11XNrD065pW+PMf5zes
-	 wZbZtx9NbCYHw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9035EC98328;
-	Fri, 25 Sep 2026 15:28:08 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 25 Sep 2026 17:28:08 +0200
-Subject: [PATCH v5 7/7] arm64: dts: qcom: sdm845-google: Add WCD9340 codec
- and microphone capture
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mA37eq20"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D471F000FF;
+	Fri, 25 Sep 2026 18:23:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790360621;
+	bh=YXD/bcemTBzmK3LtpaIyAjbwDuPz3nvXg3CfboN6GTQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=mA37eq20O1YEAWpJjBKxtTbXtkkBgoE50aP2A7xAjpu91C4KOyM1M1JBylcPUnKx5
+	 D+eVBUF8lbR2+gzSgKo0eDOoL04OpJo5IbV+25xBrnuV8rrWg0O1142R4l9JzfcWnc
+	 Tu2iQDPrnXMXjHHPma0v1l+74kudxCo2EIWgFLeAgyB96g08YMmKkVp3tPOG7Fix9t
+	 9DzrcjPPc6j7bBtBaj3ItZr2ki2w8NkjetA8MqvXntUtWFRB4HvIN6ZIpkdG8/jps8
+	 pYKeNO07vEf/ia9AU7HRHwnu4ot0ng1p45icNpd1vAEPNmkJp5cRgVqzHbVv0lJMpM
+	 5w8zisdxczKCQ==
+From: Mark Brown <broonie@kernel.org>
+To: Srinivas Kandagatla <srini@kernel.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, David Rhodes <david.rhodes@cirrus.com>, 
+ Richard Fitzgerald <rf@opensource.cirrus.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ David Rhodes <drhodes@opensource.cirrus.com>, 
+ Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>
+Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, patches@opensource.cirrus.com, 
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Charles Keepax <ckeepax@opensource.cirrus.com>
+In-Reply-To: <20260924-pixel3-audio-v4-0-85b5d133aa5e@ixit.cz>
+References: <20260924-pixel3-audio-v4-0-85b5d133aa5e@ixit.cz>
+Subject: Re: (subset) [PATCH v4 0/8] Speakers for Pixel 3 / 3 XL
+Message-Id: <179033512686.204944.16990313455275309471.b4-ty@b4>
+Date: Fri, 25 Sep 2026 12:18:46 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,219 +53,69 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-pixel3-audio-v5-7-7ffb32c980bf@ixit.cz>
-References: <20260925-pixel3-audio-v5-0-7ffb32c980bf@ixit.cz>
-In-Reply-To: <20260925-pixel3-audio-v5-0-7ffb32c980bf@ixit.cz>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- David Rhodes <drhodes@opensource.cirrus.com>, 
- Conor Dooley <conor+dt@kernel.org>, Abel Vesa <abelvesa@kernel.org>
-Cc: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, 
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, patches@opensource.cirrus.com, 
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4206; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=s0JlhQpLgoJtR5H5Po2ltSAeqAV+BYppQyxD+ybwcos=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtpMFVbYMqMj+/OuZZTrhinnHc7nMhI4O7jiIP
- zxYxdrOpzmJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaraTBQAKCRBgAj/E00kg
- cntlEADRps8DGSpz0v+/fv6UsFJjNbTWF+r8XzuDksSSYpojdDhhtiWb5jcDxzv9ef/XXp6Mt9u
- OAx7bGtqOce0ukUdCcxVG0bYXmCHSZS75Q6TwbrfIu1NRlPYsItrxi43V+Q9Zxhb+1vDx6ji1QF
- 2ZDDZrQZaMm6KjiQdN5tzcWDDSFSdr+BLwNzqsYsTLC+dgWLb+SGe2MmlinRtuN0iZ43Cb7Aq6B
- R38I5tRuDFu8xacFyTWSJU/F5D+TqLdzUPLQ9i2tiL63Pp1ZLBgT19DjM4dWGuMN106ijwq6OJ2
- sxeiCr79vHd9PGBM1/m82G+GJ1G3iohrI1H74HDAQpIkXcmC2XpgGwo1mG/xUihTj7sZMybStuV
- odhE1ZWKikmF0G7WK7vTj0MX7ksTgGgRLpGNVQBw2aU4QeaOvLHQujaNQfTAYS/dzC4AFIzWZaO
- GRTWLfxgxROPHWiEysv6NHVGXRXZ7oddMpRqvzlHbAP33mJP0OhIYu82isMnSU4PjbfbkMkI06w
- mYxWGBLOkjaIy/NGAl8Ppqq7ff/XTCTY5FozajZjkILlmkX8J+s1bYI7Ua61MywP6FHrs39R4Ks
- Dux/aDhMomQlB1rDySIgodQ9tTMAiDaBkfjDwPdLQOONTRKp0FSglRMUdA/Drt2GzLj7pFPEboU
- NWWk67TSbk/3Gkg==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2152; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=h1WnzZmi3pyewV9/vCrQ0MdXk6vxiZtPSBs0IU8k0EM=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqtrwmZJjTUy9mi4xOWCYdUDcLFZ0FI7ejsKp1d
+ XYSpKhfHomJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCara8JgAKCRAk1otyXVSH
+ 0EJXCACHAXZzQJLSmm2F8tvsa9eZCAbaljZmp6TzvJQYT84xmk5ldGmiVssXgmZF0bkU/SlWArG
+ TKl3kdVHID43faOm04jIZVT17+2Ii7iE71xRC/1KnmeFwhNcJLUObD9oj3Ot/2zcCQLeGM7T++c
+ Xql7S5zUnX+piEmUgnpqlav/Zlc//xuJd0pOiPluLkUpER4FCgRrpzHTI4XybLb1KckELoPY32+
+ u96ViCIbhTcqg1jo1MWm1dY6S0YMwmIDb7gaag9nAfgXUNf5bQM726v45xB4bvioi3LlG89PZSM
+ EgXbRZwkYq8rf3JdG9vZ2kKqDmE8QP20SCiuA+Xlzo1t3ff+
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-From: David Heidelberg <david@ixit.cz>
+On Thu, 24 Sep 2026 15:24:05 +0200, David Heidelberg wrote:
+> Speakers for Pixel 3 / 3 XL
+> 
+> This series address:
+> 
+> 0. demistify the hex to BIT() macro and add left/right rx spk
+> 1. most likely wrongly set DSP_B in sdm845.c
+>    my guess this is because TDM was never used in the mainline with
+>    sdm845
+> 2. applying correct mask to left/right speaker for the TDM in sdm845.c,
+>    so both speakers can work simultaneusly
+> 3. setting sysclk at startups, which some codecs need (such as cs35l36)
+> 4. setting proper tdm slot in the cs35l36 driver
+> 5. device-tree wiring for Pixel 3 / 3 XL
+> 
+> [...]
 
-The Pixel 3 sound card so far only drove the two CS35L36 speaker
-amplifiers. Wire in the WCD9340 codec , add a SLIMbus capture link
-for it and route the three digital microphones
+Applied to
 
-Based on work done by Casey Tunturi.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.4
 
-Assisted-by: LLM
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 58 ++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+Thanks!
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-index 68d26c1a06d0c..8e303a91bfaa2 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-@@ -4,18 +4,20 @@
- 
- #include <dt-bindings/arm/qcom,ids.h>
- #include <dt-bindings/dma/qcom-gpi.h>
- #include <dt-bindings/input/linux-event-codes.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
-+#include <dt-bindings/sound/qcom,wcd934x.h>
- 
- #include "sdm845.dtsi"
-+#include "sdm845-wcd9340.dtsi"
- #include "pm8998.dtsi"
- #include "pmi8998.dtsi"
- 
- /delete-node/ &mpss_region;
- /delete-node/ &venus_mem;
- /delete-node/ &cdsp_mem;
- /delete-node/ &mba_region;
- /delete-node/ &slpi_mem;
-@@ -512,16 +514,20 @@ dai@72 {
- 		qcom,tdm-data-align = <0>;
- 	};
- };
- 
- &q6asmdai {
- 	dai@0 {
- 		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
- 	};
-+
-+	dai@1 {
-+		reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
-+	};
- };
- 
- &qupv3_id_0 {
- 	status = "okay";
- };
- 
- &qupv3_id_1 {
- 	status = "okay";
-@@ -539,40 +545,81 @@ &qup_uart9_tx {
- 
- &sound {
- 	compatible = "qcom,sdm845-sndcard";
- 	model = "Pixel 3";
- 	pinctrl-0 = <&quat_mi2s_active>, <&quat_mi2s_sd0_active>,
- 		    <&quat_mi2s_sd1_active>;
- 	pinctrl-names = "default";
- 
-+	audio-routing = "DMIC0", "MCLK", /* Top mic */
-+			"DMIC0", "MIC BIAS1",
-+			"DMIC3", "MCLK", /* Top-edge mic */
-+			"DMIC3", "MIC BIAS3",
-+			"DMIC4", "MCLK", /* Bottom mic */
-+			"DMIC4", "MIC BIAS4";
-+
- 	/* mm[0-9]-dai-link nodes must be positioned first regardless of sorting */
- 	mm1-dai-link {
- 		link-name = "MultiMedia1";
- 
- 		cpu {
- 			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
- 		};
- 	};
- 
-+	mm2-dai-link {
-+		link-name = "MultiMedia2";
-+
-+		cpu {
-+			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA2>;
-+		};
-+	};
-+
- 	cs35l36-dai-link {
- 		link-name = "Speaker Playback";
- 
- 		codec {
- 			sound-dai = <&cs35l36_bottom>, <&cs35l36_top>;
- 		};
- 
- 		cpu {
- 			sound-dai = <&q6afedai QUATERNARY_TDM_RX_0>;
- 		};
- 
- 		platform {
- 			sound-dai = <&q6routing>;
- 		};
- 	};
-+
-+	slimcap-dai-link {
-+		link-name = "SLIM Capture 1";
-+
-+		codec {
-+			sound-dai = <&wcd9340 AIF1_CAP>;
-+		};
-+
-+		cpu {
-+			sound-dai = <&q6afedai SLIMBUS_0_TX>;
-+		};
-+
-+		platform {
-+			sound-dai = <&q6routing>;
-+		};
-+	};
-+};
-+
-+&swm {
-+	/*
-+	 * Nothing hangs off the codec's SoundWire bus on this board: the
-+	 * speakers are CS35L36 amplifiers on QUAT_TDM. With an empty bus the
-+	 * controller reports port mismatches and frame-generator timeouts on
-+	 * every boot.
-+	 */
-+	status = "disabled";
- };
- 
- &tlmm {
- 	gpio-reserved-ranges = < 0 4>, /* SPI (Intel MNH Pixel Visual Core) */
- 			       <81 4>; /* SPI (most likely Fingerprint Cards FPC1075) */
- 
- 	nfc_default: nfc-default-state {
- 		enable-pins {
-@@ -718,16 +765,27 @@ &usb_1_qmpphy {
- };
- 
- &venus {
- 	firmware-name = "qcom/sdm845/Google/blueline/venus.mbn";
- 
- 	status = "okay";
- };
- 
-+&wcd9340 {
-+	/* PM8998 LN_BB_CLK2 feeds the Pixel Visual Core on this board */
-+	clocks = <&rpmhcc RPMH_LN_BB_CLK3>;
-+	reset-gpios = <&tlmm 64 GPIO_ACTIVE_HIGH>;
-+	vdd-buck-supply = <&vreg_s4a_1p8>;
-+	vdd-buck-sido-supply = <&vreg_s4a_1p8>;
-+	vdd-tx-supply = <&vreg_s4a_1p8>;
-+	vdd-rx-supply = <&vreg_s4a_1p8>;
-+	vdd-io-supply = <&vreg_s4a_1p8>;
-+};
-+
- &wifi {
- 	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
- 	vdd-1.8-xo-supply = <&vreg_pmu_xo>;
- 	vdd-1.3-rfa-supply = <&vreg_pmu_rf>;
- 	vdd-3.3-ch0-supply = <&vreg_pmu_ch0>;
- 
- 	qcom,snoc-host-cap-8bit-quirk;
- 
+[1/8] ASoC: qcom: sdm845: Demystify TDM masks a bit
+      https://git.kernel.org/broonie/sound/c/090991b292c6
+[2/8] ASoC: qcom: sdm845: use DSP_A format for TDM codec DAIs
+      https://git.kernel.org/broonie/sound/c/ed41c80271e6
+[3/8] ASoC: qcom: sdm845: Use per-speaker RX masks for TDM slot assignment
+      https://git.kernel.org/broonie/sound/c/84c3a8e05ce8
+[4/8] ASoC: qcom: sdm845: Set codec dai and component sysclk during startup
+      https://git.kernel.org/broonie/sound/c/5e9f324509a7
+[5/8] ASoC: cs35l36: Implement set_tdm_slot to program RX and TX slots
+      https://git.kernel.org/broonie/sound/c/f390794e6354
 
--- 
-2.55.0
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
