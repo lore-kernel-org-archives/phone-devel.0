@@ -1,167 +1,299 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281C74FC8D7;
-	Fri, 25 Sep 2026 21:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074084E56EB
+	for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 22:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790371343; cv=none; b=ZkeXEIrbuLBtQxeenk2y4zbO90Kfx79Uz8GN71KyeyqJuelhZ57swMxdR5e7dmGK4Nm0XAiZGLZ4XeEbSN1DNCTOfCzw6mGJeQ757XyurCWWJVmxc6BKVUt2Wy4dFXjqoZ6ijxYirYyHno4YqETPuPXsMolIsRNG7K1wnVfv52w=
+	t=1790374698; cv=none; b=DrfUYRhSBs/Z8ftaOG0dIQsqYk9mXpoDWVmB+GKRjxy0xJ457e+wN54a7FEUaUqVe646BoRfXyx7S+reH3vtshasx0gPCZTanhTWqtctGG8lnJsfbsRU3RVqQlQIxv/bp7dq7ZOqOgPx0AQ8c7qKF3kgue2Bi3gw+UYf36EUP5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790371343; c=relaxed/simple;
-	bh=i5zkR8i/qyOP6qT5kYypP8zr4dfV4rLPl/6fLtdUfIU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MXrY7fBdgfUWlZHnSsnN07UmrSv+49/ZcOP0VEiCI1luPg9gS8dY3iUv1uB7icIkd2V/sw/ZIwmeaSl7LyuRMC3a9mBz4p5fZgaihmj+Gb4nVVY8ikRirp79WFLE0IwU9kpMr+wekawu19y6mDST4FMK91ACaJCNhKyxAHMjZqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TH6EtPQ0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790374698; c=relaxed/simple;
+	bh=lUyCqvIhkx+oa2eX2J77bBkV43sFd/DsKxrwXJcJW70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EN9EyhDw3Z45IoDMZ2HbUAu+qGyc2nQ3WCt7/b/Bc1kQWAhkNt1AC67CGRssDRqyW4lI1dplgE3q8CAvrqbaNEadYyLLl7Hdl6bZ/WQWvIvB6cH7Tb4wjiFcBaLUyb5l1IAkGSM98lJX5pxvnQ3+/lU6Qxfn2b/qlnvpKgUgnQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jqK0M+3r; arc=none smtp.client-ip=74.125.229.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TH6EtPQ0"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DA1ADC2BCFD;
-	Fri, 25 Sep 2026 21:22:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790371342;
-	bh=i5zkR8i/qyOP6qT5kYypP8zr4dfV4rLPl/6fLtdUfIU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=TH6EtPQ0tRs424TqcjGYt5eBzku+Rwc59zJ15tVWOc5T9hkUx+hH7I6DrlsoqN80Z
-	 6FXu5OWkipnWap7iOAyKGxKQuQrfGVRT38TlibwnCRTUe5KuYY7SC2JlRIaxfmFDx/
-	 sfJ05rPmGpxs2ptJdJ+FnXb8MU2T7DtNMazu0iEFoG0m6VfrgV5B2rda/0SfG2usDP
-	 0JGQIASKVb8HHlNHCpcOE+dGdpJZFhR58Q18mIcAzQLjPzZWooh+uHDr/jJm5mX/hY
-	 yJvdhhAR5Shc8gKOJq+SmpyBGeyFw2rfjKesVlq8AJdhFqp5MzxiiZ6uxaysSCFsvL
-	 KxjjpqdZO9eNg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C68CAC98330;
-	Fri, 25 Sep 2026 21:22:22 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 25 Sep 2026 23:22:23 +0200
-Subject: [PATCH v8 5/5] arm64: dts: qcom: sdm845-google: Add STM FTS
- touchscreen support
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqK0M+3r"
+Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-144f9160b81so499993c88.0
+        for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 15:18:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790374695; x=1790979495; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ayLp4Jx22xan0yoaXXO0H5UJI37HFonSA4zUCdy+nIo=;
+        b=jqK0M+3rOKmnvbUCAihw+0CnJmxPVScYGgTauAfdDzHWgiMVfW72Ga9i6+HDuThXuU
+         4U6sFRkMObqrl/wYTTFVVwBGXcDlP4Ionpv3mxDVzBZBrL3CGEyawwTfbl7qsr/kkPi2
+         V8rM7wMyJh7B7UEj4XvR38+CmkaSV8rSb8X43A5qDDJ2ZJZdbBL/zaQj6JzmbxjaM8Q6
+         tyVfcVJuBqXBVv4lf27RqQgS7vb+erG9qGWfQrDnAkKb9SWQi1pyVkq7wCG/UZw82zsi
+         gbTP+KsDDWiW4JtEnBiVkF60eSmsEizKkfT7x4EWNyrknbhgaiyDF5/6Vv62aTTPX2xp
+         BrcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790374695; x=1790979495;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ayLp4Jx22xan0yoaXXO0H5UJI37HFonSA4zUCdy+nIo=;
+        b=S5J35WWWFdptOqgr0BehaPgPkxsNhNGpKhfAQnXkQUzkOG4esK8qGRvBC3Pg81h6mR
+         pAKFQ/mRx+wQPMurc3EOcIoFI1+dTpNFa+B3914QwFoJyyiIZfZX4AiyiQ3oqzttDlLv
+         qIwSwtIsFlBWElmnMjBW5rPYjkkE+WRcTB0YbVZ95ujPO+Dzj8aR1VQsdtVfdirUVv73
+         KipWnPV840F2D/ymduczwCdpboyXf5S5IwZ9Ldj65ApQKQuVxdE+elAfm/hBd3rwEGXA
+         +rau42k5VvWmfLXwQcDCOxA2YmcQqMAeR3gQyfGHZTTO4OYKAbJb9vREoV7N0YrgKNu/
+         KXMw==
+X-Forwarded-Encrypted: i=1; AKwUvBwWKED07mnLApe22ng+5as9Cpyadr5mvz+Bf6UZDrFZkGRpGqduusxrAFGdJLjzUA5z/MybsVZgWOlQWw==@vger.kernel.org
+X-Gm-Message-State: AFuF++nIVcb3Nmd9yp/ZNFIDfalcorN95gOxeqg+yDGWfZUvzypG7wVU
+	VAoL1DUs5MUu9XvOh2Q8TtxZafk/8js2nD1xmKGkLhqJwp57LsoX3aKS
+X-Gm-Gg: AYBFou1DK5wm7fHBiX3h2VFxEv14Gs0TBV0MBTHeEXKVZka1z7ngrImyN5NK+pQ2a3G
+	fUA1QOdzgmgOvpvRN2UuyrUrbPiThOOzfXrvNgnPgdg+lfN1AUT0rcpMEdFMedA7YAG8+axcXGd
+	wfQhraRU2piepZJ5RTsLZ091/IhW/GT9u7PYf19stSBKDg5SDJJd6/Ub1rYE8fQNhWD2bYNtiMR
+	DYoOjg6CtlvnxmRScWc9wHTAmM3yZgjoHzsQcdIPV/529qxxCF+CWhOySlcDNiepfSu9PRPnuMp
+	3WEh6mvjHq9E4bCXdXqbIrsY6I8lDsZyce6vAD83D3veBtFlbwur3qYm0vUlyMGQ2HtzSE1NThE
+	y5PtD+9CS3gG747LF0Rba7MHeAXZR3rABbhDxHfoDZmd0P8ENgaNzpVNLslF9zfqKgxQ5lTMeDk
+	U7ujG8xUSyW/lz8ff9+E7IVkQxs4P0spkGsrH+G0v6vPsrmkEvp9TdAdBVplL+w1KzeDBjGhWwF
+	cCh3PXgFSuIbAteggEcqriuG+9c2KBX8+3+iaw=
+X-Received: by 2002:a05:7022:288:b0:138:3613:dc6 with SMTP id a92af1059eb24-146ce67ee45mr1270576c88.14.1790374694857;
+        Fri, 25 Sep 2026 15:18:14 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:375:19cf:5fee:be32])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145aa0cb6b9sm7166213c88.1.2026.09.25.15.18.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 15:18:14 -0700 (PDT)
+Date: Fri, 25 Sep 2026 15:18:10 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: david@ixit.cz
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Henrik Rydberg <rydberg@bitmath.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Petr Hodina <petr.hodina@protonmail.com>, 
+	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	phone-devel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v8 1/5] Input: stmfts - wait for controller ready after
+ reset
+Message-ID: <arbyyscK-3xYlj6H@google.com>
+References: <20260925-stmfts5-v8-0-0fcf49e2c85f@ixit.cz>
+ <20260925-stmfts5-v8-1-0fcf49e2c85f@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-stmfts5-v8-5-0fcf49e2c85f@ixit.cz>
-References: <20260925-stmfts5-v8-0-0fcf49e2c85f@ixit.cz>
-In-Reply-To: <20260925-stmfts5-v8-0-0fcf49e2c85f@ixit.cz>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Abel Vesa <abel.vesa@oss.qualcomm.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2339; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=uByqGmdgQrcbmESUA0mr/va47Uf9HHtA6cjJdf5std0=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqtuYMtuSAMZngZy19YCnOrmZ2QrkIiPZUKVdob
- v+EV9XZgeaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCarbmDAAKCRBgAj/E00kg
- ciWRD/4rOU0tR8/3StLODI1Ciqe6j7mo43XwWt5DDIunIagZE0HuwAxILx+Zi3wpm1hYzPW6c92
- 0VqthbFCm7F8edtttgnZ4MaEgJ+DOqBxd0/4v+k3Kb1GMJVwztdoF6WBBk2Gmq1jAqSz3el/hyW
- /HhBVa7O3SxhSZmiSYs9A76e6+StgDfbA6EGArgW9dgQSs90nzXiXcXZsbM65LcH5+TKrppQFLj
- 0KHP5VUaWGMjW++CeZmfXArhKqz/SZbtAldBikIwZZwWdjEGY4f4avqiGKBr+HNfKyv23AYpV3B
- MEsiE4R3Gb2AYopull/wuFNotXIdkpS71S21VogyE75ADHAYMq1ROPoKVMLHm88B/ozQdpJQqpr
- Q+OfvsxY0tamEWYgi7wx7L4lbsBuWH91I3vZMC6yAmsyISraP8TIGxJjDLgAzJW9TC9enBrP1PI
- C8NvNaxag63ehjVfOUIqrhY0fixXBzNZ2xpxTeB+6dlHFO1/V5gpuqc4WzL08YYhHiuUbHpW3Hf
- 5AWx2yOocdMDjfOyaR5/PiSamZe1k0P5VFSp94j5u77Y4rA5bMYNrI6P/aT4NYUyLT9I/Zv1CiD
- U0yxdU57THR1xeZ8nd9kWuBckhcqKkFuqih30SJEDJCwDkX3olBExeXi4/1L8ivRf+uTWWXwFJp
- rpDm8eZDL1KRNrw==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260925-stmfts5-v8-1-0fcf49e2c85f@ixit.cz>
 
-From: Petr Hodina <petr.hodina@protonmail.com>
+On Fri, Sep 25, 2026 at 11:22:19PM +0200, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> After releasing the reset line stmfts_reset() sleeps a fixed 50 ms and
+> stmfts_power_on() another 50 ms before the first I2C access.  That is
+> enough for a warm reset, but when both supplies were really cut during
+> system suspend the controller boots from cold and can need longer.  If
+> it does, the first read fails, stmfts_resume() returns an error and the
+> touchscreen is left powered off with its interrupt disabled.
+> 
+> The controller posts a controller ready event once it has booted, and
+> the event parser already completes cmd_done on it.  Enable the interrupt
+> right after releasing reset and wait for that event instead of sleeping,
+> giving the controller 300 ms, the total budget the vendor driver allows.
+> Boards without a reset line keep the old timing.
+> 
+> Usually phones such as Pixel 4a and Xiaomi Mi 8 needs longer delay, so
+> without this change touchscreen stops working.
+> 
+> Fixes: 8a1f9de80e45 ("Input: stmfts - add optional reset GPIO support")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  drivers/input/touchscreen/stmfts.c | 60 ++++++++++++++++++++++++--------------
+>  1 file changed, 38 insertions(+), 22 deletions(-)
+> 
+> diff --git a/drivers/input/touchscreen/stmfts.c b/drivers/input/touchscreen/stmfts.c
+> index 972687797f826..1720202d6186b 100644
+> --- a/drivers/input/touchscreen/stmfts.c
+> +++ b/drivers/input/touchscreen/stmfts.c
+> @@ -59,16 +59,18 @@
+>  #define STMFTS_MASK_X_MSB			0x0f
+>  #define STMFTS_MASK_Y_LSB			0xf0
+>  
+>  /* key related event masks */
+>  #define STMFTS_MASK_KEY_NO_TOUCH		0x00
+>  #define STMFTS_MASK_KEY_MENU			0x01
+>  #define STMFTS_MASK_KEY_BACK			0x02
+>  
+> +#define STMFTS_RESET_TIMEOUT_MS	300
+> +
+>  #define STMFTS_EVENT_SIZE	8
+>  #define STMFTS_STACK_DEPTH	32
+>  #define STMFTS_DATA_MAX_SIZE	(STMFTS_EVENT_SIZE * STMFTS_STACK_DEPTH)
+>  #define STMFTS_MAX_FINGERS	10
+>  #define STMFTS_DEV_NAME		"stmfts"
+>  
+>  static const struct regulator_bulk_data stmfts_supplies[] = {
+>  	{ .supply = "vdd" },
+> @@ -538,25 +540,16 @@ static int stmfts_read_system_info(struct stmfts_data *sdata)
+>  	sdata->chip_ver = reg[0];
+>  	sdata->fw_ver = be16_to_cpup((__be16 *)&reg[2]);
+>  	sdata->config_id = reg[4];
+>  	sdata->config_ver = reg[5];
+>  
+>  	return 0;
+>  }
+>  
+> -static void stmfts_reset(struct stmfts_data *sdata)
+> -{
+> -	gpiod_set_value_cansleep(sdata->reset_gpio, 1);
+> -	msleep(20);
+> -
+> -	gpiod_set_value_cansleep(sdata->reset_gpio, 0);
+> -	msleep(50);
+> -}
+> -
+>  static int stmfts_configure(struct stmfts_data *sdata)
+>  {
+>  	int err;
+>  
+>  	err = stmfts_command(sdata, STMFTS_SYSTEM_RESET);
+>  	if (err)
+>  		return err;
+>  
+> @@ -582,53 +575,76 @@ static int stmfts_configure(struct stmfts_data *sdata)
+>  
+>  	return 0;
+>  }
+>  
+>  static int stmfts_power_on(struct stmfts_data *sdata)
+>  {
+>  	int err;
+>  
+> +	if (sdata->reset_gpio) {
+> +		gpiod_set_value_cansleep(sdata->reset_gpio, 1);
+> +		/* a short delay before powering up */
+> +		usleep_range(1000, 1500);
+> +	}
+> +
+>  	err = regulator_bulk_enable(ARRAY_SIZE(stmfts_supplies),
+>  				    sdata->supplies);
+>  	if (err)
+>  		return err;
+>  
+> -	/*
+> -	 * The datasheet does not specify the power on time, but considering
+> -	 * that the reset time is < 10ms, I sleep 20ms to be sure
+> -	 */
+> -	msleep(20);
+> +	if (sdata->reset_gpio) {
+> +		reinit_completion(&sdata->cmd_done);
+>  
+> -	if (sdata->reset_gpio)
+> -		stmfts_reset(sdata);
+> +		/*
+> +		 * The datasheet does not specify the power on time, but
+> +		 * considering that the reset time is < 10ms, sleep for 20ms
+> +		 * to be sure before releasing reset line.
+> +		 */
+> +		msleep(20);
+> +		gpiod_set_value_cansleep(sdata->reset_gpio, 0);
+>  
+> -	err = stmfts_read_system_info(sdata);
+> -	if (err)
+> -		goto err_disable_regulators;
+> +		enable_irq(sdata->client->irq);
+>  
+> -	enable_irq(sdata->client->irq);
+> +		if (!wait_for_completion_timeout(&sdata->cmd_done,
+> +						 msecs_to_jiffies(STMFTS_RESET_TIMEOUT_MS))) {
+> +			dev_err(&sdata->client->dev, "controller not ready after reset");
+> +			err = -ETIMEDOUT;
+> +			goto err_disable_irq;
+> +		}
+> +	} else {
+> +		/*
+> +		 * We do not know the real controller state (was it powered
+> +		 * off or reset). Let's hope that this is enough time to
+> +		 * initialize.
+> +		 */
+> +		msleep(70);
+> +
+> +		enable_irq(sdata->client->irq);
 
-Basic touchscreen connected to second i2c bus.
+Sashiko gave me an idea. What if we do this:
 
-Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Co-developed-by: David Heidelberg <david@ixit.cz>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts | 19 ++++++++++++++++++-
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi  |  2 +-
- 2 files changed, 19 insertions(+), 2 deletions(-)
+diff --git a/drivers/input/touchscreen/stmfts.c b/drivers/input/touchscreen/stmfts.c
+index 1720202d6186..e147a27f57b3 100644
+--- a/drivers/input/touchscreen/stmfts.c
++++ b/drivers/input/touchscreen/stmfts.c
+@@ -578,6 +578,7 @@ static int stmfts_configure(struct stmfts_data *sdata)
+ 
+ static int stmfts_power_on(struct stmfts_data *sdata)
+ {
++	unsigned int timeout;
+ 	int err;
+ 
+ 	if (sdata->reset_gpio) {
+@@ -591,9 +592,9 @@ static int stmfts_power_on(struct stmfts_data *sdata)
+ 	if (err)
+ 		return err;
+ 
+-	if (sdata->reset_gpio) {
+-		reinit_completion(&sdata->cmd_done);
++	reinit_completion(&sdata->cmd_done);
+ 
++	if (sdata->reset_gpio) {
+ 		/*
+ 		 * The datasheet does not specify the power on time, but
+ 		 * considering that the reset time is < 10ms, sleep for 20ms
+@@ -602,23 +603,29 @@ static int stmfts_power_on(struct stmfts_data *sdata)
+ 		msleep(20);
+ 		gpiod_set_value_cansleep(sdata->reset_gpio, 0);
+ 
+-		enable_irq(sdata->client->irq);
+-
+-		if (!wait_for_completion_timeout(&sdata->cmd_done,
+-						 msecs_to_jiffies(STMFTS_RESET_TIMEOUT_MS))) {
+-			dev_err(&sdata->client->dev, "controller not ready after reset");
+-			err = -ETIMEDOUT;
+-			goto err_disable_irq;
+-		}
++		timeout = STMFTS_RESET_TIMEOUT_MS;
+ 	} else {
+ 		/*
+ 		 * We do not know the real controller state (was it powered
+ 		 * off or reset). Let's hope that this is enough time to
+ 		 * initialize.
+ 		 */
+-		msleep(70);
++		timeout = 70;
++	}
+ 
+-		enable_irq(sdata->client->irq);
++	enable_irq(sdata->client->irq);
++
++	if (!wait_for_completion_timeout(&sdata->cmd_done,
++					 msecs_to_jiffies(timeout))) {
++		if (sdata->reset_gpio) {
++			dev_err(&sdata->client->dev, "controller not ready after reset");
++			err = -ETIMEDOUT;
++			goto err_disable_irq;
++		}
++		/*
++		 * If we did not reset the countroller ourselves continue
++		 * even if we did not receive "ready" message.
++		 */
+ 	}
+ 
+ 	err = stmfts_read_system_info(sdata);
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-index fa89be500fb85..51c835dca43f1 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-@@ -21,17 +21,34 @@ &framebuffer0 {
- 	stride = <(1080 * 4)>;
- };
- 
- &i2c2 {
- 	clock-frequency = <1000000>;
- 
- 	status = "okay";
- 
--	/* ST,FTS @ 49 */
-+	touchscreen@49 {
-+		compatible = "st,stmfts5";
-+		reg = <0x49>;
-+
-+		pinctrl-0 = <&touchscreen_irq_n>, <&touchscreen_reset>;
-+		pinctrl-names = "default";
-+
-+		interrupts-extended = <&tlmm 125 IRQ_TYPE_LEVEL_LOW>;
-+
-+		mode-switch-gpios = <&tlmm 136 GPIO_ACTIVE_HIGH>;
-+		reset-gpios = <&tlmm 99 GPIO_ACTIVE_LOW>;
-+
-+		avdd-supply = <&vreg_l19a_3p3>;
-+		vdd-supply = <&vreg_l14a_1p8>;
-+
-+		touchscreen-size-x = <1080>;
-+		touchscreen-size-y = <2160>;
-+	};
- };
- 
- &mdss_dsi0 {
- 	vdda-supply = <&vdda_mipi_dsi0_1p2>;
- 
- 	status = "okay";
- 
- 	panel@0 {
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-index f1379857e2742..6ae1973aa8ac7 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-@@ -504,17 +504,17 @@ firmware-pins {
- 
- 	touchscreen_reset: ts-reset-state {
- 		pins = "gpio99";
- 		function = "gpio";
- 		drive-strength = <8>;
- 		bias-pull-up;
- 	};
- 
--	touchscreen_pins: ts-pins-gpio-state {
-+	touchscreen_irq_n: ts-irq-n-gpio-state {
- 		pins = "gpio125";
- 		function = "gpio";
- 		drive-strength = <2>;
- 		bias-disable;
- 	};
- 
- 	touchscreen_i2c_pins: qup-i2c2-gpio-state {
- 		pins = "gpio27", "gpio28";
+No need to resend the series unless there is more feedback on the
+bindings.
+
+Thanks.
 
 -- 
-2.55.0
-
-
+Dmitry
