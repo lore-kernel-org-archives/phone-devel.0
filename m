@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77B7420E7C;
-	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AA243F0B6;
+	Sat, 26 Sep 2026 12:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790426433; cv=none; b=iaQ6Bo+QLDRJJ/Hy7p21S2C/Gost0t2hMIxnrbTtntvJNfu0JVCz9FRP6xnkM0FVBMKT/TtVX20wNMgHJ0Ax1xl7vCwvBc2EzAcg22Xx+L39OAzAVzDpZk7pESl6b8EXX65y8qe1u9EopJfsIM1UzTpYqbgtJQu64opTGtRQleI=
+	t=1790426434; cv=none; b=YlNZgFMjPOGTerFgiFjByYHyeE5GgAVu2M54Q8c3KTreXp4BsTgVsHLe0fK8ojb/SvPHVT5A0NKq89VVyQ5pj0UqtDeWziEMyzL6U1GnpLGcL3uhLa0aayLuIG4n/XrxYfHYmM9wKVyBu4tFrT5QMjPlxEBq2zW1EaopslS/ieQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790426433; c=relaxed/simple;
-	bh=xjTU+sbFxgAggl/vVSj98MM476PDRp/Fsy3fzVYTSv4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BanIADQoqlfcWSLh6TZ0KaFpVZwcgmBzgpNeftOtYGTXol45nf7jeRbUOGUPNSlFAPclcMiaH30QqmqbbI9BI0HkfeGiEls1dI9bHoo7a+kfk2VVTTrpwgb0B9JOX68NITVToz0GXE9jR09e3zraorSjFlbFeciPjyageKzLo1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bE24dhkO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790426434; c=relaxed/simple;
+	bh=68Xo+7AbOTjtfo8IuA3Hr7KPjXQFLlOeewWxpvBQVgE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=n2IDqWEAtewbiayatgoheJtsyxyX4zl9ykTU9ue2MrmNfGb6zyle+BU9okPRmX1Pgzwxi1OIZx9AcPl4PPnfKiY+EclI/Hpr2WkC95KQKWIyK78ozZH16scglvoYWriV15+fc9XhyDwovat4mv8G90I8oVlSTrADxBCXKRe/cBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jqt5xZgn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bE24dhkO"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 54A3CC2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jqt5xZgn"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C95D9C2BCFD;
 	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790426433;
-	bh=xjTU+sbFxgAggl/vVSj98MM476PDRp/Fsy3fzVYTSv4=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=bE24dhkOlAkKBhE23guQZryTMkICDLRhSJUs4NvOrL3j7fXP5BdSaYtumo+UnvqF2
-	 gGTG7ImDNaUGcOIt0pc4cPYTZ54baVYrZPXg3wEaPtbTDauZwJ4vpYu6qbQLkvlC+O
-	 wQuuupYhx4dm2u2s0o0T1AhAZ4fg5ceXCfSplyRPyE+XOobp4mBzixEAJ5OtUtNbVx
-	 /0ToO+O6hqDFWzfINBeyTj2L4h95xXPek2SpgnSVP3NdTNTIpjX3Rx6/N9ToGtYdj/
-	 7DKXEeAMOanNbAAttcseKm2cm2gZ74zZA5IojiynOouNZXFSDTAI9hHMPM04vg+4Es
-	 tf0Pqupi58QEw==
+	bh=68Xo+7AbOTjtfo8IuA3Hr7KPjXQFLlOeewWxpvBQVgE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=jqt5xZgnHJOa3OxB1/BVrQ7LoUoWcm/2e7BmzfqFS/mb8s1jMN0RYAI08ZvRemgnz
+	 sq37C6X6AN65iwaIywFM5Cf1Gyf7320+3cCwblowkZBrHxBxiMl5P82/lhv7i/r1Ik
+	 us9X7gASb5KnoXNvG1Vn9t/AV9VnmIeI2kFhrbp5fAufm2w12r7XliBrKgJZioysdk
+	 gHNyewXmw0xWCJrp2v3tQfSRMm4DmY/0G6Q0lhMQ81oaLRi8l1v5N5rXV1v88nXGvk
+	 f0P6iMcgSsmgUk2GtIRfZrKcEUMR8/4Os1PPiO4Rcapqq60fYpBJWijfpsgJokwZiS
+	 ye2xbSvweTKBw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E526C98328;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3377C98338;
 	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH RFC 00/12] Qualcomm Type-C support for 1st generation
-Date: Sat, 26 Sep 2026 14:40:19 +0200
-Message-Id: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
+Date: Sat, 26 Sep 2026 14:40:26 +0200
+Subject: [PATCH RFC 07/12] arm64: dts: qcom: pm660: Add USB Type-C port
+ controller node
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,11 +40,10 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDSyMj3ZLKgtRkXbNkE4vUNPPEZIskAyWg2oKi1LTMCrA50UpBbs5KsRD
- B4tKkrNTkEpAJSrW1AJSvOV1uAAAA
-X-Change-ID: 20260922-typec-6c48ef7ac8b0
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260926-typec-v1-7-31adc19f32c6@ixit.cz>
+References: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
+In-Reply-To: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
 To: Alexey Minnekhanov <alexeymin@minlexx.ru>, 
  Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
  Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
@@ -61,93 +61,96 @@ Cc: linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
  phone-devel@vger.kernel.org, mfd@lists.linux.dev, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2898; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2238; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=xjTU+sbFxgAggl/vVSj98MM476PDRp/Fsy3fzVYTSv4=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqt709jwyJHrD6CfhHDqzowkW+fwNwrlSwXtg0O
- hYU/0A3JkCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCare9PQAKCRBgAj/E00kg
- cl9lD/4rcGeu0us3gr1ySqw8KNKrs54/QxPwlFkuGnScpOzRvoBmGlwhjSVxHUwzVuwPv++lOnV
- DOeQAip+sSE/2iDz2vIxpyvOYyvPsS1UgjV2abr+yLO8O5Frn3fyxCrsq1wQS1TIaxyo1SeFWGN
- 9Iw4cuQf9Pr9NXOh0cPePkSrOOaxbX/10hk8WdDIFBPCzWtyMsiZIAsy0q+hLLrW2CAqysCKhOO
- zscZNGtbrE1NQgRbO+B77YB3kiEDSPQ+XbISdkXD45ini1gbyOVJ26nzqC7GGTEcQetcfD3GR6A
- b5t0P63Yv6oZ0mYhIH+WhR/EaOQX/1LtAmDsLm0X7MlkokZ1RTH1fugGSysaZHjKQ32VGEu3Zvr
- QVXUWoR/pAe+IctupGWu2SY2WJ1li8kCRngBe0P10hvnjMvYZuwYgPs2aMWg278r7TbeK7L6+RV
- gB36AQ63GzbJPeZhUEonjiTCzEduK+mdOaoCdiqBQjC6nK0CvAIjoy/hdobzK+yUAbuCJKLPxMy
- 9kDVzAx82d7tHT8iHz9EHaKXx+ey3x17qZPkveT284VkIYH4UORftQdKaUJkrUBUFTm/DXpxpXN
- n5LsdTfDuwhFZJdZBixrJ8zud0OaBRKcNh5C2nNL2U+ANSqrt7BwVfMsQEVzXIbWGQ09Pj6WP3r
- ta6K+o3Dom9rdtA==
+ bh=nfUfneQHFyPXoTLQ2iDCROlyx0D+c7Q2EAHBttmHuPo=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqt70+kPL94BUUjOGf4dU2jnzEuweWBFTQyYS1b
+ HYZ1UvtVlyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCare9PgAKCRBgAj/E00kg
+ cqVREACz+DbVUSwKhcqkKE4OxwCx4JSHA1cEOJA49V4LAZx/la2dL4AiUV3IlxIFYTbqLfKPpRR
+ eIaXAYKkUUnmXwNsEPZdpqPuruUdkhWm0phR28T7BRg4V+xf6d5euRn4MKo0OyErAAmsQbyxNPA
+ Xgxy0vCVrIybsEQwoNvK6UiSXbRlDyj1FZcc+fGmw+br9xRysgXO2ucMfeYlfWROW8d1Jg+zkqr
+ SU5/sVC0l60Oof+kgzSki+rrdc4FL+FPaeIfz1gUydnS2FCRZOPMVRB9vZ64E4bdENd6YvoLb6Y
+ S0G0MV7BJZRsdGFqt9joe/i8M2ZUrH0GJ7dFsk9zyKSqn7nwZS+5RQnWrjPWqddxV1uSSmWmqZp
+ Z1S1DPPVg0fQXxUCctvsN1+lNzkXNmVqsfDxjIIZkl3KYil4EdpwD5+xhOTmv6BuqVH4tJXjApx
+ s6V/BJkSUwmfocC09nYr2bdS9wGqQQ4N3Hmb4E++/jw8C6DPb45WBrv7lsC7ofo7axuPHG3ZR4i
+ 8jgGB2fwINzKdsN1GGWrqMw5BJnVScWmmE4kqDFoaBlBcPAUV0jpRmW76LwRIPFHOuoCRk/qPa9
+ aSBijLscrdMObCOLrHYFMS1ockbiHDiUqWzyZmDugImCaodL56lrSlY9/GlsMn5c0zarR3DxeHM
+ 5LMkgFXkKssTOyA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-This series adds basic USB Type-C support for 1st gen devices, covering
-configurations that do not require VBUS power (e.g. devices using
-externally powered docks).
+From: Alexey Minnekhanov <alexeymin@minlexx.ru>
 
-VBUS support will be added in a follow-up series after this one is merged.
-Supporting VBUS will likely require refactoring parts of the SMBX charger
-support, which is why it is not included here.
+Add the PM660 Type-C port controller and PD PHY device node.
 
-Tested with an externally powered dock station:
+As on PMI8998, the Type-C CC logic is part of the charger's USBIN
+peripheral at 0x1300, the PD PHY is at 0x1700. The node uses the
+'type-c-change' interrupt from the USBIN peripheral for CC state
+notifications, plus the 8 PD PHY interrupts, including fr-swap.
 
- - Pixel 3 / 3 XL
- - SHIFT 6mq
- - OnePlus 6
+The node is disabled by default; individual boards enable it and provide
+the USB-C connector description with PD capabilities and port graph.
 
-Tested with an additional, not-yet-included VBUS patch for non-powered
-devices:
-
- - Xiaomi Redmi Note 7
- - Xiaomi Mi Pad 4
-
-Credits to everyone who has contributed to Type-C enablement before:
-
- Casey Connolly
- Zachary Dry — LLM generation and testing
- Max Furman — LLM generation and testing
-
+Assisted-by: LLM
+Signed-off-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Alexey Minnekhanov (1):
-      arm64: dts: qcom: pm660: Add USB Type-C port controller node
+ arch/arm64/boot/dts/qcom/pm660.dtsi | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-David Heidelberg (11):
-      usb: typec: tcpm: qcom: Release the connector fwnode reference
-      dt-bindings: usb: qcom,pmic-typec: Update example with vbus-supply
-      dt-bindings: usb: Add Qualcomm 1st-gen PMIC Type-C
-      usb: typec: qcom: Make PMIC port probe selectable
-      usb: typec: qcom: Make typec_port accept also different structure
-      usb: typec: qcom: Add gen1 Type-C port support
-      arm64: dts: qcom: pmi8998: Add USB Type-C port controller node
-      arm64: dts: qcom: sdm670-google-common: Enable USB Type-C port controller
-      arm64: dts: qcom: sdm845-google-common: Enable USB Type-C port controller
-      arm64: dts: qcom: sdm845-oneplus-common: Enable USB Type-C port controller
-      arm64: dts: qcom: sdm845-shift-axolotl: Enable USB Type-C port controller
+diff --git a/arch/arm64/boot/dts/qcom/pm660.dtsi b/arch/arm64/boot/dts/qcom/pm660.dtsi
+index 156b2ddff0dcb..37965a3607417 100644
+--- a/arch/arm64/boot/dts/qcom/pm660.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm660.dtsi
+@@ -85,16 +85,43 @@ pm660_charger: charger@1000 {
+ 
+ 			io-channels = <&pm660_rradc 3>,
+ 				      <&pm660_rradc 4>;
+ 			io-channel-names = "usbin_i", "usbin_v";
+ 
+ 			status = "disabled";
+ 		};
+ 
++		pm660_typec: typec@1300 {
++			compatible = "qcom,pm660-typec";
++			reg = <0x1300>,
++			      <0x1700>;
++
++			interrupts = <0x0 0x13 0x7 IRQ_TYPE_EDGE_RISING>,
++				     <0x0 0x17 0x0 IRQ_TYPE_EDGE_RISING>,
++				     <0x0 0x17 0x1 IRQ_TYPE_EDGE_RISING>,
++				     <0x0 0x17 0x2 IRQ_TYPE_EDGE_RISING>,
++				     <0x0 0x17 0x3 IRQ_TYPE_EDGE_RISING>,
++				     <0x0 0x17 0x4 IRQ_TYPE_EDGE_RISING>,
++				     <0x0 0x17 0x5 IRQ_TYPE_EDGE_RISING>,
++				     <0x0 0x17 0x6 IRQ_TYPE_EDGE_RISING>,
++				     <0x0 0x17 0x7 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "type-c-change",
++					  "sig-tx",
++					  "sig-rx",
++					  "msg-tx",
++					  "msg-rx",
++					  "msg-tx-failed",
++					  "msg-tx-discarded",
++					  "msg-rx-discarded",
++					  "fr-swap";
++
++			status = "disabled";
++		};
++
+ 		pm660_temp: temp-alarm@2400 {
+ 			compatible = "qcom,spmi-temp-alarm";
+ 			reg = <0x2400>;
+ 			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
+ 			io-channels = <&pm660_adc ADC5_DIE_TEMP>;
+ 			io-channel-names = "thermal";
+ 			#thermal-sensor-cells = <0>;
+ 		};
 
- .../devicetree/bindings/mfd/qcom,spmi-pmic.yaml    |   4 +-
- .../bindings/usb/qcom,pmic-typec-gen1.yaml         | 130 +++++
- .../devicetree/bindings/usb/qcom,pmic-typec.yaml   |   3 +-
- arch/arm64/boot/dts/qcom/pm660.dtsi                |  27 +
- arch/arm64/boot/dts/qcom/pmi8998.dtsi              |  27 +
- arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi |  51 +-
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi |  59 +-
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi |  48 +-
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts  |  62 ++-
- drivers/usb/typec/tcpm/qcom/Makefile               |   1 +
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c      |  20 +-
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.h      |   2 +-
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c |   2 +
- .../typec/tcpm/qcom/qcom_pmic_typec_port_gen1.c    | 605 +++++++++++++++++++++
- .../typec/tcpm/qcom/qcom_pmic_typec_port_gen1.h    |  15 +
- 15 files changed, 1045 insertions(+), 11 deletions(-)
----
-base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-change-id: 20260922-typec-6c48ef7ac8b0
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+-- 
+2.55.0
 
 
