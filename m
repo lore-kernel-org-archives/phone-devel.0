@@ -1,82 +1,74 @@
-Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074084E56EB
-	for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 22:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8EE31E823
+	for <phone-devel@vger.kernel.org>; Sat, 26 Sep 2026 04:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790374698; cv=none; b=DrfUYRhSBs/Z8ftaOG0dIQsqYk9mXpoDWVmB+GKRjxy0xJ457e+wN54a7FEUaUqVe646BoRfXyx7S+reH3vtshasx0gPCZTanhTWqtctGG8lnJsfbsRU3RVqQlQIxv/bp7dq7ZOqOgPx0AQ8c7qKF3kgue2Bi3gw+UYf36EUP5o=
+	t=1790397639; cv=none; b=CkfPaDmA5pFC+UcZBSvMb3aabC8czi4SAc3NvBsHIgFoNc9ofaufjNdGiFHUmY7oMgl+gRuSw0Yt12/BO+IMfUFI8Z4DhJB1O2wILGQegF7zQL7tCZz/wStelwkt4GLnuGV+rnz7RePdw45hmOSoqPMIAXLaY+YAhmTUTFsUlW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790374698; c=relaxed/simple;
-	bh=lUyCqvIhkx+oa2eX2J77bBkV43sFd/DsKxrwXJcJW70=;
+	s=arc-20240116; t=1790397639; c=relaxed/simple;
+	bh=9/8pQ7p02Q5KmGp4IRdYWIfOXW7xj9/SWyUcOpAt66s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EN9EyhDw3Z45IoDMZ2HbUAu+qGyc2nQ3WCt7/b/Bc1kQWAhkNt1AC67CGRssDRqyW4lI1dplgE3q8CAvrqbaNEadYyLLl7Hdl6bZ/WQWvIvB6cH7Tb4wjiFcBaLUyb5l1IAkGSM98lJX5pxvnQ3+/lU6Qxfn2b/qlnvpKgUgnQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jqK0M+3r; arc=none smtp.client-ip=74.125.229.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=RLiaaMLDLyVS5OIX0Da6HSQ+IJTcnoDCGDoeRLj/adhBuTZgObbkFZyOyYmIWeMcvDZ/tequjFaB8Ha02dxsg5vnWWpk0xCY8AyENqIYiBfE/9nANwOb+6imTjPTLMpWEPYsSBGsxTOcqae4KUaOGnCu5k64s7PW3PpcoVT0W7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJ0X+k1Z; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqK0M+3r"
-Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-144f9160b81so499993c88.0
-        for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 15:18:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJ0X+k1Z"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33be7dfcfc1so2027857eec.1
+        for <phone-devel@vger.kernel.org>; Fri, 25 Sep 2026 21:40:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790374695; x=1790979495; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790397636; x=1791002436; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ayLp4Jx22xan0yoaXXO0H5UJI37HFonSA4zUCdy+nIo=;
-        b=jqK0M+3rOKmnvbUCAihw+0CnJmxPVScYGgTauAfdDzHWgiMVfW72Ga9i6+HDuThXuU
-         4U6sFRkMObqrl/wYTTFVVwBGXcDlP4Ionpv3mxDVzBZBrL3CGEyawwTfbl7qsr/kkPi2
-         V8rM7wMyJh7B7UEj4XvR38+CmkaSV8rSb8X43A5qDDJ2ZJZdbBL/zaQj6JzmbxjaM8Q6
-         tyVfcVJuBqXBVv4lf27RqQgS7vb+erG9qGWfQrDnAkKb9SWQi1pyVkq7wCG/UZw82zsi
-         gbTP+KsDDWiW4JtEnBiVkF60eSmsEizKkfT7x4EWNyrknbhgaiyDF5/6Vv62aTTPX2xp
-         BrcA==
+        bh=IUYBRI5sdXRLkIxlzo71bpLRDvT0ncaqZ/+GUrIm8/E=;
+        b=ZJ0X+k1ZokMbEMxaNXbmKkwxVT4DgAY4qGz8jtRM7WA1hMlBbEL3KR5UkrAXE/l3Ml
+         5aj3jEq9po2uT7rjl1kSTmSsl1QI2tOsbv1HTbZL8NXQ00cEqMFZMtfKR9lnY3uM/Upm
+         dmCteq9/XCCYXPaEBnXni8hojKoUR4eaRq2Rd6vRWMsrL2NNBmhTxq1y3Q5300QeUnk0
+         7S8pDT3f4iRRfw5O6h29OxRrsC6T7KTp5PBBjFj6OhULzDSU8oeTuXmHJ6zuWhAsfl8u
+         x11OiLXBKyjz4y/0HwF/LzPDu+ZJSyWNYGIBd+TEv4VLaRRJV6WNftleKhOgm2UnIobn
+         HcNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790374695; x=1790979495;
+        d=1e100.net; s=20260707; t=1790397636; x=1791002436;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ayLp4Jx22xan0yoaXXO0H5UJI37HFonSA4zUCdy+nIo=;
-        b=S5J35WWWFdptOqgr0BehaPgPkxsNhNGpKhfAQnXkQUzkOG4esK8qGRvBC3Pg81h6mR
-         pAKFQ/mRx+wQPMurc3EOcIoFI1+dTpNFa+B3914QwFoJyyiIZfZX4AiyiQ3oqzttDlLv
-         qIwSwtIsFlBWElmnMjBW5rPYjkkE+WRcTB0YbVZ95ujPO+Dzj8aR1VQsdtVfdirUVv73
-         KipWnPV840F2D/ymduczwCdpboyXf5S5IwZ9Ldj65ApQKQuVxdE+elAfm/hBd3rwEGXA
-         +rau42k5VvWmfLXwQcDCOxA2YmcQqMAeR3gQyfGHZTTO4OYKAbJb9vREoV7N0YrgKNu/
-         KXMw==
-X-Forwarded-Encrypted: i=1; AKwUvBwWKED07mnLApe22ng+5as9Cpyadr5mvz+Bf6UZDrFZkGRpGqduusxrAFGdJLjzUA5z/MybsVZgWOlQWw==@vger.kernel.org
-X-Gm-Message-State: AFuF++nIVcb3Nmd9yp/ZNFIDfalcorN95gOxeqg+yDGWfZUvzypG7wVU
-	VAoL1DUs5MUu9XvOh2Q8TtxZafk/8js2nD1xmKGkLhqJwp57LsoX3aKS
-X-Gm-Gg: AYBFou1DK5wm7fHBiX3h2VFxEv14Gs0TBV0MBTHeEXKVZka1z7ngrImyN5NK+pQ2a3G
-	fUA1QOdzgmgOvpvRN2UuyrUrbPiThOOzfXrvNgnPgdg+lfN1AUT0rcpMEdFMedA7YAG8+axcXGd
-	wfQhraRU2piepZJ5RTsLZ091/IhW/GT9u7PYf19stSBKDg5SDJJd6/Ub1rYE8fQNhWD2bYNtiMR
-	DYoOjg6CtlvnxmRScWc9wHTAmM3yZgjoHzsQcdIPV/529qxxCF+CWhOySlcDNiepfSu9PRPnuMp
-	3WEh6mvjHq9E4bCXdXqbIrsY6I8lDsZyce6vAD83D3veBtFlbwur3qYm0vUlyMGQ2HtzSE1NThE
-	y5PtD+9CS3gG747LF0Rba7MHeAXZR3rABbhDxHfoDZmd0P8ENgaNzpVNLslF9zfqKgxQ5lTMeDk
-	U7ujG8xUSyW/lz8ff9+E7IVkQxs4P0spkGsrH+G0v6vPsrmkEvp9TdAdBVplL+w1KzeDBjGhWwF
-	cCh3PXgFSuIbAteggEcqriuG+9c2KBX8+3+iaw=
-X-Received: by 2002:a05:7022:288:b0:138:3613:dc6 with SMTP id a92af1059eb24-146ce67ee45mr1270576c88.14.1790374694857;
-        Fri, 25 Sep 2026 15:18:14 -0700 (PDT)
+        bh=IUYBRI5sdXRLkIxlzo71bpLRDvT0ncaqZ/+GUrIm8/E=;
+        b=2gdKpQiRWVAMxNU9t4MICoY1IUCMlsVtAULBxac2of8eZypHdEiWdFcCEMa7LsY9pD
+         bUUtPmk23X0ADCsV6dgMLqlMz3NwhGK3uOqfms2tf/nnYGCLSnwpXQG0mDIbL895d5PS
+         iMLkFCR+UVFvg5f9/sLuM2oKfZpsPurszK73U25lwTB5fXUlb2UANcTiaVonAaI94Iz+
+         LZyND8rIp2blKbZuNsOmwq+ASCwz1rmMmR8MbOhZ7sXhTmHBkkHZkm3AqfEFWwejCW0a
+         VGJYg8qdEJe7XcSIgHd+2FLSD0wTj9OmpUSY6LvzL7sbWfTSs8qSVipzfEAgx6ubL+UR
+         RdVw==
+X-Forwarded-Encrypted: i=1; AKwUvBx/h0YIdiFzMx0nn7NzpYu56nMsFE35dHSIyjh/N44ZT5jziBOG+DDuhArYT2T87uyWSd7ChmCSwDzHTw==@vger.kernel.org
+X-Gm-Message-State: AFuF++kFuBZg4pWdrs86FY9Fh3Ti3LmBcuxBk4WDUNofZd/Agczu78Bs
+	viPu769BBFTDZad2DiYtyM4aRZNBFKCargwzBqTT+D6TzFbaVVao6JNu
+X-Gm-Gg: AYBFou31vIK4XDSGxLR3kXdIm6kdy3u1b7r9XSwWRwsfpPMM1KCjL0TXV9/1HhizT5V
+	tLYgt52XD8wvFlyizDBxah5tL5uitx0KRbpi60dj7PIe9IjRJ9n1WXaHEwa61MYu0LWcbTOrXKM
+	Ae88yCmrSGc+RVlsyk+9cHnIgwyUNA0LFbyxYCmrRcVDhzcWJtvrMO8swmZF9+BxS8cKAz+4uDB
+	Mi9Bn5UdMPbiecMDANd2x1XNREfjB/s9waWLOMTu2JTO0ovkyO/9z+oZ+Foe8Qq/gPswNsYVYvg
+	+6xeXlmkzqEclthPpjp4qnfmUUtmQ/O6lYLkjoeqCOAkdco7bq7qWZWcdvkqRUlQ68DEF5Rwkjf
+	eZmoIFoEAJ3XSKeen11ecQwsoRspOJ5UbrW8mion+KRZEr1RwWUAVIX5EbinFeFkdchR+JPI5ml
+	r7UDdbuYeq8Jf1aBxSrBz6kPQ6YKidqO5SdfUSwJxwmSm8sNfQgYe892zv8ncuVNkehk++RpaFC
+	EXmd8JXspi2hTVj575vYLiKaxOnbgMJelfiTdM=
+X-Received: by 2002:a05:7301:4d0b:b0:341:d191:b838 with SMTP id 5a478bee46e88-34272562bc0mr2032551eec.31.1790397636098;
+        Fri, 25 Sep 2026 21:40:36 -0700 (PDT)
 Received: from google.com ([2a00:79e0:2ebe:8:375:19cf:5fee:be32])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145aa0cb6b9sm7166213c88.1.2026.09.25.15.18.13
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341447576b9sm11731720eec.15.2026.09.25.21.40.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 15:18:14 -0700 (PDT)
-Date: Fri, 25 Sep 2026 15:18:10 -0700
+        Fri, 25 Sep 2026 21:40:35 -0700 (PDT)
+Date: Fri, 25 Sep 2026 21:40:32 -0700
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: david@ixit.cz
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Henrik Rydberg <rydberg@bitmath.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Petr Hodina <petr.hodina@protonmail.com>, 
-	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+Cc: Andi Shyti <andi@etezian.org>, Rob Herring <robh@kernel.org>, 
+	Marco Mattiolo <marco.mattiolo@hotmail.it>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	phone-devel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v8 1/5] Input: stmfts - wait for controller ready after
- reset
-Message-ID: <arbyyscK-3xYlj6H@google.com>
-References: <20260925-stmfts5-v8-0-0fcf49e2c85f@ixit.cz>
- <20260925-stmfts5-v8-1-0fcf49e2c85f@ixit.cz>
+Subject: Re: [PATCH] Input: s6sy761 - fix resume ordering and restore sensing
+Message-ID: <ardMSVsG1RlOOkNp@google.com>
+References: <20260923-s6sy761-suspend-v1-1-6fff96e71cb0@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -85,213 +77,71 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260925-stmfts5-v8-1-0fcf49e2c85f@ixit.cz>
+In-Reply-To: <20260923-s6sy761-suspend-v1-1-6fff96e71cb0@ixit.cz>
 
-On Fri, Sep 25, 2026 at 11:22:19PM +0200, David Heidelberg via B4 Relay wrote:
+Hi David,
+
+On Wed, Sep 23, 2026 at 03:27:06PM +0200, David Heidelberg via B4 Relay wrote:
 > From: David Heidelberg <david@ixit.cz>
 > 
-> After releasing the reset line stmfts_reset() sleeps a fixed 50 ms and
-> stmfts_power_on() another 50 ms before the first I2C access.  That is
-> enough for a warm reset, but when both supplies were really cut during
-> system suspend the controller boots from cold and can need longer.  If
-> it does, the first read fails, stmfts_resume() returns an error and the
-> touchscreen is left powered off with its interrupt disabled.
+> System suspend powers the controller off and resume powers it back on,
+> but the resume path enables the interrupt before s6sy761_power_on()
+> checks the boot. The firmware raises its boot-complete event on the
+> interrupt line, the threaded handler consumes it, s6sy761_power_on()
+> then reads an empty event and resume fails with -ENODEV, skipping the
+> touch function setup:
 > 
-> The controller posts a controller ready event once it has booted, and
-> the event parser already completes cmd_done on it.  Enable the interrupt
-> right after releasing reset and wait for that event instead of sleeping,
-> giving the controller 300 ms, the total budget the vendor driver allows.
-> Boards without a reset line keep the old timing.
+>   s6sy761 2-0048: PM: dpm_run_callback(): s6sy761_resume [s6sy761] returns -19
 > 
-> Usually phones such as Pixel 4a and Xiaomi Mi 8 needs longer delay, so
-> without this change touchscreen stops working.
+> Power the chip on first and only then unmask the interrupt. Once resume
+> completes the boot handshake the chip comes back with sensing off, as
+> at probe where input_open() turns it on, so the touchscreen stays dead
+> after resume. Send SENSE_ON again when the input device is open.
 > 
-> Fixes: 8a1f9de80e45 ("Input: stmfts - add optional reset GPIO support")
+> Tested on a Pixel 3 XL over several s2idle cycles: resume succeeds and
+> the touch function and sense status match the pre-suspend state.
+> 
+> Assisted-by: LLM
 > Cc: stable@vger.kernel.org
-> Co-developed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Fixes: 0145a7141e59 ("Input: add support for the Samsung S6SY761 touchscreen")
 > Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->  drivers/input/touchscreen/stmfts.c | 60 ++++++++++++++++++++++++--------------
->  1 file changed, 38 insertions(+), 22 deletions(-)
+>  drivers/input/touchscreen/s6sy761.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/input/touchscreen/stmfts.c b/drivers/input/touchscreen/stmfts.c
-> index 972687797f826..1720202d6186b 100644
-> --- a/drivers/input/touchscreen/stmfts.c
-> +++ b/drivers/input/touchscreen/stmfts.c
-> @@ -59,16 +59,18 @@
->  #define STMFTS_MASK_X_MSB			0x0f
->  #define STMFTS_MASK_Y_LSB			0xf0
->  
->  /* key related event masks */
->  #define STMFTS_MASK_KEY_NO_TOUCH		0x00
->  #define STMFTS_MASK_KEY_MENU			0x01
->  #define STMFTS_MASK_KEY_BACK			0x02
->  
-> +#define STMFTS_RESET_TIMEOUT_MS	300
-> +
->  #define STMFTS_EVENT_SIZE	8
->  #define STMFTS_STACK_DEPTH	32
->  #define STMFTS_DATA_MAX_SIZE	(STMFTS_EVENT_SIZE * STMFTS_STACK_DEPTH)
->  #define STMFTS_MAX_FINGERS	10
->  #define STMFTS_DEV_NAME		"stmfts"
->  
->  static const struct regulator_bulk_data stmfts_supplies[] = {
->  	{ .supply = "vdd" },
-> @@ -538,25 +540,16 @@ static int stmfts_read_system_info(struct stmfts_data *sdata)
->  	sdata->chip_ver = reg[0];
->  	sdata->fw_ver = be16_to_cpup((__be16 *)&reg[2]);
->  	sdata->config_id = reg[4];
->  	sdata->config_ver = reg[5];
+> diff --git a/drivers/input/touchscreen/s6sy761.c b/drivers/input/touchscreen/s6sy761.c
+> index 0f24a9b730635..c52c45a7d1029 100644
+> --- a/drivers/input/touchscreen/s6sy761.c
+> +++ b/drivers/input/touchscreen/s6sy761.c
+> @@ -495,20 +495,29 @@ static int s6sy761_suspend(struct device *dev)
+>  	s6sy761_power_off(sdata);
 >  
 >  	return 0;
 >  }
 >  
-> -static void stmfts_reset(struct stmfts_data *sdata)
-> -{
-> -	gpiod_set_value_cansleep(sdata->reset_gpio, 1);
-> -	msleep(20);
-> -
-> -	gpiod_set_value_cansleep(sdata->reset_gpio, 0);
-> -	msleep(50);
-> -}
-> -
->  static int stmfts_configure(struct stmfts_data *sdata)
+>  static int s6sy761_resume(struct device *dev)
 >  {
->  	int err;
+>  	struct s6sy761_data *sdata = dev_get_drvdata(dev);
+> +	int err;
 >  
->  	err = stmfts_command(sdata, STMFTS_SYSTEM_RESET);
->  	if (err)
->  		return err;
+> +	err = s6sy761_power_on(sdata);
+>  	enable_irq(sdata->client->irq);
+
+Why are we enabling the interrupt even if power on failed?
+
+> +	if (err)
+> +		return err;
 >  
-> @@ -582,53 +575,76 @@ static int stmfts_configure(struct stmfts_data *sdata)
->  
->  	return 0;
->  }
->  
->  static int stmfts_power_on(struct stmfts_data *sdata)
->  {
->  	int err;
->  
-> +	if (sdata->reset_gpio) {
-> +		gpiod_set_value_cansleep(sdata->reset_gpio, 1);
-> +		/* a short delay before powering up */
-> +		usleep_range(1000, 1500);
-> +	}
+> -	return s6sy761_power_on(sdata);
+> +	guard(mutex)(&sdata->input->mutex);
 > +
->  	err = regulator_bulk_enable(ARRAY_SIZE(stmfts_supplies),
->  				    sdata->supplies);
->  	if (err)
->  		return err;
->  
-> -	/*
-> -	 * The datasheet does not specify the power on time, but considering
-> -	 * that the reset time is < 10ms, I sleep 20ms to be sure
-> -	 */
-> -	msleep(20);
-> +	if (sdata->reset_gpio) {
-> +		reinit_completion(&sdata->cmd_done);
->  
-> -	if (sdata->reset_gpio)
-> -		stmfts_reset(sdata);
-> +		/*
-> +		 * The datasheet does not specify the power on time, but
-> +		 * considering that the reset time is < 10ms, sleep for 20ms
-> +		 * to be sure before releasing reset line.
-> +		 */
-> +		msleep(20);
-> +		gpiod_set_value_cansleep(sdata->reset_gpio, 0);
->  
-> -	err = stmfts_read_system_info(sdata);
-> -	if (err)
-> -		goto err_disable_regulators;
-> +		enable_irq(sdata->client->irq);
->  
-> -	enable_irq(sdata->client->irq);
-> +		if (!wait_for_completion_timeout(&sdata->cmd_done,
-> +						 msecs_to_jiffies(STMFTS_RESET_TIMEOUT_MS))) {
-> +			dev_err(&sdata->client->dev, "controller not ready after reset");
-> +			err = -ETIMEDOUT;
-> +			goto err_disable_irq;
-> +		}
-> +	} else {
-> +		/*
-> +		 * We do not know the real controller state (was it powered
-> +		 * off or reset). Let's hope that this is enough time to
-> +		 * initialize.
-> +		 */
-> +		msleep(70);
+> +	if (!input_device_enabled(sdata->input))
+> +		return 0;
 > +
-> +		enable_irq(sdata->client->irq);
+> +	return i2c_smbus_write_byte(sdata->client, S6SY761_SENSE_ON);
 
-Sashiko gave me an idea. What if we do this:
-
-diff --git a/drivers/input/touchscreen/stmfts.c b/drivers/input/touchscreen/stmfts.c
-index 1720202d6186..e147a27f57b3 100644
---- a/drivers/input/touchscreen/stmfts.c
-+++ b/drivers/input/touchscreen/stmfts.c
-@@ -578,6 +578,7 @@ static int stmfts_configure(struct stmfts_data *sdata)
- 
- static int stmfts_power_on(struct stmfts_data *sdata)
- {
-+	unsigned int timeout;
- 	int err;
- 
- 	if (sdata->reset_gpio) {
-@@ -591,9 +592,9 @@ static int stmfts_power_on(struct stmfts_data *sdata)
- 	if (err)
- 		return err;
- 
--	if (sdata->reset_gpio) {
--		reinit_completion(&sdata->cmd_done);
-+	reinit_completion(&sdata->cmd_done);
- 
-+	if (sdata->reset_gpio) {
- 		/*
- 		 * The datasheet does not specify the power on time, but
- 		 * considering that the reset time is < 10ms, sleep for 20ms
-@@ -602,23 +603,29 @@ static int stmfts_power_on(struct stmfts_data *sdata)
- 		msleep(20);
- 		gpiod_set_value_cansleep(sdata->reset_gpio, 0);
- 
--		enable_irq(sdata->client->irq);
--
--		if (!wait_for_completion_timeout(&sdata->cmd_done,
--						 msecs_to_jiffies(STMFTS_RESET_TIMEOUT_MS))) {
--			dev_err(&sdata->client->dev, "controller not ready after reset");
--			err = -ETIMEDOUT;
--			goto err_disable_irq;
--		}
-+		timeout = STMFTS_RESET_TIMEOUT_MS;
- 	} else {
- 		/*
- 		 * We do not know the real controller state (was it powered
- 		 * off or reset). Let's hope that this is enough time to
- 		 * initialize.
- 		 */
--		msleep(70);
-+		timeout = 70;
-+	}
- 
--		enable_irq(sdata->client->irq);
-+	enable_irq(sdata->client->irq);
-+
-+	if (!wait_for_completion_timeout(&sdata->cmd_done,
-+					 msecs_to_jiffies(timeout))) {
-+		if (sdata->reset_gpio) {
-+			dev_err(&sdata->client->dev, "controller not ready after reset");
-+			err = -ETIMEDOUT;
-+			goto err_disable_irq;
-+		}
-+		/*
-+		 * If we did not reset the countroller ourselves continue
-+		 * even if we did not receive "ready" message.
-+		 */
- 	}
- 
- 	err = stmfts_read_system_info(sdata);
-
-No need to resend the series unless there is more feedback on the
-bindings.
+Explicit return err/return 0 please - there are multiple failure points
+in this function.
 
 Thanks.
 
