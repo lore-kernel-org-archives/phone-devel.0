@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D750B3A83AC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75C03E410E;
 	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790426433; cv=none; b=knJ0FK34I0z4RYk3TAYNa4KoknvmFaQpn814usoHJdivRyAQi5Fyw0vFyYNEbixG9Hh7WiPgOHRbnCuvYTTpScyFPUwIBaDNzOaPfywI4qao80EvHkDqf2WrXMflpCr7W54WrfVm0nUe6HBxnP5sFzgGmu38IePeEQISdPs6Ans=
+	t=1790426433; cv=none; b=aiRduUafaUveno7ngIWx/LqYIbo2mEwI86eZxp41f0JYARLG7hpxy9EFQCxdjqPkz3kC2UsjpC43Hb+bjzT2Y46fD/2EwSfhh6yWoT2oiLgJedGNFhm1HzmVG6otp8/1biBwPlmv6YAcNjdRQjNBGP7F9/nzqk9+scZl6gq/0YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790426433; c=relaxed/simple;
-	bh=fbeH1V4vzunDOndyawowxW/6qRCo8v7L07Fr6mvTg5k=;
+	bh=qX9Dcr1L78sbsl5ODSHUS1GAkK2IVN4s3MJdIoy2CNA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=njVzCbOn0asWQIK4Drk2nFyv9JlRqNzZIVXFASO0L3VytE8VWS/Z37me+iZHrLkiXsSVaDJh2J/kiS+Y+nkWvcYWFIYSHw4mWOtQ5TsPqMN1S+Lnw0V4F625mjRTnwZU6KjvQ7TdQA/B0L8mX7vx83Z8LDfXHwFmnoDwFddlGeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRx+Op4v; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=SPddI9VH+Rp4Lazqkq5tLk17xCKspzDWS7i+ub6ZtzzmkK0cKdbDr0ADZOwoyXuD/ITZKnCwYc3DyI+7sRJ7LXKkAHbbtSlD050QA4n4MZ7dhmLJqLl2Gsl6ivRntrUebSLCZ6dPJNJlRUc8+8S3dsQH+b6FsqY4wfwyavrtTys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nubKJaIe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRx+Op4v"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A29EC32782;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nubKJaIe"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 647A8C2BCF7;
 	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790426433;
-	bh=fbeH1V4vzunDOndyawowxW/6qRCo8v7L07Fr6mvTg5k=;
+	bh=qX9Dcr1L78sbsl5ODSHUS1GAkK2IVN4s3MJdIoy2CNA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=pRx+Op4v7ku1/IUyCHwevHXuHkCucoxQe0N9phyPYaX77lPzoBg9QnjNkn9Bzmf6S
-	 NVqz+cOV51xw9OsosZ7AX7cNHMOXzrmha1sx6xhEApB+joZvrTusBj51deDqNeLT5M
-	 bRQPU4agF2/JsdW5YK8x6ovFr9BrMUQWPeOU1Tj8hQ0U5l897BEgtUpBAo54y2+Gfv
-	 ye3yX+ROPx1AovA2L3AmBZq2s9FrgR4bnArriW3nrIw3i9pOLvrPWPZmw3XXF0u1WM
-	 KHJ3Z7bP1+eFsO6rkdO1BRXXSXuqdNmrBFKu0suVoUmCh4m4C9F5FL/Wg8XzBEJPE2
-	 /46mEwAj8An2Q==
+	b=nubKJaIe6hd3db43BgMyUQZToA4OnRf2wNxI8YXT/Lkr3yxh8KN0q4Y9pbFZAWVqo
+	 rmBI1d4fhqGqQoUx0SYaUprrZ1s/Z9d1NoZ94Ju9Sp7yxWJ/npe2oKeYs/D1qxeBB0
+	 vXapNpR+G4vF73Mnt3IYEKhfTxLV6qF4lgC4sSs1RfQLeyjz6GVArhKs0dFGRq6Egx
+	 Htjm7l9ssiESEpcOExGdnPLbygwUljVWJOAF4LYX36guQgziAmQVKWDdLdoVKNfGIi
+	 HLnmAhbKFM0dWHghEWZ9z8TR7p6iyhSviT+u+RNtgM0aX6KnbKrbG3b1Ng+FXCfAdn
+	 SuHdZk1EdTbhg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78AE1C98328;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4208DC98332;
 	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sat, 26 Sep 2026 14:40:23 +0200
-Subject: [PATCH RFC 04/12] usb: typec: qcom: Make PMIC port probe
- selectable
+Date: Sat, 26 Sep 2026 14:40:20 +0200
+Subject: [PATCH RFC 01/12] usb: typec: tcpm: qcom: Release the connector
+ fwnode reference
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260926-typec-v1-4-31adc19f32c6@ixit.cz>
+Message-Id: <20260926-typec-v1-1-31adc19f32c6@ixit.cz>
 References: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
 In-Reply-To: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
 To: Alexey Minnekhanov <alexeymin@minlexx.ru>, 
@@ -61,21 +61,21 @@ Cc: linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
  phone-devel@vger.kernel.org, mfd@lists.linux.dev, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2776; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1915; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=0rBqhoYEUS5e6Dqw7gl8GlLS56lHpFV9ezYYskglvBA=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqt70+w/f0+R0Sai12heN/MhIh3cfG2zGBplQjT
- Amw5uAyGPOJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCare9PgAKCRBgAj/E00kg
- cq/aEACDASJtuj9XnIaBYYWlfCvYWzdnaO1kkWypCP+jJS9r7zLJAfnX7V+vN5kArhjrFrO46gk
- wHleVtVTSF2vyK8zTICd68HEyjr1rUL0LWxPZwPNiIvOF6oPeg3HuSVxk6WpWm1ySQt2o+L906B
- 0GYzUGwdQYDdV23gcLx8/016p1ubedMwj5IE3iSi4UyYZ7QDzVoigcMNXKvWsmjjBb0FpyB487y
- 6oFuYyuNPxdcUbO4nj0Y5smop/cVT0RkGwWPBsFSptKftApLgPTJM3pGqXUESqf24d3R1iJc2pH
- hd3EkC7gQvz5tao6GQC4J0W6RtWw1NhGHERO58xe4eiOlBw37j/ajp69Y6yI8kKiWeNOaM5cl8I
- 0TW8qnBMuFaxHhK8GrrC5YT/8gdVX1IaMafE8ZzeebEU9euOrUMRUQNBb8SRnjXBn/Q8veANnj8
- k2YJ+O/KPGpJbiWtuYcbHRtyy5+IqIQprLjhJ+MCc6a9jHsMKQz+LYZGv5lzaFi5m8mWtM42ail
- HiBo82MfXe5eaRKoSrEnA3Q73RGDRbLJfGzu1WHkJit5+kfCOoFBPoBpeux6s8wzjWgxEAWm7kD
- ptCg/Ko3aWWfoi0fTd2g9jasGpzv2KKr/4hg6c5jZe/gIp9dMPf1jOaTgKLHO/yy7hloxJVOuHi
- WLyGtBvZK1f26hg==
+ bh=22jx8Je1oP+cSCrbfrUS4MrSfcA6caRWGdeZuml3fJs=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqt709qm2CM8rlvlYjeHgjttYvncP5LGHE4UVfp
+ 0le9TwMS8GJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCare9PQAKCRBgAj/E00kg
+ covmD/91dII+0d3mG6Rh9eecL3hmADWuOqoOY6jnNuvevQ85iyRM7ef0uZHQ7GPOR/p4GU4fK24
+ f1J5yw86lLpCzy5voipaf5579rByui4r/RC5fS6x4NfyTYV5uLhnS4HzgZzpkZBVM6or0nDHP+i
+ n8WmIjWl8ErpyX3GjRm11gG0/SHjdtHpotIt29rUrsN+2E9CD8G6x4iulBEhRZqklphX4f7fCba
+ g6t7jjZSTNL2hLwolVl7duIa7HWv29uTWkkdkKh02ZbNPdhL3k52mdTt7VZHIZceI4ZuO+/v+wq
+ H2Uv0QJkMG4Ox5brnG2szJ157Aq0SLTX5JQnR50AMEc6zd/HaOyXCB1bc/isK6epMYVJpEHIhww
+ FCyBX/WMyitfHGI3vVM+8HZJKMlA6TJ70uSodFV8JKpuZVt7WiF2I8ASwgtKtdRmYeTNJb5zyj2
+ oDhUepZRWO74W0g4eSlPepn0FbKBESvKAGPUzgjE70/ue3xBlYSO7IweWdRpLZWMhDDt5VZFk62
+ CKchhsY0w8Cd7f2EPmOqHyiY3nWN/p93aX7tfIRCdY/p2wmJv0LtwLdxciVu0ywCVkUv+ZREErD
+ Y7IkPl03xLeZ9SyzfZMkrgB+EYWXJ3EYsh3E28Oa5hUUPg3zeRI/mkIbwQ1JtsR+JkP4/0TEUOc
+ M518ylOwa1Jl+MA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -84,91 +84,57 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-This is a preparation for extending the support with 1st generation
-Type-C.
+device_get_named_child_node() returns the connector node with its
+reference count incremented, but the port probe never drops it. The node
+is only needed for the VBUS regulator lookup, so release it right after.
 
 Assisted-by: LLM
-Co-developed-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
-Signed-off-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
+Fixes: 506927b6bf29 ("usb: typec: tcpm: qcom: prefer VBUS supply from the connector node")
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-index d770e58bc16cf..41aaae6bb3724 100644
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-@@ -13,19 +13,25 @@
+diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
+index bf985efe1cd6b..f8308d66b9d67 100644
+--- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
++++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
+@@ -5,16 +5,17 @@
+ 
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
+ #include <linux/string_choices.h>
  #include <linux/usb/tcpm.h>
+ #include <linux/usb/typec_mux.h>
+ #include <linux/workqueue.h>
  
- #include <drm/bridge/aux-bridge.h>
+@@ -723,16 +724,17 @@ int qcom_pmic_typec_port_probe(struct platform_device *pdev,
  
- #include "qcom_pmic_typec.h"
- #include "qcom_pmic_typec_pdphy.h"
- #include "qcom_pmic_typec_port.h"
+ 	connector = device_get_named_child_node(dev, "connector");
+ 	if (!connector)
+ 		return -EINVAL;
  
-+typedef int (*pmic_typec_port_probe_fn)(struct platform_device *pdev,
-+					struct pmic_typec *tcpm,
-+					const struct pmic_typec_port_resources *res,
-+					struct regmap *regmap, u32 base);
-+
- struct pmic_typec_resources {
- 	const struct pmic_typec_pdphy_resources	*pdphy_res;
- 	const struct pmic_typec_port_resources	*port_res;
-+	pmic_typec_port_probe_fn	port_probe;
- };
+ 	pmic_typec_port->vdd_vbus = devm_of_regulator_get_optional(dev,
+ 								   to_of_node(connector),
+ 								   "vbus");
++	fwnode_handle_put(connector);
+ 	if (pmic_typec_port->vdd_vbus == ERR_PTR(-ENODEV))
+ 		pmic_typec_port->vdd_vbus = devm_regulator_get(dev, "vdd-vbus");
+ 	if (IS_ERR(pmic_typec_port->vdd_vbus))
+ 		return PTR_ERR(pmic_typec_port->vdd_vbus);
  
- static int qcom_pmic_typec_init(struct tcpc_dev *tcpc)
- {
- 	return 0;
- }
- 
- static int qcom_pmic_typec_probe(struct platform_device *pdev)
-@@ -55,18 +61,17 @@ static int qcom_pmic_typec_probe(struct platform_device *pdev)
- 		dev_err(dev, "Failed to get regmap\n");
- 		return -ENODEV;
- 	}
- 
- 	ret = of_property_read_u32_index(np, "reg", 0, &base);
- 	if (ret)
- 		return ret;
- 
--	ret = qcom_pmic_typec_port_probe(pdev, tcpm,
--					 res->port_res, regmap, base);
-+	ret = res->port_probe(pdev, tcpm, res->port_res, regmap, base);
- 	if (ret)
- 		return ret;
- 
- 	if (res->pdphy_res) {
- 		ret = of_property_read_u32_index(np, "reg", 1, &base);
- 		if (ret)
- 			return ret;
- 
-@@ -132,21 +137,23 @@ static void qcom_pmic_typec_remove(struct platform_device *pdev)
- 	tcpm->port_stop(tcpm);
- 	tcpm_unregister_port(tcpm->tcpm_port);
- 	fwnode_handle_put(tcpm->tcpc.fwnode);
- }
- 
- static const struct pmic_typec_resources pm8150b_typec_res = {
- 	.pdphy_res = &pm8150b_pdphy_res,
- 	.port_res = &pm8150b_port_res,
-+	.port_probe = qcom_pmic_typec_port_probe,
- };
- 
- static const struct pmic_typec_resources pmi632_typec_res = {
- 	/* PD PHY not present */
- 	.port_res = &pm8150b_port_res,
-+	.port_probe = qcom_pmic_typec_port_probe,
- };
- 
- static const struct of_device_id qcom_pmic_typec_table[] = {
- 	{ .compatible = "qcom,pm8150b-typec", .data = &pm8150b_typec_res },
- 	{ .compatible = "qcom,pmi632-typec", .data = &pmi632_typec_res },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, qcom_pmic_typec_table);
+ 	pmic_typec_port->dev = dev;
+ 	pmic_typec_port->base = base;
+ 	pmic_typec_port->regmap = regmap;
 
 -- 
 2.55.0
