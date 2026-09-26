@@ -1,211 +1,154 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218913B6C17;
-	Sat, 26 Sep 2026 14:45:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FBA3955EE
+	for <phone-devel@vger.kernel.org>; Sat, 26 Sep 2026 19:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790433934; cv=none; b=NSg5BQ43doaiPHs3EVzPG5D7HgSuN2YJhqMl+wVlYArgESlI1Oi7aChiGSJNzeGdyD73Onhoj9tYgeRv0nCJSdJjqXPlsYHhJRYLjTs9PhXPaxO2jTqI6NnGpAsD5sxRtx+UcbO+jFnt5x8twCTYDyhGXTdpo9Mw1CU5katRy1s=
+	t=1790451410; cv=none; b=OFxaDp7VT/ZjU+JavtVe7bs4Rr0fB+4TmWC2tFLERyq62dOxdvvG1qxhNFoHAEkH/vra8qiEgkp9OQJMgmuFe5601V1qUsMGlxW3hjV8Wb7fnE8m+MiWWdtco78NQqUkOemjQK63FyYJF1XmmDsougjxikj2focZyT9W/Fp+DaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790433934; c=relaxed/simple;
-	bh=dmZUngUCVOz2gkdF1xafc2BAzFipK5XtAgENKFzA6dI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=crtLhQdzHZBkm+Vcmla9asnxrRvwrerU53BTs7LFDbbWuUSh4m5Y2go7dcNJNHykDQUn0/iT262dRmecdXThuaZAKHCx/ZZTH9AzA9lWnm7QzBxvMRsfeG5tX5muI15Q/y8PTtFIFLay4aPjgMz040IUqVXnA/vMrp+nJaGqn44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=SmdpAoZs; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1790451410; c=relaxed/simple;
+	bh=vK9ThpJmW0w0IXbiBvxvvEMaNfFkqS+ai7zf7CtlixM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EbxVVvc7AKDkULUELCvrnYc3N8rddjvdO/0QTSJ0x652UbJZ07QryWDPH5cAXyTl+8EWad1JxadQKnTBixk/HuXlvAqC5oSNxL70iWOB1E5TnK5SvS2iZDfuJY+xZ4JD3JruFw8WnSxXDTWo7OcpO6x5GsKkDEdOJQRZsRGGswY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KzTjvkHl; arc=none smtp.client-ip=74.125.229.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="SmdpAoZs"
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id C32E653401FA;
-	Sat, 26 Sep 2026 16:45:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1790433930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5Apn2YF5XEj2vUVw6Yx8RwrmsIykiLewffaA3kcaTPY=;
-	b=SmdpAoZs79lrPkVy/0d+Ku1eDb2aVPLHg3M/IWW+9PinutKr4USvtM7HE9Xn4uWEAreLkU
-	GHgQKxpspvwHBLkZJ7BaUDTp1laR0/30vr0PUpFfmqm4Q3cuJFRgLrebS480GZ2cYg+8nP
-	dplAPgHy//yTykZw0X1o8RiWFUVLc8Y=
-Message-ID: <b6628737-6535-42ea-bf8e-93dcaddaeb5c@ixit.cz>
-Date: Sat, 26 Sep 2026 16:45:30 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KzTjvkHl"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664b7528so1739886eec.2
+        for <phone-devel@vger.kernel.org>; Sat, 26 Sep 2026 12:36:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790451408; x=1791056208; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QX41ahyGOpU0kHZy9lRmPzsKi/D8viXue0ia/YOVuc8=;
+        b=KzTjvkHlcaLSMTOxAK6XXsRC3xrQTbVQk81vzdWc9Rq600TVW02saUhZxkouTXvP44
+         lcsErLJqwtd4k9wVSoyvXi+Nx+wIyy7djTaziTI5xwLW9aJas1Kk7nzAzEfPpIQuwvEu
+         noRM+gEIJeua9w0213IBNHeMTcoMZfaw5leeo7QBA9GSiWnfs0AyvjaTTqXYGTihdg2V
+         MYeD85YPEfrMEKkCFYt3enBZqCftGaCK/bjVK5tIFq7Jt0cKvUDq2w6stMb3gy6iCEa2
+         MoWl34Dkj3r+AvHN2T+V2QDZmKi8Uq1oabo8eaDrBKi6W6ZYCLFXgpy3zNnJd1pI/KTr
+         JWhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790451408; x=1791056208;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QX41ahyGOpU0kHZy9lRmPzsKi/D8viXue0ia/YOVuc8=;
+        b=tiIFsmPx7en0+v/OaqYT1Le9Upa98a0qmXBx5viogyAVvNykI34sKoktD85E+8/rkd
+         ZARzMcO+QcXpxqUGm8EqxIG10uG3NK5mXV605FI2xU8Ps8mUzx2ue2csQuEagZY7yrWC
+         W/6UBB3jiyYqDpqKxONkmS5ZMsA/dmxnvnioSb4sCMO4JqPYJ5GgePCklbil98Jdj1cz
+         u8tJVPER1GXNwXdSUVvzWs7dvEF8W8o7ZqZ8BD1dtDKloXGWSecR7z15tdNpr9rAIT6e
+         dpoCxhnc1yEArlVF8tPQgSqTG5g6ZOGXLSJ5DQWDDZD5vc99DUy7EGNozX13h+wSfFFB
+         o9SA==
+X-Forwarded-Encrypted: i=1; AKwUvByA9O11PhJyj032iaDs2OiNLACQ3AOt4prMUOCF9VUODh9mp4//OtACzi867wPvVP37G22MGBoro/oNrw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYK7CteAQda3lMhsOQykIGQFx4DOqnYCkfv2AX8nsZLQ6HG5iyTA
+	v+V5/6MbKfZayaqDWDskbof0sre9jlfOaSQ950fNPrXQ60DLvWzdqt/b
+X-Gm-Gg: AYBFou2C+M+JaTVoJAm+5f4bF/F4J+Hg5oyxIOTt2OG8jFyYvAKohFb1ZdtUAbcJwXn
+	qiGYn6/tFKATiq3tgDE5bmS9bNi/IDxBEvYBg2/1rF5NRUELx3qqa3BSQjgBJUQ1/vVMytKlUul
+	o4RJmzGXQRKYvGHbvQbuPsoKP5+OUJ2gD95l8ud/oiUigAMIUYq3SYihUBsnF/DYwuWZuSAAicu
+	X3TjMmyUvgtbsmt3OLTKaggDoGScdhm1Cx2GgfCzY4guosBG7WwItdsl1dyen1ViCYtu1ciRdR9
+	0x8R2asVJtCU9hYFAI92QWQZaxwTq6mamBj+TqLsacqdkjUDwsI72mTh1dOtnc6TIuRUd5QJ+PD
+	KuaoeAr1qXlK1Yfl8LDUtieLjqm66fy040dVuSFALTHgRxuxejFnPblEtgMkYRe9nM9PZ1STkKv
+	7iwWeTVn1HnLgaGyT7+N2mGlqAOkjjYflWJ0TwGRvGQzMGhjyY1qOcUTdsSJE5B+VUkLOXo8T63
+	HbSz8M8Ban/gPXHZw6b5wtv4cCxrnN9/LkzNCw=
+X-Received: by 2002:a05:7301:1f06:b0:33c:719:f1aa with SMTP id 5a478bee46e88-3426fcc832bmr5527226eec.8.1790451407873;
+        Sat, 26 Sep 2026 12:36:47 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:1baf:781d:ff3:70cf])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341460f5166sm17749600eec.29.2026.09.26.12.36.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 12:36:46 -0700 (PDT)
+Date: Sat, 26 Sep 2026 12:36:43 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Andi Shyti <andi@etezian.org>, Rob Herring <robh@kernel.org>, 
+	Marco Mattiolo <marco.mattiolo@hotmail.it>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	phone-devel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Input: s6sy761 - fix resume ordering and restore sensing
+Message-ID: <argZ9Yjigr4nwltW@google.com>
+References: <20260923-s6sy761-suspend-v1-1-6fff96e71cb0@ixit.cz>
+ <ardMSVsG1RlOOkNp@google.com>
+ <187c9ec1-03fe-40a8-8c97-415b1a7aac23@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 06/12] usb: typec: qcom: Add gen1 Type-C port support
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Alexey Minnekhanov <alexeymin@minlexx.ru>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Lee Jones <lee@kernel.org>, Stephen Boyd <sboyd@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org, mfd@lists.linux.dev
-References: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
- <20260926-typec-v1-6-31adc19f32c6@ixit.cz>
- <4f089c98-a479-45c9-9b11-0207c895367a@linaro.org>
- <f83b2992-9214-49b7-be3d-28ad435a73c9@ixit.cz>
- <8f6c3e69-f616-42b4-8e33-f05ac0812722@linaro.org>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- xsFNBF5v1x4BEADS3EddwsNsvVAI1XF8uQKbdYPY/GhjaSLziwVnbwv5BGwqB1tfXoHnccoA
- 9kTgKAbiXG/CiZFhD6l4WCIskQDKzyQN3JhCUIxh16Xyw0lECI7iqoW9LmMoN1dNKcUmCO9g
- lZxQaOl+1bY/7ttd7DapLh9rmBXJ2lKiMEaIpUwb/Nw0d7Enp4Jy2TpkhPywIpUn8CoJCv3/
- 61qbvI9y5utB/UhfMAUXsaAgwEJyGPAqHlC0YZjaTwOu+YQUE3AFzhCbksq95CwDz4U4gdls
- dmv9tkATfu2OmzERZQ6vJTehK0Pu4l5KmCAzYg42I9Dy4E6b17x6NncKbcByQFOXMtG0qVUk
- F1yeeOQUHwu+8t3ZDMBUhCkRL/juuoqLmyDWKMc0hKNNeZ9BNXgB8fXkRLWEUfgDXsFyEkKp
- NxUy5bDRlivf6XfExnikk5kj9l2gGlNQwqROti/46bfbmlmc/a2GM4k8ZyalHNEAdwtXYSpP
- 8JJmlbQ7hNTLkc3HQLRsIocN5th/ur7pPMz1Beyp0gbE9GcOceqmdZQB80vJ01XDyCAihf6l
- AMnzwpXZsjqIqH9r7T7tM6tVEVbPSwPt4eZYXSoJijEBC/43TBbmxDX+5+3txRaSCRQrG9dY
- k3mMGM3xJLCps2KnaqMcgUnvb1KdTgEFUZQaItw7HyRd6RppewARAQABzSBEYXZpZCBIZWlk
- ZWxiZXJnIDxkYXZpZEBpeGl0LmN6PsLBlAQTAQgAPgIbAwULCQgHAgYVCgkICwIEFgIDAQIe
- AQIXgBYhBNd6Cc/u3Cu9U6cEdGACP8TTSSByBQJl+KksBQkPDaAOAAoJEGACP8TTSSBy6IAQ
- AMqFqVi9LLxCEcUWBn82ssQGiVSDniKpFE/tp7lMXflwhjD5xoftoWOmMYkiWE86t5x5Fsp7
- afALx7SEDz599F1K1bLnaga+budu55JEAYGudD2WwpLJ0kPzRhqBwGFIx8k6F+goZJzxPDsf
- loAtXQE62UvEKa4KRRcZmF0GGoRsgA7vE7OnV8LMeocdD3eb2CuXLzauHAfdvqF50IfPH/sE
- jbzROiAZU+WgrwU946aOzrN8jVU+Cy8XAccGAZxsmPBfhTY5f2VN1IqvfaRdkKKlmWVJWGw+
- ycFpAEJKFRdfcc5PSjUJcALn5C+hxzL2hBpIZJdfdfStn+DWHXNgBeRDiZj1x6vvyaC43RAb
- VXvRzOQfG4EaMVMIOvBjBA/FtIpb1gtXA42ewhvPnd5RVCqD9YYUxsVpJ9d+XsAy7uib3BsV
- W2idAEsPtoqhVhq8bCUs/G4sC2DdyGZK8MRFDJqciJSUbqA+5z1ZCuE8UOPDpZKiW6H/OuOM
- zDcjh0lOzr4p+/1TSg1PbUh7fQ+nbMuiT044sC1lLtJK0+Zyn0GwhR82oNM4fldNsaHRW42w
- QGD35+eNo5Pvb3We5XRMlBdhFnj7Siggp4J8/PJ6MJvRyC+RIJPGtbdMB2/RxWunFLn87e5w
- UgwR9jPMHAstuTR1yR23c4SIYoQ2fzkrRzuazsFNBF5v1x4BEADnlrbta2WL87BlEOotZUh0
- zXANMrNV15WxexsirLetfqbs0AGCaTRNj+uWlTUDJRXOVIwzmF76Us3I2796+Od2ocNpLheZ
- 7EIkq8budtLVd1c06qJ+GMraz51zfgSIazVInNMPk9T6fz0lembji5yEcNPNNBA4sHiFmXfo
- IhepHFOBApjS0CiOPqowYxSTPe/DLcJ/LDwWpTi37doKPhBwlHev1BwVCbrLEIFjY0MLM0aT
- jiBBlyLJaTqvE48gblonu2SGaNmGtkC3VoQUQFcVYDXtlL9CVbNo7BAt5gwPcNqEqkUL60Jh
- FtvVSKyQh6gn7HHsyMtgltjZ3NKjv8S3yQd7zxvCn79tCKwoeNevsvoMq/bzlKxc9QiKaRPO
- aDj3FtW7R/3XoKJBY8Hckyug6uc2qYWRpnuXc0as6S0wfek6gauExUttBKrtSbPPHiuTeNHt
- NsT4+dyvaJtQKPBTbPHkXpTO8e1+YAg7kPj3aKFToE/dakIh8iqUHLNxywDAamRVn8Ha67WO
- AEAA3iklJ49QQk2ZyS1RJ2Ul28ePFDZ3QSr9LoJiOBZv9XkbhXS164iRB7rBZk6ZRVgCz3V6
- hhhjkipYvpJ/fpjXNsVL8jvel1mYNf0a46T4QQDQx4KQj0zXJbC2fFikAtu1AULktF4iEXEI
- rSjFoqhd4euZ+QARAQABwsF8BBgBCAAmAhsMFiEE13oJz+7cK71TpwR0YAI/xNNJIHIFAmX4
- qVAFCQ8NoDIACgkQYAI/xNNJIHKN4A/+Ine2Ii7JiuGITjJkcV6pgKlfwYdEs4eFD1pTRb/K
- 5dprUz3QSLP41u9OJQ23HnESMvn31UENk9ffebNoW7WxZ/8cTQY0JY/cgTTrlNXtyAlGbR3/
- 3Q/VBJptf04Er7I6TaKAmqWzdVeKTw33LljpkHp02vrbOdylb4JQG/SginLV9purGAFptYRO
- 8JNa2J4FAQtQTrfOUjulOWMxy7XRkqK3QqLcPW79/CFn7q1yxamPkpoXUJq9/fVjlhk7P+da
- NYQpe4WQQnktBY29SkFnvfIAwqIVU8ix5Oz8rghuCcAdR7lEJ7hCX9bR0EE05FOXdZy5FWL9
- GHvFa/Opkq3DPmFl/0nt4HJqq1Nwrr+WR6d0414oo1n2hPEllge/6iD3ZYwptTvOFKEw/v0A
- yqOoYSiKX9F7Ko7QO+VnYeVDsDDevKic2T/4GDpcSVd9ipiKxCQvUAzKUH7RUpqDTa+rYurm
- zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
- fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
- ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <8f6c3e69-f616-42b4-8e33-f05ac0812722@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <187c9ec1-03fe-40a8-8c97-415b1a7aac23@ixit.cz>
 
-On 26/09/2026 16:41, Bryan O'Donoghue wrote:
-> On 26/09/2026 15:32, David Heidelberg wrote:
->> On 26/09/2026 16:22, Bryan O'Donoghue wrote:
->>> On 26/09/2026 13:40, David Heidelberg via B4 Relay wrote:
->>>> From: David Heidelberg <david@ixit.cz>
->>>>
->>>> Add a port backend for the first generation of the Qualcomm PMIC Type-C
->>>> block, found on PM660 and PMI8998.
->>>>
->>>> On gen1 the Type-C CC logic is part of the charger's USBIN peripheral
->>>> (base 0x1300) instead of the standalone Type-C peripheral used by
->>>> PM8150B and later PMICs. All Type-C events (CC state change,
->>>> tCCDebounce done, VBUS change and error) are signalled through a single
->>>> aggregate "type-c-change" interrupt, the handler re-reads TYPEC_STATUS_4
->>>> to find out what changed. The PD PHY is register compatible with PM8150B
->>>> and is reused as is.
->>>>
->>>> Differences to the PM8150B backend:
->>>>   - get_cc() returns -EBUSY until the hardware reports tCCDebounce done,
->>>>     instead of using a software debounce.
->>>>   - As a source, only the default and 1.5A Rp can be advertised, 3.0A
->>>>     requests are advertised as 1.5A.
->>>>   - The PBS workaround of the downstream SMB2 driver (TM_IO_DTEST4_SEL)
->>>>     is applied on every power role change.
->>>>
->>>> VBUS sourcing is optional and only used when the connector provides
->>>> a vbus-supply, as the charger doesn't expose a VBUS regulator yet.
->>>>
->>>> Assisted-by: LLM
->>>> Co-developed-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
->>>> Signed-off-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
->>>> Signed-off-by: David Heidelberg <david@ixit.cz>
->>>> ---
->>>>   drivers/usb/typec/tcpm/qcom/Makefile               |   1 +
->>>>   drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c      |   9 +
->>>>   .../typec/tcpm/qcom/qcom_pmic_typec_port_gen1.c    | 605 ++++++++++ ++++++ 
->>>> +++++
->>>>   .../typec/tcpm/qcom/qcom_pmic_typec_port_gen1.h    |  15 +
->>>>   4 files changed, 630 insertions(+)
->>>>
->>
->> [...]
->>
->>>> +/*
->>>> + * Failure of this workaround write is non-fatal and
->>>> + * we can continue with the role transition.
->>>> + */
->>>> +static void gen1_typec_pbs_wa(struct gen1_typec_port *port, bool sink)
->>>> +{
->>>> +    unsigned int val = sink ? 0 : PBS_CRUDE_SENSOR_ENABLE;
->>>> +    int ret;
->>>> +
->>>> +    ret = regmap_write(port->regmap, port->base +
->>>> +               MISC_BASE_OFFSET + TM_IO_DTEST4_SEL, val);
->>>> +    if (!ret)
->>>> +        return;
->>>
->>> Why would the write fail and why wouldn't that be a critical case if the 
->>> write did fail ?
->>
->> Heya Bryan,
->>
->> thanks a lot for reviewing the series. For the rest notes, I'll incorporate 
->> that and/or think about it later. Here to quickly answer to this note,
->>
->> this one quirk is definitely NOT REQUIRED. Originally, I was testing the 
->> driver without it on sdm845 devices, and everything worked without it just 
->> fine. I ASSUME in some situation or with some devices combination it may come 
->> handy, thus likely if it fails, not much usually happens (and clanker was 
->> suggesting to port this one from downstream, so I did).
->>
->> David
->>
->> [...]
+On Sat, Sep 26, 2026 at 11:55:03AM +0200, David Heidelberg wrote:
+> On 26/09/2026 06:40, Dmitry Torokhov wrote:
+> > Hi David,
+> > 
+> > On Wed, Sep 23, 2026 at 03:27:06PM +0200, David Heidelberg via B4 Relay wrote:
+> > > From: David Heidelberg <david@ixit.cz>
+> > > 
+> > > System suspend powers the controller off and resume powers it back on,
+> > > but the resume path enables the interrupt before s6sy761_power_on()
+> > > checks the boot. The firmware raises its boot-complete event on the
+> > > interrupt line, the threaded handler consumes it, s6sy761_power_on()
+> > > then reads an empty event and resume fails with -ENODEV, skipping the
+> > > touch function setup:
+> > > 
+> > >    s6sy761 2-0048: PM: dpm_run_callback(): s6sy761_resume [s6sy761] returns -19
+> > > 
+> > > Power the chip on first and only then unmask the interrupt. Once resume
+> > > completes the boot handshake the chip comes back with sensing off, as
+> > > at probe where input_open() turns it on, so the touchscreen stays dead
+> > > after resume. Send SENSE_ON again when the input device is open.
+> > > 
+> > > Tested on a Pixel 3 XL over several s2idle cycles: resume succeeds and
+> > > the touch function and sense status match the pre-suspend state.
+> > > 
+> > > Assisted-by: LLM
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 0145a7141e59 ("Input: add support for the Samsung S6SY761 touchscreen")
+> > > Signed-off-by: David Heidelberg <david@ixit.cz>
+> > > ---
+> > >   drivers/input/touchscreen/s6sy761.c | 11 ++++++++++-
+> > >   1 file changed, 10 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/input/touchscreen/s6sy761.c b/drivers/input/touchscreen/s6sy761.c
+> > > index 0f24a9b730635..c52c45a7d1029 100644
+> > > --- a/drivers/input/touchscreen/s6sy761.c
+> > > +++ b/drivers/input/touchscreen/s6sy761.c
+> > > @@ -495,20 +495,29 @@ static int s6sy761_suspend(struct device *dev)
+> > >   	s6sy761_power_off(sdata);
+> > >   	return 0;
+> > >   }
+> > >   static int s6sy761_resume(struct device *dev)
+> > >   {
+> > >   	struct s6sy761_data *sdata = dev_get_drvdata(dev);
+> > > +	int err;
+> > > +	err = s6sy761_power_on(sdata);
+> > >   	enable_irq(sdata->client->irq);
+> > 
+> > Why are we enabling the interrupt even if power on failed?
 > 
-> I ran this code though an LLM and it is babbling about the "shape" of things to 
-> hand you LoL.
+> originally I moved the enable_irq after condition, but LLM kept convincing
+> me it's wrong:
 > 
-> Anyway the pattern matching part flagged this:
+> enable_irq() still runs when power-on fails. That is correct, because the
+> next suspend or unbind calls disable_irq() again through
+> s6sy761_power_off(), and the two calls must stay paired.
 > 
-> "Write outside the node's reg. base + MISC_BASE_OFFSET + TM_IO_DTEST4_SEL is 
-> 0x16e9, the MISC peripheral. 03 declares reg = <USBIN>, <PDPHY> only."
-> 
-> Worth also verifying.
+> In case of failure the power_off will be run anyway, thus it make sense to me.
 
-Yup, I explicitly split the addr into MISC_BASE_OFFSET, as it's pretty much 
-outside of this block range (same reason why I haven't sent the vbus patches for 
-qcom smbx charger).
+The LLM is wrong here. There should be no next suspend if resume fails.
 
-Maybe Konrad with more insight can tell more about it. In the Type-C submission 
-I can pretty much confidently drop it (if it'll need separate driver) and still 
-assure users get expected functionality.
+On unbind it is OK to free a disabled interrupt as long as it is not
+shared. The request_irq() path will reset the disable "depth" to 0 (or 1
+if IRQF_NO_AUTOEN) and everything will work just fine.
 
-David
+This is different from clocks and regulators that do require matching
+enable and disable.
 
-> 
-> ---
-> bod
+Thanks.
 
+-- 
+Dmitry
