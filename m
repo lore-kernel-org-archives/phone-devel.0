@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDA443F4CD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C9A44063B;
 	Sat, 26 Sep 2026 12:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790426434; cv=none; b=sSjOgBX4oRcRixFUgsnLrXILFcPiTtEb8UYEicIPXaksg4jnjgzubyDa8OS2+u1PTsf+pSdTtcxcun4tJA1taO1eIz4ygMbQO4GfoBTCk0+RNxTT/KVxXcJkavY0/tm+/bkUJyEKwwelhxBJilCDlQjygRuDNPYdwDXlmAjcaWc=
+	t=1790426434; cv=none; b=TiC+XCX/FPFCtCRV1vjI2eti+8LUlGu7W6k5F3O5otrOFKr1bZKDzuqVyMfOlzylOjfdESGFu0d6EH4un7HBDugAwBzlmM0zDe/HQS1yruvb63i+PtJpNPHsEVLKI7uote3XLF1iO1YSEkusOH0SyAEhlGTLC8eQIhPnNXP0L1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790426434; c=relaxed/simple;
-	bh=CbitlEm4C1LRXGOhGoMRNWKo7JTZBmlS8VhWp6mv4So=;
+	bh=tR7p4+86bpeoj1XWILrzonGsW3yNL821Kp8a2y4sEFo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tAIO7pdmnp5/AWPJmnEHZMnHtHAmml8PjwRLL2uPdVw2QeVlGNf//51tknSUsgZElHPn+QCwhJlUXy2wg/YSJf+46NhHq4LkJ9uj64i0uGsSlCRPJ4lKjSHk/bRzGI4DORx6EjSgA74rY/YkBsRX8jbx43uJ1yEB+WmGVrkwIkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtTU4rbo; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YuJz3DyvNiWVteGaB9y4IiB9F5ZFWYGfu7ECrtJBXSDSWwjLPEpFK6qNC6WQBVuh5jza821nwZev/Lp9OxpA9Fixd3jrhJaG2eEw016WG6KFFzMv+pDbHmVzPYCI+mqzVjmDiDDzF3bz4mgPDUo7RhQ3esrQXa1xbDrfTQoiPQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ngGj+HgP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtTU4rbo"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BDE79C2BCFF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ngGj+HgP"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EA1B3C2BCFC;
 	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790426433;
-	bh=CbitlEm4C1LRXGOhGoMRNWKo7JTZBmlS8VhWp6mv4So=;
+	s=k20201202; t=1790426434;
+	bh=tR7p4+86bpeoj1XWILrzonGsW3yNL821Kp8a2y4sEFo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EtTU4rbovS4xzokNa0EkTP0r7i/iYHE892Cypj64EyF2UinfUWotb0TiN31tSLaAW
-	 a65HAJCizuuSJJ0NVERNazHzHVyTVTO+VxRlEsnFEtGukUefOTCl6YifRwz1/QNHKz
-	 P8VRQjR8NB8kXaeyQ7PJwy9mWAi5Z1hFK+2yT6xF1ZYNzj55CTZthiSoGHBk3q3v+K
-	 i0D5DmGOx5OfNBwpPYatJ7yYkGH1aA/JGu8t4CdFL8Y4Ew9KnKIXHBu3WwLZE799n1
-	 jtgLCKRqdzbF9kCejl1HRka4EOISu7q7QPdfrXnhQF8dRiCF0jXBk1D6ND/iN3WAI3
-	 XQIaKQ3HaLlsQ==
+	b=ngGj+HgP2PXnVe7PvcYyTYlD8pfJFGiVBy6Y+SknDEwy81QA4+63QrcotJbXahOGv
+	 ohuT33t3rYWwkC8FdJQHUt6t68hk07IgeLmDPiC0Y87hNMqMY8+z0kON04uNlNuvNR
+	 JrqlHdG/zKjtLjSrkkcdjf0aSBGg0Q/7B9Y7madbygH0JmnMwEsXGK7nDPfJNk13WJ
+	 YJ6HKwhccahtd4azwLGKYMsMC6ijd8D0R1T9ReiIk+4FZasL3N1voA2mM3tfmepQqK
+	 cOkPag0/1+YHXciHs4hPdoJ4gUnPMEfSJeRqH2SPTaCrxYiCvOYczM2eWVIrdwWrKp
+	 4BdLEdOJDpVOA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0B4BC98332;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D75AAC9833D;
 	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sat, 26 Sep 2026 14:40:25 +0200
-Subject: [PATCH RFC 06/12] usb: typec: qcom: Add gen1 Type-C port support
+Date: Sat, 26 Sep 2026 14:40:28 +0200
+Subject: [PATCH RFC 09/12] arm64: dts: qcom: sdm670-google-common: Enable
+ USB Type-C port controller
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260926-typec-v1-6-31adc19f32c6@ixit.cz>
+Message-Id: <20260926-typec-v1-9-31adc19f32c6@ixit.cz>
 References: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
 In-Reply-To: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
 To: Alexey Minnekhanov <alexeymin@minlexx.ru>, 
@@ -60,21 +61,21 @@ Cc: linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
  phone-devel@vger.kernel.org, mfd@lists.linux.dev, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20810; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3664; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=lwCi5F7brUNbuKWKf7yWNCLhdQnuROjga0askdAs3Zs=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqt70+VdzhcG/H+UXlk7jrDe6NT+n49kEgOk84V
- lSWXArNAliJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCare9PgAKCRBgAj/E00kg
- csTxD/9r2ndOi/phci0sa/0U0fIjnuh0i16zTYsvkkeK7OF1Q3zacSEnAZIwTn4/PxaTptX+yzI
- Wcb+3SBE3fg56/O4/vHprcP7JoFw64AlgKz/1HLDX20tAa9AyGbkGp4a7E8QL/idBZOO8IuM70R
- HOr9XRO+hNR+IfwZcEBvHW5Us2bPEfHWN1VOIw4Mfie4gxzwf7YRe5VB/u0vImOzsJb1BvaJlpt
- 53V5b2U0/jp7/Plseo+z40mSPUyygS+chiCSjVzMf9EU+SJ8spHRyGFOQGR8OVoiut1Z/F2Ykdq
- xPgThqjiyvp/8gZoQnBVpLMPs+3NKcXlrYBUgeq3eAEmRXba87xsVvS0tCUW2iYG9U66RsVozUE
- OcnXUwmrbFJqKy4F+SnZP8IXWD8BkgcaBugT8Ta6FvqQtSc6AztvEa3n/hPQnC1Qjm5ROtIu8bZ
- L9LOp9VuHXYOyayjTLoDU6vr8L24SBgeHSYUntJf0yTPbMmCyhWv3RCwJbUYgdWC/FPlKdAUuJx
- Pb0SLlF7gtgoB4nRPG/sMwz1J51QVg1XGQ/Pe02+Wn1GhABI7+shb0BckxIWtgy/X/CAbRJrHyT
- 73sZ1b86TfM9UvbV552w3bGGTuyl+XrC0L513z/01se7f63fu08pi0ZhV1M4itIlBQSdJUdwpXD
- fICnl8OHIEdCWlw==
+ bh=CjS4hw3kr0t8vOchmksh9hh2KTW9zTk6YzJTOsPRVhk=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqt70+gGgkptBxM92aPKjE+5O95WN0shFAlu1nR
+ v+Fpo3bXr6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCare9PgAKCRBgAj/E00kg
+ cqkqEADPo2oLUvuGwwEQukf+Tf1e58KayaODxbTvtiWcIGeujCSmRGCBqskRF4wxyOWldimWLGz
+ B+u4qEie7FN6OyGhkQkhcL8tRVIsvoP4vSvG7xoe911nglRao2HOSkix4g55OxBee+Bogxczd3K
+ RqOq30o/DrvkVFoojYAV/xHrwa/xWKww9dfdMOtfozkn2QK1hCgzztB+2T5meV/uCN32SB2bN0f
+ +DO6A74g1oWJSi2FGZMSM/KBx/qU6qQ7jrUiOZgENwiWgY96SAEXq9uAC3iEnaKriiRJTw1m4eH
+ h32s+PfTmcdHxU9Sez71jiQpu5P/OZWzScPbkbkAh7MmFyKDRbmwpo5vy1QPk+9k9d04S4yYjuy
+ 87xLQY6C6tXwFTDkLto4X2VM18CDtN4NpyRGUXcBvkO6A1gQF3GZT2PJ+qQNro2dm/vL/QgMejZ
+ uPIhEc1hXPPhHinz338vu07fzQe54JRoUJNncN3Df6MfZvn1EZu1kSJYpIOrgSFNejqRi7FLAaX
+ qqyZemCAT9iro+5JSErr+cr0aag5QHS6hhRpYoSU5KVT14pyOUbsf4e8OgmS9S1+zgb/SyWbgGY
+ zM/9INYpOIl89mPueOmBlYXP3TylaJiHbyVbhiwp9ks202uLrx19W75Mrvk4qJcQNBiGDAz0sqW
+ kK+RhsbszxWqCMw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -83,746 +84,137 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-Add a port backend for the first generation of the Qualcomm PMIC Type-C
-block, found on PM660 and PMI8998.
+Enable the PM660 Type-C port controller with a USB-C connector
+description for the Google Pixel 3a (sargo) and Pixel 3a XL (bonito),
+which share the same USB-C hardware via this common dtsi.
 
-On gen1 the Type-C CC logic is part of the charger's USBIN peripheral
-(base 0x1300) instead of the standalone Type-C peripheral used by
-PM8150B and later PMICs. All Type-C events (CC state change,
-tCCDebounce done, VBUS change and error) are signalled through a single
-aggregate "type-c-change" interrupt, the handler re-reads TYPEC_STATUS_4
-to find out what changed. The PD PHY is register compatible with PM8150B
-and is reused as is.
+The connector is configured as:
+  - Sink-only power role with a 5V/3A sink PDO
+  - Dual-role data with USB role switching
 
-Differences to the PM8150B backend:
- - get_cc() returns -EBUSY until the hardware reports tCCDebounce done,
-   instead of using a software debounce.
- - As a source, only the default and 1.5A Rp can be advertised, 3.0A
-   requests are advertised as 1.5A.
- - The PBS workaround of the downstream SMB2 driver (TM_IO_DTEST4_SEL)
-   is applied on every power role change.
+The VBUS output of the charger is not supported yet, so the port can't
+act as a power source. Describe it as sink-only until VBUS support lands,
+USB host mode is still reachable through a PD data role swap. Higher
+voltage PDOs are left out until the charger driver programs the allowed
+USBIN adapter voltage.
 
-VBUS sourcing is optional and only used when the connector provides
-a vbus-supply, as the charger doesn't expose a VBUS regulator yet.
+The Pixel 3a USB-C port is USB 2.0 only, so only the HS endpoint is
+wired to the DWC3 controller.
+
+Switch the DWC3 controller from peripheral-only to OTG mode with
+usb-role-switch to allow the TCPM framework to control USB host/device
+role based on CC pin detection.
 
 Assisted-by: LLM
-Co-developed-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
-Signed-off-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/usb/typec/tcpm/qcom/Makefile               |   1 +
- drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c      |   9 +
- .../typec/tcpm/qcom/qcom_pmic_typec_port_gen1.c    | 605 +++++++++++++++++++++
- .../typec/tcpm/qcom/qcom_pmic_typec_port_gen1.h    |  15 +
- 4 files changed, 630 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi | 51 +++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/qcom/Makefile b/drivers/usb/typec/tcpm/qcom/Makefile
-index cc23042b94878..b8b9350184c19 100644
---- a/drivers/usb/typec/tcpm/qcom/Makefile
-+++ b/drivers/usb/typec/tcpm/qcom/Makefile
-@@ -1,7 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
- #
- obj-$(CONFIG_TYPEC_QCOM_PMIC)		+= qcom_pmic_tcpm.o
- qcom_pmic_tcpm-y			+= qcom_pmic_typec.o \
- 					   qcom_pmic_typec_port.o \
-+					   qcom_pmic_typec_port_gen1.o \
- 					   qcom_pmic_typec_pdphy.o \
- 					   qcom_pmic_typec_pdphy_stub.o \
-diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-index 41aaae6bb3724..ea1d5b0927436 100644
---- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
-@@ -12,16 +12,17 @@
- #include <linux/slab.h>
- #include <linux/usb/tcpm.h>
+diff --git a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+index b4854801a5f5e..afecbef2e5bc2 100644
+--- a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+@@ -6,16 +6,17 @@
+  * Copyright (c) 2022, Richard Acayan. All rights reserved.
+  */
  
- #include <drm/bridge/aux-bridge.h>
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include <dt-bindings/power/qcom-rpmpd.h>
++#include <dt-bindings/usb/pd.h>
+ #include "sdm670.dtsi"
+ #include "pm660.dtsi"
+ #include "pm660l.dtsi"
  
- #include "qcom_pmic_typec.h"
- #include "qcom_pmic_typec_pdphy.h"
- #include "qcom_pmic_typec_port.h"
-+#include "qcom_pmic_typec_port_gen1.h"
- 
- typedef int (*pmic_typec_port_probe_fn)(struct platform_device *pdev,
- 					struct pmic_typec *tcpm,
- 					const struct pmic_typec_port_resources *res,
- 					struct regmap *regmap, u32 base);
- 
- struct pmic_typec_resources {
- 	const struct pmic_typec_pdphy_resources	*pdphy_res;
-@@ -134,31 +135,39 @@ static void qcom_pmic_typec_remove(struct platform_device *pdev)
- 	struct pmic_typec *tcpm = platform_get_drvdata(pdev);
- 
- 	tcpm->pdphy_stop(tcpm);
- 	tcpm->port_stop(tcpm);
- 	tcpm_unregister_port(tcpm->tcpm_port);
- 	fwnode_handle_put(tcpm->tcpc.fwnode);
- }
- 
-+static const struct pmic_typec_resources gen1_typec_res = {
-+	.pdphy_res = &pm8150b_pdphy_res,
-+	.port_res = &gen1_port_res,
-+	.port_probe = qcom_pmic_typec_gen1_port_probe,
-+};
-+
- static const struct pmic_typec_resources pm8150b_typec_res = {
- 	.pdphy_res = &pm8150b_pdphy_res,
- 	.port_res = &pm8150b_port_res,
- 	.port_probe = qcom_pmic_typec_port_probe,
+ /delete-node/ &mpss_region;
+ /delete-node/ &venus_mem;
+ /delete-node/ &wlan_msa_mem;
+ /delete-node/ &cdsp_mem;
+@@ -580,16 +581,56 @@ cam_vio_pin: cam-vio-state {
+ 		power-source = <0>;
+ 	};
  };
  
- static const struct pmic_typec_resources pmi632_typec_res = {
- 	/* PD PHY not present */
- 	.port_res = &pm8150b_port_res,
- 	.port_probe = qcom_pmic_typec_port_probe,
+ &pm660_rradc {
+ 	status = "okay";
  };
  
- static const struct of_device_id qcom_pmic_typec_table[] = {
-+	{ .compatible = "qcom,pm660-typec", .data = &gen1_typec_res },
- 	{ .compatible = "qcom,pm8150b-typec", .data = &pm8150b_typec_res },
- 	{ .compatible = "qcom,pmi632-typec", .data = &pmi632_typec_res },
-+	{ .compatible = "qcom,pmi8998-typec", .data = &gen1_typec_res },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, qcom_pmic_typec_table);
- 
- static struct platform_driver qcom_pmic_typec_driver = {
- 	.driver = {
- 		.name = "qcom,pmic-typec",
- 		.of_match_table = qcom_pmic_typec_table,
-diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port_gen1.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port_gen1.c
-new file mode 100644
-index 0000000000000..b4e3e49664f9d
---- /dev/null
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port_gen1.c
-@@ -0,0 +1,605 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Qualcomm Type-C port backend (1st gen)
-+ *
-+ * GEN1 predates the standalone PM8150B-style Type-C register block.
-+ * Its CC/role controls live in the USBIN peripheral, while the PD PHY
-+ * is a separate PMIC peripheral.
-+ */
++&pm660_typec {
++	vdd-pdphy-supply = <&vreg_l7b_3p125>;
 +
-+#include <linux/interrupt.h>
-+#include <linux/kernel.h>
-+#include <linux/mutex.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/slab.h>
-+#include <linux/usb/tcpm.h>
++	status = "okay";
 +
-+#include "qcom_pmic_typec.h"
-+#include "qcom_pmic_typec_port.h"
-+#include "qcom_pmic_typec_port_gen1.h"
++	connector {
++		compatible = "usb-c-connector";
 +
-+/* USBIN Type-C status */
-+#define TYPEC_STATUS_1_REG				0x0b
-+#define  UFP_TYPEC_MASK					GENMASK(7, 5)
-+#define  UFP_TYPEC_RDSTD				BIT(7)
-+#define  UFP_TYPEC_RD1P5				BIT(6)
-+#define  UFP_TYPEC_RD3P0				BIT(5)
-+
-+#define TYPEC_STATUS_2_REG				0x0c
-+#define  DFP_TYPEC_MASK					GENMASK(3, 0)
-+#define  DFP_RD_OPEN					BIT(3)
-+#define  DFP_RD_RA_VCONN				BIT(2)
-+#define  DFP_RD_RD					BIT(1)
-+#define  DFP_RA_RA					BIT(0)
-+
-+#define TYPEC_STATUS_4_REG				0x0e
-+#define  UFP_DFP_MODE_STATUS				BIT(7)
-+#define  TYPEC_VBUS_STATUS				BIT(6)
-+#define  TYPEC_VBUS_ERROR				BIT(5)
-+#define  TYPEC_DEBOUNCE_DONE				BIT(4)
-+#define  CC_ORIENTATION					BIT(1)
-+#define  CC_ATTACHED					BIT(0)
-+
-+/* USBIN Type-C configuration */
-+#define TYPEC_CFG_REG					0x58
-+#define  TYPEC_OR_U_USB					BIT(0)
-+
-+#define TYPEC_CFG_2_REG					0x59
-+#define  EN_TRY_SOURCE_MODE				BIT(3)
-+#define  EN_80UA_180UA_CUR_SOURCE			BIT(0)
-+
-+#define TYPEC_CFG_3_REG					0x5a
-+#define  EN_TRYSINK_MODE				BIT(2)
-+
-+#define TYPEC_INTRPT_ENB_REG				0x67
-+#define  VBUS_ERROR_INT_EN				BIT(5)
-+#define  DEBOUNCE_DONE_INT_EN				BIT(3)
-+#define  CCSTATE_CHANGE_INT_EN				BIT(2)
-+#define  VBUS_DEASSERT_INT_EN				BIT(1)
-+#define  VBUS_ASSERT_INT_EN				BIT(0)
-+
-+#define TYPEC_SW_CTRL_REG				0x68
-+#define  VCONN_EN_ORIENTATION				BIT(6)
-+#define  VCONN_EN_SRC					BIT(4)
-+#define  VCONN_EN_VALUE					BIT(3)
-+#define  POWER_ROLE_CMD_MASK				GENMASK(2, 0)
-+#define  UFP_EN_CMD					BIT(2)
-+#define  DFP_EN_CMD					BIT(1)
-+#define  TYPEC_DISABLE_CMD				BIT(0)
-+
-+/* GEN1 TYPEC_PBS_WA_BIT workaround used by the downstream SMB2 driver. */
-+#define MISC_BASE_OFFSET				0x300
-+#define TM_IO_DTEST4_SEL				0xe9
-+#define PBS_CRUDE_SENSOR_ENABLE				0xa5
-+
-+/* Interrupt numbers */
-+#define PMIC_TYPEC_CHANGE_IRQ				0x0
-+
-+struct gen1_typec_port {
-+	struct device		*dev;
-+	struct tcpm_port	*tcpm_port;
-+	struct regmap		*regmap;
-+	u32			base;
-+	int			irq;
-+
-+	struct regulator	*vbus;
-+	bool			vbus_enabled;
-+	bool			vbus_present;
-+	bool			vbus_valid;
-+	struct mutex		lock; /* serializes register RMW and VBUS state */
-+};
-+
-+const struct pmic_typec_port_resources gen1_port_res = {
-+	.nr_irqs = 1,
-+	.irq_params = {
-+		{
-+			.irq_name = "type-c-change",
-+			.virq = PMIC_TYPEC_CHANGE_IRQ,
-+		},
-+	},
-+};
-+
-+/*
-+ * Failure of this workaround write is non-fatal and
-+ * we can continue with the role transition.
-+ */
-+static void gen1_typec_pbs_wa(struct gen1_typec_port *port, bool sink)
-+{
-+	unsigned int val = sink ? 0 : PBS_CRUDE_SENSOR_ENABLE;
-+	int ret;
-+
-+	ret = regmap_write(port->regmap, port->base +
-+			   MISC_BASE_OFFSET + TM_IO_DTEST4_SEL, val);
-+	if (!ret)
-+		return;
-+
-+	dev_warn(port->dev,
-+		 "failed to update GEN1 Type-C PBS workaround: %d\n",
-+		 ret);
-+}
-+
-+static int gen1_typec_set_power_role(struct gen1_typec_port *port,
-+				     unsigned int role)
-+{
-+	int ret;
-+
-+	gen1_typec_pbs_wa(port, role == UFP_EN_CMD);
-+
-+	ret = regmap_update_bits(port->regmap,
-+				 port->base + TYPEC_SW_CTRL_REG,
-+				 POWER_ROLE_CMD_MASK, role);
-+	if (ret)
-+		dev_err(port->dev, "failed to set Type-C power role: %d\n", ret);
-+
-+	return ret;
-+}
-+
-+static int gen1_typec_get_vbus(struct tcpc_dev *tcpc)
-+{
-+	struct pmic_typec *tcpm = tcpc_to_tcpm(tcpc);
-+	struct gen1_typec_port *port = tcpm->pmic_typec_port;
-+	unsigned int status;
-+	int ret;
-+
-+	mutex_lock(&port->lock);
-+	ret = regmap_read(port->regmap, port->base +
-+			  TYPEC_STATUS_4_REG, &status);
-+	if (ret)
-+		ret = port->vbus_enabled;
-+	else
-+		ret = port->vbus_enabled || !!(status & TYPEC_VBUS_STATUS);
-+	mutex_unlock(&port->lock);
-+
-+	return ret;
-+}
-+
-+static int gen1_typec_set_vbus(struct tcpc_dev *tcpc, bool on, bool sink)
-+{
-+	struct pmic_typec *tcpm = tcpc_to_tcpm(tcpc);
-+	struct gen1_typec_port *port = tcpm->pmic_typec_port;
-+	bool changed = false;
-+	int ret = 0;
-+
-+	if (!port->vbus)
-+		return 0;
-+
-+	mutex_lock(&port->lock);
-+
-+	if (port->vbus_enabled == on)
-+		goto out;
-+
-+	if (on)
-+		ret = regulator_enable(port->vbus);
-+	else
-+		ret = regulator_disable(port->vbus);
-+
-+	if (!ret) {
-+		port->vbus_enabled = on;
-+		changed = true;
-+	}
-+
-+out:
-+	mutex_unlock(&port->lock);
-+
-+	/*
-+	 * set_vbus() may run during tcpm_register_port() before port_start()
-+	 * provides tcpm_port. Once registered, notify TCPM whenever the
-+	 * source regulator actually changes state. get_vbus() also accounts
-+	 * for vbus_enabled when GEN1 does not reflect sourced VBUS in
-+	 * TYPEC_VBUS_STATUS.
-+	 */
-+	if (changed && port->tcpm_port)
-+		tcpm_vbus_change(port->tcpm_port);
-+
-+	return ret;
-+}
-+
-+static int gen1_typec_get_cc(struct tcpc_dev *tcpc,
-+			     enum typec_cc_status *cc1,
-+			     enum typec_cc_status *cc2)
-+{
-+	struct pmic_typec *tcpm = tcpc_to_tcpm(tcpc);
-+	struct gen1_typec_port *port = tcpm->pmic_typec_port;
-+	enum typec_cc_status active = TYPEC_CC_OPEN;
-+	unsigned int status1, status2, status4;
-+	bool orientation_cc2;
-+	int ret;
-+
-+	*cc1 = TYPEC_CC_OPEN;
-+	*cc2 = TYPEC_CC_OPEN;
-+
-+	mutex_lock(&port->lock);
-+
-+	ret = regmap_read(port->regmap, port->base +
-+			  TYPEC_STATUS_4_REG, &status4);
-+	if (ret)
-+		goto out;
-+
-+	if (!(status4 & CC_ATTACHED))
-+		goto out;
-+
-+	/*
-+	 * CC is not stable until tCCDebounce has elapsed. TCPM ignores
-+	 * -EBUSY and the DEBOUNCE_DONE interrupt triggers a new read.
-+	 */
-+	if (!(status4 & TYPEC_DEBOUNCE_DONE)) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	ret = regmap_read(port->regmap, port->base +
-+			  TYPEC_STATUS_1_REG, &status1);
-+	if (ret)
-+		goto out;
-+
-+	ret = regmap_read(port->regmap, port->base +
-+			  TYPEC_STATUS_2_REG, &status2);
-+	if (ret)
-+		goto out;
-+
-+	orientation_cc2 = !!(status4 & CC_ORIENTATION);
-+
-+	if (status4 & UFP_DFP_MODE_STATUS) {
-+		/* Local port is DFP/source; decode the partner's Rd/Ra. */
-+		switch (status2 & DFP_TYPEC_MASK) {
-+		case DFP_RA_RA:
-+			*cc1 = TYPEC_CC_RA;
-+			*cc2 = TYPEC_CC_RA;
-+			goto out;
-+		case DFP_RD_RD:
-+			*cc1 = TYPEC_CC_RD;
-+			*cc2 = TYPEC_CC_RD;
-+			goto out;
-+		case DFP_RD_RA_VCONN:
-+			active = TYPEC_CC_RD;
-+			*cc1 = TYPEC_CC_RA;
-+			*cc2 = TYPEC_CC_RA;
-+			break;
-+		case DFP_RD_OPEN:
-+			active = TYPEC_CC_RD;
-+			break;
-+		default:
-+			dev_dbg(port->dev, "unhandled GEN1 DFP status %#x\n",
-+				status2);
-+			goto out;
-+		}
-+	} else {
-+		/* Local port is UFP/sink; decode the partner's advertised Rp. */
-+		switch (status1 & UFP_TYPEC_MASK) {
-+		case UFP_TYPEC_RDSTD:
-+			active = TYPEC_CC_RP_DEF;
-+			break;
-+		case UFP_TYPEC_RD1P5:
-+			active = TYPEC_CC_RP_1_5;
-+			break;
-+		case UFP_TYPEC_RD3P0:
-+			active = TYPEC_CC_RP_3_0;
-+			break;
-+		default:
-+			dev_dbg(port->dev, "unhandled GEN1 UFP status %#x\n",
-+				status1);
-+			goto out;
-+		}
-+	}
-+
-+	if (orientation_cc2)
-+		*cc2 = active;
-+	else
-+		*cc1 = active;
-+
-+out:
-+	mutex_unlock(&port->lock);
-+	return ret;
-+}
-+
-+static int gen1_typec_set_cc(struct tcpc_dev *tcpc,
-+			     enum typec_cc_status cc)
-+{
-+	struct pmic_typec *tcpm = tcpc_to_tcpm(tcpc);
-+	struct gen1_typec_port *port = tcpm->pmic_typec_port;
-+	unsigned int role;
-+	unsigned int rp_current = 0;
-+	int ret;
-+
-+	switch (cc) {
-+	case TYPEC_CC_OPEN:
-+		role = TYPEC_DISABLE_CMD;
-+		break;
-+	case TYPEC_CC_RD:
-+		role = UFP_EN_CMD;
-+		break;
-+	case TYPEC_CC_RP_DEF:
-+		role = DFP_EN_CMD;
-+		rp_current = 0;
-+		break;
-+	case TYPEC_CC_RP_1_5:
-+	case TYPEC_CC_RP_3_0:
 +		/*
-+		 * GEN1 can only source 80 uA (default) or 180 uA (1.5 A).
-+		 * Advertise 1.5 A for 3.0 A requests, TCPM ignores set_cc()
-+		 * errors and would otherwise keep a stale Rp.
++		 * Sink only for now, as the PM660 charger doesn't provide
++		 * the VBUS output yet. Switch to the dual power role with
++		 * source PDOs, try-power-role and vbus-supply once it is
++		 * supported.
++		 *
++		 * Higher voltage sink PDOs will be added once the charger
++		 * driver programs the allowed USBIN adapter voltage.
 +		 */
-+		role = DFP_EN_CMD;
-+		rp_current = EN_80UA_180UA_CUR_SOURCE;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
++		power-role = "sink";
++		data-role = "dual";
++		self-powered;
 +
-+	mutex_lock(&port->lock);
++		sink-pdos = <PDO_FIXED(5000, 3000,
++				       PDO_FIXED_USB_COMM |
++				       PDO_FIXED_DATA_SWAP)>;
++		op-sink-microwatt = <15000000>;
 +
-+	if (role == DFP_EN_CMD) {
-+		ret = regmap_update_bits(port->regmap,
-+					 port->base + TYPEC_CFG_2_REG,
-+					 EN_80UA_180UA_CUR_SOURCE,
-+					 rp_current);
-+		if (ret)
-+			goto out;
-+	}
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
 +
-+	ret = gen1_typec_set_power_role(port, role);
++			port@0 {
++				reg = <0>;
++				pm660_hs_in: endpoint {
++					remote-endpoint = <&usb_1_dwc3_hs>;
++				};
++			};
++		};
++	};
++};
 +
-+out:
-+	mutex_unlock(&port->lock);
-+	return ret;
-+}
+ &pm660l_flash {
+ 	status = "okay";
+ 
+ 	led-0 {
+ 		function = LED_FUNCTION_FLASH;
+ 		color = <LED_COLOR_ID_WHITE>;
+ 		led-sources = <1>, <2>;
+ 		led-max-microamp = <500000>;
+@@ -702,16 +743,22 @@ &usb_1_hsphy {
+ };
+ 
+ &usb_1 {
+ 	qcom,select-utmi-as-pipe-clk;
+ 	status = "okay";
+ };
+ 
+ &usb_1_dwc3 {
+-	/* Only peripheral works for now */
+-	dr_mode = "peripheral";
++	dr_mode = "otg";
++	usb-role-switch;
+ 
+ 	/* Do not assume that sdm670.dtsi will never support USB 3.0 */
+ 	phys = <&usb_1_hsphy>;
+ 	phy-names = "usb2-phy";
+ 	maximum-speed = "high-speed";
 +
-+static int gen1_typec_set_polarity(struct tcpc_dev *tcpc,
-+				   enum typec_cc_polarity polarity)
-+{
-+	/* USB PHY orientation is handled outside this PMIC Type-C block. */
-+	return 0;
-+}
-+
-+static int gen1_typec_set_vconn(struct tcpc_dev *tcpc, bool on)
-+{
-+	struct pmic_typec *tcpm = tcpc_to_tcpm(tcpc);
-+	struct gen1_typec_port *port = tcpm->pmic_typec_port;
-+	unsigned int status4, orientation, mask, val;
-+	int ret;
-+
-+	mutex_lock(&port->lock);
-+
-+	ret = regmap_read(port->regmap, port->base +
-+			  TYPEC_STATUS_4_REG, &status4);
-+	if (ret)
-+		goto out;
-+
-+	/* VCONN is driven on the inactive CC pin. */
-+	orientation = (status4 & CC_ORIENTATION) ?
-+		      0 : VCONN_EN_ORIENTATION;
-+
-+	if (on) {
-+		mask = VCONN_EN_ORIENTATION | VCONN_EN_VALUE;
-+		val = orientation | VCONN_EN_VALUE;
-+	} else {
-+		mask = VCONN_EN_VALUE;
-+		val = 0;
-+	}
-+
-+	ret = regmap_update_bits(port->regmap,
-+				 port->base + TYPEC_SW_CTRL_REG,
-+				 mask, val);
-+
-+out:
-+	mutex_unlock(&port->lock);
-+	return ret;
-+}
-+
-+static int gen1_typec_start_toggling(struct tcpc_dev *tcpc,
-+				     enum typec_port_type port_type,
-+				     enum typec_cc_status cc)
-+{
-+	struct pmic_typec *tcpm = tcpc_to_tcpm(tcpc);
-+	struct gen1_typec_port *port = tcpm->pmic_typec_port;
-+	unsigned int role;
-+	unsigned int try_src = 0;
-+	unsigned int try_snk = 0;
-+	int ret;
-+
-+	switch (port_type) {
-+	case TYPEC_PORT_SRC:
-+		role = DFP_EN_CMD;
-+		break;
-+	case TYPEC_PORT_SNK:
-+		role = UFP_EN_CMD;
-+		break;
-+	case TYPEC_PORT_DRP:
-+		role = 0;
-+		/*
-+		 * Like the PM8150B backend, keep hardware Try.SNK enabled
-+		 * while TCPM owns the policy state machine.
-+		 */
-+		try_snk = EN_TRYSINK_MODE;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	mutex_lock(&port->lock);
-+
-+	ret = regmap_update_bits(port->regmap,
-+				 port->base + TYPEC_CFG_2_REG,
-+				 EN_TRY_SOURCE_MODE, try_src);
-+	if (ret)
-+		goto out;
-+
-+	ret = regmap_update_bits(port->regmap,
-+				 port->base + TYPEC_CFG_3_REG,
-+				 EN_TRYSINK_MODE, try_snk);
-+	if (ret)
-+		goto out;
-+
-+	/* Disable first so the state machine restarts toggling. */
-+	ret = gen1_typec_set_power_role(port, TYPEC_DISABLE_CMD);
-+	if (ret)
-+		goto out;
-+
-+	ret = gen1_typec_set_power_role(port, role);
-+
-+out:
-+	mutex_unlock(&port->lock);
-+	return ret;
-+}
-+
-+static irqreturn_t gen1_typec_irq(int irq, void *data)
-+{
-+	struct gen1_typec_port *port = data;
-+	unsigned int status4;
-+	bool vbus;
-+	bool vbus_changed = false;
-+
-+	/*
-+	 * GEN1 exposes a single aggregate Type-C change interrupt. Always
-+	 * notify TCPM of CC changes. Only generate a VBUS event when the
-+	 * hardware VBUS state changes, or on the first observation so TCPM
-+	 * can establish the initial vSafe0V state.
-+	 */
-+	mutex_lock(&port->lock);
-+
-+	if (!regmap_read(port->regmap, port->base +
-+			 TYPEC_STATUS_4_REG, &status4)) {
-+		if (status4 & TYPEC_VBUS_ERROR)
-+			dev_warn_ratelimited(port->dev, "Type-C VBUS error\n");
-+
-+		vbus = !!(status4 & TYPEC_VBUS_STATUS);
-+
-+		if (!port->vbus_valid || vbus != port->vbus_present) {
-+			port->vbus_present = vbus;
-+			port->vbus_valid = true;
-+			vbus_changed = true;
-+		}
-+	}
-+
-+	mutex_unlock(&port->lock);
-+
-+	if (port->tcpm_port) {
-+		if (vbus_changed)
-+			tcpm_vbus_change(port->tcpm_port);
-+
-+		tcpm_cc_change(port->tcpm_port);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int gen1_typec_port_start(struct pmic_typec *tcpm,
-+				 struct tcpm_port *tcpm_port)
-+{
-+	struct gen1_typec_port *port = tcpm->pmic_typec_port;
-+	unsigned int irq_mask;
-+	int ret;
-+
-+	/*
-+	 * TYPE_C_OR_U_USB == 0 selects the Type-C state machine on GEN1.
-+	 */
-+	ret = regmap_update_bits(port->regmap,
-+				 port->base + TYPEC_CFG_REG,
-+				 TYPEC_OR_U_USB, 0);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * GEN1 exposes a single aggregate type-c-change interrupt, the
-+	 * handler re-reads TYPEC_STATUS_4 to find out what changed.
-+	 */
-+	irq_mask = CCSTATE_CHANGE_INT_EN | DEBOUNCE_DONE_INT_EN |
-+		   VBUS_ASSERT_INT_EN | VBUS_DEASSERT_INT_EN |
-+		   VBUS_ERROR_INT_EN;
-+
-+	ret = regmap_write(port->regmap,
-+			   port->base + TYPEC_INTRPT_ENB_REG,
-+			   irq_mask);
-+	if (ret)
-+		return ret;
-+
-+	/* Select software control for VCONN, initially disabled. */
-+	ret = regmap_update_bits(port->regmap,
-+				 port->base + TYPEC_SW_CTRL_REG,
-+				 VCONN_EN_SRC | VCONN_EN_VALUE,
-+				 VCONN_EN_SRC);
-+	if (ret)
-+		return ret;
-+
-+	port->tcpm_port = tcpm_port;
-+	enable_irq(port->irq);
-+
-+	return 0;
-+}
-+
-+static void gen1_typec_port_stop(struct pmic_typec *tcpm)
-+{
-+	struct gen1_typec_port *port = tcpm->pmic_typec_port;
-+
-+	disable_irq(port->irq);
-+	port->tcpm_port = NULL;
-+}
-+
-+int qcom_pmic_typec_gen1_port_probe(struct platform_device *pdev,
-+				    struct pmic_typec *tcpm,
-+				    const struct pmic_typec_port_resources *res,
-+				    struct regmap *regmap,
-+				    u32 base)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct gen1_typec_port *port;
-+	struct fwnode_handle *connector;
-+	int ret;
-+
-+	if (!res->nr_irqs || res->nr_irqs > PMIC_TYPEC_MAX_IRQS)
-+		return -EINVAL;
-+
-+	port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
-+	if (!port)
-+		return -ENOMEM;
-+
-+	connector = device_get_named_child_node(dev, "connector");
-+	if (!connector)
-+		return -EINVAL;
-+
-+	port->vbus = devm_of_regulator_get_optional(dev,
-+						    to_of_node(connector),
-+						    "vbus");
-+	fwnode_handle_put(connector);
-+	if (IS_ERR(port->vbus)) {
-+		if (PTR_ERR(port->vbus) != -ENODEV)
-+			return PTR_ERR(port->vbus);
-+		port->vbus = NULL;
-+	}
-+
-+	port->irq = platform_get_irq_byname(pdev,
-+					    res->irq_params[0].irq_name);
-+	if (port->irq < 0)
-+		return port->irq;
-+
-+	port->dev = dev;
-+	port->regmap = regmap;
-+	port->base = base;
-+	mutex_init(&port->lock);
-+
-+	ret = devm_request_threaded_irq(dev, port->irq, NULL,
-+					gen1_typec_irq,
-+					IRQF_ONESHOT | IRQF_NO_AUTOEN,
-+					res->irq_params[0].irq_name, port);
-+	if (ret)
-+		return ret;
-+
-+	tcpm->pmic_typec_port = port;
-+
-+	tcpm->tcpc.get_vbus = gen1_typec_get_vbus;
-+	tcpm->tcpc.set_vbus = gen1_typec_set_vbus;
-+	tcpm->tcpc.get_cc = gen1_typec_get_cc;
-+	tcpm->tcpc.set_cc = gen1_typec_set_cc;
-+	tcpm->tcpc.set_polarity = gen1_typec_set_polarity;
-+	tcpm->tcpc.set_vconn = gen1_typec_set_vconn;
-+	tcpm->tcpc.start_toggling = gen1_typec_start_toggling;
-+
-+	tcpm->port_start = gen1_typec_port_start;
-+	tcpm->port_stop = gen1_typec_port_stop;
-+
-+	return 0;
-+}
-diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port_gen1.h b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port_gen1.h
-new file mode 100644
-index 0000000000000..45e373d22edca
---- /dev/null
-+++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port_gen1.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __QCOM_PMIC_TYPEC_PORT_GEN1_H__
-+#define __QCOM_PMIC_TYPEC_PORT_GEN1_H__
-+
-+#include "qcom_pmic_typec_port.h"
-+
-+extern const struct pmic_typec_port_resources gen1_port_res;
-+
-+int qcom_pmic_typec_gen1_port_probe(struct platform_device *pdev,
-+				    struct pmic_typec *tcpm,
-+				    const struct pmic_typec_port_resources *res,
-+				    struct regmap *regmap,
-+				    u32 base);
-+
-+#endif /* __QCOM_PMIC_TYPEC_PORT_GEN1_H__ */
++	port {
++		usb_1_dwc3_hs: endpoint {
++			remote-endpoint = <&pm660_hs_in>;
++		};
++	};
+ };
 
 -- 
 2.55.0
