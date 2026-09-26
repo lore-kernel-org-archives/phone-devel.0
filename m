@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E23440A2F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439164418F2;
 	Sat, 26 Sep 2026 12:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790426434; cv=none; b=EqdQGHq24SVU2nB8DE1O23GnH5FLyBtyS9tFbAfOAJg6hnpgTSmESficAuZ8FElLPxdt2nvAM73QkTJCX06fv5ycPzLa4wTuXXZiqdWV6I4isBx1Yw6QhpVQ5lP0w1ESqTzkx42I6zK6nm6/Ys+OWtxBvzVNTtGI8loMe9QpiCU=
+	t=1790426434; cv=none; b=a0v2+UJNIVjypzlogu915Hb+0gSvdwUmDmk4s0KxZbvoAe0BVabto4/ThkYojYYRE4bpeg2+pFO5agomghT37+h4SZJJq9zS1vvgemDLq0FON4IHZj1RBpIKF5kGTK6p0n/7e3T1RYsa+jTVPipAiFVKDVV0ZSQFOAwQt6RO5QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790426434; c=relaxed/simple;
-	bh=0nD/Q/yX8fnh78tBYlMsAu62vHdt7jMPZ12GjmO2VCA=;
+	bh=E+ieb3LE7ncIT4E7El1E9wjac2xsmMqHnPd46QppuKg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ipP7GSVKDrWDrKfJyGCHFJ1UqyKCwUHmPitwfDD8eLzvStp0Fomqz0/x8fxPqiLeayXUMmXm7YM5ZTHVIGqtmTK629XORq6y3jpKGAG8cAUmud5nS0slQCE6f0hp/YArLBM4aknbhTi6qO1d4NhghUcVNazorgYZJ1j8TN9WKug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRGFV9CS; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Knb4rS8QOl03nt1lzBtElyV9dWiBCyyDTxkx0HuRLr9bZX1S/h3rYrY8fzzbVu5qZNVplBicTC92oR6vOlppmoKtv7h1sAHJofJDqbf4VZ1jk3TKWJ22Oy9ge7/sZxdAkUnvyeBWRSI/4doteOuorEFtLuFr4Mr7dA6b1Baaaeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mXCxysvO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRGFV9CS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 08036C2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mXCxysvO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 16350C2BD00;
 	Sat, 26 Sep 2026 12:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790426434;
-	bh=0nD/Q/yX8fnh78tBYlMsAu62vHdt7jMPZ12GjmO2VCA=;
+	bh=E+ieb3LE7ncIT4E7El1E9wjac2xsmMqHnPd46QppuKg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lRGFV9CSwn45ZWJpsvXgRGraFDKFoH8mojUP+IDRTrEqC+R0Siygo4nqAkKQrB6Eg
-	 Fb9QVy3wtxtVwUj59exR1chOe984tr2s0pR0RPpzEKns0QSwW42OhTmq02b5b+MPaF
-	 cN2N75MXW5Oir2CE035rO3JbZYgv6RzFpyJEaQ2B5JEtYcUzJE/QT7XWCE6exhj0Ch
-	 JO0Epef0Oebd19qrnDL+hvMMkOPobnpmjOlbkk/tTCV8cpTwi84ICV+aQvU+CJFiGd
-	 1nGy1bH47RLnVho0t5Q+vzGOPCVDgKWIojMohRhP0LyL0jr527xrpVKF6Cauj+gpwG
-	 iLb6eCp5GbD6g==
+	b=mXCxysvOrJHyXvJKoj6pa6FPiXH1WzUDznoAa1Um+B9r6hzJR7zfo6+C1SYlQqt/p
+	 aGbM6Nttiq4V0S1AONTlUNmzZ0wtF/I1KBKArgOMG7mkQU/NUn3tSQ5BsxuxXmspeF
+	 ywYIqeWB5q2PrX76raArmmDyY8xzdME7j2Fp/T/MKb20sPT4xkAcf+qQoFnA9bHOcy
+	 wSnkAN52H5v7gkf5QlHeSah+eAPRCE7mCW648KL80dVQLg0gpQFJicp4Z3pMZKgGIT
+	 gVHAVMW5O0PDkfMJMzBKMFrwgRDFhA2RFI7s2vFPXG+f8xPbIsQoCeeNZbLtH6Ykvm
+	 Id8SjYmZCnFNQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E99C2C98338;
-	Sat, 26 Sep 2026 12:40:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06256C98332;
+	Sat, 26 Sep 2026 12:40:34 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sat, 26 Sep 2026 14:40:29 +0200
-Subject: [PATCH RFC 10/12] arm64: dts: qcom: sdm845-google-common: Enable
+Date: Sat, 26 Sep 2026 14:40:30 +0200
+Subject: [PATCH RFC 11/12] arm64: dts: qcom: sdm845-oneplus-common: Enable
  USB Type-C port controller
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -40,8 +40,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260926-typec-v1-10-31adc19f32c6@ixit.cz>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260926-typec-v1-11-31adc19f32c6@ixit.cz>
 References: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
 In-Reply-To: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
 To: Alexey Minnekhanov <alexeymin@minlexx.ru>, 
@@ -61,21 +61,21 @@ Cc: linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
  phone-devel@vger.kernel.org, mfd@lists.linux.dev, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4327; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3902; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=r5IQw5ef3NgqdpkqzvYRqDdpmBPKAHmtONrEfZAVnQU=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqt70+aIeCNkK1YRBq0hkMzBSfTWJFNLHe+EZpq
- iLkAL06sCWJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCare9PgAKCRBgAj/E00kg
- crwKEACh2VG72WBEQaWlm3ElTE/xURhQ7dFGJfr9JYN8dzdcagAcTPi6+ZdQ6RdLT6pIT8r6f2Y
- th1vxhNgAt0s66X4HUgPV2vI8/3gYoLLklygGI+yxZXgkvIgfkgYh7PSZ3M7jewWpOnafvEx9dz
- UIoKcHJxfP06RykWB5BT0DJxmVULNpW4RRNBs/S9oOzDVYcLz9j2dy1qyya+Nqspw+Q6VAfKnyE
- iytMEIZIMOLj0Gncl6twyZsxuRKTvDu8SfS4udsCuIy+scSO7taWVPShxTTWFHFbK1d0puhBUbK
- rUSpYEvBtnFmjCU4+qv0gxhlDQdGJzhg8WN3XV8O1Hev9vdDb9OEJl4yLcoMjMGuR228b25DEIV
- 8XZgxypymklkRWcv/Df3n8c7GIdsJnguRkfj9m84EA62tTx0iaSvD9z6o4266mC3Bsrg0+QDCJN
- 23S6R8cAFj2jTrGmS5OhZ/4yVxv9JofnwKEv3rUfZwU1Z0JgX4vf2V1uCkfFF0yCruvprtWp/40
- sdnOpcH65fi2QeZFhJbby4FGa1FS/FaOmDjTeg4x1xBIZNW2XhGFFINviYVaG2eXy9mYXU7l3G9
- 6Qyxa9Y8ZH1IHhp2pSow3x4GRdogSRuqS3L34IufbQN+xgpmgq1lKh4BqozYEtsFzVUelsC67wQ
- YfC2Q5zXt1UtcFw==
+ bh=Q1RD32QhsfxNI1Wlv483ruSgZWvd115eJ5gP4RSA0iE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqt70+v6f/M2Qj8ltENV4iwMzqcasimqGnn5e5E
+ 5zxolskc52JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCare9PgAKCRBgAj/E00kg
+ cqxVD/4l1wTZ2Lq7JJMm2k/arBVdhyPUOYk+tBbFIslfgAxpAGHI5urwUgDiEt+7/DSSEPwFBAT
+ 6Q4FEC49JxWcuBrN8+q7g6EIZ6B0jkbQ4hGVBx7ahkx37ljvkOe2vHIR1kR4F2DQThQtxsxlKBz
+ Nx5WYVwVt94W1h3iSSQjojfgJ95QAxdjBT6vbQGqacvMBoy8dOpizcG4Hmavd6XXoxgeVBgADSE
+ eKzp5mMSX6NrAC5IzHgTTBXv8Qxrjt3nPkrWTZ6kCn2DLSSJvMJhOxhRkCy0BJJWOzLi7cN4F3Y
+ H6J12Fz4MPq0jg73yDu3wDBRD4M+Z3QCONw6IVhcI7BceJsdC/hYx5FRuqFkuOCQ+rgTPBz1gqA
+ hu/QKAGblOCcJqP0Qz+AkKF6Lppn+T9EHeptVKxizbKeapEeBCD7A26iHLsv23ntOFPsncEN/GD
+ zM8cKlgTjrc4K9DNy5cQcGV/P3xkYZah+Ha1WgXkyinA8IH+pscnLiqvwHtuRymg4inRTBVwaIn
+ yoomcq0Bv6t1rMA10EsUog0MsL6V/ny4dCr00/HR1qU7F8nwBtzecbKWNzgAXNSV9Pfc8rp9ThT
+ ZXMFaYxVYU4xRPkdeeObdzR9vFiO0arzgDuPvf0F+nlEQu0tLFNka2PeYqDqnEf4c2HlE5CjeYm
+ b2mqkWg78EZGSUw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -85,27 +85,22 @@ Reply-To: david@ixit.cz
 From: David Heidelberg <david@ixit.cz>
 
 Enable the PMI8998 Type-C port controller with a USB-C connector
-description for the Google Pixel 3 (blueline) and Pixel 3 XL
-(crosshatch), which share the same USB-C hardware via this common dtsi.
+description for the OnePlus 6 (enchilada) and OnePlus 6T (fajita),
+which share the same USB-C hardware via this common dtsi.
 
 The connector is configured as:
   - Sink-only power role with a 5V/3A sink PDO
-  - Operating sink power 7.6W (matching downstream configuration)
   - Dual-role data with USB role switching
 
 The VBUS output of the charger is not supported yet, so the port can't
 act as a power source. Describe it as sink-only until VBUS support lands,
-USB host mode is still reachable through a PD data role swap. Higher
-voltage PDOs are left out until the charger driver programs the allowed
-USBIN adapter voltage.
+USB host mode is still reachable through a PD data role swap.
 
-DisplayPort Alt Mode is not advertised as Google disabled DP output in
-the Pixel 3 hardware design (downstream explicitly sets sde_dp to
-disabled and excludes it from the MDSS connector list).
-
-Wire the USB-C connector port graph:
-  - port@0: DWC3 HS endpoint for USB role switching
-  - port@1: QMP combo PHY for USB SS orientation switching
+Only the HS endpoint (port@0) is wired to the DWC3 controller since
+these devices use USB 2.0 only — the QMP USB3+DP combo PHY is not
+connected in the OnePlus 6/6T hardware design. Consequently, no
+DisplayPort Alt Mode is advertised and no SS orientation switching is
+needed.
 
 Switch the DWC3 controller from peripheral-only to OTG mode with
 usb-role-switch to allow the TCPM framework to control USB host/device
@@ -114,37 +109,37 @@ role based on CC pin detection.
 Assisted-by: LLM
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 59 +++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 48 +++++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-index 9e952f9862f24..99f40a13b5d7f 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-@@ -2,16 +2,17 @@
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 439779f308e38..c71cbd1effe91 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -6,16 +6,17 @@
+  */
  
  /dts-v1/;
  
  #include <dt-bindings/arm/qcom,ids.h>
- #include <dt-bindings/dma/qcom-gpi.h>
  #include <dt-bindings/input/linux-event-codes.h>
- #include <dt-bindings/interrupt-controller/irq.h>
+ #include <dt-bindings/leds/common.h>
  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
 +#include <dt-bindings/usb/pd.h>
+ #include <dt-bindings/sound/qcom,q6afe.h>
+ #include <dt-bindings/sound/qcom,q6asm.h>
  
  #include "sdm845.dtsi"
+ #include "sdm845-wcd9340.dtsi"
  #include "pm8998.dtsi"
  #include "pmi8998.dtsi"
  
- /delete-node/ &mpss_region;
- /delete-node/ &venus_mem;
- /delete-node/ &cdsp_mem;
-@@ -449,16 +450,63 @@ &pm8998_resin {
+@@ -639,16 +640,53 @@ pinconf {
+ 		};
+ 	};
  };
  
  &pmi8998_charger {
- 	monitored-battery = <&battery>;
- 
  	status = "okay";
  };
  
@@ -161,9 +156,6 @@ index 9e952f9862f24..99f40a13b5d7f 100644
 +		 * the VBUS output yet. Switch to the dual power role with
 +		 * source PDOs, try-power-role and vbus-supply once it is
 +		 * supported.
-+		 *
-+		 * Higher voltage sink PDOs will be added once the charger
-+		 * driver programs the allowed USBIN adapter voltage.
 +		 */
 +		power-role = "sink";
 +		data-role = "dual";
@@ -172,7 +164,7 @@ index 9e952f9862f24..99f40a13b5d7f 100644
 +		sink-pdos = <PDO_FIXED(5000, 3000,
 +				       PDO_FIXED_USB_COMM |
 +				       PDO_FIXED_DATA_SWAP)>;
-+		op-sink-microwatt = <7600000>;
++		op-sink-microwatt = <15000000>;
 +
 +		ports {
 +			#address-cells = <1>;
@@ -184,70 +176,55 @@ index 9e952f9862f24..99f40a13b5d7f 100644
 +					remote-endpoint = <&usb_1_dwc3_hs>;
 +				};
 +			};
-+
-+			port@1 {
-+				reg = <1>;
-+				pmi8998_typec_mux_in: endpoint {
-+					remote-endpoint = <&usb_1_qmpphy_out>;
-+				};
-+			};
 +		};
 +	};
 +};
 +
- &qupv3_id_0 {
+ &pmi8998_flash {
  	status = "okay";
- };
  
- &qupv3_id_1 {
- 	status = "okay";
- };
- 
-@@ -549,17 +597,22 @@ &ufs_mem_phy {
- 	status = "okay";
- };
- 
- &usb_1 {
- 	status = "okay";
+ 	led-0 {
+ 		function = LED_FUNCTION_FLASH;
+ 		color = <LED_COLOR_ID_WHITE>;
+ 		led-sources = <1>;
+ 		led-max-microamp = <500000>;
+@@ -929,28 +967,34 @@ &usb_1 {
+ 	 * disable USB3 clock requirement as the device only supports
+ 	 * USB2.
+ 	 */
+ 	qcom,select-utmi-as-pipe-clk;
  };
  
  &usb_1_dwc3 {
+ 	/*
+-	 * We don't have the capability to switch modes yet.
++	 * The USB-C role is managed by the pmi8998 Type-C port controller
++	 * via usb-role-switch.
+ 	 */
 -	dr_mode = "peripheral";
 +	dr_mode = "otg";
 +	usb-role-switch;
-+};
-+
+ 
+ 	/* fastest mode for USB 2 */
+ 	maximum-speed = "high-speed";
+ 
+ 	/* Remove USB3 phy as it's unused on this device. */
+ 	phys = <&usb_1_hsphy>;
+ 	phy-names = "usb2-phy";
+ };
+ 
 +&usb_1_dwc3_hs {
 +	remote-endpoint = <&pmi8998_hs_in>;
- };
- 
- &usb_1_hsphy {
- 	vdd-supply = <&vreg_l1a_0p875>;
- 	vdda-pll-supply = <&vreg_l12a_1p8>;
- 	vdda-phy-dpdm-supply = <&vreg_l24a_3p075>;
- 
- 	qcom,imp-res-offset-value = <8>;
-@@ -572,16 +625,20 @@ &usb_1_hsphy {
- 
- &usb_1_qmpphy {
- 	vdda-phy-supply = <&vreg_l1a_0p875>;
- 	vdda-pll-supply = <&vreg_l26a_1p2>;
- 
- 	status = "okay";
- };
- 
-+&usb_1_qmpphy_out {
-+	remote-endpoint = <&pmi8998_typec_mux_in>;
 +};
 +
- &venus {
- 	firmware-name = "qcom/sdm845/Google/blueline/venus.mbn";
- 
+ &usb_1_hsphy {
  	status = "okay";
- };
  
- &wifi {
- 	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
+ 	vdd-supply = <&vdda_usb1_ss_core>;
+ 	vdda-pll-supply = <&vdda_qusb_hs0_1p8>;
+ 	vdda-phy-dpdm-supply = <&vdda_qusb_hs0_3p1>;
+ 
+ 	qcom,imp-res-offset-value = <8>;
 
 -- 
 2.55.0
