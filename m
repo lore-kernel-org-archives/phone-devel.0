@@ -1,84 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20723431E71;
-	Sun, 27 Sep 2026 17:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D6E175A7F
+	for <phone-devel@vger.kernel.org>; Mon, 28 Sep 2026 04:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790531541; cv=none; b=psUc+2N1jdInoLlwzsoleMWTFOskSbXHtQezWGXgBjb5Cpyv88s5p+FKRP2Qe7FiPSkEFp53GBQMg92rSWKxVCv2qLjaxgFbuApXLFug7Ehc6oexBpr5v3JvMGl0cXpITNzSFvYQABvCFl5rzlPsthrK7CAsA2NxnkHPvG6DVk0=
+	t=1790570331; cv=none; b=gMVfhWKYm38FmgRBp/sO/CSNB+TqudIxTIiu+8wTdXGQ+TzkzTDWO1h7TeroR3W/4dIzAJdjT/FxC00KF0QHlf75kzNo/bD/jJY38iZFrQbdWcizi12D3j2N1G1FiwaEJjWGxScG7NF4cWUGA78XXw70OxGCq8LMB85WD4peGGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790531541; c=relaxed/simple;
-	bh=6cEUMP31L4/CdlrVra674pnUkoxfmAa0lhY52HMvXT8=;
+	s=arc-20240116; t=1790570331; c=relaxed/simple;
+	bh=oYMPXUg5FRpTGpq/VChufToWIT8D2XYBNz1jqWQZd14=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=glgdJU4qC0z3hNm1gI0zDq/URFViRKQ2x0PXZpQM2arEvWcsa3xSOQsCwAQpgFkSbf+Ae2jsbn3osNh5/KmBGSziwf7PJ4pUcBCa6lADiN8CYXl1ae59bLmNRnPyGH/GJ76OkKSFmuC+7gKF2PievsAE/0zqjjjtjnc70d0Ho+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPWVAc17; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=DR/il3OBpQ50ClpqhXYYHqZ2jKOJOj+id/97KQLVNRxjhATiJLcW3aSGHVYGnzQCsJK8UrHcUBJuy0BqUipeFYbvPEt6Src3CyBF2+D5Op9cc11RTxqE6WqbprVZWuQdZt6ym8YUSxUaiIEwPdfbC1RXCzFrdF81JvWMlzzDcAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q+S9GrTH; arc=none smtp.client-ip=74.125.229.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPWVAc17"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4486B1F00893;
-	Sun, 27 Sep 2026 17:52:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790531538;
-	bh=QazZ2O3eNUMlHmNoeOgTtKD8VMEf7NnZOMkD5FjrEGE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NPWVAc17BwaG8NWnQglCsaYlwi54DrweQwn5HxAje9YeEh6A1HBC6vR4hKsbyNPqo
-	 zcrpg9SzPthq6JeV7iWiIZW79p6G5bQAWFmUokFF+tewUOt1SVUzSZnZwazJ8iw/MR
-	 qjOFObIx+NDDRKEIOIHkabBBFbQ2ELQi7JwExHR+KUdsJad0l33qIXFxYHbPEPVgBK
-	 EtDrpZd+S16KxqFTJUSG8B0x8qBQm6dWckb+ZFi2XVC4O0eKW/MxAriCPKI56n6Udx
-	 b9xKeeb7Fbu9sNt03/9rKoKUgcGITYqhAanEyBE5m8lksVsDBkdTaZIb70zIMaT6KT
-	 B5PuKxI/xhofA==
-Date: Sun, 27 Sep 2026 19:52:14 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Muzaffer Kadir <muzafferkadir@mainlining.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	Brian Masney <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Srinivas Kandagatla <srini@kernel.org>, 
-	Ulf Hansson <ulfh@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Lee Jones <lee@kernel.org>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Robert Marko <robimarko@gmail.com>, 
-	Guru Das Srinagesh <linux@gurudas.dev>, Amit Kucheria <amitk@kernel.org>, 
-	Thara Gopinath <thara.gopinath@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, iommu@lists.linux.dev, mfd@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, linux-pm@vger.kernel.org, 
-	linux-input@vger.kernel.org
-Subject: Re: [PATCH v3 18/19] dt-bindings: input: touchscreen: goodix: Add
- binding for GT970
-Message-ID: <20260927-acrid-labrador-of-typhoon-897f7c@quoll>
-References: <20260921-msm8952-initial-support-v3-0-b96fd3fe298b@mainlining.org>
- <20260921-msm8952-initial-support-v3-18-b96fd3fe298b@mainlining.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q+S9GrTH"
+Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd05d97cso2994032c88.2
+        for <phone-devel@vger.kernel.org>; Sun, 27 Sep 2026 21:38:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790570328; x=1791175128; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=S9YFNOM35bVSfIS9/7AW72GbBEe1YCeVTQopxAj3TL0=;
+        b=Q+S9GrTHakmOPeFFNUbWxnb7iokwjTb6dKNPNxocRySVeYxMcySNBHP5pWjMFfqFeI
+         T1U3iRA9w5c2Isj9IZeQ/ZMvmxMK0eYpmgbQW6Jpq/mvQkc45mDAnebvBTfG5xnwvLWt
+         nFAia4LO2aYxcG/cwwftKzqy1RznYw7grjJ3GAwHISrkG+32oME39aG1suLcC+cnsP3e
+         8pCLXvmcix9WlPRnA5Hwx1haoQrW0GqjFM6vNZb3uzy3HMAiq/xmHLbssbRKT1ndq9c6
+         +qS50F2g8mvn0rXZIlJOeFImlPbKbq/FnZIrOKRs7kHf9qtGT1dLv6StiEsDCMVzxnmJ
+         DVjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790570328; x=1791175128;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S9YFNOM35bVSfIS9/7AW72GbBEe1YCeVTQopxAj3TL0=;
+        b=yHAvABWNwWbrgH76aeOGp003hbcQXtyJH0IN5AWClPvqPxVB96CwVZVuB12o8WFNJN
+         137DBmI1SghvSFDay8g+vUNY5WwvBNE565E3yK579CuPA+wOr3CgYalcFkaKKN4oO7tW
+         Iz/CFwufEbQjLjreb3ZE5sa5seJdJWr+vzQfRmheQbGdlj8oJWwHYuDvz4LcYt3hBUgE
+         r9Q+9fkEWpDQDCgzDn6X2GF25zpjze9NIWgRLWc97e7EZMalX29C3SllQWVCcTWXqUVN
+         wQ793Jq1flWCjOWr51DxKWjEUgD47Rsui++LGEeoHB6YWOfxdXetFgin2Ealloa5kWvW
+         Di4w==
+X-Forwarded-Encrypted: i=1; AKwUvByq8APBrftNZb5b4IXIzLZ1mavc26x5YQJKCD59ailQYd5jVAMOvFoiChS8ratWAouz7CgVwAf/t6c6YQ==@vger.kernel.org
+X-Gm-Message-State: AFuF++lDRpn2QW6r4zKBDU3Q8aquboISP7bOPKaal+p1cUS+jRChM8w2
+	0sQ6XOzLpAuT1dzoTVE7jYkYgH9ystKhTWKGbwl2XNyud0ccRA794LhQ
+X-Gm-Gg: AYBFou04B5qdnlnSBfx91DqjeukE08VORrcmvVQOUUkOJPqOxDw7L+WQDtrXjxnt4Mo
+	RpKH/ZNk5KxPvpFLivxSKIkilhZoYcD5NysqMwCSBBu8iAG6m+jgOL/c2elnwMAf7by01z3+LIe
+	Me0ypvWJRAbcjTWdGScHv/GA2NyhFC1W7iykH4qIZ6wSXqzfO6zwVcO+fhd6ZBUiP5QPFu7NXKb
+	paGHh88apbt9iKq1ij3QpzZOEEUXYHWSHPaPbAe7GfcB0jq4D9tZoRKGEAWIcXgJ5eBiGBoC3Pj
+	kQKK8Lj5ptcIiZW4KN7gQyNIfxg0Hm1OStZeJEGlMWxW+9PJRwdwdFq+97SFpTetwYc0VgD9j2Y
+	zE7I3sMrEFnsJNuXi3dLq9YXt0a6Flfm7HlO4sxD+CqssO7QJBoMtkFa5ZViCscDMKuP56ehYL6
+	rSG3Dqr8ZqLgLaECCEIl3EuSuW4+NNFpd+HToBmwdRT+c6ldvb/c9bY+T5Yp+/O1uolElLMtJj0
+	g+bNF720uXq8ryLlQdHFdUIVMV5wLR7SzVargsCiw==
+X-Received: by 2002:a05:7022:b048:10b0:144:e658:94f with SMTP id a92af1059eb24-146d0f33db2mr8902859c88.43.1790570328080;
+        Sun, 27 Sep 2026 21:38:48 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:526d:2f94:503b:aada])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-147913a776fsm16358758c88.17.2026.09.27.21.38.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 21:38:47 -0700 (PDT)
+Date: Sun, 27 Sep 2026 21:38:43 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: david@ixit.cz
+Cc: Andi Shyti <andi@etezian.org>, Rob Herring <robh@kernel.org>, 
+	Marco Mattiolo <marco.mattiolo@hotmail.it>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	phone-devel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] Input: s6sy761 - fix resume ordering and restore
+ sensing
+Message-ID: <arnvS7Hk7uIKKLrZ@google.com>
+References: <20260926-s6sy761-suspend-v2-1-8f00a96ee6e8@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260921-msm8952-initial-support-v3-18-b96fd3fe298b@mainlining.org>
+In-Reply-To: <20260926-s6sy761-suspend-v2-1-8f00a96ee6e8@ixit.cz>
 
-On Mon, Sep 21, 2026 at 09:19:09PM +0300, Muzaffer Kadir wrote:
-> GT970 works with GT911 driver, document it to be
-> used with GT911 compatible.
+On Sat, Sep 26, 2026 at 10:26:47PM +0200, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
 > 
-> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
-> ---
->  .../bindings/input/touchscreen/goodix.yaml         | 35 ++++++++++++----------
->  1 file changed, 20 insertions(+), 15 deletions(-)
+> System suspend powers the controller off and resume powers it back on,
+> but the resume path enables the interrupt before s6sy761_power_on()
+> checks the boot. The firmware raises its boot-complete event on the
+> interrupt line, the threaded handler consumes it, s6sy761_power_on()
+> then reads an empty event and resume fails with -ENODEV, skipping the
+> touch function setup:
+> 
+> s6sy761 2-0048: PM: dpm_run_callback(): s6sy761_resume [s6sy761] returns -19
+> 
+> Power the chip on first and only then unmask the interrupt. Once resume
+> completes the boot handshake the chip comes back with sensing off, as
+> at probe where input_open() turns it on, so the touchscreen stays dead
+> after resume. Send SENSE_ON again when the input device is open.
+> 
+> Tested on a Pixel 3 XL over several s2idle cycles: resume succeeds and
+> the touch function and sense status match the pre-suspend state.
+> 
+> Assisted-by: LLM
+> Cc: stable@vger.kernel.org
+> Fixes: 0145a7141e59 ("Input: add support for the Samsung S6SY761 touchscreen")
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Applied, thank you.
 
-Best regards,
-Krzysztof
-
+-- 
+Dmitry
