@@ -1,134 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288BD3C2B8F;
-	Tue, 29 Sep 2026 02:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717493DEAC8;
+	Tue, 29 Sep 2026 03:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790650765; cv=none; b=OrmMmLuLJj9tUokGZVqlWwc3gGYVLTl8PPg2NaVm4RgJYCV9eX1hJjrw+ZxYBDNY8hWRT0rBwMiZc4NRoMwolfCKFXGqOYKAp4Dibl+wcP1WH91PcCIrJbeKE/N+nx7RZZkJKeuFCd63i8etitTRdjsynRV28SAbIM7+KaFzCZI=
+	t=1790651744; cv=none; b=N74etBMI0VmgfTqb7zP5mpU1LFThwPj4iE6bWgHV19oqPUS2e4oxxk0m7QnIPHMnd2QIlrGBXMs8OIDe835P3wGPxnlKDww68mQ5RSqludekQYKD6uEwQ/7aApdxnTCb/wL2AN3XxGk0vFC4Zm5QvCH3rEFIHAH6CSyQlhTKquU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790650765; c=relaxed/simple;
-	bh=wLckDscphnGkh0WFF1ytv7QkveXFxmU6gRikvjheuik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pFnjckY6lbqaIuQuEFuevtYEeG/YMM2OAdtWflpS+8uDETjsp0M9fW9paa8eu4CNUw8/+mWMCACz3B1zT6c2kpsVSf7ON6W7wE4OJkD2Ok0ytxWF6r0h8UKv4DapzH9nNPDHd19cVTlbZ6e2KD74n16jG+vJlDKeprOnsJpIun4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZvdQBkU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790651744; c=relaxed/simple;
+	bh=bFSuYNwR3G/0W7djHhgnYGHo6ISphshupMBMRMaCdD8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XDNANV9vH1GaLn0dfBOq+JtFkgnHnGlk3+c66qBDCo+M1bsKmoafnu+MYH7Wjx8PoxMHxmcuimRdGGOhhjTY7UXgbiF4tJz7RBL5AuLzJ/Mj3iaT3Bgw4E/t5oIk8/MUflCUJcHS4Z+/v+hjYQmKL1B8kt2KN0exAp8BxYB5ThQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISw9xsgn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZvdQBkU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABD31F000FF;
-	Tue, 29 Sep 2026 02:59:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISw9xsgn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C221F000FF;
+	Tue, 29 Sep 2026 03:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790650763;
-	bh=45G97lMmELMR3HYz20XZUa8kHahrLVd6UZEJZLiYSeM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EZvdQBkUK0GdtfivQYf2Be4sU71zPoxxz8iKyNjp5m5RHr9ssojPZEfEZkiPYzzTP
-	 0tkB64ZQ9h9dERtePq3iUylPyoN2ecGHVSHErItDG+rArHuw2/L0kBvaIK+AB5uuLH
-	 uYDU9HCBBqBNdWTktFG929kAaW58D2SROM+ksixaCTNv3O4rtgo9gvpPdCrk+PDhJD
-	 vDlUNHvjC4yW4iJ9zDtE5FvqYrmkCrjk9XMmB6uAtZRqKaztNUoGv1oGMxgfJ9AZqO
-	 eF9j0/uD6NYu+Fm6YFhZDM8flgiDlCa4ziaMCrmHxOTuDqA5fLlffv63CFi4O1l7Bs
-	 b6wDBv0h0hOnw==
-Date: Mon, 28 Sep 2026 21:59:20 -0500
+	s=k20260515; t=1790651738;
+	bh=8P5jpZcMRFAnu97jtalgkjIPZffR4aM2l4z7sq4DtkY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ISw9xsgngWhezQDsXOrw9O0gpZJkmuwew87heJfkGNKSIEqgTDBqgXM8mziDjnEb8
+	 nARAKQXN2QVSKMnHSs+5N5NhgHBO0I673diNmiVKX5ohVl6xeikxJTWQfQh15h5qJx
+	 uqmJGVs9Fim7uI4b9Dku/gXbIPfKHi70imMql6ClJHKiWUY1ce4/AqCaL6/6yUQFBO
+	 R8P2exqkGXDObD0bjAaeq9Em2yb/59pN5vvMU4EDzWZafCVjOz7Nke68Jz43KEUVxB
+	 5EECTsHysoF+OXrgpie/yLVWy0broa0bdU8sCe7/XAoF4Y/x+ZO3h2i6VQJD2Jussb
+	 3jsimrMJZeqjA==
 From: Bjorn Andersson <andersson@kernel.org>
-To: david@ixit.cz
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Acayan <mailingradian@gmail.com>, Petr Vorel <petr.vorel@gmail.com>, 
-	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH RFC 1/4] dt-bindings: soc: google: Add modemsmem
-Message-ID: <arsoHnkYnxMIP2ZM@zenbook>
-References: <20260906-modemsmem-v1-0-a3634b553841@ixit.cz>
- <20260906-modemsmem-v1-1-a3634b553841@ixit.cz>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcus Ramberg <marcus@means.no>,
+	David Heidelberg <david@ixit.cz>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH 0/2] arm64: dts: qcom: sdm845-oneplus: Be more explicit touchsreen description
+Date: Mon, 28 Sep 2026 22:14:39 -0500
+Message-ID: <179065170950.2673486.5540009427451815477.b4-ty@b4>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260819-oneplus-ts-quirk-v1-0-0cdbcea195a2@ixit.cz>
+References: <20260819-oneplus-ts-quirk-v1-0-0cdbcea195a2@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260906-modemsmem-v1-1-a3634b553841@ixit.cz>
-
-On Sun, Sep 06, 2026 at 02:41:12AM +0200, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
-> 
-> The modem firmware on Google Pixel 3 - 5a devices expects the application
-> processor to publish SoC platform information in a vendor-defined SMEM
-> item before the modem boots.
-> 
-> Assisted-by: LLM
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->  .../bindings/soc/google/google,modemsmem.yaml      | 39 ++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/soc/google/google,modemsmem.yaml b/Documentation/devicetree/bindings/soc/google/google,modemsmem.yaml
-> new file mode 100644
-> index 0000000000000..a5214a8093ba0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/google/google,modemsmem.yaml
-> @@ -0,0 +1,39 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/soc/google/google,modemsmem.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Google Modem Shared Memory
-> +
-> +maintainers:
-> +  - Richard Acayan <mailingradian@gmail.com>
-> +
-> +description:
-> +  The modem firmware on Google Pixel devices (Pixel 3 through Pixel 5a)
-> +  expects the application processor to publish SoC information (platform
-> +  type and revision) in a vendor-defined Qualcomm Shared Memory (SMEM)
-> +  item before the modem boots.
-> +
-> +properties:
-> +  compatible:
-> +    const: google,modemsmem
-
-To me it is seems node represents the attribute of the modem remoteproc
-requiring this information to be populated before its started, rather
-than a thing of its own.
-
-How about representing this as a property of the modem remoteproc node
-instead (perhaps "google,require-socinfo"?) and then put the conditional
-snippet in the remoteproc driver?
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-I'm not particularly fond of the additional codepath in the remoteproc
-drivers, but I think the DeviceTree representation would be more
-appropriate - and the driver changes are reasonably isolated.
+On Wed, 19 Aug 2026 15:56:38 +0200, David Heidelberg wrote:
+> Useful for aftermarket touchscreens, which don't fully comply with the
+> standards.
 
-> +
-> +  qcom,smem-id:
+Applied, thanks!
 
-Let's just hard code this in the implementation until there's a need for
-this to change.
+[1/2] arm64: dts: qcom: sdm845-oneplus: Move touchscreen y-axis to the right place
+      commit: d4c3b99c2fd062253af9cdc6bae26bba98afca1e
+[2/2] arm64: dts: qcom: sdm845-oneplus: Define touchscreen in the detail
+      commit: 33bacf8b8e69aa27c0e12892911709a549b00093
 
-Regards,
-Bjorn
-
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Identifier of the SMEM item the SoC information is written to. Google
-> +      firmware uses the first vendor-reserved item.
-> +
-> +required:
-> +  - compatible
-> +  - qcom,smem-id
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    modemsmem {
-> +        compatible = "google,modemsmem";
-> +        qcom,smem-id = <134>;
-> +    };
-> 
-> -- 
-> 2.55.0
-> 
-> 
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
