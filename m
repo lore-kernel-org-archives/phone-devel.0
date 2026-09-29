@@ -1,49 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282813AB277;
-	Tue, 29 Sep 2026 07:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF833E8660;
+	Tue, 29 Sep 2026 08:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790667972; cv=none; b=FGx5VlWSczCpZGot//TxnJTOyvY/4NYKsp1UUfzVj2qWgESaO246kL/BL7UquQAvHXFCrznvtpl5swR879okkjw7c7bz/VIMJCj91SrwYLNfCogBQ3i+IFS/RX6nTqAIyw7EA5t3Wp3yiJKYrk9PJxeO+4MJdfL00CCqA75ShtY=
+	t=1790670540; cv=none; b=A20xRIVJCTEHEqWKFtHq4Wv5tGrV8N5mRgdy+5+5kBkmwVjIWK93KLoVn2D68w3ktz78oTnXafBNc2knN9Tw4ZtpKgWEbnQdvCgdwvpzOs9//bEjSkVuAdfjO9ecaJuu1ObAscnXGL8rkaOxjglqk4sYgo+YTQerE7X9RXuKSCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790667972; c=relaxed/simple;
-	bh=YEQSBFPF+jkSL86FhqCVUNWjwTjEpeE/2q0fxSefwNo=;
+	s=arc-20240116; t=1790670540; c=relaxed/simple;
+	bh=mABRqTBqPueqtJGb7KsMKUob1wDgoqJsYHR/i9IbX/A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uXKnbKcXsBe7NTy+5bUbgf9Te5FDdeGyd9IhMM+RHI/gsnevQFdNORif69Zg23afCekLILBtm0PHTq3x5ljI2MFhvMK4v75fHe+MbOO99KZyEg0ypLrE/k9IUve9RbX7EQXED8ujPFWuvc5Cf+9gkSXSJEye//73jy5LPlrEYvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPB/y1lW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=du5PIUfvW7NmJKMfumbT/y6Z+wKkvq1YLDjMYFYDFgHpZdX6rUwa7HwSZsuBaVdJ7mwvsRULFU7f9PAbf+GkOnp75WGVJYJof0uhroJBcN/QC2qMjga7ddPvaOREAN/ZC21O+rsaQaR+XThG6obt5ZVIfnQWcFQP7RZgL3HpwCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UjvnRiVR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPB/y1lW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA6A1F00898;
-	Tue, 29 Sep 2026 07:46:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UjvnRiVR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAE61F000FF;
+	Tue, 29 Sep 2026 08:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790667970;
-	bh=EIHkUIYifOHwbWldjH0tGVUqDKZQiGqLC0z1iDVXIxU=;
+	s=k20260515; t=1790670539;
+	bh=ErXCTMd9axWR1jD8SecS5bDbICUqt/ph2JGq6IOzvnc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hPB/y1lW95b+WWL0a1F2vXtqQY+zkP0BP1jQQMSWPftm6hFxBFi4y23QPhjIioMWm
-	 iGmtj8IPPnbtkTHsPdkR3kWUYftxGO3tfuelZQ94v6IIppKvUnCNfokbVb7/VfFosT
-	 o3GydFgsN/fV4rmqP/db3QvFVa2q4tfBao2KrrB+mYhktQ3zBvdb6gAn6Ipkl6ytXN
-	 BAx40hZn8Xaqtsibldcn4kFWkMXKtEdVtvbX6uI8XN+I1LKIJF28ot1GG3+bbFFS5V
-	 bL8BLgRp8St005piiHIeibktVtPaKQVOJ7uO0UOK4r1YiWgohS+PmGepWYBCoJRVMM
-	 QDQikM+dT862w==
-Date: Tue, 29 Sep 2026 09:46:06 +0200
+	b=UjvnRiVRm1aRTjDBmXAHjvoILtdKlmNUrWu5POLFor62ynYJOA2fqSgDoGskFgpcc
+	 GUv26YNxDVioC+74jtuhRekodZlyV6udP1q+3nZlQV7fLMPqrsoznjaCXLLqly9EKP
+	 /LG0lATEOjarG/jYJEX8qhJByFwGciiG+KCBY285l7GnGgDTyXJw9/Lo2iFrSBtDB8
+	 15ZEZNJNnOoijG2PYgn5j72A13l5JKZ9ALWuw7WH6YzCIgBLTtPhT1DZcBfoMqXNQd
+	 s3fgOGNj0DkUN8ypqcb6i5p32tWgsxoTXKgZpzUfaYs1kguO75iiUmjp2uY+iS0TLU
+	 kuTlAyyJXLjhQ==
+Date: Tue, 29 Sep 2026 10:28:55 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: David Heidelberg <david@ixit.cz>
-Cc: Dzmitry Sankouski <dsankouski@gmail.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
 	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Abel Vesa <abelvesa@kernel.org>, Petr Vorel <petr.vorel@gmail.com>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 09/11] arm64: dts: qcom: sdm845-samsung-starqltechn:
- Update panel compatible
-Message-ID: <20260929-spirited-umber-hedgehog-300ebd@quoll>
-References: <20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz>
- <20260924-crosshatch-panel-v2-9-08d5c7bf72fc@ixit.cz>
+	Petr Hodina <petr.hodina@protonmail.com>, linux-input@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v8 2/5] dt-bindings: input: touchscreen: st,stmfts:
+ Improve example
+Message-ID: <20260929-brilliant-magic-cobra-462c86@quoll>
+References: <20260925-stmfts5-v8-0-0fcf49e2c85f@ixit.cz>
+ <20260925-stmfts5-v8-2-0fcf49e2c85f@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -52,26 +51,21 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260924-crosshatch-panel-v2-9-08d5c7bf72fc@ixit.cz>
+In-Reply-To: <20260925-stmfts5-v8-2-0fcf49e2c85f@ixit.cz>
 
-On Thu, Sep 24, 2026 at 04:01:37PM +0200, David Heidelberg wrote:
-> Original compatible describing only the DDIC used, but omit describing
-> the panel used (Samsung AMB577PX01), which we have no way to detect.
+On Fri, Sep 25, 2026 at 11:22:20PM +0200, David Heidelberg wrote:
+> The touchscreen-size-{x,y} is exact number, the -1 deduction is done on
+> driver side.
 > 
-> New compatible allows without breaking ABI fixing the inverted reset.
-
-No, this is wrong. You just broke all the users of this DTS.
-
+> Example now use interrupts-extended and size obviously not deducted by
+> one.
 > 
-> Assisted-by: LLM
-> Reviewed-by: Petr Vorel <petr.vorel@gmail.com>
 > Signed-off-by: David Heidelberg <david@ixit.cz>
 > ---
->  arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
+>  Documentation/devicetree/bindings/input/touchscreen/st,stmfts.yaml | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
-NAK
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
