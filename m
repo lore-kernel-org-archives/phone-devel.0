@@ -1,157 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8375397935;
-	Mon, 28 Sep 2026 21:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288BD3C2B8F;
+	Tue, 29 Sep 2026 02:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790631760; cv=none; b=DZb/EU2uyYfVKsVBy1JS+G5pcwEN4kmdqzLI8qDDi/jolbmaMlD67boly6jODJmNW7pdJK38YEgyFD3/TX7/mW4fSMG83UGBLUqYH1SNu9IC5kK2oH1fgLYc4Y7TfyYWaItBKgfZG/cvRsVKyXOMqH/fxvbC9zduNmQO1vekPFA=
+	t=1790650765; cv=none; b=OrmMmLuLJj9tUokGZVqlWwc3gGYVLTl8PPg2NaVm4RgJYCV9eX1hJjrw+ZxYBDNY8hWRT0rBwMiZc4NRoMwolfCKFXGqOYKAp4Dibl+wcP1WH91PcCIrJbeKE/N+nx7RZZkJKeuFCd63i8etitTRdjsynRV28SAbIM7+KaFzCZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790631760; c=relaxed/simple;
-	bh=4VB9v04bJL+PlFYsbzdEYOrFIWgouYSbyR4VTShgUrk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GgPjH7vuqmsrDc01mVaMha9nqP92M3v5356E58k3GGDnDoMA+wLuNJhoq+imKDC8KTI2YXD/++4yyDgtu3cmCZm39AsS3XE0Ubk2kIOKjjWbit2jroFzQMyLp51yk/wbAHccN5MI8Cn1PsaDGFLmNkgfWvidV/x32hK115PtAGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZz+ww/S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790650765; c=relaxed/simple;
+	bh=wLckDscphnGkh0WFF1ytv7QkveXFxmU6gRikvjheuik=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pFnjckY6lbqaIuQuEFuevtYEeG/YMM2OAdtWflpS+8uDETjsp0M9fW9paa8eu4CNUw8/+mWMCACz3B1zT6c2kpsVSf7ON6W7wE4OJkD2Ok0ytxWF6r0h8UKv4DapzH9nNPDHd19cVTlbZ6e2KD74n16jG+vJlDKeprOnsJpIun4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZvdQBkU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZz+ww/S"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6F222C2BCB3;
-	Mon, 28 Sep 2026 21:42:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790631760;
-	bh=4VB9v04bJL+PlFYsbzdEYOrFIWgouYSbyR4VTShgUrk=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=kZz+ww/SJr9iWwJcHuL5Qi7SSQSNew6v9ltumHFf3P/wTeRkmKPVBXCwrIE2mQOVr
-	 gulvIizTpJbsmkQ8ak+ch4uA61HD3nmjI6sFZ7oc1ziCTY+j2w8ifZF8imBeHu1NV6
-	 foiWKTiGkD9HHDljcWVF02KKznB/Qd+5cCC3P4uGoQ5i1qxliXDcM0fzwUK2+nGxrx
-	 l+CAiv82bC2VPyalgjGcUVmNqI7HQcbLA8a9WFjKpbbiheoaEBNc05Ml+03GYZ7NVU
-	 nriD5n27zK/gyUrb/Wvd7lXQAmbKJncv6dfBSpHjEmPKpRb93XxQejU2AkwuHdrNrd
-	 8DTPZ0DQSRS3w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BDC3CA5FA1;
-	Mon, 28 Sep 2026 21:42:40 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 28 Sep 2026 23:42:39 +0200
-Subject: [PATCH] media: venus: core: look up static codec nodes among
- children only
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZvdQBkU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABD31F000FF;
+	Tue, 29 Sep 2026 02:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790650763;
+	bh=45G97lMmELMR3HYz20XZUa8kHahrLVd6UZEJZLiYSeM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EZvdQBkUK0GdtfivQYf2Be4sU71zPoxxz8iKyNjp5m5RHr9ssojPZEfEZkiPYzzTP
+	 0tkB64ZQ9h9dERtePq3iUylPyoN2ecGHVSHErItDG+rArHuw2/L0kBvaIK+AB5uuLH
+	 uYDU9HCBBqBNdWTktFG929kAaW58D2SROM+ksixaCTNv3O4rtgo9gvpPdCrk+PDhJD
+	 vDlUNHvjC4yW4iJ9zDtE5FvqYrmkCrjk9XMmB6uAtZRqKaztNUoGv1oGMxgfJ9AZqO
+	 eF9j0/uD6NYu+Fm6YFhZDM8flgiDlCa4ziaMCrmHxOTuDqA5fLlffv63CFi4O1l7Bs
+	 b6wDBv0h0hOnw==
+Date: Mon, 28 Sep 2026 21:59:20 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: david@ixit.cz
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Acayan <mailingradian@gmail.com>, Petr Vorel <petr.vorel@gmail.com>, 
+	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH RFC 1/4] dt-bindings: soc: google: Add modemsmem
+Message-ID: <arsoHnkYnxMIP2ZM@zenbook>
+References: <20260906-modemsmem-v1-0-a3634b553841@ixit.cz>
+ <20260906-modemsmem-v1-1-a3634b553841@ixit.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-venus-of-node-ref-v1-1-7579fb84445a@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMywqEMAyF4VeRrCegUby9yuBCazrGRSuNiiC+u
- 9VZfgfOf4JyEFZokxMC76LiXUT2ScBMvfsxyhgNlFKZNlTjzm5T9BadHxkDWxzKpirI2p5MDvG
- 3xFGOt/nt/tZtmNmsTwiu6wZ1+qSNdQAAAA==
-X-Change-ID: 20260928-venus-of-node-ref-b69742ffa2c3
-To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
- Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, 
- Bryan O'Donoghue <bod@kernel.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, 
- Hans Verkuil <hverkuil@kernel.org>, Dan Carpenter <error27@gmail.com>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2898; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=RcEQpaG3qjApty1CwkPYZ1bGIKgYZo3g8YmCYVk3/4g=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqut9PZoi6wYMcLOhfMI1e5kaNX46iKGzyTx1nP
- /n41g8T/veJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCarrfTwAKCRBgAj/E00kg
- cpIfD/9JrB03HWtW4Pd/RAJ2kwg5SKWnrlnqaHQI0mzpYp1J5FWrh+/c2hXbsgOVsdErI/zBmhL
- hhYx4dpZ6wzxj2bHf7w/1NxxCoYavZL2ghxwFT9Qpo6b9qCA0uwARacGTn2Lx9qzEthgnc07I3m
- 5MGKYnZp9zDvTlWFf3tN6WtPrNkOoPoAQonOdcI3SsBPvOMq+Qlj6Sj3chZCG/pu436lbwSKGiV
- e1Bc9VVxEJd/FJDz1C4SsLWDvod4EKgb98nz9HAaFvBwdP+cMDjQv1tUxMl7+nzqvqZP4mjqDCX
- 2nk3iKR4BQFX0PwDZlEAtC5nu3GLWoPlZLFNDCetVxsIA1z/DkRVxgeHxLNa3vxs2/H+s6bv9G7
- 7aM3ziOiBt/OaC55UW+SaA5qluyvbkMOW46q02GebeCZGNrDpuuGl+ph2l5F66XzBEqihyXynyT
- 2t4zIU8jRg4QT9OpTNht2U9r2qYip4TiDvyP6bP8uu1etzn86pmV6iXoFFf56RrC2OqAIfntn/7
- jwRX1jN47BrdUe5Pu6aNYlIpFATh349Y5aTOEzAMc5royKIcVJDinwlB+FpR+Uyr4sxH32OUzUm
- QdRVyOihfNK5iyBGYEOZi6kLMjvxEH5M2Qt4VYRE5Ro3ApooRp28mZaii9YI8IGKH5h4sojBb9t
- xq+UNf3NU4IryNA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260906-modemsmem-v1-1-a3634b553841@ixit.cz>
 
-From: David Heidelberg <david@ixit.cz>
+On Sun, Sep 06, 2026 at 02:41:12AM +0200, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> The modem firmware on Google Pixel 3 - 5a devices expects the application
+> processor to publish SoC platform information in a vendor-defined SMEM
+> item before the modem boots.
+> 
+> Assisted-by: LLM
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  .../bindings/soc/google/google,modemsmem.yaml      | 39 ++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/soc/google/google,modemsmem.yaml b/Documentation/devicetree/bindings/soc/google/google,modemsmem.yaml
+> new file mode 100644
+> index 0000000000000..a5214a8093ba0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/google/google,modemsmem.yaml
+> @@ -0,0 +1,39 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/google/google,modemsmem.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Google Modem Shared Memory
+> +
+> +maintainers:
+> +  - Richard Acayan <mailingradian@gmail.com>
+> +
+> +description:
+> +  The modem firmware on Google Pixel devices (Pixel 3 through Pixel 5a)
+> +  expects the application processor to publish SoC information (platform
+> +  type and revision) in a vendor-defined Qualcomm Shared Memory (SMEM)
+> +  item before the modem boots.
+> +
+> +properties:
+> +  compatible:
+> +    const: google,modemsmem
 
-venus_add_video_core() checks whether the decoder or encoder node is
-already present in the device tree with of_find_node_by_name(). That
-function drops a reference on the node it starts from and searches the
-rest of the whole tree rather than the children of that node, so every
-probe drops two references on the video-codec node that the driver
-never took.
+To me it is seems node represents the attribute of the modem remoteproc
+requiring this information to be populated before its started, rather
+than a thing of its own.
 
-Once the node's refcount reaches zero, which on SDM845 happens on the
-first unload of venus_core, of_node_release() complains about a bad
-of_node_put() and the node's sysfs directory is gone; the next probe
-then crashes while attaching the dynamic child nodes:
-
-  OF: ERROR: of_node_release() detected bad of_node_put() on /soc@0/video-codec@aa00000
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-  ...
-  kernfs_find_and_get_ns+0x24/0x80
-  safe_name+0x48/0xd8
-  __of_attach_node_sysfs+0x58/0x118
-  __of_attach_node+0x8c/0x170
-  __of_changeset_entry_apply+0xe8/0x178
-  __of_changeset_apply_entries+0x50/0x1e0
-  of_changeset_apply+0x54/0xc0
-  venus_add_dynamic_nodes+0xb4/0xe0 [venus_core]
-  venus_probe+0x2f4/0x3c0 [venus_core]
-
-Use of_get_child_by_name(), which only looks at the direct children,
-where static codec nodes live, and leaves the parent's refcount alone.
-
-Assisted-by: LLM
-Fixes: 687bfbba5a1c ("media: venus: Add support for static video encoder/decoder declarations")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aAuqgiSxrh24-L-D@stanley.mountain/
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Unloading and reloading venus_core crashes on SDM845: every probe drops
-two references on the video-codec node through of_find_node_by_name().
-
-Tested on Pixel 3 (SDM845) with ten unload/reload cycles, decoding after
-each one.
----
- drivers/media/platform/qcom/venus/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-index 243e342b0ae75..3e69fc7ea3c79 100644
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -301,17 +301,17 @@ static int venus_add_video_core(struct venus_core *core, const char *node_name,
- 	struct of_changeset *ocs = core->ocs;
- 	struct device *dev = core->dev;
- 	struct device_node *np, *enp;
- 	int ret;
- 
- 	if (!node_name)
- 		return 0;
- 
--	enp = of_find_node_by_name(dev->of_node, node_name);
-+	enp = of_get_child_by_name(dev->of_node, node_name);
- 	if (enp) {
- 		of_node_put(enp);
- 		return 0;
- 	}
- 
- 	np = of_changeset_create_node(ocs, dev->of_node, node_name);
- 	if (!np) {
- 		dev_err(dev, "Unable to create new node\n");
-
----
-base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-change-id: 20260928-venus-of-node-ref-b69742ffa2c3
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+How about representing this as a property of the modem remoteproc node
+instead (perhaps "google,require-socinfo"?) and then put the conditional
+snippet in the remoteproc driver?
 
 
+I'm not particularly fond of the additional codepath in the remoteproc
+drivers, but I think the DeviceTree representation would be more
+appropriate - and the driver changes are reasonably isolated.
+
+> +
+> +  qcom,smem-id:
+
+Let's just hard code this in the implementation until there's a need for
+this to change.
+
+Regards,
+Bjorn
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Identifier of the SMEM item the SoC information is written to. Google
+> +      firmware uses the first vendor-reserved item.
+> +
+> +required:
+> +  - compatible
+> +  - qcom,smem-id
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    modemsmem {
+> +        compatible = "google,modemsmem";
+> +        qcom,smem-id = <134>;
+> +    };
+> 
+> -- 
+> 2.55.0
+> 
+> 
