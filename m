@@ -1,116 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C615F4D797E;
-	Mon,  5 Oct 2026 15:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2D03E3DA7
+	for <phone-devel@vger.kernel.org>; Mon,  5 Oct 2026 22:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791215015; cv=none; b=Q++RJgpt/td3wyBUuU5TmGKgSriN0ofSBL6zkky605F0ZiyvZTFQEXw6h0iumhJRn89/KcIHX52BtY8zAnXp6ohRGJRVYcyCNkivp/SEIP4VA/09OP9Jh6kGn87Gs2mL0evg4Be2EwLMOdCg62tjSmdQ0clHdyU5gJvxA1nus/g=
+	t=1791239222; cv=none; b=SvNOsHzsL9g5YTihFndeMLPyl6mJ+B9qSZaE14G6LlAvMbhX3ZuvnjaxDAIMAZkL8la3v7csMJp9PAH5nRNpKEyK3+LNTYPhsQiEmZw2ze855/AqYg/nRfIO2EOZV8TklDjOyRbYZ03zWN7l/PiL+AmsR7ToF2rI/cAJ6Dshqj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791215015; c=relaxed/simple;
-	bh=UEHCB+vcXabfKFrgQQCTSyjZ7YssrJC+DEXWNAci9Do=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=t39/ZRI/y2+h1StSRXq0ugbnP8xiA3Ng2Bx6oAvccYPpOiQAwPhJexV5yEyqSlJBDMEH7yFWdbTbdznvydNNb9Enb2U8wjiHos+TJA7tW7+76z0ILJIkPzI/68fBhugytKAvVe++WLfOjKjHeBSy6+G6ETkQeh8hCg03/TP3mFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKEg8UYN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791239222; c=relaxed/simple;
+	bh=qhytkzECjpt5g2H6bHVUDNrG4TCrLNT1uj20IZf81Kc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SQrmz+PIqsG5QQ/7E4u0asWqWsHXE45NH8gsnMZZKeapqOUAKIiHHR9UVBXGOg8qOClHRYyvXZA3XhrAfbVr5PjIxpfXaWHZkKAfdp3mA1+u2oNosmZLeBFwPXwe6AP/It/2VoWBkJROzXGyxBuqafFOjf/DTB12dsN7RzSlwX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jg1VcPPb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKEg8UYN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1733D1F00893;
-	Mon,  5 Oct 2026 15:43:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jg1VcPPb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C61C1F00899
+	for <phone-devel@vger.kernel.org>; Mon,  5 Oct 2026 22:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791215013;
-	bh=J/iPRDYAUzzcv4iTLkVceLRQFuUqyowwh8+10C3a5j0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=IKEg8UYN7Hu/x0GkasmMz9r93qPh4XMnIm0zO9hHw1RVkKO38KtT/1IagOr+L8IJd
-	 QxyUu+hU/hFKlysxXg3wlraaQDv3qHdwbdExGnqb9jYpqI4UcwTwpkOmkrz76mn3hr
-	 izfnOuYlMjWSRrPIRE3KVjciCGgMJ/XiE6juiJkxf3RaVi5VoyrE+/8urc5MrWtFmW
-	 UWgVU/4nYAMbjojCVuWVxdry105GVc4q2qbLeJkI+QfRENrhB816ozuXdX+0PjjaoG
-	 lI7L2wydqAg+/UEQbAjrc6aL1n5xPu5nwX1tGkb+mQEGz/7QIXdMFIUlosttsjLVyz
-	 832sOloLeZYQw==
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@kernel.org>, Linus Walleij <linusw@kernel.org>
-Cc: dmaengine@vger.kernel.org, phone-devel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.li@oss.nxp.com>, 
- sashiko-bot@kernel.org
-In-Reply-To: <20260927-dma40-fixes-v7-0-89f595e8851d@kernel.org>
-References: <20260927-dma40-fixes-v7-0-89f595e8851d@kernel.org>
-Subject: Re: [PATCH v7 00/24] dmaengine: ste_dma40: Fix numerous
- accumulated bugs
-Message-Id: <179121501182.358863.16928802580012267725.b4-ty@kernel.org>
-Date: Mon, 05 Oct 2026 17:43:31 +0200
+	s=k20260515; t=1791239221;
+	bh=qhytkzECjpt5g2H6bHVUDNrG4TCrLNT1uj20IZf81Kc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Jg1VcPPbQWpmVbKKwGIm34GkqK7plcQWV1ZOlvVvyVg1Su7yMQCahRrRmdwZamdfG
+	 hInc+FVIaYsmOXfGyKQZgs4bYb2Jc6uwi5M6lJZKK/T7XKbg5NghA153QfmVsouDIb
+	 qtCQ99lheWj/g/MxtHy4FHuqcbb0BVZp6sFD43bW81o6/OopRokMTfZt0+FivB2I3S
+	 Tns11uhcTPm0yVq1E7HU3NFezPNuwtvU4G1ZmAwPglazl7H89eXiyNKsObHqhZzz0e
+	 TJFSXhLVJATqh4ercNACpG5nHfO359N8u6IeXE5GNEqb3Zg3Y5m1SxZ9gzh5z+azRJ
+	 C/62CeEuRVhiw==
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5bcc3b412cfso958402e87.2
+        for <phone-devel@vger.kernel.org>; Mon, 05 Oct 2026 15:27:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBze/tEG3o9JJaE5KOXm2v/OcI0/aUHSGGtZ0/pooPzD6S9phn2KadOg1mGEEy20QrAttQV1DTwmiX5rRQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJXNVEZ4Y3XX1NU4jft362pRGoyBrB401HvKgt0Bu1UHFLGYvMw
+	sv8IDUJ/rcR/1LuO3dHofCZNj6YPWn1naEiysy2IWk/hxqHug+04zEgV89MlzCwzbQkLDFDEJ2q
+	DDxlctJDJAwAmDgCqxZIGWWKt4s53+R0=
+X-Received: by 2002:a05:6512:3b8a:b0:5b7:a987:d03d with SMTP id
+ 2adb3069b0e04-5bb9bb17536mr4098119e87.21.1791239220085; Mon, 05 Oct 2026
+ 15:27:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+References: <20260927-dma40-fixes-v7-0-89f595e8851d@kernel.org>
+ <20260927-dma40-fixes-v7-22-89f595e8851d@kernel.org> <asPEvh3O1ysaeeGs@parshuram>
+In-Reply-To: <asPEvh3O1ysaeeGs@parshuram>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 6 Oct 2026 00:26:47 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=c5PoFM9cDsAu+cbmauOD6QrpYuwo90QHKBbvpjoQcVw@mail.gmail.com>
+X-Gm-Features: AclHuK_RofFOjivNVgQU3t71YIooA4RWGvhqXQ6_bQ0T5JHwvUzdPKecH_PlZBU
+Message-ID: <CAD++jL=c5PoFM9cDsAu+cbmauOD6QrpYuwo90QHKBbvpjoQcVw@mail.gmail.com>
+Subject: Re: [PATCH v7 22/24] dmaengine: ste_dma40: Search all blocks for
+ fixed logical channels
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Frank Li <Frank.Li@kernel.org>, dmaengine@vger.kernel.org, 
+	phone-devel@vger.kernel.org, sashiko-bot@kernel.org, 
+	Frank Li <Frank.Li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Vinod,
 
-On Sun, 27 Sep 2026 11:03:13 +0200, Linus Walleij wrote:
-> This series fixes many DMA40 bugs.
-> 
-> Roughly half were found while reviewing the Ux500 LCLA SRAM
-> power-domain conversion.
-> 
-> The cyclic transfer residue bug was exposed by Ux500 audio playback.
-> 
-> [...]
+On Mon, Oct 5, 2026 at 5:39=E2=80=AFPM Vinod Koul <vkoul@kernel.org> wrote:
+> On 27-09-26, 11:03, Linus Walleij wrote:
+> > Fixed logical channel allocation scans physical channels in blocks of
+> > eight. When the requested physical channel does not belong to the first
+> > block, d40_allocate_channel() returns -EINVAL instead of checking later
+> > blocks.
+> >
+> > Skip nonmatching blocks so controllers with more than eight physical
+> > channels can allocate fixed logical channels from the later blocks.
+>
+> This failed to apply for me, I have skipped and applied the rest
 
-Applied, thanks!
+Thanks Vinod, I'll rebase it on your tree and send it separately.
 
-[01/24] dmaengine: ste_dma40: Fix physical cyclic capability
-        commit: 11101a8e3e42273a5910a149f6324040b88f4747
-[02/24] dmaengine: ste_dma40: Fix cyclic transfer residue
-        commit: c80edceff29ee212987c2d2c851b2cb2eb4b477a
-[03/24] dmaengine: ste_dma40: Recover coalesced cyclic callbacks
-        commit: db28400d92cd97005065dad230b8a5d72ab121cb
-[04/24] dmaengine: ste_dma40: Fix failed start cleanup
-        commit: 8175ead5727173d4b96d1e830e696765d75ade71
-[05/24] dmaengine: ste_dma40: Fix probe runtime PM disable
-        commit: c6809b381e34f8966cc3d9e5d7d658775a408f83
-[06/24] dmaengine: ste_dma40: Check runtime PM in IRQ
-        commit: 12787e3f2f93f3af59769b08ee4fcb044531120b
-[07/24] dmaengine: ste_dma40: Handle runtime PM resume errors
-        commit: 55a35231b8ced2250a7743ec350a9566d553780e
-[08/24] dmaengine: ste_dma40: Return IRQ_NONE when no interrupt is pending
-        commit: b96967644c524d34b2fdd2e58c31e7b36e3469e6
-[09/24] dmaengine: ste_dma40: Init hardware before registration
-        commit: ffd583a734dc4bdafb9e18d9aa48b6efafd1a628
-[10/24] dmaengine: ste_dma40: Fix probe IRQ leak
-        commit: 7ca608cf6b842685bbbe131d4f7d638f7cdc2b5d
-[11/24] dmaengine: ste_dma40: Fix DMA registration unwind
-        commit: f71ef686f913c8e9771a54466a76d653b83cd3dd
-[12/24] dmaengine: ste_dma40: Fix LCLA allocation order
-        commit: 7d4dc355c574d414d2402ac481a2fc4ee51e2771
-[13/24] dmaengine: ste_dma40: Fix probe LCLA free
-        commit: 750dfcdb7a406bdd52d604099a631bbe96ddda91
-[14/24] dmaengine: ste_dma40: Put the LCPA SRAM node
-        commit: 9a3762b470421658214baeb6cce3eed7344bb435
-[15/24] dmaengine: ste_dma40: Fix memcpy channel parsing
-        commit: f2baf04a695de4f952513cb00ccf0338c6db2e00
-[16/24] dmaengine: ste_dma40: Validate disabled channel indexes
-        commit: c96e9f056095825b5f8d4a11f4107fc174892f92
-[17/24] dmaengine: ste_dma40: Validate DMA specifier length
-        commit: 9f1064ebe17cf3ab65ac6eb166398e02678aea33
-[18/24] dmaengine: ste_dma40: Reject direction changes after allocation
-        commit: 77ebc64f40717b8501793b5f5ee717a141e62e8e
-[19/24] dmaengine: ste_dma40: Fix logical channel bounds check
-        commit: 57938e0c2a24f9f792fe9f611391ef6b58d1aa21
-[20/24] dmaengine: ste_dma40: Fix event group bounds
-        commit: e66a9dbe04c71249cfb2a544c9c25d1b3b761fba
-[21/24] dmaengine: ste_dma40: Fix V4B event group mapping
-        commit: b36f8fce7314fed53563c60e683ff86deb8a51ae
-[22/24] dmaengine: ste_dma40: Search all blocks for fixed logical channels
-        (no commit info)
-[23/24] dmaengine: ste_dma40: Validate fixed physical channel indexes
-        commit: 884e01160bc727509b4fdf04e763a86b936df464
-[24/24] dmaengine: ste_dma40: Validate memcpy configuration
-        commit: 0ac4a90c4805b41013044fdefff051ae59a54302
-
-Best regards,
--- 
-~Vinod
-
-
+Yours,
+Linus Walleij
