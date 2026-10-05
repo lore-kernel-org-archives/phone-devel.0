@@ -1,64 +1,64 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D720244F54C
-	for <phone-devel@vger.kernel.org>; Mon,  5 Oct 2026 09:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67F945563A
+	for <phone-devel@vger.kernel.org>; Mon,  5 Oct 2026 09:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791192964; cv=none; b=V/ryID8nrMJhf4CpIxDisN01Mas9tI+WxfRHT1VwUTYTB3WAZkKFCjO9BYxVF5fBbMoNRIDgJnOzQW3S/6GHv4Qgg+ekck97pd7YGIs5zNrG65jdtbphbfSD79lf9c+WIWHJKT5VxR5hewmS9L0zg3E/pbasM9CnGKoYGzGRUkQ=
+	t=1791193007; cv=none; b=rN5mo0VI11E/8KwExeqMttTXl8FphzQnP+XXjiEotqwbHPVh27p84/1LfJZ/s5r5pQaR0Hs06xHnpdFi9+AweLjPBcIJvnJKMjw7YGtoQdaiOiXclizLjxmQSMHG0X+Q7c8sRM0P4J/wwqDjQw/iwImOErSQp6mJJ1Qzm+MfAJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791192964; c=relaxed/simple;
-	bh=THNiZhFHii+ex+LZMsS2OghfP24T0+GzzryhIM5GK6Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Pm7oSvseF2l+Qjp2M3++2fZvcPaGaiqrpRoIYFbz+nEEVY1VlmEZo8PqRV5Zmv00JpTZ0beFt/Gbqfjbek9SKRHJGz9wF2DE8bAf2sf9F7ub9kj4QDLgsmraqjI0t/fnFIxEfi3SS91+OnFxH/52+heG6/uRMU9V/lYIk8QZrW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=IP3UlyLd; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1791193007; c=relaxed/simple;
+	bh=oNudNf9KGgKm6/8USlLHbXpH2Kr7BGPq6A+ZyfzohhA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=YR2rjT11GCVGnaxYY9D6MhY8yjv6eRA62fi32eRZdJwi0x4cOE9R95pfhqRQMxhWNNlqR12bUuOL+s9a9NK7S9k8MUCD9TsymXeS8LQE8S1ZDcSM9HWerm6+3YWvEyLNqBuhgs5bznSZuXzOgeCDwt97y7Lw556U9so1o89IvNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=TiBJc0D8; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="IP3UlyLd"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1626d6a6cso9108305e9.0
-        for <phone-devel@vger.kernel.org>; Mon, 05 Oct 2026 02:36:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="TiBJc0D8"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48afe75f055so1266575f8f.2
+        for <phone-devel@vger.kernel.org>; Mon, 05 Oct 2026 02:36:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1791192957; x=1791797757; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=fairphone.com; s=fair; t=1791192997; x=1791797797; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=glJhOe3o69hGuf36JpkU5EUJfHjbvLOwKHaTPoIM6ys=;
-        b=IP3UlyLdDl7MF5rFNGopn+P5YwigWgC7jWPj3foZuJas+AtlDLV5/+p0tCRHUe4HhM
-         fqDSvUgHPXM6PrGF6HnU8QeydZTrfUOSX3aW2iV1ZR8VILbe5tPMioFTeLkM+1NB2XM8
-         ucd6d+w2eDHwgiaLo/OYR0uMVB3BDzKxGCG7miHoH2ECdZe/wydFKLlAVEePF+rWHQRB
-         gzw0DQhCpEaQOQHHbAI0Z16CH69DgKKgPlvMEvXRSsA2cOyRHXmbMzpbaI2/UYPzpOGS
-         /WVL+qCN386ZR8Yh2n/+xdaFxtZHKi225d+SpujkweEIJGq/6QrfsG+iJiCyF4tbO67r
-         a0Jw==
+        bh=BITV0xN/Wyix+y3zSS4utGAF8MX+E4pjWeLeeUY9W7s=;
+        b=TiBJc0D8+P0GUQK1oTX2XjFtS4UUxChMNEjX9Nsxx2KNEcpBecAeGNjsrnp4JgSlof
+         4vqu1YA6tsVd0RvyIVTfSYEX9gXofr6HpiKnw6B8kmZw970uqCyb0j1htSj8VaTVwAjI
+         ZekqJyw14kfhlynPZI0QEQGb60J8F3e9mTeTugSSMXIZ18PIhb9A3mmMPe0251LaVsJb
+         3GxfC/leL4LgJTeMxker1HwI+62jzYnP9TIr1j6NbFT2PdzuCMnvxPP/n35JSwac8p84
+         2wcP4kGnEk34tL2Ug9zOi1QgaJ8M1flvJGyDY/EODaKjZ4WaNJHffZb1cKxmDDGMElMl
+         Bpaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791192957; x=1791797757;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20260707; t=1791192997; x=1791797797;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=glJhOe3o69hGuf36JpkU5EUJfHjbvLOwKHaTPoIM6ys=;
-        b=NykZqgVnPAsGGUeIjSMs/ypVt6teG64yDYf1NEWvh6JwJjuKDJWKvI0Q+AIkW5AT7E
-         /McX6JoYCe5LvriwDJ99EJNr5LjY3f+Ojk+2jDxnf8w6sD2Z/3BsypNr9jlDkE1KTTVI
-         0jaY9oZY4IInMyeSrTnUGqy6UKjDq2EftlWIce2M2h1SpkfC6NGY+kNYDchoHCBfe8/U
-         SLCB2CpLui3TqEnuEA/B2eXAeF3totl7iBmX79CHhsk1c2y6KM9XCANeFUqN4y4/mBS6
-         AsyGvAu3V6YPfbSA8ex8lSfafIVv6SQPIvUwtzn7QbOlZvzRSdcn6vHIfsxuXWLQcGmi
-         2Vdw==
-X-Forwarded-Encrypted: i=1; AKwUvBxJ/W7T1MIAizBSh295iYuOFKlBJP5JGzJJ9e+BcskJrMcaEzJoPf821MZP0EI5CvEE8TlZLJmBYximiQ==@vger.kernel.org
-X-Gm-Message-State: AFuF++mTMie+d9CHKXzhSC9HBJXbu7t7OKx/nB5wqeq76OoNVh3q+wAI
-	fedUFDAXjid/lkl+zvqwsGwwjtQsfqSGEFvvRK0lr1SBQ5ybhNzQGzLIMPhhq6lek7I=
-X-Gm-Gg: AYBFou3AbXVU7a1g53XzuauskmswXh39W0nK+R5L8Z8EvuvOAM+cFWGfI2AnD0k/ntT
-	zln7tEbnBn3UFkspDhOBILu7x31hjmCNRIZ8yJrKABOg16uKxu4uVtNERSPPVkbTJrzoG10LdvA
-	Z0j+lRPm0u0QiDHANCce5SXO9Y0c7VWG9vtjB7W9sw5iiRfzrnjionW2B/GfIToj7mioJoS5p4g
-	eIsaqF6Zn4ShK7Xt4/5opelqne2XE8KEGcFesKFf3DW5oqPmmwDLwOyhBeXm8CeH7G1ppYduEmz
-	08QAZ+ybEoOTpATjnxvkQDWfjpEb25aAjTeRG8a2juHvj8zeE+nZ5Rfjiyy66K/GHSRxmaWQlMx
-	xKU3CRTrMPa/ccoBFoP26HgKjhzKdWAsqiVQ8DU3EarLeH/PFzxrX2l9WALlQANO+IzXPEHOg6G
-	sVYGv++MC+yJdQIHfWKx6I2JTP9nyTt6D3e2no9oq3scq7aStsY6SRim+3C6Oqrckg+qDr
-X-Received: by 2002:a05:600c:4705:b0:49c:fc6e:a3da with SMTP id 5b1f17b1804b1-4a1680ffb88mr111842255e9.25.1791192957347;
-        Mon, 05 Oct 2026 02:35:57 -0700 (PDT)
+        bh=BITV0xN/Wyix+y3zSS4utGAF8MX+E4pjWeLeeUY9W7s=;
+        b=jQrpUuAsmkVR3Q9ybgz8hPLNQ9ycx1EjoAYP6zrwj6gZGMA2m5H0aEQX8rreBA2sDR
+         otTFXNOxRh9m0HFkvTu2ZsmBKmMLeOoV7cRwqw0Km0Zb/dhm30CZIvRp/oHbiw5RKvvF
+         yY9eUIVNctkev2hLVjZO92nLzZBrdG3fnP8zEUKeagtscl7+R9iJ6c4R26trtMkMQGNu
+         b26m0GroDEawSZSq52E5QmdOx0oMT63cg12+qid6hqRs8TZ8bpaX/uxepaAnv3HNlmY4
+         44ALoAYhr+J5+FjybJ9P+KF/VEVm8OeFusEXITwc9oJXTTR9Y+k7B2CtCygyQGnehl8W
+         9MUQ==
+X-Forwarded-Encrypted: i=1; AKwUvByvFtaBRAKvWbP5Fw/7ZKlyEBeDNAArCvKGjTQD61ftkU7oCm15MPviS++QEaKqLXDZOoZ26ycqoDnSug==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJc13lgQa7Oi2DKNM4HGHvqcJo2B3hHDjfpArcf3rKkzmhGFtRY
+	6Oo5O/cYEzaFtfDOY/RwFEgbm9+MKTAMWw2DjETyrjfRRkaSuoRlYXBNrYc4f3/3TFg=
+X-Gm-Gg: AYBFou3EuQ+JQqwduDQaJHitJx69LWNEl3t5ayUqgkm0ZQL44ByHXdDsuNPQcCf+yKH
+	EkSQ+Oj8DAt2CM1xYYLPoWjZ3qAXYVrlBNNKPbt5uZfmBGBds+UV2YQL1LMvAf4WJnuoN6aGd6r
+	RWukTq4PBA5SL3cXTtLTYVEm+sZg+Q3L0QMD2/Io0hM6+0h/ZEOs2kK4RsTjEQhmrFxnvBPU25H
+	bJubm4HdtDFhnMFLoh9MbiDmYeXf1atLcS3/LrHaklkI/GIS7+G2Hxp9tlcXOADX8awUHmaZvE1
+	QvzZuYk0Vhtw0vMXzZ/AApzNl1nsbSmp30o4VnaQMPEg+anzfuhsFmtMnTLU9zU9Pg7Hdgdrfdt
+	Doz66Q2Zrz2srlmcWSzum4q7RJD7xru5vFiyvG4UDDUCZ7MkITdxb+ltF4j+Uuf4YSolYXorcIJ
+	x7qoD7fydu7wdf3pqdCQb0KBujyuV6WIhjN2v/gfDXO6qHKV42GeO4bzhhiyJ7RvdYIqhq
+X-Received: by 2002:a05:6000:2212:b0:487:1ddc:aaff with SMTP id ffacd0b85a97d-48c47ffa3f3mr10798541f8f.44.1791192997141;
+        Mon, 05 Oct 2026 02:36:37 -0700 (PDT)
 Received: from localhost ([41.66.99.5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a027698f13sm313414045e9.1.2026.10.05.02.35.55
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c622ad2f9sm2391478f8f.38.2026.10.05.02.36.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Oct 2026 02:35:57 -0700 (PDT)
+        Mon, 05 Oct 2026 02:36:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -67,71 +67,52 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 05 Oct 2026 11:35:54 +0200
-Message-Id: <DLWSWRKGNB1K.303TRIRF4FH16@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: display: panel: himax,hx83112a:
+Date: Mon, 05 Oct 2026 11:36:34 +0200
+Message-Id: <DLWSX9ZHDC8K.1KXUAR8VSMNND@fairphone.com>
+Subject: Re: [PATCH 2/2] dt-bindings: display: panel: himax,hx83112b:
  Tighten compatible matching
 From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Neil Armstrong" <neil.armstrong@linaro.org>, "Luca Weiss"
- <luca.weiss@fairphone.com>, "Jessica Zhang" <jesszhan0024@gmail.com>,
+To: "Luca Weiss" <luca.weiss@fairphone.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Jessica Zhang" <jesszhan0024@gmail.com>,
  "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
  <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
  Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Rob
  Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
  "Conor Dooley" <conor+dt@kernel.org>, "Luca Weiss" <luca@lucaweiss.eu>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.22.0-0-gc2f86b7abde3-dirty
-References: <20261002-hx83112-compatible-contains-v1-0-d558635ab7fc@fairphone.com> <20261002-hx83112-compatible-contains-v1-1-d558635ab7fc@fairphone.com> <9be89803-974c-4746-8af0-a13e5a19fb33@linaro.org>
-In-Reply-To: <9be89803-974c-4746-8af0-a13e5a19fb33@linaro.org>
+References: <20261002-hx83112-compatible-contains-v1-0-d558635ab7fc@fairphone.com> <20261002-hx83112-compatible-contains-v1-2-d558635ab7fc@fairphone.com>
+In-Reply-To: <20261002-hx83112-compatible-contains-v1-2-d558635ab7fc@fairphone.com>
 
-On Mon Oct 5, 2026 at 11:27 AM CEST, Neil Armstrong wrote:
-> Hi,
+On Fri Oct 2, 2026 at 4:49 PM CEST, Luca Weiss wrote:
+> The compatible was defined too wide, we just want "djn,98-03057-6598b-i"
+> and nothing else.
+
+Fixes: 54bd1390e984 ("dt-bindings: display: panel: Add Himax HX83112B")
+
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml | 3 =
++--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 >
-> On 10/2/26 16:49, Luca Weiss wrote:
->> The compatible was defined too wide, we just want "djn,9a-3r063-1102b"
->> and nothing else.
->
-> Can you add Fixes tags ?
-
-Sure, I can do that. Wasn't sure if that's a thing on dt-bindings
-patches, but it seems to be used regularly.
-
-Fixes: 3b59787a5170 ("dt-bindings: display: panel: Add Himax HX83112A")
-
-Regards
-Luca
-
->
-> Thanks,
-> Neil
->
->>=20
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->> ---
->>   Documentation/devicetree/bindings/display/panel/himax,hx83112a.yaml | =
-3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>=20
->> diff --git a/Documentation/devicetree/bindings/display/panel/himax,hx831=
-12a.yaml b/Documentation/devicetree/bindings/display/panel/himax,hx83112a.y=
-aml
->> index 2c60d0cd704e..3dd9b25ff13f 100644
->> --- a/Documentation/devicetree/bindings/display/panel/himax,hx83112a.yam=
-l
->> +++ b/Documentation/devicetree/bindings/display/panel/himax,hx83112a.yam=
-l
->> @@ -18,8 +18,7 @@ allOf:
->>  =20
->>   properties:
->>     compatible:
->> -    contains:
->> -      const: djn,9a-3r063-1102b
->> +    const: djn,9a-3r063-1102b
->>  =20
->>     reg:
->>       maxItems: 1
->>=20
+> diff --git a/Documentation/devicetree/bindings/display/panel/himax,hx8311=
+2b.yaml b/Documentation/devicetree/bindings/display/panel/himax,hx83112b.ya=
+ml
+> index e58bb3d45331..34e97003d293 100644
+> --- a/Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml
+> +++ b/Documentation/devicetree/bindings/display/panel/himax,hx83112b.yaml
+> @@ -18,8 +18,7 @@ allOf:
+> =20
+>  properties:
+>    compatible:
+> -    contains:
+> -      const: djn,98-03057-6598b-i
+> +    const: djn,98-03057-6598b-i
+> =20
+>    reg:
+>      maxItems: 1
 
 
