@@ -1,34 +1,39 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-212.mta1.migadu.com [95.215.58.212])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF71B43B49D;
-	Mon,  5 Oct 2026 22:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A372DB7BF
+	for <phone-devel@vger.kernel.org>; Tue,  6 Oct 2026 03:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791240026; cv=none; b=LU8/Wt4lD8ObnEFk/ywtM9xG1sPgc0ja/e76JL3zg6ybRZEzpcykF4QWcryfadkA+RNHvwcq4TSya18B0hidy8DcffH4TZ5WgMvP5q25MhaxyY3uHmldSgiR4teyeoq+zhn+yJnhSsgyifYSNZqUL5Gha6Xx8ljAt6VebbONrvU=
+	t=1791258381; cv=none; b=IAacCDzWAzcgYkX93HFHTKhX+V8ZJR5EGBTQCPuHDwK7TLKl8sWRgCUgndIbcAfX8O4ST4rxa8ebIovpE/qqTdylikBmdIEOixXeLS0FIGW30wtHOd6itU/1ZdsYwNf9hhlEv1pHURM5c9iYE1xED68C1L163q7dynZRJuxdInc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791240026; c=relaxed/simple;
-	bh=iOAh2uk2u9Wu51iqB8cHOoQBTdakoKSXG3cDeB8dht4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qoc5/Omis8u2WoFe8i/z8hzKD8WioanFhNWL6VfvkV6roqmG+Xl9vkkR0jCEHglctgCZNUVe37psSU5kRqFu+57HtZHwwIyMGiQaXtoe7QILl2+hb81AMyjzJL7CNRn8LlbGgizISQ4dVsAcBml21LIIea0DVrv9tH/Dr6oehGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=On/GE2Rz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791258381; c=relaxed/simple;
+	bh=dJXA/6tV0b2I4Avb+qNgYbSJeMN+DeMn7NG028Us1Rs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=m9+GkjHU7Hva7B8jTxawHY+fBjSold4bobrqmM6wdx/oNHQ9faJM3v1ddlGULZc+Rc//4coo8byKo90fCDfRjy/yh4edlsV/MtiMfr6JFEowyJAC9KPK70+2l7rMQj2wRMBrGSD+13rCSzUrMDaSHQw+zk45NABWnDppnxf80fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=hHOmz0+2; arc=none smtp.client-ip=95.215.58.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="On/GE2Rz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06DB1F00893;
-	Mon,  5 Oct 2026 22:40:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791240021;
-	bh=y6/HT/HR0rctj0aPK77xtfuij0mRtCADUgwWoZELAkc=;
-	h=From:Date:Subject:To:Cc;
-	b=On/GE2RzYYELQJ+DYkvDGNlMOV3nD5Fq2R98VJnnyLMV60NVqi7dDC71Am9L1NKOt
-	 SGoWFumUHIgjFVOqU913j1Zqb93OyNlJeThPGuU/qL14hViwd+XbCtdcLuBHVBXnK6
-	 T1G1tnISCjyQnpAs1iYjkaqR/h0FaHFPJ/ghNKiBjKwKQckSqfgM/GekhHA9y8IdS7
-	 MtgfxzROANqZEgjWiFU9vLIGxO88GedUD3XG2il5fHGkSTdVEr1oTsVMjxTlobg/Zv
-	 6SFhM2l+paDffINDfk5Cn0qMTCLPEc06ahTktpDRnzLA3WYNK0zZ/FnHcLOcFtgsU0
-	 mBXv4EOYH3IKQ==
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 06 Oct 2026 00:40:17 +0200
-Subject: [PATCH v8] dmaengine: ste_dma40: Search all blocks for fixed
- logical channels
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="hHOmz0+2"
+X-Envelope-To: phone-devel@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=dJXA/6tV0b2I4Avb+qNgYbSJeMN+DeMn7NG028Us1Rs=;
+ c=simple/simple; d=postmarketos.org;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791258377; v=1; x=1791863177;
+ b=hHOmz0+2FJYyzENB+XVUbQ6sfC/abpfSqRZAidUgnmzFgFNYbwyNY/IHdMotJ8ToiH5j09+k
+ gXbHo4WC8MT0ASLwetNaLJXuPE5Kx64Y+Y6NvhepvfWmr5s+T9vqY/IFXOhd3coJHywwNbYQwpb
+ aIm9/YqiaITu3sM0sHRftDePMovMcROsZx4T9K/E3tVIZPS8LgD2Y26W0B5NjTz8NneNbgHcHnD
+ GAoAx7t7lRLHlJnAZh9THCXcLYu5clg8YfCd9C9eh6dj/c6vkf+SrOvAgVlTdM8Uk5mDcw+qeLO
+ V11AGkIuF+9DPvuz4B/Jx+9WLHKgkFf13hyRXz3u+8doQ==
+X-Envelope-To: phone-devel@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id cbfac3dcf9219809;
+	Tue, 06 Oct 2026 03:46:17 +0000
+X-Mizu-Trace-ID: cbfac3dcf9219809
+X-Migadu-Flow: FLOW_OUT
+From: Paul Sajna <sajattack@postmarketos.org>
+Subject: [PATCH v2 0/7] leds: aw2013: Add AW2027 support
+Date: Mon, 05 Oct 2026 20:46:01 -0700
+Message-Id: <20261005-aw2013-aw20xx-rename-v2-0-108ecbdf2775@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -37,177 +42,67 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261006-dma40-fixes-v8-1-b0aadf804793@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33PQW7DIBAF0KtErEs1DAwMWfUeVRa2gQS1tStcW
- aki3704m9p1leUf9D76NzHGkuMojoebKHHKYx76GvjpILpL05+jzKFmgYAWGEGGj8aATPkaR9l
- 63yRrAbBNoorPEu8PFbyear7k8Wso3/fySS3X/3smJUFSVIYVNcGyf3mLpY/vz0M5i6VowgcYK
- 7YaNWttOgduh/Uv9oq3WFfMIbAhsNZH3mGzwn9/NhUHR6rF4DvUaYfpAaZlc0fUBZc8pv1mu8Z
- mi23FKbTWEQFCgzvs1thtsVs2+0SeIjOpsMHzPP8AGV9yWBUCAAA=
-X-Change-ID: 20260820-dma40-fixes-b99af66002bf
-To: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
-Cc: dmaengine@vger.kernel.org, phone-devel@vger.kernel.org, 
- sashiko-bot@kernel.org, Frank Li <Frank.Li@nxp.com>, 
- Linus Walleij <linusw@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQqDMBBFryKzbspkpEq66j2KixBHDcVEJmJTx
+ Ls39QJdfd6H//4OicVzgnu1g/Dmk4+hAF0qcJMNIyvfFwZCatBgq+ybUNdn5KyEg51Z9QPVtbs
+ Z0q6BMl2EB59P7bMrPPm0RvmcL5v+tX+Em1aonLFtP2iyLerHEtM6W3nxGtM1ygjdcRxfHVIzz
+ 78AAAA=
+X-Change-ID: 20260907-aw2013-aw20xx-rename-df233c5921c6
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>, 
+ Alexey Min <alexeymin@minlexx.ru>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ Paul Sajna <sajattack@postmarketos.org>
 X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791258374; l=1703;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=dJXA/6tV0b2I4Avb+qNgYbSJeMN+DeMn7NG028Us1Rs=;
+ b=S94v4SivH2dR32huQGT3SuaRxQrHWg0Ive4v4hvnG1sy0zvXcZkv3E3MPizP6FFWdK3FfYBNV
+ 1ePjw8nmStHAlouXHO5rsLB6PvUxTaGTyM7B6pQdg5hgiol1Mdy4IKz
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 
-Fixed logical channel allocation scans physical channels in blocks
-determined by the event-group layout. When the requested physical channel
-does not belong to the first block, d40_allocate_channel() returns -EINVAL
-instead of checking later blocks.
+Refer to PATCH 3 for a full description of the similarities and
+differences between AW2013 and AW2027.
 
-Skip nonmatching blocks so controllers with multiple physical-channel
-blocks can allocate fixed logical channels from the later blocks.
+Several pre-existing bugs were also caught by Sashiko Review
+and fixed in this patch-series. The joys of LLM-inflicted bikeshedding.
 
-Fixes: 5cd326fd27da ("dmaengine/ste_dma40: allow fixed physical channel")
-Reported-by: sashiko-bot@kernel.org
-Closes: https://lore.kernel.org/dmaengine/20260819225008.5F9651F000E9@smtp.kernel.org/
-Assisted-by: LLM
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+This PATCH resulted out of discussions pertaining to
+sdm660-mainline/linux, a close-to-mainline fork for Qualcomm Snapdragon 660
+devices, specifically for the BlackBerry KEY2 Keyboard Backlight,
+in the following GitHub PR: https://github.com/sdm660-mainline/linux/pull/218
+
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
-The DMA40 fixes from v7 have been applied to dmaengine-next except for the
-fixed logical channel allocation fix.
-
-The remaining patch makes allocation continue past nonmatching physical
-channel blocks instead of failing at the first block.
----
-Changes in v8:
-- Rebase onto dmaengine-next.
-- Drop 23 patches already applied to the dmaengine maintainer tree.
-- Keep the fixed logical channel allocation fix as the sole patch.
-- Link to v7: https://lore.kernel.org/r/20260927-dma40-fixes-v7-0-89f595e8851d@kernel.org
-
-Changes in v7:
-- This is getting tedious, should I move the reviewed and non-complained
-  patches to the front of the series so Vinod can start applying
-  them?
-- Use modulo arithmetic for cyclic callback pointer displacement.
-- Request the IRQ after DMA40 initialization clears pending status.
-- Replace probe IRQ bookkeeping with explicit cleanup labels.
-- Use non-resetting devres actions for unpublished channel tasklets.
-- Derive V4B physical-channel allocation and GCC clock groups from its
-  five-event-group layout.
-- Link to v6: https://lore.kernel.org/r/20260924-dma40-fixes-v6-0-fdb6755020a2@kernel.org
-
-Changes in v6:
-- Simplify termination and channel-release runtime PM balancing by releasing
-  temporary references in the successful resume paths. Descriptor cleanup
-  remains unconditional because it does not access DMA40 registers.
-- Name and document the three-attempt cyclic-residue pointer sampling bound,
-  and remove an unrelated whitespace-only change from that patch.
-- Replace probe-local runtime PM bookkeeping with
-  devm_pm_runtime_set_active_enabled(), keeping IRQ registration after
-  runtime PM is enabled.
-- Link to v5: https://lore.kernel.org/r/20260920-dma40-fixes-v5-0-5c55cd7f92f9@kernel.org
-
-Changes in v5:
-- Respin to fix some further corner cases found by Sashiko as well
-  as can be done.
-- Resynchronize cyclic callback tracking after failed hardware-pointer samples
-  and limit unchanged-pointer interrupts to one callback. DMA40 has only one
-  latched terminal-count bit, so extra periods coalesced while the pointer is
-  unavailable and exact one-or-more full-buffer laps cannot be recovered
-  without risking spurious callbacks.
-- Count DMA40 status from channels owned by other SoC cores as handled
-  without acknowledging it, so only status-less interrupts return IRQ_NONE
-  and foreign DMA traffic cannot trigger spurious-IRQ disabling.
-  This is REALLY FRINGE but let's do our best anyway!
-- Link to v4: https://lore.kernel.org/r/20260920-dma40-fixes-v4-0-d751b2d9c23f@kernel.org
-
-Changes in v4:
-- Rework cyclic-transfer residue reporting to use the current memory-side
-  hardware pointer and reject periods that need more than one LLI.
-- Add cyclic callback recovery when terminal-count interrupts coalesce.
-- Retire all issued descriptors and release software channel state when a
-  runtime PM resume fails, while avoiding inaccessible hardware registers.
-- Validate physical event IDs against the variant event-group limit rather
-  than the physical channel count, as confirmed by the DB8500 manual.
-- Link to v3: https://lore.kernel.org/r/20260918-dma40-fixes-v3-0-8dd8450669e8@kernel.org
-
-Changes in v3:
-- Add a fix so physical channels advertise their existing cyclic support.
-- Add a cyclic-transfer residue fix so DMAengine PCM reports the correct
-  hardware pointer and Ux500 audio playback does not stop with -EIO.
-- In patch 3, preserve cookie completion order when the next queued
-  transfer fails to start and retire failed cyclic descriptors.
-- In patch 4, enable runtime PM before requesting the IRQ so pending
-  interrupts can be acknowledged during probe.
-- In patch 5, keep valid interrupt handling with CONFIG_PM disabled and
-  only drop a runtime PM reference when one was acquired.
-- Add checked runtime PM resume handling to channel operations.
-- Add an IRQ status patch returning IRQ_NONE when no DMA40 interrupt was
-  acknowledged.
-- In patch 8, keep the IRQ disabled until hardware initialization has
-  configured and cleared the DMA40 interrupt state.
-- In the DMA registration unwind patch, free the IRQ before unregistering
-  the DMA devices and drain initialized tasklets before releasing storage.
-- Add a fix releasing the LCPA SRAM node reference after reading it.
-- Move the disabled-channels binding restoration to its own series.
-- Store memcpy channel mappings per controller and check the property read.
-- Add validation for disabled physical channel indexes.
-- Reject DMA specifiers that do not contain exactly three cells.
-- Reject transfer direction changes after channel allocation so logical
-  channel resource masks are released correctly.
-- In the event-group bounds patch, use variant-specific limits so DB8540
-  event group 4 remains available.
-- Add fixed-channel fixes that search later physical blocks and validate
-  configured physical channel indexes.
-- Move the generic DMAengine debugfs naming fix to its own series.
-- Use `Assisted-by: LLM` for the existing assistance trailers.
-- Rebase onto v7.3-rc1.
-- Link to v2: https://lore.kernel.org/r/20260820-dma40-fixes-v2-0-63238334c707@kernel.org
-
 Changes in v2:
-- In patch 1, complete the failed-start descriptor through the normal
-  tasklet path and drop the runtime PM reference instead of freeing the
-  submitted descriptor directly.
-- Add an IRQ fix to avoid register access when DMA40 is runtime suspended.
-- Add a probe ordering fix so DMA40 hardware is initialized before
-  DMAengine devices are registered.
-- Add a probe unwind fix so DMAengine registrations are released before
-  freeing IRQ and LCLA resources.
-- Add an LCLA allocation fix so __get_free_pages() and free_pages() use an
-  allocation order instead of a raw page count.
-- Add a probe unwind fix so ESRAM LCLA mappings are not released with
-  free_pages().
-- Add a device tree parsing fix so memcpy-channels cannot overflow the
-  memcpy channel array.
-- Add a dev_type bounds fix so derived event groups cannot overflow
-  phy_res or the priority/realtime register window.
-- Add validation for fallback memcpy configurations so memcpy-channels
-  entries cannot bypass the dev_type bounds checks.
-- Add a DMAengine debugfs naming fix so drivers registering several
-  DMAengine devices for one parent device do not trigger duplicate-name
-  warnings.
-- Link to v1: https://lore.kernel.org/r/20260820-dma40-fixes-v1-0-5e14815ad689@kernel.org
----
- drivers/dma/ste_dma40.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-index 0ffdfd9a1c9d..d3cc2c512ccf 100644
---- a/drivers/dma/ste_dma40.c
-+++ b/drivers/dma/ste_dma40.c
-@@ -2128,11 +2128,8 @@ static int d40_allocate_channel(struct d40_chan *d40c, bool *first_phy_user)
- 		if (d40c->dma_cfg.use_fixed_channel) {
- 			i = d40c->dma_cfg.phy_channel;
- 
--			if ((i != phy_num) && (i != phy_num + 1)) {
--				dev_err(dmaengine_chan_dev(&d40c->chan),
--					"invalid fixed phy channel %d\n", i);
--				return -EINVAL;
--			}
-+			if (i != phy_num && i != phy_num + 1)
-+				continue;
- 
- 			if (d40_alloc_mask_set(&phys[i], is_src, event_line,
- 					       is_log, first_phy_user))
+- Reduce renames to internal driver scope, to prevent breaking compat
+- Address Sashiko Review Comments
+- Split renames into a separate commit to make the actual changes easier
+to identify
+- Change from RFC to PATCH
+- Link to v1: https://lore.kernel.org/r/20260907-aw2013-aw20xx-rename-v1-0-c9a7df12a701@postmarketos.org
 
 ---
-base-commit: 0ac4a90c4805b41013044fdefff051ae59a54302
-change-id: 20260820-dma40-fixes-b99af66002bf
+Paul Sajna (7):
+      dt-bindings: leds: aw2013: Add awinic,aw2027 compatible
+      leds: aw2013: Rename internal APIs from aw2013 to aw20xx
+      leds: aw2013: Add AW2027 support
+      leds: aw2013: use dev_err_probe
+      leds: aw2013: Move assignment of chip->num_leds
+      leds: aw2013: Prevent writes to unpowered chip
+      leds: aw2013: move reset from probe_dt to chip_init
+
+ .../devicetree/bindings/leds/leds-aw2013.yaml      |   6 +-
+ drivers/leds/leds-aw2013.c                         | 351 +++++++++++++--------
+ 2 files changed, 229 insertions(+), 128 deletions(-)
+---
+base-commit: 944a035ecca915ae947905dcfb03f2b9dc6d032c
+change-id: 20260907-aw2013-aw20xx-rename-df233c5921c6
 
 Best regards,
 -- 
-Linus Walleij <linusw@kernel.org>
+Paul Sajna <sajattack@postmarketos.org>
 
