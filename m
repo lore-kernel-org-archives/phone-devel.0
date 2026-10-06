@@ -1,112 +1,80 @@
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-109.mta1.migadu.com [95.215.58.109])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC003E5594;
-	Tue,  6 Oct 2026 13:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBA34A3F1B
+	for <phone-devel@vger.kernel.org>; Tue,  6 Oct 2026 18:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.109
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791294585; cv=none; b=hGKXsscht0n9PWTHN/ZokmnN8VptYZQSGH1auwj/x3uf1LOXu+wtVpQ+aLg9at5whdGBThRWaxNEyDS1HRLnZC5XxZj9tk8jRRLyjmz+dA9ik4S+Lesb03trqRS3RqhMk3ulorZYLs4xO3dO/V+nNIsAN0Oci+ZX5oJJCudCsy4=
+	t=1791312891; cv=none; b=Dk/yg7sWDSWEAPyeQzJ0b3GtaBNcNCeJxDbZniD6EchI0Tgw/wpG0IDIqSNBNXAXrZycuA29dBAHyb8HtAP8TbB5yDlZu8lDSEzB5uvnwcXNORUQhPJaFh9uMIKmeI4bxZ5qE5VDHsxsgoWD31tBEDZziD+y1JOFVcxiw1cENcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791294585; c=relaxed/simple;
-	bh=uBgbl1rRbaHSomTk5m24hvLxF+0fQvh6cs5qFlMOE6E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PQFDgx/zbE7cjMsVMXhnUQoykTolrrRwo9VJoMKfqJAgC8dlDP44BcM7B57Vub8v2DE4XtIPhbAx5FS+bJxvuIrPBt78sj0ioVFrEkjxkKId32Se7YDFLFN+05L5DzZHLzQ2JjINC5Kafa1nwfu/FuBjW2CcFaIc+M7D9CcFkQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=Qo8WdHOh; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=tJgSBLJd; arc=none smtp.client-ip=5.75.144.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	s=arc-20240116; t=1791312891; c=relaxed/simple;
+	bh=3bvT2VatBc1K+HvjSMEV9tZwrAHqrBfs03wveSjQq+s=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=Q3nWMJyFTNWDaReU4lt7vI2MD1b7MQHNIxzZcADycvYRgG7CaIOp5u9ov+jJhW2009Kr768A/j/9Ie6fLbi5MIcFNf3dToJXtK/0gcS/PPXJW9XsKlGqxolxuy4p8vIBuwGe0eITxn/INqFXkRlTtyYsu/klNFa8oTaP4ooUbYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=CZFF2oIE; arc=none smtp.client-ip=95.215.58.109
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="Qo8WdHOh";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="tJgSBLJd"
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1791294555; bh=084aF7ITkXxD+91+eYU3/5E
-	pJ1wNR0wYrX/tH5rZlVQ=; b=Qo8WdHOhbFBhjGcAK2DBeF5zjL4nMsPDSwvYD9S2KhiArvQEFM
-	WY8QtddBGND8OLFziqm3CsgELKbFgvCqu0XCewzGxxtkD5WQUSBvqLorwCJO56QntphngHMI7v8
-	Wef+WjnV2yvxzOWi6MS7/8hcLXl5mkr49GHfi4dKBWktgm8f9G+vbo/W1p/+l/MGHSRGe+v44Cb
-	UhTt4FTYdqugrpGbh9mgxZSE/UfHcmHkrCH6/t+fc0qgfzEkJqJ9AZN/5oRxOXAhYpqdRoxnWAf
-	aLtqw6cAdQqKC8DJ2urwoX3SRM/UgnXWd1KDqlK3fyzX661AqFJVyKmYaD5ZcsRCd8g==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1791294555; bh=084aF7ITkXxD+91+eYU3/5E
-	pJ1wNR0wYrX/tH5rZlVQ=; b=tJgSBLJdRRl87bfuSueo6cvzPr3p+Tk9150+EhFYQG1Jt7HU+P
-	qSgLHOjVct7K2E6Z6UkrM6zjwQuYOuGnECCA==;
-Message-ID: <f0b58a7b-6257-4dc3-b0f3-eba76ecc774f@mainlining.org>
-Date: Tue, 6 Oct 2026 16:49:12 +0300
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="CZFF2oIE"
+X-Envelope-To: phone-devel@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=3bvT2VatBc1K+HvjSMEV9tZwrAHqrBfs03wveSjQq+s=;
+ c=simple/simple; d=postmarketos.org;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791312887; v=1; x=1791917687;
+ b=CZFF2oIE/uE7UGtgOj7S9G2slnguIiVwwB6wQReR5F3HbLwBWqMMHmZ07W/vzuvA1XP81J9t
+ V1Aml9HAf9MX1NJvW1Rz+ZwfUuTosp4aI8by+ushB0IDWhubB13wfelLdtQE5f6CWK3An2QHnKK
+ XWgeyqLpxB7N059gPwFpXxU3RaaXKthHjSv26nKS8J53quenplPgNTqrwtXu+AHgdgfHVklh152
+ fs3IfcCZdRpfA+p9KkHoE51N/bQ8FDuV+1lD6U+mHr6J3RsJvvzBlW8zDYPnSNX3Gme/4+z+pKI
+ goW7G0xkFmBbu3gW4wbxkjFmQrqVl7soznR74VzjCI28Q==
+X-Envelope-To: phone-devel@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id b3cd69ab155009df;
+	Tue, 06 Oct 2026 18:54:46 +0000
+X-Mizu-Trace-ID: b3cd69ab155009df
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/7] thermal: qcom: tsens: Add support for MSM8952
- tsens
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Konrad Dybcio <konradybcio@kernel.org>, Amit Kucheria <amitk@kernel.org>,
- Thara Gopinath <thara.gopinath@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Bjorn Andersson <andersson@kernel.org>,
- Abel Vesa <abelvesa@kernel.org>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
- linux-pm@vger.kernel.org, linux-input@vger.kernel.org
-References: <20261006-msm8952-initial-support-v4-0-ecdcc1ac620c@mainlining.org>
- <20261006-msm8952-initial-support-v4-4-ecdcc1ac620c@mainlining.org>
- <suzsbvsdlfrfsnvaerphqdycaaaiu5inh5uw5wups4jmfozkbt@n4lsb5pfdhbw>
-From: Muzaffer Kadir <muzafferkadir@mainlining.org>
-Content-Language: en-US
-In-Reply-To: <suzsbvsdlfrfsnvaerphqdycaaaiu5inh5uw5wups4jmfozkbt@n4lsb5pfdhbw>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 06 Oct 2026 18:54:46 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Paul Sajna" <sajattack@postmarketos.org>
+Message-ID: <8233c4f988d72cd2cc65897dcf2d9e46639ecffd@postmarketos.org>
+TLS-Required: No
+Subject: Re: [PATCH v2 2/7] leds: aw2013: Rename internal APIs from aw2013 to
+ aw20xx
+To: "Griffin Kroah-Hartman" <griffin@kroah.com>
+Cc: "Lee Jones" <lee@kernel.org>, "Pavel Machek" <pavel@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Nikita Travkin"
+ <nikitos.tr@gmail.com>, "Alexey Min" <alexeymin@minlexx.ru>,
+ linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+In-Reply-To: <179128353952.5667.14752630401954655843.b4-review@b4>
+References: <20261005-aw2013-aw20xx-rename-v2-0-108ecbdf2775@postmarketos.org>
+ <20261005-aw2013-aw20xx-rename-v2-2-108ecbdf2775@postmarketos.org>
+ <179128353952.5667.14752630401954655843.b4-review@b4>
 
-On Tue, 6 Oct 2026 16:19:04 +0300, Dmitry Baryshkov wrote:
-> On Tue, Oct 06, 2026 at 03:15:11PM +0300, Muzaffer Kadir via B4 Relay wrote:
->> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
->>
->> Add support for tsens v1 block that exists on MSM8952
->> with 11 tsens sensors. Sensor Offsets and slope values
->> are taken from downstream.
->>
->> Link: https://android.googlesource.com/kernel/msm.git/+/refs/tags/android-wear-7.0.0_r0.3/drivers/thermal/msm-tsens.c#1621
->> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
->> ---
->>  drivers/thermal/qcom/tsens-v1.c | 44 +++++++++++++++++++++++++++++++++++++++++
->>  drivers/thermal/qcom/tsens.c    |  3 +++
->>  drivers/thermal/qcom/tsens.h    |  2 +-
->>  3 files changed, 48 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/thermal/qcom/tsens-v1.c b/drivers/thermal/qcom/tsens-v1.c
->> index faa5d00788ca..f4201748ea29 100644
->> --- a/drivers/thermal/qcom/tsens-v1.c
->> +++ b/drivers/thermal/qcom/tsens-v1.c
->> @@ -145,6 +145,37 @@ static const struct reg_field tsens_v1_regfields[MAX_REGFIELDS] = {
->>  	[TRDY] = REG_FIELD(TM_TRDY_OFF, 0, 0),
->>  };
->>  
->> +static int __init init_8952(struct tsens_priv *priv)
->> +{
->> +	for (int i = 0; i < priv->num_sensors; ++i)
->> +		priv->sensor[i].slope = 3200;
-> 
-> Where are these values coming from? The driver that you pointed out
-> reads them from the QFPROM (like other tsens platforms do).
+October 6, 2026 at 3:45 AM, "Griffin Kroah-Hartman" <griffin@kroah.com ma=
+ilto:griffin@kroah.com?to=3D%22Griffin%20Kroah-Hartman%22%20%3Cgriffin%40=
+kroah.com%3E > wrote:
 
-Hi Dmitry,
+> I understand the impulse, but the preferred way to handle this situatio=
+n
+> is just to rename the properties unique to your new driver, otherwise
+> this code wouldn't make sense to be in the aw2013.c file anymore :)
+>=20
+>=20Thanks,
+> Griffin
+>=20
+>=20--
+>
 
-Slope is coming from this:
-https://android.googlesource.com/kernel/msm.git/+/refs/tags/android-wear-7.0.0_r0.3/arch/arm/boot/dts/qcom/msm8952.dtsi#550
+Thanks. This is the sort of feedback I was looking for in the RFC, but ne=
+ver got directly.=20
 
-calib_offset values are coming from these:
-https://android.googlesource.com/kernel/msm.git/+/refs/tags/android-wear-7.0.0_r0.3/drivers/thermal/msm-tsens.c#1756
-https://android.googlesource.com/kernel/msm.git/+/refs/tags/android-wear-7.0.0_r0.3/drivers/thermal/msm-tsens.c#1800
-
-Should I drop them?
-
-Best regards,
-Muzaffer Kadir
+I'll=20walk back the renames some more, and look at the fresh batch of Sa=
+shiko nits before sending v3.
