@@ -1,156 +1,191 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CB43E6DC3
-	for <phone-devel@vger.kernel.org>; Fri,  9 Oct 2026 09:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2D4455623
+	for <phone-devel@vger.kernel.org>; Fri,  9 Oct 2026 11:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791539760; cv=none; b=diXPFYkyp33JdmcWvB4BW13nWehV3vRrL0jMOnBye/rOe+21eLW2c3HajbU/IWAY04fZrkZoIEWIFyyY0cdsPM3YRFXaYbAaHcEvw9Xd/Jj5InbPvJdWZz+LyLSCl9CSHw3SMfa5NQkWbG7FQBPhCBStGET2vOe5wiS3MfApUNk=
+	t=1791545117; cv=none; b=uj519CU+Z3KEktnfCSo/pGr+Ylc3JE11PBRCaGpFlAsadl0NUogZPwNsxkfK7leLS5awBuQqMa2zSkv7U677Xf5i1+BL2BiRaK9wU0WZw9V52s7+9PmAXtJkQgdNBoTAUPLigYBmZGu5VuLFu8gbOW91TnZjefC+UY82TCwD9dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791539760; c=relaxed/simple;
-	bh=QbQ2/AtCs501q7UDf1Jv6gkx1pyrMNlfW45xsO5RoQw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=huf3SDTv9Zak00GKid/wnZzJ47a7ZnkGv4/kRwo7rqkPLesRrI1RKxg/HtEzgJTFHAQc31WEECNjrVJypUNafLOR9Y84V8x/zfL/H0GmRSoBvqpKdIN9kujLQCeVN6TzoD5eHGYvzzJM84GhGsFg3yEhkweOKIapZNI/bqX/1+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=iVA3e4/K; arc=none smtp.client-ip=209.85.218.53
+	s=arc-20240116; t=1791545117; c=relaxed/simple;
+	bh=ZXP6OkY2DxkiTYSnHO0CLOwn5hC6SXDi4hWyiPvZAl8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=NxHx06MwNHlISqfXL+o56ZzZnEUrCWbvVIhPUPKjDiC/U2dyhimGZAC3fdUaK5SmTEePyfudbk/FKwVtVVuB4fJGTRY6q+PKkUyfgd1XGbMd18P0QVDVqqFMcWFver6zicw1+lNC4sRfge4SiS0PRl1BuD9q0p1+nTXKSH5fvpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=0C4JTQyS; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="iVA3e4/K"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2acc1e170cso641569266b.1
-        for <phone-devel@vger.kernel.org>; Fri, 09 Oct 2026 02:55:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="0C4JTQyS"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6afbc363efeso7900759a12.3
+        for <phone-devel@vger.kernel.org>; Fri, 09 Oct 2026 04:25:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1791539756; x=1792144556; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=QbQ2/AtCs501q7UDf1Jv6gkx1pyrMNlfW45xsO5RoQw=;
-        b=iVA3e4/KGcNGREd24E+mHwDu/qtLEHh4zil04bmUOmDn4eXHsO8XQiCAMiG48ZlG7D
-         Rq1Pn6XrpKD3B83jjP0umt++aE8uVHDGNU4lB8AQagJs/dlLEmjxo8WopbWKnqbWdeb8
-         lplDKNl+mwSPFIRUaHYqgjs/8fChu78ds73BAvXcQx8nxFCXxIEdZyNrKvPwQcD2SSmy
-         vpNU7piITLvZ9p/3gNLVyaVV3fE/8OiGVoYv+MBWngpFY2TYO3D+hjEhx4L2yCKtDpDK
-         xal1EjPl3V63VoRmsGnghGhbJ7GhCGTGYbSRjE1IV3f7pcjIubV6ZSIDmsw8yrV+aNDr
-         XXVw==
+        d=fairphone.com; s=fair; t=1791545107; x=1792149907; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Qgqhj3Epuh5RclDvybJ2oNFa673B4IjvzwU5Ux/nnZ0=;
+        b=0C4JTQySJ4riCwDj2WkYktX7WkJJRzsyS1lYm+754aFCn1sO1IY9tNFl6EHP8c85Mt
+         fTezYQ55rKxDjHvAZTVAqNJIQhGSer/bTvVs6oksd4Du4xP/LHKvQhGSDT4HHLNyvSzW
+         /Qh0adv3GKsaPQbJojb5l0OwrMOb4aEqhdg88Yf7RLr+3ie8PIT5cXDgDMrbdLyiB5F3
+         N4HRCfw6DgbDhREQihxNcvKZQxARmhDaAqi23KFgJPYNj8Q1xk6S3eUom/duGlqdk6sU
+         0Un08M2mzP6YYwjXcTALrAySZDnRYd3qNU8o7714nxxWMgwfUSW87VDaKz+svH0XjCUM
+         h5xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791539756; x=1792144556;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1791545107; x=1792149907;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QbQ2/AtCs501q7UDf1Jv6gkx1pyrMNlfW45xsO5RoQw=;
-        b=JCETwdqxBMqb5X8f7S/D8irY1i3MXxOYdcWLoOKj4Sf+PAhwNWnXMbVzMB0FwGQsV0
-         uRvzI/G3pILwjZC9+JKLBIysTPHWTeVonUWk8KYNehcKrrNO2ToeCVxwls2CMsy36z3g
-         cVgyI66oOHaIQC5HaaFk2JrtDBQDSwo4OBXWv4FC3IWz9GU3tw1Adhfrf98e1/zdVEzY
-         U0nW+ik04lnReS6usyUzRarx58sU1PmayO2uq2T+JJmfekFuqSo5pXJableNAZT1pzwA
-         xXfSchn8Ggp3RRuW9HTdCNVmUfbwd4JQ/w2oSfgfpbVjiu+2qk9+EmSB8IQV9ffqnZXl
-         n8lQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx5XntIloCYcP+Z1yfA9DQ/4hWxtqBQHnwKIZpDQVlQ6MDD2vJMZSYMo2sx4Map61D5KqPQz6AS8UQv/g==@vger.kernel.org
-X-Gm-Message-State: AFq9FYIGQXlZt2aHbjqFnoEzDzwqtL3d9nn35mlikmfFtHDft/1Gw5jH
-	acspV56352ijVDOD1GkLamY0o+d12zC3vMLo3VbD5AHTghj9ZbJHanvNyzeOptxizWc=
-X-Gm-Gg: AYBFou2dgUHRVywwetqAO6iFgEUFq56chnRItRmas6AJh3VBiN1+A4DuR0pP79SmGkw
-	TtFzpVurBHLuzURJ18YZTQwIFBB7gQE6PAIzVhG6OSyjhsQY8dItOb+nY/BEfwB/pSCb1yb3a21
-	Ly98U9zlhPSDI7+PvcTwz2JmBoQCUcvVac1LGz2rM5Sf5K+Aw/eLbQNS0yOEpJOQ2fcE/2DJViI
-	5utcduvCs88jQO/jcboe1hBMzbRCWSCU6pRlBvEJYxk7C0IGZYV511nd9WFCrtNpb6/crmJVsyD
-	u2Q0bP+f8KtGDOvjF86jJntvjpAibaC4pzbSJ0jJwxYlqAH/GMel+lKQhY/RBgaHPk43JhHuWj/
-	4teOZdoVSN2QmgPOuYqxFOw9KSbNGoXzx7sDg9llJ+PlHkOaQCRgsxo/VZKrLYPhzl7geiAvuLU
-	ZOk+QSjE9fLYFw8/6lF1Ksm6Ma028Rh/0q+7iAfgpYWPBtxulBjpTsvPCyNwZKnhdMx9lmoSzNc
-	XCEcUNzUDYa5PoXfc8CIRy2+F59zSBgJd/kzRteDAY=
-X-Received: by 2002:a17:906:6205:b0:c2e:4292:d27e with SMTP id a640c23a62f3a-c31aa017fb2mr131169466b.22.1791539755796;
-        Fri, 09 Oct 2026 02:55:55 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a9af103csm68942466b.87.2026.10.09.02.55.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Oct 2026 02:55:55 -0700 (PDT)
+        bh=Qgqhj3Epuh5RclDvybJ2oNFa673B4IjvzwU5Ux/nnZ0=;
+        b=T9xxGBkePdvT9MbogjfNqDc3FKrGbppuKIGtI1gElqMMpo35XWtyQwlazCrGtmbKsG
+         /9Ednnk0xBy/Kn4fxbH3+7SxW9zke/NdycEedoZgxu9WVCVVI/wtpm/S1Qf1V6Hm3/n8
+         U47YHp/kH7EitF+pgwe/oPCoTulyEQXXY5QO0Vh19wbmCRzyOrKNLy8Sa8gF0sANtDT4
+         l15N60mZxrDdjekkbjpFaYC1Hn8UgnXj+jgtSMBqNL8wx7iaY5sCyt+dxju653OHo3TB
+         dF7sl807bh06Ifn/J+pril26l2vjbSPl6Y7Mf+/cdhFIyuhBPCIkBGihfWcPwjgzlGqs
+         3+Tw==
+X-Forwarded-Encrypted: i=1; AKwUvByjRzYgs2fvxKKRH3l5Wj7iTyUIjw2FRLhcyrJuZZRFJrSdIuk/dKgotkXINBERLsKionL5Q3XdP7T57g==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJfHsQhc5M3/iubGdG4BRko1cGiQQdqDPLgJudCbP0WfPnULpLo
+	jzvfC08BF7pm2YNtzapptwW2STHDaqHIffAkC33rvmb0wdT43+o0M71ejKLixgh9Wtw=
+X-Gm-Gg: AYBFou2eQYomKpfr7V6GFFYGAEAqMsE1Guyp0w61/4px6GAW4qTA1uZPbq9lVxF6uy4
+	HX3llr3tE5+AqNa6CFyx+TXuKNSjYfr81Pg1vEFYu4Sb9KZiOchhPBpArqGx2WN3FbFgkVh+PRx
+	GdLQzm12MKGFFkKzewQHIVFPzc7P4/3TXtAKncyAPhORnaA4C416dTzecnKFK6bIhbc74Ldg6PR
+	eJIfZ1E9JPMH8DtyYR1C00PM0ykVjGyLm7O9qrvmrGr9q1fbgUPzJT4VRS1sTYyVsHXksxczmPL
+	Vfieml0z5pHQH9QkPrBVuRpVAiYiX2qfEOdkOmxusn+SxotDCEB2IdHGpjCPoIqV0YBwfi/n/46
+	VPJknqiZ5zOIuL4gZwdQPViUPK/oPCXaax6ViFlWVGhp0h9clSW0C2coUV23cfBoiR2LogkKaHN
+	PRvg/3pPnnZdIVDsbsIXj5URhRHc9h7kZLKe3isTdSBbYXZvJD9JVHKsCDb72XdSQx6b9OJlfSj
+	22XxaXy9v8/3aAvqMheZu918x17gCIaYSSraQ==
+X-Received: by 2002:a05:6402:46c5:b0:6aa:9fd4:35fb with SMTP id 4fb4d7f45d1cf-6b17c2a3a96mr1071864a12.8.1791545107423;
+        Fri, 09 Oct 2026 04:25:07 -0700 (PDT)
+Received: from [172.16.220.101] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b179dd3597sm985764a12.14.2026.10.09.04.25.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 04:25:06 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 09 Oct 2026 13:25:00 +0200
+Subject: [PATCH v4 1/4] dt-bindings: display: panel: Add Novatek NT37705
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Oct 2026 11:55:54 +0200
-Message-Id: <DM07U9H4GK87.1NU4DXWEDZKAM@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-sound@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH RFC 0/2] Correctly use TX macro v9.4 for SC7280 / Kodiak
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Srinivas Kandagatla" <srini@kernel.org>, "Luca Weiss"
- <luca.weiss@fairphone.com>, "Liam Girdwood" <lgirdwood@gmail.com>, "Mark
- Brown" <broonie@kernel.org>, "Jaroslav Kysela" <perex@perex.cz>, "Takashi
- Iwai" <tiwai@suse.com>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
- Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
- <conor+dt@kernel.org>, <cros-qcom-dts-watchers@chromium.org>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3-dirty
-References: <20260526-sc7280-tx-macro-v1-0-1aad6900fec0@fairphone.com>
- <96294c65-171e-48e4-9938-9f321b4c5e6c@kernel.org>
-In-Reply-To: <96294c65-171e-48e4-9938-9f321b4c5e6c@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261009-fp6-panel-v4-1-7c3819664778@fairphone.com>
+References: <20261009-fp6-panel-v4-0-7c3819664778@fairphone.com>
+In-Reply-To: <20261009-fp6-panel-v4-0-7c3819664778@fairphone.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791545105; l=2354;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=ZXP6OkY2DxkiTYSnHO0CLOwn5hC6SXDi4hWyiPvZAl8=;
+ b=C+M4NZ57qJgderrEKqwE1gICaP8nnZl/AfQkRQF9zw8yx5PfCq072o6iLhRO4Gg79d2Ci7KPe
+ Wg1nfHk6yJXCzznwRDm1eNVnS3IC+4sMqtW8RAqWHzth9V7ZH1s9DQc
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Hi Srini,
+Novatek NT37705 is a display driver IC used to drive AMOLED DSI panels.
 
-On Fri Sep 18, 2026 at 10:34 PM CEST, Srinivas Kandagatla wrote:
->
->
-> On 5/26/26 4:29 PM, Luca Weiss wrote:
->> As a bit of a note where I'm coming from, I'm working on microphone
->> bringup for qcm6490-fairphone-fp5 where so far we've been using
->> qcom,sm8450-lpass-tx-macro to get the correct control names. I've tried
->> reverting to sc7280-lpass-tx-macro, updating audio-routing in dts and
->> UCM to the v9.0 names and it does seem that microphone (AMIC1) is
->> working with that, but I'm not particularly happy about leaving the
->> wrong control names everywhere, so I'm happy to try and untangle this
->> situation.
-> Are you referring to the enum values that go into "TX SMIC MUX" mixer
-> control?
+Describe it and the panel in the Fairphone (Gen. 6) (BJ631JHM-T71-D900
+from BOE) using it.
 
-Yep.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/81a3c207-4d8f-490f-8e2a-6f3f4c2acd35@kernel.org/
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ .../bindings/display/panel/novatek,nt37705.yaml    | 71 ++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
->
-> if this is the problem, i think we could use values instead of enum in
-> your setup. They do endup in the same register.
+diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml
+new file mode 100644
+index 000000000000..850d91e25af5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/novatek,nt37705.yaml
+@@ -0,0 +1,71 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/novatek,nt37705.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Novatek NT37705-based DSI display panels
++
++maintainers:
++  - Luca Weiss <luca.weiss@fairphone.com>
++
++description:
++  The Novatek NT37705 is a generic DSI Panel IC used to control AMOLED panels.
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    const: boe,bj631jhm-t71-d900
++
++  reg:
++    maxItems: 1
++
++  vddio-supply:
++    description: I/O voltage rail
++
++  dvdd-supply:
++    description: Digital voltage rail
++
++  vci-supply:
++    description: Analog voltage rail
++
++required:
++  - compatible
++  - reg
++  - reset-gpios
++  - vddio-supply
++  - dvdd-supply
++  - vci-supply
++  - port
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "boe,bj631jhm-t71-d900";
++            reg = <0>;
++
++            reset-gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
++
++            vci-supply = <&vreg_l19b>;
++            vddio-supply = <&vreg_l9b>;
++            dvdd-supply = <&vreg_oled_dvdd_1p2>;
++
++            port {
++                panel_in_0: endpoint {
++                    remote-endpoint = <&dsi0_out>;
++                };
++            };
++        };
++    };
++
++...
 
-I mean technically we can also use the incorrect v9 names in dts & UCM,
-and they resolve to the same register values in the end.
-
-> However I do acknowledge the issue.
->
-> pl let me know your thoughts.
-
-My preferred solution would be cleaning this up completely, as in change
-to v9.2 and update dts and upstream UCM configs to the 'correct' values.
-
-I do understand that this will likely not be accepted due to
-backwards/forwards compatibility issues that kernel people want to avoid.
-
-The most straightforward path I see is add a new compatible which uses
-&lpass_ver_9_2 and can be used by boards that have been added before,
-while new boards can use the new compatible.
-This is suggestion (2) in my original email.
-
->
->>=20
->> I'm also not sure where this v9.x actually comes from, maybe I'm lacking
->> some documentation, downstream kernel only refers to Bolero v1.x and
->> v2.x so these seems to be a completely different versioning system.
-> Am not sure how we ended up using lpass versions instead of codec
-> version in tx, this is a redundant to codec version. I want to clean
-> that up at somepoint.
-
-I don't understand this whole versioning anyways because there's afaik
-no public reference what SoC has which versions, feels quite arbitrary
-to me.
-
-If you have some internal references and can sort this out, that'd be
-appreciated.
-
-Regards
-Luca
-
->
-> --srini
->
->>=20
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-
+-- 
+2.56.0
 
