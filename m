@@ -1,187 +1,846 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B83B27E3
-	for <phone-devel@vger.kernel.org>; Tue, 13 Oct 2026 10:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BD63D969D
+	for <phone-devel@vger.kernel.org>; Tue, 13 Oct 2026 13:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791886632; cv=none; b=rh089f/FVXbjD2nMPGFdSl0nQvZ92hO0o1GobvrVQf898ndx0fYggZXhOJbUqT9T9QkZLgwMb4WiVhPCEwaphMsPM2WiOGal9mAKAgGWJhvhpgLkYbisnR0xP3qq8/Q5UvONvZ1+kgNouKrWh+mM2ION444E9BVJ8iEtDCi1u04=
+	t=1791899911; cv=none; b=hiA13HXtmD1i2F8o82EbbLt5jbTDmck+q9nIjQ4QK7ap6FzjOmjLvLsLE6TEmoCTBKflGzLqtqW9qQsWfWqDsp9JWejfn/dEdLDOOtLldJIuTPrpEU8lhGRDW6Rh9GiCMvhjZjZEYHLA9xNva2sVdo8GCmC+XtrlRxarAd/NMCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791886632; c=relaxed/simple;
-	bh=HgfOYVUmqK15tK1qAZjGuLmszhgYJK9TaV4k+O5nopQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=W0Pk/QQ+YYu1Cpuf4kymUAxVoYCiw9++UXdStQzh0Femm80MVYYNTjcn2rrddEo7YUhakpD1pGZ6sRjl6C2UN+uRx6LNw+5RtY8x+hw8uBQWBMU4dk5Tz3IbIT5gT1aR48ydduOCsZTwWIpJzLxa9ReUwZNOOFH376jLWYvJI/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=uAdGDiEk; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1791899911; c=relaxed/simple;
+	bh=A6EgwcAPrkgd0TNYm4jKiRww+TmpIMKuOrZPLhmy5As=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JqnDO3fE1vmx1kx8wg90wQUqKo6xLMScU12GiBjR/hQBxBtba5tDQAKSOPhQhIicfz19tlroxPb8nHFAddMrTju/oudPJRLGszVzpLEA5h6ZdfW1OruWFZSadQ2K+VgJLUpI0sUcJkcD0Y4D07KtBCHjhC72xDNls2fSlc1AhNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLw68mxU; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="uAdGDiEk"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6ac76a02368so2561750a12.2
-        for <phone-devel@vger.kernel.org>; Tue, 13 Oct 2026 03:17:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLw68mxU"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-486e8faff03so1311146f8f.1
+        for <phone-devel@vger.kernel.org>; Tue, 13 Oct 2026 06:58:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1791886626; x=1792491426; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=q1nANBNsyQWXnn8HGzdSfGCDeYeCmohBuEkqclHHM04=;
-        b=uAdGDiEkXuKLYoaaVIT8Xsf73y7curREzVjaWEX6gSY2Assgsa2+Ro3Zc6A09Yna8T
-         j39I9MRjdKbuxOdSHC7sbvc4MU8mSdgjjOfhVGOpOpAchvjDMWRpPOlPQXK5mH4iXpJr
-         g8VMtp4ix3EtRELtIRPMklg/7UfyQY0TWqSmcgvAb3giEuYQihxz42DD4OVJbIFzWMtF
-         h+8rTrYYWCKKKJozBmDgVG/b1F9FJw9+x1/+ZTAk3vGO5fgLsfY5zyM+YHFeyHaV+0Hd
-         yzaN9y8xc+H+CUgKsxpSdyF8o0OfN12iQvD0hQ7OLVNSeaGA2P7Z4QFOMYL29HvmzqJq
-         EMnw==
+        d=gmail.com; s=20251104; t=1791899908; x=1792504708; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7facGHJY8nCIDmNABw6w2tDnLOcmNe/kQzSYMmWr2NI=;
+        b=FLw68mxUeb6RLm4b3BKPWzUKz/xc85YQqMZRNx9S2a0PHlHJ8vxaoSZz2MDdMzesbO
+         IvebL9uzH4IxQ/GJXD4fEPRSrZfM7Xl6K/aqkIkVScyGXdsRVs5i6ToGpn5iiwNTo7y6
+         t7cfYk/7ok4CyrAanJ3tgWa5nqsvICKQAfUtz0Bio6ENfR+skA0enThah7yKIAC71gpE
+         9bATpVXIqV3I3z3RwJB2SlHsr7erm2b9wQb1SkFqJOKJQcf0lSqFvHDI8KXZM84/RMyM
+         t2Jnd/Q4srtvE+FAIQvQeInH9CnvJSi0H/a2iVFSans5dNhDfqVA2Als9obLyzmOHkcw
+         b/3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791886626; x=1792491426;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q1nANBNsyQWXnn8HGzdSfGCDeYeCmohBuEkqclHHM04=;
-        b=otuftL/hCXwdqJZOSLMm0aJb8PEQ+7fSJUAMSRs4pfnldABXHy168xCxHOy+s/pKdY
-         PlfO7UOvHAdjpDPkhOwrSpHqztDA+ywnbYNbEDF41lTcENh/xDdy52xqFDW/Wjo/Nkd2
-         istMvRb5rlj4j1hDankTQnLZ4SwoDPjzEWO30iI3r4LT1MMG8B6S8IV1hQ7310/AMtXL
-         xcBMh71jT2nnnqRULpmE+7y6JtpkeDk/n/WbovxIWYS8I6FpvY6/3gxUvz2QFLm9j0K9
-         0FhAucd22IzWxizF/2Fku/rvNj90wMyee3nhVmQr/HDgrSccQU9I1yHpKCPsex4SsrFH
-         hyjw==
-X-Forwarded-Encrypted: i=1; AKwUvBzt03mkGQsUxy92/lWwNSMvSN+ctFWojLLZpNOfKaI6yjK6NYYFt4NuspyATuqklvAIc/2e0jhKx4Eziw==@vger.kernel.org
-X-Gm-Message-State: AFq9FYL77yaoxTW+x9EpOK6AW7nEzvfYZtqGOCQ3u6V5OwLEwzGj2DKP
-	9uONHxC4I3FIEbzYMZ0zhMyirU/e9mVU7JmQapyWH2XaOUP6Gw/3IPjeZ+Rk0IFV3KA=
-X-Gm-Gg: AYBFou3sL/lgBOmlgzuY2ef6E1wrXgFqK2aDrScTkuISX+DY8q8JQy5z7MAJ/wlRopz
-	uhtbPrgB5vLjgedPQwZevThbnML/G4vfuFIdF7vVCC5WPlMdiXqCyy6ju5s26ve/t6BDY4ug+Y/
-	ciFEWyTsk+1x61hwQ3dMmsut3q9bQk6AhNE7y9f/2RNPjZQCCbRQTk2Ulxk/dvs2Niga5/lFRIv
-	Hs+e88ReoQMtwBqWPkQ1OiM+pDLziDMMMNR5G9LuIW4uwB/K3puBThBxTVqSk5GiNXycln4O+QN
-	QYzoZjBkh+MSdztQXi0RPss166fEv+NYvJmav4JbGg08V9iNrQVoDfMurirumjYPoui+/Lb06YO
-	A6gdfFj8JmS9UKoRQxqRb8BsKuIsrmrJN6VxxTQWSm/TDDrHHUv/WWp6no/MUlFogZiIN8fXyGw
-	bjS/hZf26LpXMgE/BdPKCmcoaRT8FcrdQzldMr9H/LteGopAgXGtEXisk00qiVFe4Gc8kj7VoSo
-	NaWaa++9vYVQBoQe0T8IVKbVhA9TyMQ/ZH/aUfCkrnqevpc6Bxodw==
-X-Received: by 2002:a05:6402:254c:b0:6b1:b9df:6001 with SMTP id 4fb4d7f45d1cf-6b1b9df64e8mr5421183a12.6.1791886626364;
-        Tue, 13 Oct 2026 03:17:06 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b179e012a7sm6018180a12.36.2026.10.13.03.17.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 03:17:05 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791899908; x=1792504708;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=7facGHJY8nCIDmNABw6w2tDnLOcmNe/kQzSYMmWr2NI=;
+        b=CO9tVN23pIfJQsxCTlw/dTXHiVTCyCEFpgc+iWtrTEVZXCejyFC74rrcHVh8JkDGrf
+         Vi9gx6K7cHBffZeC62X0J4X+OFmt+o0kfBXxAxl5daGrNHWjkJe9pTRonH2EaWWoZ3s5
+         AP8kMFAQrERYvijmYwjKosCesALbbtxENqSzbO5eksNUULV6q7BThFY7chTQqCtv+fyI
+         vnakCn6K/W8ENalsHmq7Z0oeabyjuKjHLhb4MQUCRY/6XyEwutkCuVuJWh42/oKTP0zY
+         BV9BrAXWlZXgF+vehQR+TDkndo+1211qHWM5In1oR70+hYdZNdt4/n6StUeRi7KFMrx9
+         3+NQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy54D4z4WRqYD8gS/qwfLk4AxwXIcJyBlWLJY+EMPqzqAHBhdQLog4H3uZXiooEAOcaw3Qk7dYlnpPrYA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIOUTGpOZqmmYjAAHfqA7/PxSx4LYijCVVkYQhsMP5VpRaayK0T
+	NXbfYLohkahfezLp8h2q/26r6NJPCEIzys+ucsprbKDvH/Byjwr35TVZ
+X-Gm-Gg: AYBFou1zqV3lxnFRj+9++9N55USNW/xXTdB62eK9Wh44K4o6k9dfMqoD1PaYVU8y19C
+	xtHNlqIuR/9QVmrxrkWnP3eeWflgIw9tRUVb6HbujlYZv6C672FFmzwzIe5zjniEdV8LPtfjmrt
+	2nk75QYhn51VTzcKOEa1tJ9jF/o6LjbLojY117mddUiEp4YNfek1s2rogY3NMDv2/dxKOezwB3y
+	IqphXu4rVmvlCND0JorUrsJnVx3YdrojNolSlbsj+gjox1aK22bn2YZwvw0bltzvaSRVBwAvBT7
+	8zxt4FHhWm3SE4FKrHWDOk/IJnngoTJO3R0g27Z2VA/6ruyW3JkMp/BUtz9xBfm+WWkjwzn/XMG
+	oKenT1H9IzHks3fuWzNvjeT4speslfzs3bNFf3xgIs4xiioGpmHWgVCJFOxvTCc2McCJBsqOl7/
+	Wt6+7Jj3zTSc/o+b7pYwYvIlvLOB6BnCRjNjCkmvFKPv3ugRcsTdtM18ei+1nKBTlYWgkFKRSPd
+	5Txjxt/Rw==
+X-Received: by 2002:a05:6000:22c2:b0:48b:1a0:5630 with SMTP id ffacd0b85a97d-48dbacf3275mr23042807f8f.41.1791899907529;
+        Tue, 13 Oct 2026 06:58:27 -0700 (PDT)
+Received: from crispy-cucumber.local ([79.133.247.80])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaaa05sm4753360f8f.13.2026.10.13.06.58.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 06:58:27 -0700 (PDT)
+From: Erikas Bitovtas <xerikasxx@gmail.com>
+Date: Tue, 13 Oct 2026 16:58:20 +0300
+Subject: [PATCH v4] arm64: dts: qcom: sm7125-samsung: add initial device
+ tree
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 13 Oct 2026 12:17:05 +0200
-Message-Id: <DM3MSNLF42BV.1UV490PXB0C07@fairphone.com>
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: Add Samsung Galaxy Book2 Go
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Luca Weiss"
- <luca.weiss@fairphone.com>, "Douglas Anderson" <dianders@chromium.org>,
- "Neil Armstrong" <neil.armstrong@linaro.org>, "Jessica Zhang"
- <jesszhan0024@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, <cros-qcom-dts-watchers@chromium.org>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>, "Jasper
- Korten" <jja2000@gmail.com>, "Federico Amedeo Izzo" <federico@izzo.pro>,
- "Luca Weiss" <luca@lucaweiss.eu>, "Hans de Goede"
- <johannes.goede@oss.qualcomm.com>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3-dirty
-References: <20261012-book2go-v1-0-7188e7ea7a15@fairphone.com>
- <20261012-book2go-v1-3-7188e7ea7a15@fairphone.com>
- <fb634f17-de56-4f43-b139-3d040a35f019@oss.qualcomm.com>
-In-Reply-To: <fb634f17-de56-4f43-b139-3d040a35f019@oss.qualcomm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261013-sm7125-samsung-v4-1-3233901b48bb@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XPQQ6DIBCF4asY1qUZQMR21Xs0XQiOSlO1ESVtj
+ Hcv6qJGly+Z7yeMxGFn0ZFrNJIOvXW2bcKITxExVdaUSG0eNuHAE0i4oq5WjEvqstoNTUl1kso
+ 81ReTx0ACendY2M8SvD/W7Qb9RNPPlfmisq5vu+/yomfz3RpXIPZxzyhQgbJQkkOcGnYr68y+z
+ qatyRz3fMvlgfPAc6GZApBotNhz8ecpHL7mReCZASYuKE3C+JZP0/QD6vDDHjwBAAA=
+X-Change-ID: 20260627-sm7125-samsung-b685d8b9cd40
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Stefan Hansson <newbyte@postmarketos.org>, 
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>, Erikas Bitovtas <xerikasxx@gmail.com>, 
+ Abel Vesa <abelvesa@kernel.org>
+X-Mailer: b4 0.15.2
 
-On Tue Oct 13, 2026 at 12:10 PM CEST, Konrad Dybcio wrote:
-> On 10/12/26 8:11 PM, Luca Weiss wrote:
->> From: Jasper Korten <jja2000@gmail.com>
->
-> [...]
->
->> Signed-off-by: Jasper Korten <jja2000@gmail.com>
->> Co-developed-by: Federico Amedeo Izzo <federico@izzo.pro>
->> Signed-off-by: Federico Amedeo Izzo <federico@izzo.pro>
->> Co-developed-by: Luca Weiss <luca@lucaweiss.eu>
->> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
->> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->
-> Good to see the Lucas are in agreement ;)
+Samsung Galaxy A52/A72 are devices released on atoll (SM7125) platform
+in 2021. Add initial device tree for SM7125 Samsung platform with
+support for:
+- Framebuffer
+- GPIO keys
+- Hall sensor
+- Vibrator
+- Regulators
+- Reset input
+- Real-time clock
+- SD card
+- Grip sensor
+- UFS
+- USB
 
-:)
+Tested-by: Stefan Hansson <newbyte@postmarketos.org>
+Signed-off-by: Erikas Bitovtas <xerikasxx@gmail.com>
+---
+Samsung Galaxy A52/A72 are smartphones released in 2021 on SM7125
+(atoll) platform. This patch series introduces support for SM7125
+Samsung devices with the following components enabled:
+- Framebuffer
+- GPIO keys
+- Hall sensor
+- Vibrator
+- Regulators
+- Reset input
+- Real-time clock
+- SD card
+- UFS
+- USB
+Along with that, SM7125 was affected by a hang when launching SHM
+bridge. A similar issue was reported on a similar chipset:
+https://lore.kernel.org/all/20250721-sc7180-shm-hang-v1-1-99ad9ffeb5b4@trvn.ru/
+Add SM7125 to the qcom_tzmem_blacklist to avoid hangs when booting.
+---
+Changes in v4:
+- Dropped patches which were already merged.
+- Added the Semtech SX9360 grip sensor. Unlike the rest of sensors which
+  are behind SLPI, this is sensor is bit-banged over 51 (SDA) and 52
+  (SCL) GPIOs.
+- Because of a new sensor added to device tree which may require
+  additional review, dropped the Reviewed-By: tags added by David and
+  Konrad.
+- Link to v3: https://patch.msgid.link/20260807-sm7125-samsung-v3-0-ac0139e5c612@gmail.com
 
->
-> [...]
->
->> +&pm8350c_gpios {
->> +	pmic_lcd_bl_en: pmic-lcd-bl-en-state {
->> +		pins =3D "gpio7";
->> +		function =3D "normal";
->> +		bias-disable;
->> +		qcom,drive-strength =3D <PMIC_GPIO_STRENGTH_LOW>;
->> +		output-low;
->> +		power-source =3D <0>;
->> +	};
->> +
->> +	pmic_lcd_bl_pwm: pmic-lcd-bl-pwm-state {
->> +		pins =3D "gpio8";
->> +		function =3D "func1";
->> +		bias-disable;
->> +		qcom,drive-strength =3D <PMIC_GPIO_STRENGTH_LOW>;
->> +		output-low;
->> +		power-source =3D <0>;
->> +	};
->
-> Drop the output-low, the consumers already take care of the state
+Changes in v3:
+- Updated copyright information.
+- Added tags given in v2.
+- Link to v2: https://patch.msgid.link/20260705-sm7125-samsung-v2-0-d3b17005ecb3@gmail.com
 
-For both enable and pwm?
+Changes in v2:
+- Renamed regulator nodes to satisfy dtbs_check.
+- Renamed pin configurations for SD card to satisfy dtbs_check.
+- Moved rmtfs_mem to the common dtsi, shifted addresses 0x1000 to the
+  left and added "qcom,use-guard-pages".
+- Converted decimal 0 to hex 0x0 where applicable.
+- Pinctrl names are now listed after pinctrl themselves.
+- Renamed vol-up to button-vol-up to satisfy dtbs_check.
+- Framebuffer uses cont_splash_mem instead of retyping reg.
+- Removed pinctrl-names from vibrator.
+- Added a blank line at the top to the comment for &pm6150_pon
+- Added a comment explaining what the reserved gpio ranges are.
+- Added a blank line before "status = "okay"" where applicable.
+- Link to v1: https://patch.msgid.link/20260703-sm7125-samsung-v1-0-3e5f752048c1@gmail.com
 
->
-> [...]
->
->> +&uart7 {
->> +	/delete-property/interrupts;
->
-> Let's add a space after the '/'
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Bartosz Golaszewski <brgl@kernel.org>
+To: Kees Cook <kees@kernel.org>
+To: Tony Luck <tony.luck@intel.com>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: Abel Vesa <abelvesa@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/arm64/boot/dts/qcom/Makefile                  |   2 +
+ arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts   |  20 +
+ arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts   |  20 +
+ .../arm64/boot/dts/qcom/sm7125-samsung-common.dtsi | 589 +++++++++++++++++++++
+ 4 files changed, 631 insertions(+)
 
-Will do
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index 88230c4e00ea..b0403077f867 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -394,6 +394,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-xiaomi-laurel-sprout.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-xiaomi-willow.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm6350-sony-xperia-lena-pdx213.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm6375-sony-xperia-murray-pdx225.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-samsung-a52q.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-samsung-a72q.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-curtana.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-joyeuse.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm7225-fairphone-fp4.dtb
+diff --git a/arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts b/arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts
+new file mode 100644
+index 000000000000..ecba5be8164e
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * SM7125 Samsung Galaxy A52 (a52q) specific device tree source
++ *
++ * Copyright (c) 2026, Erikas Bitovtas. All rights reserved.
++ */
++
++/dts-v1/;
++
++#include "sm7125-samsung-common.dtsi"
++
++/ {
++	model = "Samsung Galaxy A52";
++	compatible = "samsung,a52q", "qcom,sm7125";
++	qcom,board-id = <0x22 0x6>;
++};
++
++&rmtfs_mem {
++	reg = <0x0 0xf4f00000 0x0 0x202000>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts b/arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts
+new file mode 100644
+index 000000000000..f18d03de1585
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * SM7125 Samsung Galaxy A72 (a72q) specific device tree source
++ *
++ * Copyright (c) 2026, Erikas Bitovtas. All rights reserved.
++ */
++
++/dts-v1/;
++
++#include "sm7125-samsung-common.dtsi"
++
++/ {
++	model = "Samsung Galaxy A72";
++	compatible = "samsung,a72q", "qcom,sm7125";
++	qcom,board-id = <0x22 0x5>;
++};
++
++&rmtfs_mem {
++	reg = <0x0 0xf3700000 0x0 0x202000>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/sm7125-samsung-common.dtsi b/arch/arm64/boot/dts/qcom/sm7125-samsung-common.dtsi
+new file mode 100644
+index 000000000000..7c5d062bd080
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sm7125-samsung-common.dtsi
+@@ -0,0 +1,589 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * SM7125 Samsung common device tree source
++ *
++ * Copyright (c) 2026, Erikas Bitovtas. All rights reserved.
++ */
++
++#include <dt-bindings/arm/qcom,ids.h>
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
++#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
++#include "sm7125.dtsi"
++#include "pm6150.dtsi"
++#include "pm6150l.dtsi"
++
++/delete-node/ &rmtfs_mem;
++/delete-node/ &ipa_fw_mem;
++/delete-node/ &tz_mem;
++
++/ {
++	chassis-type = "handset";
++
++	qcom,msm-id = <QCOM_ID_SM7125 0x0>;
++
++	aliases {
++		i2c17 = &i2c_17;
++	};
++
++	chosen {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		framebuffer@9c000000 {
++			compatible = "simple-framebuffer";
++			memory-region = <&cont_splash_mem>;
++			width = <1080>;
++			height = <2400>;
++			stride = <(1080 * 4)>;
++			format = "a8r8g8b8";
++			clocks = <&gcc GCC_DISP_HF_AXI_CLK>;
++		};
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		pinctrl-0 = <&key_vol_up_default>, <&hall_sensor_default>;
++		pinctrl-names = "default";
++
++		button-vol-up {
++			label = "Volume Up";
++			gpios = <&pm6150l_gpios 8 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_VOLUMEUP>;
++			debounce-interval = <15>;
++		};
++
++		event-hall-sensor {
++			label = "Hall Effect Sensor";
++			gpios = <&pm6150_gpios 10 GPIO_ACTIVE_LOW>;
++			linux,input-type = <EV_SW>;
++			linux,code = <SW_LID>;
++			debounce-interval = <15>;
++		};
++	};
++
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		tz_mem: memory@80b00000 {
++			reg = <0x0 0x80b00000 0x0 0x7100000>;
++			no-map;
++		};
++
++		mpss_mem: memory@8b000000 {
++			reg = <0x0 0x8b000000 0x0 0x8900000>;
++			no-map;
++		};
++
++		wlan_mem: memory@93900000 {
++			reg = <0x0 0x93900000 0x0 0x200000>;
++			no-map;
++		};
++
++		ipa_fw_mem: memory@93b00000 {
++			reg = <0x0 0x93b00000 0x0 0x10000>;
++			no-map;
++		};
++
++		ipa_gsi_region: memory@93b10000 {
++			reg = <0x0 0x93b10000 0x0 0x5000>;
++			no-map;
++		};
++
++		gpu_mem: memory@93b15000 {
++			reg = <0x0 0x93b15000 0x0 0x2000>;
++			no-map;
++		};
++
++		adsp_mem: memory@93c00000 {
++			reg = <0x0 0x93c00000 0x0 0x3e00000>;
++			no-map;
++		};
++
++		camera_region: memory@97a00000 {
++			reg = <0x0 0x97a00000 0x0 0x500000>;
++			no-map;
++		};
++
++		pil_npu_region: memory@97f00000 {
++			reg = <0x0 0x97f00000 0x0 0x500000>;
++			no-map;
++		};
++
++		venus_mem: memory@98400000 {
++			reg = <0x0 0x98400000 0x0 0x500000>;
++			no-map;
++		};
++
++		cdsp_mem: memory@98900000 {
++			reg = <0x0 0x98900000 0x0 0x1e00000>;
++			no-map;
++		};
++
++		cont_splash_mem: memory@9c000000 {
++			reg = <0x0 0x9c000000 0x0 (1080 * 2400 * 4)>;
++			no-map;
++		};
++
++		qseecom_region: memory@9e000000 {
++			reg = <0x0 0x9e000000 0x0 0x2000000>;
++			no-map;
++		};
++
++		pstore_mem: ramoops@b4600000 {
++			compatible = "ramoops";
++			reg = <0x0 0xb4600000 0x0 0x100000>;
++			record-size = <0x40000>;
++			console-size = <0x40000>;
++			ftrace-size = <0x40000>;
++			pmsg-size = <0x40000>;
++		};
++
++		rmtfs_mem: memory {
++			compatible = "qcom,rmtfs-mem";
++			qcom,use-guard-pages;
++			no-map;
++
++			qcom,client-id = <1>;
++			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
++		};
++	};
++
++	vibrator {
++		compatible = "gpio-vibrator";
++		enable-gpios = <&tlmm 57 GPIO_ACTIVE_HIGH>;
++	};
++};
++
++&apps_rsc {
++	regulators-0 {
++		compatible = "qcom,pm6150-rpmh-regulators";
++		qcom,pmic-id = "a";
++
++		vreg_s1a_1p1: smps1 {
++			regulator-min-microvolt = <1128000>;
++			regulator-max-microvolt = <1128000>;
++		};
++
++		vreg_s4a_1p0: smps4 {
++			regulator-min-microvolt = <824000>;
++			regulator-max-microvolt = <1120000>;
++		};
++
++		vreg_s5a_2p0: smps5 {
++			regulator-min-microvolt = <1744000>;
++			regulator-max-microvolt = <2040000>;
++		};
++
++		vreg_l1a_1p2: ldo1 {
++			regulator-min-microvolt = <1178000>;
++			regulator-max-microvolt = <1256000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l2a_1p0: ldo2 {
++			regulator-min-microvolt = <944000>;
++			regulator-max-microvolt = <1056000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l3a_1p0: ldo3 {
++			regulator-min-microvolt = <968000>;
++			regulator-max-microvolt = <1064000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l4a_0p9: ldo4 {
++			regulator-min-microvolt = <824000>;
++			regulator-max-microvolt = <928000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l5a_2p7: ldo5 {
++			regulator-min-microvolt = <3304000>;
++			regulator-max-microvolt = <3304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l6a_0p6: ldo6 {
++			regulator-min-microvolt = <568000>;
++			regulator-max-microvolt = <648000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vdd_cx_wlan:
++		vreg_l9a_0p8: ldo9 {
++			regulator-min-microvolt = <488000>;
++			regulator-max-microvolt = <800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l10a_1p8: ldo10 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1832000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l11a_1p8: ldo11 {
++			regulator-min-microvolt = <1696000>;
++			regulator-max-microvolt = <1904000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l12a_1p8: ldo12 {
++			regulator-min-microvolt = <1696000>;
++			regulator-max-microvolt = <1952000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l13a_1p8: ldo13 {
++			regulator-min-microvolt = <1696000>;
++			regulator-max-microvolt = <1904000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l14a_1p8: ldo14 {
++			regulator-min-microvolt = <1728000>;
++			regulator-max-microvolt = <1832000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l15a_1p8: ldo15 {
++			regulator-min-microvolt = <1696000>;
++			regulator-max-microvolt = <1904000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l16a_2p7: ldo16 {
++			regulator-min-microvolt = <2496000>;
++			regulator-max-microvolt = <3304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l17a_3p1: ldo17 {
++			regulator-min-microvolt = <2920000>;
++			regulator-max-microvolt = <3232000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l18a_3p0: ldo18 {
++			regulator-min-microvolt = <2496000>;
++			regulator-max-microvolt = <3304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l19a_2p85: ldo19 {
++			regulator-min-microvolt = <2696000>;
++			regulator-max-microvolt = <3304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++	};
++
++	regulators-1 {
++		compatible = "qcom,pm6150l-rpmh-regulators";
++		qcom,pmic-id = "c";
++
++		vreg_s8c_1p3: smps8 {
++			regulator-min-microvolt = <1120000>;
++			regulator-max-microvolt = <1408000>;
++		};
++
++		vreg_l1c_1p8: ldo1 {
++			regulator-min-microvolt = <1616000>;
++			regulator-max-microvolt = <1984000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l2c_1p3: ldo2 {
++			regulator-min-microvolt = <1168000>;
++			regulator-max-microvolt = <1304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l3c_1p2: ldo3 {
++			regulator-min-microvolt = <1144000>;
++			regulator-max-microvolt = <1304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++
++		vreg_l4c_1p8: ldo4 {
++			regulator-min-microvolt = <1648000>;
++			regulator-max-microvolt = <3304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l5c_1p8: ldo5 {
++			regulator-min-microvolt = <1648000>;
++			regulator-max-microvolt = <3304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l6c_3p0: ldo6 {
++			regulator-min-microvolt = <1648000>;
++			regulator-max-microvolt = <3304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l7c_3p0: ldo7 {
++			regulator-min-microvolt = <3000000>;
++			regulator-max-microvolt = <3000000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l8c_1p8: ldo8 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l9c_2p95: ldo9 {
++			regulator-min-microvolt = <2952000>;
++			regulator-max-microvolt = <3304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l10c_3p3: ldo10 {
++			regulator-min-microvolt = <3000000>;
++			regulator-max-microvolt = <3400000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l11c_3p3: ldo11 {
++			regulator-min-microvolt = <3000000>;
++			regulator-max-microvolt = <3400000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_bob: bob {
++			regulator-min-microvolt = <3008000>;
++			regulator-max-microvolt = <3960000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_AUTO>;
++		};
++	};
++};
++
++&dispcc {
++	/* HACK: disable until a panel driver is ready to retain simplefb */
++	status = "disabled";
++};
++
++&pm6150l_gpios {
++	grip_sensor_int_default: grip-sensor-int-default-state {
++		pins = "gpio5";
++		function = "normal";
++		power-source = <0>;
++		input-enable;
++		bias-disable;
++	};
++
++	key_vol_up_default: key-vol-up-default-state {
++		pins = "gpio8";
++		function = "normal";
++		input-enable;
++		bias-pull-up;
++		power-source = <0>;
++	};
++};
++
++&pm6150_gpios {
++	hall_sensor_default: hall-sensor-default-state {
++		pins = "gpio10";
++		function = "normal";
++		output-disable;
++		bias-disable;
++		power-source = <0>;
++	};
++};
++
++&pm6150_pon {
++	/*
++	 * LinuxLoader fastboot implementation has most of its commands removed
++	 * by Samsung, making it useless. So reboot to Odin download mode instead.
++	 */
++	mode-bootloader = <0x15>;
++};
++
++&pm6150_resin {
++	linux,code = <KEY_VOLUMEDOWN>;
++
++	status = "okay";
++};
++
++&pm6150_rtc {
++	status = "okay";
++};
++
++&qfprom {
++	vcc-supply = <&vreg_l11a_1p8>;
++};
++
++&sdhc_2 {
++	vmmc-supply = <&vreg_l9c_2p95>;
++	vqmmc-supply = <&vreg_l6c_3p0>;
++	cd-gpios = <&tlmm 69 GPIO_ACTIVE_LOW>;
++	pinctrl-0 = <&sdc2_on>;
++	pinctrl-1 = <&sdc2_off>;
++	pinctrl-names = "default", "sleep";
++
++	status = "okay";
++};
++
++&soc {
++	i2c_17: i2c-17 {
++		compatible = "i2c-gpio";
++		sda-gpios = <&tlmm 51 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
++		scl-gpios = <&tlmm 52 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
++
++		i2c-gpio,delay-us = <2>;
++
++		pinctrl-0 = <&grip_sensor_i2c_default>;
++		pinctrl-names = "default";
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		grip-sensor@28 {
++			compatible = "semtech,sx9360";
++			reg = <0x28>;
++
++			interrupts-extended = <&pm6150l_gpios 5 IRQ_TYPE_EDGE_FALLING>;
++
++			vdd-supply = <&vreg_l5a_2p7>;
++			svdd-supply = <&vreg_l8c_1p8>;
++
++			pinctrl-0 = <&grip_sensor_int_default>;
++			pinctrl-names = "default";
++
++			semtech,resolution = <1024>;
++			semtech,proxraw-strength = <1>;
++			semtech,avg-pos-strength = <512>;
++
++			#io-channel-cells = <1>;
++		};
++	};
++};
++
++&tlmm {
++	gpio-reserved-ranges = <59 4>; /* Fingerprint sensor SPI */
++
++	grip_sensor_i2c_default: grip-sensor-i2c-default-state {
++		pins = "gpio51", "gpio52";
++		function = "gpio";
++		bias-disable;
++	};
++
++	sdc2_on: sdc2-on-state {
++		clk-pins {
++			pins = "sdc2_clk";
++			bias-disable;
++			drive-strength = <16>;
++		};
++
++		cmd-pins {
++			pins = "sdc2_cmd";
++			bias-pull-up;
++			drive-strength = <10>;
++		};
++
++		data-pins {
++			pins = "sdc2_data";
++			bias-pull-up;
++			drive-strength = <10>;
++		};
++
++		sd-cd-pins {
++			pins = "gpio69";
++			function = "gpio";
++			bias-pull-up;
++			drive-strength = <2>;
++		};
++	};
++
++	sdc2_off: sdc2-off-state {
++		clk-pins {
++			pins = "sdc2_clk";
++			bias-disable;
++			drive-strength = <2>;
++		};
++
++		cmd-pins {
++			pins = "sdc2_cmd";
++			bias-pull-up;
++			drive-strength = <2>;
++		};
++
++		data-pins {
++			pins = "sdc2_data";
++			bias-pull-up;
++			drive-strength = <2>;
++		};
++
++		sd-cd-pins {
++			pins = "gpio69";
++			function = "gpio";
++			bias-pull-up;
++			drive-strength = <2>;
++		};
++	};
++};
++
++&ufs_mem_hc {
++	vcc-supply = <&vreg_l19a_2p85>;
++	vcc-max-microamp = <600000>;
++	vccq2-supply = <&vreg_l12a_1p8>;
++	vccq2-max-microamp = <600000>;
++
++	status = "okay";
++};
++
++&ufs_mem_phy {
++	vdda-phy-supply = <&vreg_l4a_0p9>;
++	vdda-pll-supply = <&vreg_l3c_1p2>;
++
++	status = "okay";
++};
++
++&usb_1 {
++	qcom,select-utmi-as-pipe-clk;
++
++	status = "okay";
++};
++
++&usb_1_dwc3 {
++	dr_mode = "peripheral";
++	maximum-speed = "high-speed";
++
++	status = "okay";
++};
++
++&usb_1_hsphy {
++	vdd-supply = <&vreg_l4a_0p9>;
++	vdda-pll-supply = <&vreg_l11a_1p8>;
++	vdda-phy-dpdm-supply = <&vreg_l17a_3p1>;
++
++	status = "okay";
++};
++
++&usb_1_qmpphy {
++	vdda-phy-supply = <&vreg_l4a_0p9>;
++	vdda-pll-supply = <&vreg_l3c_1p2>;
++
++	status = "okay";
++};
 
->
->> +	interrupts-extended =3D <&intc GIC_SPI 608 IRQ_TYPE_LEVEL_HIGH>,
->> +			      <&tlmm 31 IRQ_TYPE_EDGE_FALLING>;
->> +
->> +	pinctrl-1 =3D <&qup_uart7_sleep_cts>, <&qup_uart7_sleep_rts>, <&qup_ua=
-rt7_sleep_tx>, <&qup_uart7_sleep_rx>;
->
-> And let's wrap this line
+---
+base-commit: 4eb2586bd40db27d77cc5b724ca9386ed0c71d53
+change-id: 20260627-sm7125-samsung-b685d8b9cd40
 
-Sure
-
->
-> [...]
->
->> +&usb_1 {
->> +	dr_mode =3D "host";
->
-> Does OTG not "just work"?
-
-Is this a feature one would want on a laptop? On a phone for sure, but I
-don't quite see the use case for the laptop to be a peripheral? But I
-didn't try it, the USB basic setup was done by Jasper
-
->
-> I'm assuming there's no pmic-glink on this device?
-
-I'm not quite sure yet how the USB stuff works. For sure from
-observation, USB-C only works when stuff was plugged-in at boot time
-(UEFI?), and charger also only supplies any power (but not actually
-charging) when plugged in at boot time.
-
-Regards
-Luca
-
->
-> Konrad
-
+Best regards,
+--  
+Erikas Bitovtas <xerikasxx@gmail.com>
 
