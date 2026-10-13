@@ -1,116 +1,115 @@
-Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE9747A0A9
-	for <phone-devel@vger.kernel.org>; Tue, 13 Oct 2026 05:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E194B44B8;
+	Tue, 13 Oct 2026 06:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791870070; cv=none; b=pcPJ6KoI0WgGB5LRZw1f8pUrTFurBoZ09gpG4+j9MQ/kgobi/MeU7oaJDTgbUDrQOAuQCJ6+1Erq8FBU8zf4EV/ZjU+GWkzWqz4FMtcMHKmQzoRsT0/XEPbuTr7a2FT8ziT3p37XnXwn4DYCAyPeJkULU0TXL/qmy8leD4OZlHY=
+	t=1791873098; cv=none; b=NEOedbLpS2lUC/BJAqL7TSlZ5kuWGJoSzlBhZUs+G8UUb2FGq7BRcXiQJT16s8LNFoeJ9MK6rHBxjfqTchhvWihOv77JkfbMkdSXPvEtuWfOA8OjYi/tnEkflPMcI94C7qbtlGcbpfANdFLhUR+D5+9R5+nELDfZgTvByI0P9IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791870070; c=relaxed/simple;
-	bh=AQYy5adRQSBsdS46Ukf6IvKTS3q91ZQEPucs6nARbIY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=B3X947aoYqG+BlvxLml4MqENhjnkJuppwk7z33DTTzwz2kIWT+sNQi9U4t2H2IFumPBJJVEesaFQ+9fk/bA1SugCy51ittp173ZNsriNiWARl+/vZ2toTq6PEwGiiFrz/gjzIos0KtyEi9GvCHZdSq5McYQHX4DKzNAmnGlTjI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=iT5aAok0; arc=none smtp.client-ip=91.218.175.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	s=arc-20240116; t=1791873098; c=relaxed/simple;
+	bh=oa+hL0321nW9Vwn1O3ILBBR3F88eydIuimTI3ISKCd4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EyP1x5rCkPr0nMqJVbkOKMPHOJdS8toR7FS1iWdy+PykJ/iSoG2v7vFGPVGufLiiNG0q5xxRqRD75sSKnidF8GUtBtVjbXuRMwAWhNGGqdRKoNJqNyHuJ1B+MCZfrTBMzKDzCTpmFXkh1wD/T740YNCLOj9eBaehid8kcRobTeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LfxmsxoD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="iT5aAok0"
-X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=AQYy5adRQSBsdS46Ukf6IvKTS3q91ZQEPucs6nARbIY=;
- c=simple/simple; d=postmarketos.org;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791870066; v=1; x=1792474866;
- b=iT5aAok0e+J4A/fCH6HprfBYBH72vbg9xAoKCusATL0vKaIIHR1QoT+hqzufDwwDdkWUE+rK
- 8monDb24qfY98zfjz/cmFKfp5zDmQo7sivGmrAp6oiMlk50a6/qvkMLaVX6Kq9KR3GmTuJq2sXd
- RpolJZgGuS+JLte075AjAszQ09K1WQ1BqfFWYlcJHxMqDO6QdegiYX+llVdjE62qZwD0pqaVVcg
- wRPxtCgLUt9NIBGQzakoVKjXHoq6bzdMT0C65bQe7kZNEgMORzJ0UxGfWgaCehBm1BE2KeGYubT
- 4x52e3FALtSwOoUpcbQH5k89FAKwQXnMOpMOCo0+4Jy9Q==
-X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id b0bded94188a6614;
-	Tue, 13 Oct 2026 05:41:06 +0000
-X-Mizu-Trace-ID: b0bded94188a6614
-X-Migadu-Flow: FLOW_OUT
-From: Paul Sajna <sajattack@postmarketos.org>
-Date: Mon, 12 Oct 2026 22:40:00 -0700
-Subject: [PATCH v3 6/6] leds: aw2013: Move reset register write
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LfxmsxoD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2031F000FF;
+	Tue, 13 Oct 2026 06:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791873096;
+	bh=ysieIhLPikkToW2dfhq3fTbSynlZIJEUp5hlkhgJWaM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LfxmsxoDhWv+zNEv9x+kWUc4/I1YMrYc6XMe51XeffW0S4jvftWJII52jEIfsGlTb
+	 uRkVS1MXohKxY8YDMZHnl6VALyzFk0XV3TPvzHQ0tZ0t3gyAsYpSvZTIKPwzRd7hNM
+	 ehBIKWwFrr4QqIIr1x7CAMv7bCZp6t8RsBmk4ll0FbZSmSuKC9IfBltEp76vSTkv7D
+	 kpaJkLxld2momnjAzXs4K6kGPSkQJaUDzVnCWTSPLI6Qsxn+CyFXjE92t2hI5nI3/M
+	 uJhY26lPX2yD+C0UOYDUpA/VwpAhVONMyzQnKhRcwKvgPX4Bgb1hWJW/+Yug7jVOiF
+	 4tMS2knm7jRUg==
+Message-ID: <62ce5a6e-5f79-4245-b432-d8eacf34709b@kernel.org>
+Date: Tue, 13 Oct 2026 08:31:28 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261012-aw2013-aw20xx-rename-v3-6-cab1fdd050b6@postmarketos.org>
-References: <20261012-aw2013-aw20xx-rename-v3-0-cab1fdd050b6@postmarketos.org>
-In-Reply-To: <20261012-aw2013-aw20xx-rename-v3-0-cab1fdd050b6@postmarketos.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] dt-bindings: leds: aw2013: Add awinic,aw2027
+ compatible
+To: Paul Sajna <sajattack@postmarketos.org>, Lee Jones <lee@kernel.org>,
+ Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>,
  Alexey Min <alexeymin@minlexx.ru>
-Cc: Nikita Travkin <nikita@trvn.ru>, linux-leds@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- Paul Sajna <sajattack@postmarketos.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791869999; l=1454;
- i=sajattack@postmarketos.org; s=20250413; h=from:subject:message-id;
- bh=AQYy5adRQSBsdS46Ukf6IvKTS3q91ZQEPucs6nARbIY=;
- b=HuHbSltWPJYIjH2DTge2woF8QOo8m81zjkjD4YxO1GhHfeodFCt1HdTw2d0KGA1iZvHr9Tfjj
- e4Y9R1yScKNCNZsH/wFibBGIKGUCYoEwjYI+7yMuiiGpmnmXfiPkzKp
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
- pk=ZFE/UBqiz9Wr8b+zBL27opOjw5x5ket5JFqks/VQGeM=
+Cc: Nikita Travkin <nikita@trvn.ru>, linux-leds@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20261012-aw2013-aw20xx-rename-v3-0-cab1fdd050b6@postmarketos.org>
+ <20261012-aw2013-aw20xx-rename-v3-1-cab1fdd050b6@postmarketos.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20261012-aw2013-aw20xx-rename-v3-1-cab1fdd050b6@postmarketos.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-It has no reason to be in probe_dt, and putting it there complicates
-the mutex requirements.
+On 13/10/2026 07:39, Paul Sajna wrote:
+> The aw2027 is largely the same as the aw2013, with the
+> exception of the way the max current is written to registers.
+> This exception makes it different enough to not work without
+> driver modifications, but similar enough to fall under the
+> umbrella of the same driver.
+> 
+> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+> ---
+>  Documentation/devicetree/bindings/leds/leds-aw2013.yaml | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-probe_dt calls devm_led_classdev_register_ext, which may trigger a
-callback to aw2013_brightness_set, which would result in deadlock.
 
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
----
- drivers/leds/leds-aw2013.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-diff --git a/drivers/leds/leds-aw2013.c b/drivers/leds/leds-aw2013.c
-index 6e661afd7775..8d1d649064c7 100644
---- a/drivers/leds/leds-aw2013.c
-+++ b/drivers/leds/leds-aw2013.c
-@@ -383,8 +383,6 @@ static int aw2013_probe_dt(struct aw2013 *chip)
- 	if (!count || count > AW2013_MAX_LEDS)
- 		return -EINVAL;
- 
--	regmap_write(chip->regmap, AW2013_RSTR, AW2013_RSTR_RESET);
--
- 	for_each_available_child_of_node_scoped(np, child) {
- 		struct led_init_data init_data = {};
- 		u32 source;
-@@ -504,6 +502,14 @@ static int aw2013_probe(struct i2c_client *client)
- 	if (ret)
- 		goto error_reg;
- 
-+	ret = regmap_write(chip->regmap, AW2013_RSTR, AW2013_RSTR_RESET);
-+	if (ret) {
-+		dev_err(&chip->client->dev, "Failed to reset the chip: %d\n", ret);
-+		goto error_reg;
-+	}
-+
-+	mutex_unlock(&chip->mutex);
-+
- 	ret = aw2013_probe_dt(chip);
- 	if (ret < 0)
- 		goto error_reg;
-@@ -516,8 +522,6 @@ static int aw2013_probe(struct i2c_client *client)
- 		goto error;
- 	}
- 
--	mutex_unlock(&chip->mutex);
--
- 	return 0;
- 
- error_reg:
-
--- 
-2.55.0
-
+Best regards,
+Krzysztof
