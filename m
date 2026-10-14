@@ -1,183 +1,196 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7545549382
-	for <phone-devel@vger.kernel.org>; Tue, 13 Oct 2026 21:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791928007; cv=pass; b=AZE95KTLRMN3TSNK2mfy5c8Hp5gXrV03DZ/mJFHBewxlVao+XVcc838Q/IpXph3iuXrK5rfDqL0E6xlnUiyV2qbei5VFO/l/HgISePSfCJJB0g+wmLK4Djj4VCAL8IJsyf6nDeM5QmP281fsl+iCLCQjiWR4OjQ5DTxCLRbjd58=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791928007; c=relaxed/simple;
-	bh=wTbiDtQ3Q4NbSHIp3HtWK47X70vEoCGFPPZl59iLx1w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i9YGof83WmjtMBr5Kqtw8yMszI/MCsNfSgsxXzDjcGvVQIShAJnPTcYT+1/AKO2KKu+pPrdIHOhQ1zCTQuivtBLVm6AoXjOWszoMkuvQnoAy7BGzk4ss3i7D87+osuggOkO/iHGCCOjCCeH9AuNgS53fDcKPY0jQO8iNvvwn3fA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Frct16Zl; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3039B3093D8
+	for <phone-devel@vger.kernel.org>; Wed, 14 Oct 2026 01:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791941311; cv=none; b=tHfAky+WuUkF/rshryHkP+4qYKPS+mEggCi91S2n9yv26IwBnSbRtstXeuAV49vAiGqL5L0ugudi4fQIYAKgUWKYZyJ+vYUKSs4tMK5LGSw3pqN7h3/DwRGSbEaBiD46F27HKyJlfhkD94n4Jq5vm+4ze3nW/byxMD+P8ajBaR8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791941311; c=relaxed/simple;
+	bh=EB4FMaSj2Eq4BOT4nid6tbYps7Q08LHkZpWOLznh87w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WPfnj5UjmKsSDzZ81e5j4GeIxn+bhje7a2OOXJrzhQSye7NZM0bU8iBQqQSzyasQR0uI4ZMlnRzKTrBAnn4DMH/Q+UKsX65Rxlz5LB89dbIBCqEUoxaBmWUiLd15JXmu8HrbF0dMmEd+jtZhVdEuDbXd1LIDzfD/PEyyha/Bel0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XNWQclOV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KFnq7UUd; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Frct16Zl"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c20ce3c118aso476664566b.0
-        for <phone-devel@vger.kernel.org>; Tue, 13 Oct 2026 14:46:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791928003; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nyTPD7eRxKyfQp96uAhQLFQcxcUjuw9rGWfRpb39Rn3IWKK1Bepr3/vWBU2Sh0cScn
-         qik71u7W0qdgFZjF7pr/eLmjD75Ww8l1r9xZGhIBXRRkOvjrvqwsQiDAof/nfFvu6WJF
-         Cuosb314kHVgN5dtQ6dMpuV6vz53YBg25r/rMSkqjwTF0QMUIykcnUUSGUTOfXFhhKvh
-         Gizk3257eaSh1h7eJ1RlDIW6EwZij/+pKJ7K85z0BR5P10b8S5uet+WE4TbptWT1W+VC
-         waE0jzpdkW3esKb0xk84quKbjx4jQsLar+zpAAzFK4GfaHffPz0S01EOUCgmDmBv1vWu
-         dygg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AqZD4Ft9JyhRwT2DBarljuLbS5RYQ2WwnZPQWaQ6rj4=;
-        fh=h1TP6QXBZSyfgW5vKEL4EanR5G0XwnzFFHIxOKg68PM=;
-        b=GRhdwkaCrHT52RcjR+hNnhUhLnR0+gFM1FEw8yur2hOzcWPn2p5IO3+J7dgFzLvziF
-         FRmlwkbhb+mshjfeE6jJpzhq9/vozZa9IoKmMO807y/zSSz2Tvyxi2KXv1mR5ARNRz5D
-         ZMs+ZKTZ1G7zgU25v52ZeBq2chEegmO105PTEl/SCBA1RJyU3uASPn4IJoj84PMb6Q7t
-         vIiFcZseelubZHXro7WojNW2mfUfzQgiTFN8zrnK6aD+9+jXShKR7sg/jFRrFMNr6jDq
-         T2R6G8CKbb1fXpOF6o+fyCxxEQ8pohTkN3aL/6P8AchSuMozu9VSpCiB+VNYFvHErbNP
-         UByg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XNWQclOV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KFnq7UUd"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DHkjfU3000921
+	for <phone-devel@vger.kernel.org>; Wed, 14 Oct 2026 01:28:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=rgFtdCHlFEmrliTYjBmLINo3
+	xN9OuOGBDuGALfW3hI4=; b=XNWQclOVBusiQovhlnn14imiJCnV2m3g8y7uzv2X
+	/X70p8bmyAIX5mZzx3ZdJvXSFRRcyEVl1t/LZ2cW906pSgsCefHcw+TeXToaKtAv
+	1pIVXMqZVQX1/bGKmgPt+8NVRuMdAnHg2BFpHlciV6/ZMXzCCSijvizCNbpZ+uGE
+	Cgj0ae/hkCOI6Jrxbst5enyJDk6otADWmHpf0csA4X+DqckkDZBbZFo8lYMeKEOH
+	qVAEmma3csLl3hRLNy13fyLMgJv9/3Trto0S2zoZzwnG0Wo3NbUlcOpkwD/xoV6y
+	5WjFEbcFG7P2gD0OkzClZGrMOUcJhDSeH2RlFNN6f8F8NA==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h9sbesk19-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <phone-devel@vger.kernel.org>; Wed, 14 Oct 2026 01:28:29 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-91b994cb09fso31527566d6.3
+        for <phone-devel@vger.kernel.org>; Tue, 13 Oct 2026 18:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791928003; x=1792532803; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=oss.qualcomm.com; s=google; t=1791941308; x=1792546108; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=AqZD4Ft9JyhRwT2DBarljuLbS5RYQ2WwnZPQWaQ6rj4=;
-        b=Frct16Zlu3E4yvR3R4xRFb5bKlPZdJC94E6AAu4ruLx9L3BjlkWZcgdKXf2wrCcgQD
-         mRbpxRv9Nt861zAnBPn/kV9etyomQG9NfmvWbNLtH2FfN3ijxypc/z9/Js0z5S7bNnN6
-         tBN/ztVHbKFsMm3IGPxLqCA1jM/d5j2pWlcx+watj30JwZCIWTMOIyKEQ1LUnGk0ichg
-         iSKO4G6TLVlrBS7liZ1VPh+gDniNKUCrL0A1RmItSNtPVwjsgih2IlPrfNymdoY+Avh/
-         2iP6Z86IOhAD3lyeHyUsToQuqsn05+97naeJBD7Q8JlVC5hkn8ZUZJh1Z3o3G+SVGF2f
-         YnxA==
+        bh=rgFtdCHlFEmrliTYjBmLINo3xN9OuOGBDuGALfW3hI4=;
+        b=KFnq7UUdAUjWzYJuaF7S8qwUTCCPtnqmfHbl0/x8yIhsbpDKxJvauEGQTyIdem4JiO
+         FlNxBzp5XRUiA5O0gPIaBy+8Nu/7PYotGISxm1fGus70otMgvRldUmlVLeemPpqBitDc
+         4UofP+E85vvg7qxhKwVilDsBYEOobRNDwIRSwLbd08WVJY/cthxyTCRAT+dDX0Wf1/sK
+         Z5ryYR+YUxmOdDbJVXgQZiij6qW8GDYwZADixqJZKaTl7q8PcQGxMpaeMZKsMzBxe8Ll
+         AaciCmWoL/xtSKhFNlmNpzypmSySX5T+hpwjGQkc+Z/A0tm7CAAQVJSfuZdQ2/I6DVfG
+         BeNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791928003; x=1792532803;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1791941308; x=1792546108;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AqZD4Ft9JyhRwT2DBarljuLbS5RYQ2WwnZPQWaQ6rj4=;
-        b=OAsgFjl87hqrLJrk9E/tL7zlbGER+a0GDDmXWLy+ii2Of3TQ0hrLztX/3vloUOYvPx
-         Fcol8MNagcLT58HLckzEgqFdJrB0cjWyniO3MsiPUD88tf8zPEgvRXOiH+uf11HxakOU
-         AYlOLKg6u1hPwe6F8NHO/8Bx+X8x5IDKv6RiNHb71QFTAI+2gIEiOReG2GH4xDuUVa3f
-         idz1YqV4kybTt+kWZrWQ4HN0mOZpxyiYmGfHXrBF2qJbrGlW9yFiVDlF15qA800nJXJl
-         j+DJMPN31a4KMXc5YTJGd5jLa+gwU+7AUARuL7neFzqmHhFGqpa+/eujJ1zJ9Srnh/Ue
-         iRGQ==
-X-Forwarded-Encrypted: i=1; AKwUvBywAc54EYTNVKxnYSSGFR9szidnQCc2fOccKaAXEMCZU0rwgZY+i6X37XsEr1CoY/K9j/hOkWbA9Ud8Ow==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJLZP1U+D9STROu+OQQz2Q8FFvOB/7VMXQNHo+Oq3vdBmoi77I7
-	euCPWHn32QX9uczPIzpw19a3Am7tm8kSq8JGk0ml+qz7WN78ay48ozWqC9CTqW6INvJaus3c2d8
-	tyNrRgOhTR2cB4oWZPLG/1BKcD618HW8=
-X-Gm-Gg: AYBFou3ZvGCTM4Ui2RmyVZIBsFB1wRQ1CBODdDO3CYR0uYd1PnCo2q5TdMtQrLsPJ7Y
-	ned8ujCZTMoao6icLHtsIMcpHKO2nOI9ppBIbm3X0cvRSa5ZiYvwnfW0J4BcpErOGcI2MTly8an
-	ejNl8vBgs+zii3GbWYHYZ8omYIau29kbyYKM4PwTEaNJy7hCWoewbKUBzemmuNIuj/LaE+ulGvY
-	RHWQbUfXdBP2kKZJavvMcltkDejCBwZqbWC4NtjXacukZRSiiMAC3NcJKLMD+n2oAJ5BIz7on4V
-	ouijHZTjfhNdsuTep8ob9aEQSkl8bQZQWViRgW2GLcDDg2qD/8dTBA==
-X-Received: by 2002:a17:907:3d51:b0:c2d:be57:f742 with SMTP id
- a640c23a62f3a-c31a71252famr1282278766b.32.1791928002700; Tue, 13 Oct 2026
- 14:46:42 -0700 (PDT)
+        bh=rgFtdCHlFEmrliTYjBmLINo3xN9OuOGBDuGALfW3hI4=;
+        b=YKg/jg7qGTyJMWJzEoX3gA4+1otEFjUhOddj3bSI2DaKP3hlZIMcHJ/fZ2NjHpsS/I
+         OlxOMF91mExKQ0Q3xWOLHMJ7LsE+XmVv2aYNzVAdIrW/deklRn5HeOw7iQsS0YgKjLRO
+         xzdRtyqyYryt75oWbY07WwLhdUf3YiweeQ6fbGJfBu/IJ+MYeK87Ad0Q8nhimeXT+BJk
+         yixar5Xnmt6h0hHyQLYRr53XrFr+Cqnjukh3Mugw/+1owYbA86TRzQk/ZCld6bDzrIFS
+         /k3EQVgE4KxtRxFruItqsUZvXn8Vx59/0frmSFggwcd23bWOMK/mD3xK9Qi58kkzqjxE
+         TbEw==
+X-Forwarded-Encrypted: i=1; AKwUvBxbzIqrYGcb8ZKM1yX7y0cfvfu4i709L+4aE6JfmdVocz7gZ3kFu8VBC4C6lDJiIYjqeT0qhVN0lHO3tA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ20s6XDbjPDTxRGRywdRHAv5y6/cDHmEWhrqI6tRxInrX6EwQ1
+	zpIXNC8cdgl6YngvXgFr1MG0w6EDXcVIo6d7sQA9ar0BB9z5cbE9Udp/lYcW17cHGSOwurQq/jQ
+	oVxcjmqMoNVuUZU4f4b4XFSU//mUeB/LQ4CLoh4P4LkUbLNMin5JE5asgaJQxD0EKFQ==
+X-Gm-Gg: AYBFou2PicX0KiBdaYTdPwgCPGx3QHWLzvbF94tHDKv4VMlJv6k0svZLfpzfF2yk1ee
+	AKrr32/FUwHhHrlC/0+3+rlxVlo60q8Y0ygZjzmr3Kqi80SrmTiCU7w8RseaU77ol+OaU85h6n5
+	CPhnpQY3yZUSp0RnOT2L+KHnBSk0KTIAUYW6/O/mgt2QcjBoT/56BIa2pV9ut6J6zUz+9JAbi1A
+	WC/64tAuS7+CNWRV4rdQXoCbERDc5UKYEU1sE4XhUZiq0BWPX7tyKTVw03k6gMXuNY6LEG4vsBr
+	edAfIyq8vXf7Bm/2c4O2i5dxuk4OUNmQFOOf3hr8M7kcdKEuNu+NcRVawwZWMhvLkfHrWFm+z1Q
+	5xdoU/cZbF7vtaUI4ntN+qelgyLHilAxEKzvhcELJ3vyrU42SS9ZkFOiPvgQ+zRMZ5a1FtRum76
+	cZI6p9bzJ+L1Fl
+X-Received: by 2002:a05:620a:3187:b0:93e:c12c:9b73 with SMTP id af79cd13be357-93ec12c9f14mr2216298285a.78.1791941308297;
+        Tue, 13 Oct 2026 18:28:28 -0700 (PDT)
+X-Received: by 2002:a05:620a:3187:b0:93e:c12c:9b73 with SMTP id af79cd13be357-93ec12c9f14mr2216295485a.78.1791941307752;
+        Tue, 13 Oct 2026 18:28:27 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a9c3c9b104sm42828181fa.11.2026.10.13.18.28.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 18:28:26 -0700 (PDT)
+Date: Wed, 14 Oct 2026 04:28:24 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Jasper Korten <jja2000@gmail.com>,
+        Federico Amedeo Izzo <federico@izzo.pro>,
+        Luca Weiss <luca@lucaweiss.eu>,
+        Hans de Goede <johannes.goede@oss.qualcomm.com>
+Subject: Re: [PATCH 3/3] arm64: dts: qcom: Add Samsung Galaxy Book2 Go
+Message-ID: <emdm463llmoi6vsv3zmfjddqrfaf2iubdnydsqye2n6ui56oae@frsvj6el3zvq>
+References: <20261012-book2go-v1-0-7188e7ea7a15@fairphone.com>
+ <20261012-book2go-v1-3-7188e7ea7a15@fairphone.com>
+ <fb634f17-de56-4f43-b139-3d040a35f019@oss.qualcomm.com>
+ <DM3MSNLF42BV.1UV490PXB0C07@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012-book2go-v1-0-7188e7ea7a15@fairphone.com>
- <20261012-book2go-v1-1-7188e7ea7a15@fairphone.com> <CAD=FV=WVAnohGm8kmaLpfchk_MxCiUB8EcyyWBxZqtnc+9YPcg@mail.gmail.com>
-In-Reply-To: <CAD=FV=WVAnohGm8kmaLpfchk_MxCiUB8EcyyWBxZqtnc+9YPcg@mail.gmail.com>
-From: Jasper K <jja2000@gmail.com>
-Date: Tue, 13 Oct 2026 23:46:32 +0200
-X-Gm-Features: AclHuK-NqYEpvDtDXhi9IVbRYKes3SwwvzbOhM7NId12OJB7ksYzqp34C_yrVg0
-Message-ID: <CAErD6092tBte1je=9t0_NUwrU8uqHen_ffYMYXFBqMCJkTZRHg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] drm/panel-edp: Add AUO B140HAN04.0 panel entry
-To: Doug Anderson <dianders@chromium.org>
-Cc: Luca Weiss <luca.weiss@fairphone.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	cros-qcom-dts-watchers@chromium.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM3MSNLF42BV.1UV490PXB0C07@fairphone.com>
+X-Proofpoint-ORIG-GUID: wmYBjB_i5Vj95B3lTOcs8xanecC84AhT
+X-Proofpoint-GUID: wmYBjB_i5Vj95B3lTOcs8xanecC84AhT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDAwNSBTYWx0ZWRfX/C2mkvVg9I/M
+ XFRfkThfzh4qgtAMrcaLRzURBgCpJDD2PBPMmENrBkQ54+b+/WvfFp++eNop8sV39f5uBTWoz92
+ T4OtKHCjOYYhWITX29qqw5LLf16UXjohlRu3dWC/iyB6zf26OGS0DsynypD5g4mqfgOTesNohM1
+ y6wiEpS5e0ewLD1TIod6pU9+sQT1FFhqPJ/6SBYZwDN6MJbg2Q1mOSIAPKArwppZb+HF8AwwmPZ
+ 95VDKA68D1iz12/W5K++lp1VIgTauHNOtcs/T0jUw9rS+1h3aSmylcVkBkqvFydDrI/tGhtaKOp
+ 2mLJqNWv9JeEBXmB0CbiNESMgsMZiy0o/CjqUWsYAdpkyExWYkJE4DYSb6Bln+1CdL0l/MssvVs
+ /7XN5VrCfVjjSBfkIGuChQnSDovbx9gv4vlEDBapeKYxot3UW/r0LvOjDLU+110mSOINezozZrM
+ QHIzvBQyY05NcLDV1Dg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDAwNSBTYWx0ZWRfX9igBwT9A/lEQ
+ ipoLI8qcEbWgriOLlB3p7eJLb+y2YfcQiVcjrSs9+tfT8XMaACch+Ph2SLtRXCvb2ZCVFs9kTJ0
+ dEM0diA/8Bnn9kG7Y2R3Oix2MFiJJNo=
+X-Authority-Analysis: v=2.4 cv=U7AHnuru c=1 sm=1 tr=0 ts=6acedabd cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=pGLkceISAAAA:8
+ a=dlmhaOwlAAAA:8 a=6H0WHjuAAAAA:8 a=s7BF4lges1HAnKHfQr0A:9 a=CjuIK1q_8ugA:10
+ a=iYH6xdkBrDN1Jqds4HTS:22 a=y4cfut4LVr_MrANMpYTh:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ adultscore=0 impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610140005
 
-Hi
-
-Op di 13 okt 2026 om 22:35 schreef Doug Anderson <dianders@chromium.org>:
->
-> Hi,
->
-> On Mon, Oct 12, 2026 at 11:11=E2=80=AFAM Luca Weiss <luca.weiss@fairphone=
-.com> wrote:
+On Tue, Oct 13, 2026 at 12:17:05PM +0200, Luca Weiss wrote:
+> On Tue Oct 13, 2026 at 12:10 PM CEST, Konrad Dybcio wrote:
+> > On 10/12/26 8:11 PM, Luca Weiss wrote:
+> >> From: Jasper Korten <jja2000@gmail.com>
 > >
-> > From: Jasper Korten <jja2000@gmail.com>
+> > [...]
 > >
-> > Add an entry for the B140HAN04.0 eDP panel. It is found on the Samsung
-> > Galaxy Book2 Go.
+> >> Signed-off-by: Jasper Korten <jja2000@gmail.com>
+> >> Co-developed-by: Federico Amedeo Izzo <federico@izzo.pro>
+> >> Signed-off-by: Federico Amedeo Izzo <federico@izzo.pro>
+> >> Co-developed-by: Luca Weiss <luca@lucaweiss.eu>
+> >> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+> >> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > >
-> > $ edid-decode /sys/class/drm/card0-eDP-1/edid
+> > Good to see the Lucas are in agreement ;)
+> 
+> :)
+> 
 > >
-> > 00 ff ff ff ff ff ff 00 06 af a9 65 00 00 00 00
-> > 28 20 01 04 a5 1f 11 78 02 9b 85 92 56 59 90 29
-> > 20 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01
-> > 01 01 01 01 01 01 14 37 80 b8 70 38 24 40 10 10
-> > 3e 00 35 ae 10 00 00 18 00 00 00 0f 00 00 00 00
-> > 00 00 00 00 00 00 00 00 00 20 00 00 00 fe 00 41
-> > 55 4f 0a 20 20 20 20 20 20 20 20 20 00 00 00 fe
-> > 00 42 31 34 30 48 41 4e 30 34 2e 30 20 0a 00 ed
+> > [...]
 > >
-> > Signed-off-by: Jasper Korten <jja2000@gmail.com>
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> >  drivers/gpu/drm/panel/panel-edp.c | 1 +
-> >  1 file changed, 1 insertion(+)
+> >> +&usb_1 {
+> >> +	dr_mode = "host";
 > >
-> > diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/=
-panel-edp.c
-> > index 2b455369ed70..73cdc2d37ab7 100644
-> > --- a/drivers/gpu/drm/panel/panel-edp.c
-> > +++ b/drivers/gpu/drm/panel/panel-edp.c
-> > @@ -1986,6 +1986,7 @@ static const struct edp_panel_entry edp_panels[] =
-=3D {
-> >         EDP_PANEL_ENTRY('A', 'U', 'O', 0x635c, &delay_200_500_e50, "B11=
-6XAN06.3"),
-> >         EDP_PANEL_ENTRY('A', 'U', 'O', 0x639c, &delay_200_500_e50, "B14=
-0HAK02.7"),
-> >         EDP_PANEL_ENTRY('A', 'U', 'O', 0x643d, &delay_200_500_e50, "B14=
-0HAN06.4"),
-> > +       EDP_PANEL_ENTRY('A', 'U', 'O', 0x65a9, &delay_200_500_e50, "B14=
-0HAN04.0"),
->
-> I'd assume you don't have a datasheet here and that the timings are a
-> bit of a guess. It's nice if you put that in the commit message, but I
-> won't block it. Ideally you could reply here and let me know if you
-> referred to a datasheet or just made a guess about the timings so if
-> the question ever comes up later we can find the conversation based on
-> the Link: tag...
+> > Does OTG not "just work"?
+> 
+> Is this a feature one would want on a laptop? On a phone for sure, but I
+> don't quite see the use case for the laptop to be a peripheral? But I
+> didn't try it, the USB basic setup was done by Jasper
 
-The guess was based on the other entry of a panel with the exact same
-name, but another ID (0x403d).
-The link for when that got added can be found here:
-https://patchwork.freedesktop.org/patch/msgid/20231107204611.3082200-4-hsin=
-yi@chromium.org
+Why not? It's more or less the same set of usecases: USB gadget device
+(which can be a networking gadget, serial, etc).
 
-There's some panel documentation around on panellook, but I'm not sure
-if that matches the HW rev that's in these laptops,
-nor if they actually contain the data I'd need for this panel entry.
+> 
+> >
+> > I'm assuming there's no pmic-glink on this device?
+> 
+> I'm not quite sure yet how the USB stuff works. For sure from
+> observation, USB-C only works when stuff was plugged-in at boot time
+> (UEFI?), and charger also only supplies any power (but not actually
+> charging) when plugged in at boot time.
 
-This setup ended up working out, so that's why I left it like that.
+This means that something is not 100% correct, for example, missing EC
+support.
 
-Kindest Regards,
-
-Jasper Korten
-
->
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
->
-> Pushed to drm-misc-next:
->
-> [1/3] drm/panel-edp: Add AUO B140HAN04.0 panel entry
->       commit: 9125232bc2a5020710db1eadd21973757f740648
+-- 
+With best wishes
+Dmitry
