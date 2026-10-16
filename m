@@ -1,88 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.fhannenheim.net (mail.fhannenheim.net [188.245.251.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F192DCF55;
-	Fri, 16 Oct 2026 11:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFCF4C9E01;
+	Fri, 16 Oct 2026 16:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.251.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792149864; cv=none; b=ss28CznL4buGLiSFq6c3AvkpQrNK8BkbvydzOqCTXi+S/HgUlCoLh7deRNvkigYpu8TpGtBI8EBrX9Qa0x7Q65vJK+MLqQrrdI8cGbQzLgRcZo6zhbof4ryfBnpjE1cUYuYQ9ttSbtGPrHD473MEU8M2Lt30M+ujrrFH0Ak5wBU=
+	t=1792168713; cv=none; b=B4Y9KZOlFAB13D6cwFdN1oIsQVdOF43E2gINhlmBeXkGeKIoF+Y1uRUw1691alNHF4KQ6ip5lDnrdW4ByBaH0p9x8QpAUtDQhYPGw94l4sgiPgu+SY5S3llSbyOXhlZ7AB8Hx5a/vmnIijFercAW5kpsZHGASwSrszV/QZ1UjcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792149864; c=relaxed/simple;
-	bh=HXi3SpYWtqILFW/ZFgSoPPZgBqve/NXdRoxuq5AOVtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kAxIhl9gDRrov7pf9Q4h1nMG8mq3jgo70pDllQg3jpBZEefIle5fx20cNicJU/eqQnDLq6CA9RH6+oCDyPlT2qubxqBMOh25GX6WiBqEq9DnVVCDpyOsdx+GIFRB4oun7pebbmO0d2ewGHqbr1rKCHWuPw/XjSH830bSr8O8hbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4Wweckm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792168713; c=relaxed/simple;
+	bh=iy+Huz9CW4T2GWHOcLU7+Fv6hIf4yWIOcMvWFcLWwqo=;
+	h=Message-ID:Date:MIME-Version:Subject:References:To:Cc:From:
+	 In-Reply-To:Content-Type; b=nGi3TaZUepgyof+Co+GuF5HzKpHfImKzW33vQCf4g9uTmLqAxgBZl3+Ayc9IUDuizLD180fMefhJMLfx1CBX7dNDp4lc+dtMGprRUHgSZZrSxjjP6MAIBft70YallFjJxAzLzMM5a4isNCuLuDvtMFooklVvTuN3UbNawc+K0+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net; spf=pass smtp.mailfrom=fhannenheim.net; dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.b=Qe+B7lgT; arc=none smtp.client-ip=188.245.251.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fhannenheim.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P4Wweckm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABB51F000C4;
-	Fri, 16 Oct 2026 11:24:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792149861;
-	bh=HXi3SpYWtqILFW/ZFgSoPPZgBqve/NXdRoxuq5AOVtg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=P4Wweckmz/VAclLhnQLjfYdPWIRp+Equ4qJzoLjDjYhy8J4ml/DsHEdaGpTe5/wiw
-	 r6Gy4D1FiV73SMIphL4FZnqQrR9GJE5/zz8bjhLYqq6X8PXSV1z0YwViEXq4Rbmvqd
-	 eOGBYb9yVs4ITzpGDLyk9ZL3t8tBT+3j5sZyBhxRN0rKpoT7ngvxDMDexLJjUbLzNj
-	 9DDFnnNIBuVzWjGYSTaQKFj7CgTWrzl7ycyUA1BYWrUp8QksHAA2XES+dXvGI2Iiob
-	 IzhRB83lumH3B02Q8OVgBXclABrd0NMBq7x4iVVpCNQ0vp8vBABmt9zWnyXjAmd4JO
-	 lCegcUVlXXj4Q==
-Date: Fri, 16 Oct 2026 12:24:15 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Val Packett <val@packett.cool>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Bhushan Shah <bhushan.shah@machinesoul.in>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Antoine Bernard <zalnir@proton.me>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND v2] ASoC: qcom: qdsp6: q6afe: fix clk vote
- response type mismatch
-Message-ID: <cff5da88-30cb-42fd-b697-7cbe117f4376@sirena.org.uk>
-References: <20261016063536.598610-1-val@packett.cool>
+	dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.b="Qe+B7lgT"
+Message-ID: <0ff136f5-5ed7-4fa0-a93a-07c06706273f@fhannenheim.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhannenheim.net;
+	s=mail; t=1792168703;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=e7b24QwjbL5Rp7Pwru68/kBNU3OhYLVXU1CkIm0gP/o=;
+	b=Qe+B7lgT0NrhM0scM6LY/0LOg5xkYe2Qrxt/TSOa27KU3psCxmyIKDgQTeYGFWX3qwoIBi
+	Gy0dllQ6TvSglgLwxbSh86KVNp0awDs2ZESV3KD7HtRNWamDCP14ryMW/tqiXHzUJZCUHZ
+	rktPhncvbvA1fE6rteRVK9PWV1N++vA=
+Date: Fri, 16 Oct 2026 18:38:22 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="MICH3Cc02U1XLxW8"
-Content-Disposition: inline
-In-Reply-To: <20261016063536.598610-1-val@packett.cool>
-X-Cookie: <<<<< EVACUATION ROUTE <<<<<
+Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: oneplus-kebab: new device
+Content-Language: en-US
+References: <c14fe062-2e87-4040-b9a8-7d90a04d7a8c@fhannenheim.net>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Frieder Hannenheim <git@fhannenheim.net>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Robert Oscilowski <drgitx@gmail.com>,
+ =?UTF-8?Q?Jean-Fran=C3=A7ois_Bobier?= <jf.bobier@gmail.com>,
+ phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Frieder Hannenheim <mail@fhannenheim.net>
+Autocrypt: addr=mail@fhannenheim.net; keydata=
+ xjMEaX+iTBYJKwYBBAHaRw8BAQdAjgnNmu6pLzUJq/DD3ZU3tTbKzC2npfFhEK6NYMLRukrN
+ KUZyaWVkZXIgSGFubmVuaGVpbSA8bWFpbEBmaGFubmVuaGVpbS5uZXQ+wpAEExYKADgWIQRD
+ lxn4P3kTLC9X/iFsAXPIt5MeUwUCaX+iTAIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAK
+ CRBsAXPIt5MeUzNaAP9KklaL+chH1bUa7To1Pn346guR/N/PkMkyvWgKRs+yzwEA6N2E6TZ6
+ CJF8cW6gVaSFmNgGcGZUAw5A5MrUleV5PwPOOARpf6JMEgorBgEEAZdVAQUBAQdA51B2jbQ4
+ iUnmggSYEqwukOYQmjBwsyUpc8Wkk9I8qkYDAQgHwngEGBYKACAWIQRDlxn4P3kTLC9X/iFs
+ AXPIt5MeUwUCaX+iTAIbDAAKCRBsAXPIt5MeU3oKAQDyZDbjdjzNsJdliBQBkZXuaJDAB1Mn
+ 59LycSSRsRVCPQEAmNQIItBArt/kiQFu6vC4mXjtM5LzbPLmj/QA26ee2Qk=
+In-Reply-To: <c14fe062-2e87-4040-b9a8-7d90a04d7a8c@fhannenheim.net>
+X-Forwarded-Message-Id: <c14fe062-2e87-4040-b9a8-7d90a04d7a8c@fhannenheim.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hi Konrad, thanks for the review comments. Replies inline.
 
---MICH3Cc02U1XLxW8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 16.10.26 10:23, Konrad Dybcio wrote:
+> On 10/15/26 2:32 PM, Frieder Hannenheim wrote:
+>> Add initial device-tree for the OnePlus 8T. Downstream reference is [1].
+>>
+>> [1] https://github.com/LineageOS/android_kernel_oneplus_sm8250/blob/lineage-23.2/arch/arm64/boot/dts/vendor/oplus/kona-kebab-overlay.dts
+>>
+>> Signed-off-by: Frieder Hannenheim <git@fhannenheim.net>
+>> Co-developed-by: Robert Oscilowski <drgitx@gmail.com>
+>> Signed-off-by: Robert Oscilowski <drgitx@gmail.com>
+>> ---
+>>   Documentation/devicetree/bindings/arm/qcom.yaml   |   1 +
+>>   arch/arm64/boot/dts/qcom/Makefile                 |   1 +
+>>   arch/arm64/boot/dts/qcom/sm8250-oneplus-kebab.dts | 129 ++++++++++++++++++++++
+> 
+> Better. Please split off the dt-bindings changes to a separate patch,
+> and put it first in the series.
+> 
+> [...]
+> 
+> 
+>> +&framebuffer {
+>> +	width = <1080>;
+>> +	height = <2400>;
+>> +	stride = <(1080 * 4)>;
+> 
+> Does the resolution differ between the two devices?
 
-On Fri, Oct 16, 2026 at 03:29:17AM -0300, Val Packett wrote:
+There's 4 devices: 8 (instantnoodle), 8T (kebab), 8 Pro (instantnoodlep)
+and 9R (lemonades).
 
-> Previously part of a series:
-> https://lore.kernel.org/all/20260506204142.659778-2-val@packett.cool/
+All except the 8 Pro have a 2400x1080 screen, the 8 Pro has a 3168x1440 
+screen.
 
-> but it's actually independent and reviewed, let's try again with just this..
+> 
+>> +};
+>> +
+>> +&i2c2 {
+>> +	status = "okay";
+>> +
+>> +	pm8008: pmic@8 {
+>> +		compatible = "qcom,pm8008";
+> 
+> Is it not present on the other one?
 
-Don't mark things as resends if you're not actually resending the same
-thing as before, it confuses both people and tooling.
+The OnePlus 8 doesn't have this according to the downstream dt. >> +	 
+reg = <0x8>;
+>> +
+>> +		interrupt-parent = <&tlmm>;
+>> +		interrupts = <112 IRQ_TYPE_EDGE_RISING>;
+>> +
+>> +		reset-gpios = <&tlmm 93 GPIO_ACTIVE_LOW>;
+>> +
+>> +		vdd-l1-l2-supply = <&vreg_s8c_1p3>;
+>> +		vdd-l3-l4-supply = <&vreg_bob>;
+>> +		vdd-l5-supply = <&vreg_bob>;
+>> +		vdd-l6-supply = <&vreg_bob>;
+>> +		vdd-l7-supply = <&vreg_bob>;
+>> +
+>> +		pinctrl-names = "default";
+>> +		pinctrl-0 = <&pm8008_default>, <&pm8008_interrupt>;
+> 
+> nit:
+> 
+> property-n
+> property-names
+> 
+> in this order, file-wide, please
 
---MICH3Cc02U1XLxW8
-Content-Type: application/pgp-signature; name="signature.asc"
+Will fix
 
------BEGIN PGP SIGNATURE-----
+> [...]
+> 
+>> +&i2c16 {
+>> +	status = "okay";
+>> +
+>> +	fuel-gauge@55 {
+>> +		compatible = "ti,bq28z610";
+>> +		reg = <0x55>;
+>> +		monitored-battery = <&battery>;
+>> +	};
+> 
+> Likewise, is this absent on the other phone?
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrSCV4ACgkQJNaLcl1U
-h9Dv9wf/X0z0rQsoxDKFkD7Xa5E83nk6TpI2uXgyDJ1CUA1Md/Fy1hDr1viQ0EZ+
-dHapZfbPDsT3gBrxCRd2RlwaNQstf4guXgBVYgPBxzUfBpF2o6z2vNDxPcOre7Te
-ByBjeQJ9X2+MTFk3mjvR2+mLESMkPYLwlWZCMLNmx4aZaS743y86qjNVygu68GLW
-caoDeBEKpHBHDLNfigppjQuN8SrM6KXZ8/tbi5fZ8VaQnpQFP8BtcFOsw7q63xdj
-rOO7KhjodLga5DrJZrF9qwVTZ7YAJJKah9s1Qr919Ki0z9Rq2I+/Uh5wK8eINn1E
-QiOxdmqS0+g72HoY4Mvt3e6tNzIAGg==
-=Moro
------END PGP SIGNATURE-----
+Not absent but different. The 8T and 9R use two-cell batteries while the 
+others only have one cell and use a different fuel gauge.
 
---MICH3Cc02U1XLxW8--
+>> +};
+>> +
+>> +&tlmm {
+>> +	pm8008_default: pm8008-default-state {
+>> +		pins = "gpio93";
+>> +		function = "gpio";
+>> +		bias-pull-up;
+>> +		output-high;
+> 
+> Drop the output-high, the driver will set it for you
+
+Will do.
+
+Frieder
