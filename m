@@ -1,57 +1,59 @@
-Received: from mta1.migadu.com (out-45.mta1.migadu.com [95.215.58.45])
+Received: from mta1.migadu.com (out-63.mta1.migadu.com [95.215.58.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DD543B6CB
-	for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2026 07:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1306643802B
+	for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2026 07:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.63
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792135955; cv=none; b=PdiYnvdtpGs5Q9AxLnJqAPccKSCF7lL0o7NiX0ezaR4qK5QXiefRfnJuwvIO7xq4qwy3lVeb0/S9fIeqXk/FjDhap2hieiLEYQ6Vjex/+ui4Jl8W3ZCF4sKf8TILNNa4QhGW9bbBNrozC4uuP0eay39SIY/SSesbW+ZUVLUfQz4=
+	t=1792135962; cv=none; b=IE+hcpecYprf9lvidCiF+rt5OMEgKnlF3L2COKdbKNKBDmpo89/EXY82PyzsnmLRWBNmN1mz73S5Z6uPe/V5vzHcTXmnxd6gECT+eUtYNxOfY1sofPIL9Z86NcNKR8/gD3Y/wzpm1DoRWjr+VhMOuqlVeadiNKG3wX7f+ieZHxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792135955; c=relaxed/simple;
-	bh=ax8mYEcyGBEatxsgbOEhQQNyrXq7UJvv30A7+qt8/ds=;
+	s=arc-20240116; t=1792135962; c=relaxed/simple;
+	bh=+nU5/8RgiTGOWC6vO2b1821wiTATXqeosmxe4CwjTUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DuMzdbaA7DugHTDQ8SaoH0pAXr7p7Tf4YngFDE3/m99VUGh9dRKgGxQuwwI/EHUeHzpwL+jjqU+4YqeFyDNlldIg0wuNsIRdOBzFgwxISvYuRwaHMMkdr5vcS+b9gdua0eKlq8WZRnePA7pYoTESXnXoE+t0BaLT9Qj8JaNrpIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=doVN9Upk; arc=none smtp.client-ip=95.215.58.45
+	 MIME-Version; b=YTXx6uoXt/Qz1vfT9icLLe1DYffgiFrUwtcyljat9QvX5RgZFihrnUue9XWZCrUyqY1YUzof1Wskv7LRj29+222CQ5FhQFFK0vNAM9aJunQUTikxcOYtYO2snxs74PZnVSqMdKX9gCsnoxkyzRHrqI8bRIssELPBuXKOXLoAqKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=G+0dyq6z; arc=none smtp.client-ip=95.215.58.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="doVN9Upk"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="G+0dyq6z"
 X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ax8mYEcyGBEatxsgbOEhQQNyrXq7UJvv30A7+qt8/ds=;
+DKIM-Signature: a=rsa-sha256; bh=+nU5/8RgiTGOWC6vO2b1821wiTATXqeosmxe4CwjTUM=;
  c=simple/simple; d=packett.cool;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792135952; v=1; x=1792740752;
- b=doVN9Upk+sLwAfcx7OGC6e4zZ4Mylj8Hjrpdhq5CDBj+yOoD3dz2oRI/3D+B7NaaJPWE+/Qm
- NsbmbIJVqtU6+243wrSKTfvu0gG1+9KKP2QskmGKblwSEkrnL8jZ39M5SywWwYD15m6EyJnypoA
- 4Qf9VhfklkZe1B7qvLo+Oz2DxgpzPj2Bh+i2uAlU7jcIMdWV/x6OzxYf8F5HPmZEGxudOvxVAw1
- KdIlfcNfYkmLAk3m5A2LZYejKl6vsNsD3yp3tBYOfJPGQefRh2kHwy+7/uenGT2fl3vIFtyJfWj
- pQeO8zCqVVtOqELeDTY/qKJeBg3KMhELgSDORhMc90J3A==
+ t=1792135959; v=1; x=1792740759;
+ b=G+0dyq6zd6RFOCb/rfELb9R2m65A3JTIsyu4NuI8gw8ujzSVGm3aHJ8h8ZllfkO529N3rTqz
+ 9JeWZmIgVp7O2Sb1Ukl54ExW9J69lupNKx53l0tgykShQ2R1iYFRL5vtCm5wckcEJcgXAnp8AS7
+ 8UOQjPn5jH7hCc7XyLLGc2ZBapaY7aQ8YNewq6N1oarm6lCbqn2SKrsh36AVG6Bwy0MyKE+EfVD
+ 6m5EQcf/T9m1srFIxDwOiYmb1WaD/t/EAAcPpJl+sBFPmb1Cj9Riqpfo6AY1CelKS7I9A9xXf3c
+ taaZI1AcIpnGUD1DV1TAhF5U2bkpCl85gXg7fD/IiNdfQ==
 X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id eab751fbddc727e5;
-	Fri, 16 Oct 2026 07:32:31 +0000
-X-Mizu-Trace-ID: eab751fbddc727e5
+Received: by smtp.migadu.com with ESMTPS id 70dc0017cd89afea;
+	Fri, 16 Oct 2026 07:32:38 +0000
+X-Mizu-Trace-ID: 70dc0017cd89afea
 X-Migadu-Flow: FLOW_OUT
 From: Val Packett <val@packett.cool>
 To: Srinivas Kandagatla <srini@kernel.org>,
 	Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
 Cc: Val Packett <val@packett.cool>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Luca Weiss <luca.weiss@fairphone.com>,
 	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Conor Dooley <conor+dt@kernel.org>,
 	~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH 3/5] ASoC: dt-bindings: qcom,sm8250: Add Motorola Edge 30 sound card
-Date: Fri, 16 Oct 2026 04:31:51 -0300
-Message-ID: <20261016073157.611956-4-val@packett.cool>
+Subject: [PATCH 4/5] ASoC: qcom: sm8250: Add motorola-dubai soundcard compatible
+Date: Fri, 16 Oct 2026 04:31:52 -0300
+Message-ID: <20261016073157.611956-5-val@packett.cool>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261016073157.611956-1-val@packett.cool>
 References: <20261016073157.611956-1-val@packett.cool>
@@ -63,26 +65,26 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Document the bindings for the sound card on motorola-dubai which uses the
-Elite DSP architecture.
+Add a compatible for the SM7325-based Motorola Edge 30 which can use this
+machine driver.
 
 Signed-off-by: Val Packett <val@packett.cool>
 ---
- Documentation/devicetree/bindings/sound/qcom,sm8250.yaml | 1 +
+ sound/soc/qcom/sm8250.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml b/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
-index fc7bccdace0f..c76c9c670bc1 100644
---- a/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
-+++ b/Documentation/devicetree/bindings/sound/qcom,sm8250.yaml
-@@ -36,6 +36,7 @@ properties:
-           - ayaneo,pocket-s2-sndcard
-           - fairphone,fp4-sndcard
-           - fairphone,fp5-sndcard
-+          - motorola,dubai-sndcard
-           - qcom,apq8096-sndcard
-           - qcom,glymur-sndcard
-           - qcom,qcm6490-idp-sndcard
+diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+index 2d49b04cb1f6..5866f1f34b3d 100644
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -215,6 +215,7 @@ static int sm8250_platform_probe(struct platform_device *pdev)
+ static const struct of_device_id snd_sm8250_dt_match[] = {
+ 	{ .compatible = "fairphone,fp4-sndcard", .data = "sm7225" },
+ 	{ .compatible = "fairphone,fp5-sndcard", .data = "qcm6490" },
++	{ .compatible = "motorola,dubai-sndcard", .data = "sm7325" },
+ 	{ .compatible = "qcom,qrb2210-sndcard", .data = "qcm2290" },
+ 	{ .compatible = "qcom,qrb4210-rb2-sndcard", .data = "sm4250" },
+ 	{ .compatible = "qcom,qrb5165-rb5-sndcard", .data = "sm8250" },
 -- 
 2.55.0
 
