@@ -1,104 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-74.mta1.migadu.com [95.215.58.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5A5556BA2;
-	Thu, 15 Oct 2026 17:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430B03AAF52
+	for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2026 06:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792086651; cv=none; b=QbMwg1KfJK2Autr7vuF9pcscyOyHVsnF30VIFT39DaGf/xlKRmNrwKVnV1SFxIshA/A+r0sqeOoSC9laDTnhRKowT5heidPDIv35lNXwYnk5jNjvjrXoxw8vNizwQc0Y5/Pl7vTRCqnVXMYdSm3j0Ar5NxQ/eoaCEFvotefiCAI=
+	t=1792132571; cv=none; b=tKf122DvkU3He+kXiL2+1yfoNVVI6tNODOD9Y/HS6AU3XItlFsJMzBHM2TAZnYCgJ+jBf/MwNGwOKQhFVxlX1BpUo2EdjBnBgFAFCFANu9W3NkakPNQAsbTzfK6ajXFW2eunGju+BQ2b4OB6IaedKfA0RyNh101w5rYXAI9UbDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792086651; c=relaxed/simple;
-	bh=od6D35Z+cDqTugTOW66XHSDEU4C/ACzlXp5dQmFkbzU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jiupyyp1upAR8OMp5aDvLFwUmnUwvM9hAlrTDHon/O2xHfwD+i4k8qWC7pKQAQ7M3YtGVZNdfpl+JFQKEPFNAWKBdBqac8NES9llZ9ItHYMhedweEoj3yNgPoUpY7OwmRnmLiQTNIqKGHWAhQdZmIAwtmmTp6HiW5Z3dBPD/W7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRNrq6Al; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792132571; c=relaxed/simple;
+	bh=FMULLhup5HxbZ62tpmVqhAwf9hbLzat0PudWDGHNiYM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EfVmZTMgDKIzEXOPq8Hf3lD5UP3Wh1aZMXxZeRbQ9tgUXY5u3QvvaMBR8gfbURqQJaVn3VkcHYViuQblOz84r2JYqq5eD/gQLvEF3w7qOBOy2qMf0S5zebZH6Of8uO5co0ulRrXpxFJtoK3Arrp8aa/pjTq/e+K85jdrudR7sUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=CvbPcpll; arc=none smtp.client-ip=95.215.58.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRNrq6Al"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25671F000C4;
-	Thu, 15 Oct 2026 17:50:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792086644;
-	bh=YtJ9wtucwJXF3mMJtgnK/q136YJ2VxcqA/HQbP09yHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jRNrq6AlxG7S7lIyo7Bi+xByIhvqx5Ur8AgrEWe+CAkIeLTAwlUqyEP0Ela4bGtc/
-	 r/jrE3ikj5OzAT6zlRSdL/WNTqFtWw3Qyv6jg76g+AqYclUOUMHtLUiapazM+m4UOk
-	 ZjuPcxbc/BAPQRIjr3/sEGbzj6Ph2huY8yJ2/sPtNb8XrYrXn44NJoDZtx1a9LVMtV
-	 E4zdSAkCgDN+KMuQhYU6Wx5HnQk/ZQNGehxdzw4ta8FhIqL7wQzo/DxAmcBsARtwGs
-	 DJqSkLTEBbtzR6RcTNyNrUuExJulzjb9eKhbEvFjS8HaGwyg8Yxxpm5YBRWWYAHtMT
-	 h45E0lAhzzH9w==
-Date: Thu, 15 Oct 2026 18:50:39 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Vladyslav Tymoshchuk <tvlad744@gmail.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Srinivas Kandagatla <srini@kernel.org>,
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="CvbPcpll"
+X-Envelope-To: phone-devel@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=FMULLhup5HxbZ62tpmVqhAwf9hbLzat0PudWDGHNiYM=;
+ c=simple/simple; d=packett.cool;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1792132562; v=1; x=1792737362;
+ b=CvbPcpllizDVQslEA8T8vTrQgs8cllH0v/IsNZ0nz7+28DKWetcktDjvZtlNTL3hOkjBZ2q0
+ cnrCAZ+6VUVL3FWAfimw0k+klqf77g8BIDI4FKrgFONSl/bWgYwJ2TXxLhbfFsiWq/5nTzPfA+N
+ NieSNcYTtmZWELvcbrR1Y8ORl/eAzJmE/o4WAnYIlSQAZW5d/YNnUFWg+2m5RZgvZNjbAGBLluJ
+ /mihl4GMVLTElxq1px7Ktd6JSGl4izmcwFrnrCxR959rlHfLcP/jCW61J6qqjcxFcUDXQU3NLXL
+ /joC4Y0TaOMT9cuUcieStnsctKhtI/bKIJMmitZxdpL3g==
+X-Envelope-To: phone-devel@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a73d9cd8a502dbf2;
+	Fri, 16 Oct 2026 06:36:02 +0000
+X-Mizu-Trace-ID: a73d9cd8a502dbf2
+X-Migadu-Flow: FLOW_OUT
+From: Val Packett <val@packett.cool>
+To: Srinivas Kandagatla <srini@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: Val Packett <val@packett.cool>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Bhushan Shah <bhushan.shah@machinesoul.in>,
 	Luca Weiss <luca.weiss@fairphone.com>,
-	Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>,
-	Val Packett <val@packett.cool>,
-	Federico Amedeo Izzo <federico@izzo.pro>,
-	linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] ASoC: codecs: aw88261: start the amplifier on unmute at
- trigger time
-Message-ID: <bf823f3b-f064-4dd7-acfd-4136efd090de@sirena.org.uk>
-References: <20261014120000.aw88261-trigger-v1-1-tvlad744@gmail.com>
+	Antoine Bernard <zalnir@proton.me>,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND v2] ASoC: qcom: qdsp6: q6afe: fix clk vote response type mismatch
+Date: Fri, 16 Oct 2026 03:29:17 -0300
+Message-ID: <20261016063536.598610-1-val@packett.cool>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="InSaLPQge8k87Ejv"
-Content-Disposition: inline
-In-Reply-To: <20261014120000.aw88261-trigger-v1-1-tvlad744@gmail.com>
-X-Cookie: Tax and title extra.
+Content-Transfer-Encoding: 8bit
 
+The response sent by the firmware when requesting a clock vote (opcode
+AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST) does not actually have
+the same opcode + status payload as APR_BASIC_RSP_RESULT. Rather, it
+returns one single u32 which is the client_handle that must be used in
+future unvote requests for the same clock.
 
---InSaLPQge8k87Ejv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+As a result of this type confusion, the status returned by the callback
+to q6afe_vote_lpass_core_hw was actually an out-of-bounds read. It was
+only interpreted as success (0) most of the time due to luck, but there
+are some reports of random errors such as:
 
-On Wed, Oct 14, 2026 at 07:36:49PM +0300, Vladyslav Tymoshchuk wrote:
+[   20.961100] qcom-q6afe aprsvc:service:4:4: AFE failed to vote (3)
+[   20.961131] Failed to prepare clk 'core': -110
 
-> The amplifier is started from the PRE_PMU event of its AIF widget, that
-> is from DAPM in prepare. aw88261_dev_start() then waits up to 20 ms for
-> the PLL to lock to the bit clock and powers the amplifier down again if
-> it does not.
->=20
-> Not every host runs the bit clock by then. The Qualcomm AudioReach
-> backends only start their graph, and with it the I2S/TDM clocks, in
-> trigger since commit b54a38af7138 ("ASoC: qcom: q6apm-lpass-dai: move
-> graph start to trigger"). There every start fails with "start failure
-> (-1)" and the speaker stays silent for the whole stream, as seen with
-> six AW88261 on a TDM link of SM8750. The asynchronous start removed by
-> commit caea99ac809d ("ASoC: codecs: aw88261: remove async start") only
-> hid this when the trigger came soon enough.
+Fix by correctly interpreting the response as a single u32, and actually
+store it as the client_handle to ensure unvote would work correctly.
 
-OTOH some hosts presumably do have the clock running earlier and will
-now get delays added in trigger which isn't ideal.  I'm not sure we have
-good solutions here given that this is all system dependent.
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/5976946.DvuYhMxLoT@antlia/
+Fixes: 55e07531d922 ("ASoC: q6dsp: q6afe: add lpass hw voting support")
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+---
 
-> The trigger has to be nonatomic for the I2C accesses, which the
-> Qualcomm DPCM links using this codec are.
+Previously part of a series:
+https://lore.kernel.org/all/20260506204142.659778-2-val@packett.cool/
 
-Are we *sure* there are no other users out there?
+but it's actually independent and reviewed, let's try again with just this..
 
---InSaLPQge8k87Ejv
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+~val
 
------BEGIN PGP SIGNATURE-----
+---
+ sound/soc/qcom/qdsp6/q6afe.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrREm4ACgkQJNaLcl1U
-h9AUigf/fq075WtWjYXHWepUgtsMQ+riHXSZrenWKYM/xRW3cSndug1ZbZRdJ02f
-gpahaf0zkDr5/K0HRK5Yla8QbMbUnVN/bLapTpf6t9UcYDq1dL4A1niA8884Ozlc
-9ti+hTWeNd6GPnMv33fv6m36I0JyrQa7rI30cr8btH3Iddzip4v0j/kZPHEuYBum
-G+TeOmtTCA/JZgKKz12j6y4P/+ETGrakgaw17AvKaPEH4X7u4ySZLL9yoUebfe1c
-b+IEnQQ4y30YloTGD1oQenA6Kn9Te9Zdgc/p/B2/keyIY6h5VvbhsDiUTFSG0WId
-9k/3eYLDTC6+35/WAkkG6h7o23PuDw==
-=0SnJ
------END PGP SIGNATURE-----
+diff --git a/sound/soc/qcom/qdsp6/q6afe.c b/sound/soc/qcom/qdsp6/q6afe.c
+index f0ff1350e9dd..9ac51c304ead 100644
+--- a/sound/soc/qcom/qdsp6/q6afe.c
++++ b/sound/soc/qcom/qdsp6/q6afe.c
+@@ -393,6 +393,7 @@ struct q6afe {
+ 	struct q6core_svc_api_info ainfo;
+ 	struct mutex lock;
+ 	struct aprv2_ibasic_rsp_result_t result;
++	uint32_t vote_result;
+ 	wait_queue_head_t wait;
+ 	struct list_head port_list;
+ 	spinlock_t port_list_lock;
+@@ -1010,13 +1011,14 @@ static int q6afe_callback(struct apr_device *adev, const struct apr_resp_pkt *da
+ 	const struct aprv2_ibasic_rsp_result_t *res;
+ 	const struct apr_hdr *hdr = &data->hdr;
+ 	struct q6afe_port *port;
++	uint32_t *vote_res;
+ 
+ 	if (!data->payload_size)
+ 		return 0;
+ 
+-	res = data->payload;
+ 	switch (hdr->opcode) {
+ 	case APR_BASIC_RSP_RESULT: {
++		res = data->payload;
+ 		if (res->status) {
+ 			dev_err(afe->dev, "cmd = 0x%x returned error = 0x%x\n",
+ 				res->opcode, res->status);
+@@ -1043,8 +1045,10 @@ static int q6afe_callback(struct apr_device *adev, const struct apr_resp_pkt *da
+ 	}
+ 		break;
+ 	case AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST:
++		vote_res = data->payload;
+ 		afe->result.opcode = hdr->opcode;
+-		afe->result.status = res->status;
++		afe->result.status = 0;
++		afe->vote_result = *vote_res;
+ 		wake_up(&afe->wait);
+ 		break;
+ 	default:
+@@ -1955,6 +1959,8 @@ int q6afe_vote_lpass_core_hw(struct device *dev, uint32_t hw_block_id,
+ 			       AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST);
+ 	if (ret)
+ 		dev_err(afe->dev, "AFE failed to vote (%d)\n", hw_block_id);
++	else
++		*client_handle = afe->vote_result;
+ 
+ 	return ret;
+ }
+-- 
+2.55.0
 
---InSaLPQge8k87Ejv--
