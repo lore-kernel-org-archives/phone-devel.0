@@ -1,106 +1,105 @@
-Received: from outbound.soverin.net (outbound.soverin.net [185.233.34.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D7641B8DC;
-	Sun, 18 Oct 2026 09:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.34.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C184B3DB632;
+	Sun, 18 Oct 2026 17:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792317436; cv=none; b=IPfppmUEHnDDj7pBnq8vVYt4GqdAkjaYxRgmRaXBvJ0+89N8m432Fvq/Tn0PwHpyNfJncXsIHM06cmSVL3vXtX9c+EU0RQQf9IwDL040lhkjcmDE9XCxqOiDscWe4oGoUnFSV4TaDGyYmbLodKhrtxiB2tPG38Z7S1cuEFpB+vQ=
+	t=1792345694; cv=none; b=qaDKVNduG2u9CMmbXNItyHze0CJH7qFoLN72Vr1i6ywIasiklHDVV9VJuNIhaf0wGnJAFon/vrw0Y4l/OTBb4UkPj8lMjDO3maFXbr3B0Ye9lCVO0hFTYZMSelJQpjaSPYGfwrnPwjt91lYTNsD9oRAiKnPVSi+yaBb6/mm06q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792317436; c=relaxed/simple;
-	bh=rUea3DCws+rncFslxzgZpDb9Tfn9iGN2SBnMV6j5Qaw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=h8RSdv0rPk+7EDK5F2B7/LIKySU8OO7X641GuRYEcRXevvM2lLIESVdOQNZlFN6M24g2j0SPqNQDgAvCVyUsIMf2El6pzqdv9bDpop96otfg+LtYK7uoS5jJCpDxByy+AC4sJSGcdPvzXy261KaKa4apbS6dG1YTc675/RO+LKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=izzo.pro; spf=pass smtp.mailfrom=izzo.pro; dkim=pass (2048-bit key) header.d=izzo.pro header.i=@izzo.pro header.b=Vfc2Wfe6; dkim=pass (2048-bit key) header.d=izzo.pro header.i=@izzo.pro header.b=epYghd1M; arc=none smtp.client-ip=185.233.34.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=izzo.pro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=izzo.pro
+	s=arc-20240116; t=1792345694; c=relaxed/simple;
+	bh=QWq3i3vzm1mSRgoW4PRUGVCNPZiytoi3lzMyn9N9VfE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=NFjfcAPlsXsLSa2HnXxTct/E4/vA9cC4zvqCo8gvWrQze5FBqQf17SMjo1c5HTrvGYI0VjktmOkDxeCefrnWIBn3mafoW5PlZVgnOccy6W/P8KRgbxB1j31wFMYeSNLCzC/Y+xSmZGvMoaABr0WAz3X7J5qi/hbhjCSWrxFZh7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmMsRKJX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=izzo.pro header.i=@izzo.pro header.b="Vfc2Wfe6";
-	dkim=pass (2048-bit key) header.d=izzo.pro header.i=@izzo.pro header.b="epYghd1M"
-Received: from smtp.soverin.net (unknown [10.102.10.155])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by outbound.soverin.net (Postfix) with ESMTPS id 4j6v2V0tTLzxKM;
-	Sun, 18 Oct 2026 09:46:26 +0000 (UTC)
-Received: from smtp.soverin.net (smtp.soverin.net [10.102.10.155]) by soverin.net (Postfix) with ESMTPSA id 4j6v2T57PVzTD5;
-	Sun, 18 Oct 2026 09:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=izzo.pro; s=soverin;
-	t=1792316786; bh=rUea3DCws+rncFslxzgZpDb9Tfn9iGN2SBnMV6j5Qaw=;
-	h=Date:Cc:Subject:From:To:From;
-	b=Vfc2Wfe6XQNccEdPYy9OGKWtLN8vVwQ3yo9ORxrxb0ogkB1acdLxHXnt8Ra8YVL/F
-	 o3UlR+5NzW8fdC6zgaGcFGxT7zMcIoUroPIqM8L9//W+OsNLvyZP+QYF7LCLlSGZ5+
-	 U+BD6sKMMS/SGTQ/NzNqoZNQKwjMgZsv2B9tzJf6D5eF6OmGTsfnvZGyC1Hq9aDZYe
-	 a4/0LGhFnIJqsRSK+Y18NycNDcRkf49vxlcbUn27ENsFf1+4GG7cGiSvw4WR8w2imo
-	 hNgxvzzaZPIuiUi1coOh9NtN0Gzfwuph6vaJMnl82MQpdTCXFfAqU2MDU8Ql+lOTO+
-	 wxJ9kENAKPM3Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=izzo.pro; s=soverin1;
-	t=1792316786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rUea3DCws+rncFslxzgZpDb9Tfn9iGN2SBnMV6j5Qaw=;
-	b=epYghd1MqXCj0kUjrB767RqUtXb99Ix2y+PbjqhEMVn7btg8WUEerNabZcLZUIRPKcKCK+
-	82fQqBnowC7Ypilk+iy2XejoS5UgjY9KA1tN6wUeVH2+K83VvGuez3SDyth38t4UQrPe0n
-	HkkaC1X4MRvQ8dfFm5lJtNnMOSpjr4AMeZ/pdWOEBZdXowtSQotDF027J7yxhe6hc8yEEQ
-	425x07CQ3e4XoTlT3hbgWq79YteelQSgKpO5HxG0A04/Q/459Gvuv5NqwECFfiQkwT4Zp+
-	p5zYgYwJkjEubyy8gUOOz1oGn6gEeDdL9h3uO2on91ejEqupDpIvXy+N3Delxg==
-X-CM-Envelope: MS4xfM6vEoJgHLzdsND58SmvowWoa9xq77oOqkuzd6aACLrW8IxVx21AvrT1+viWelsOqikY1d4Tx9NKltMe6o983L2Mw1Obx+Y4zrLUjmAMDQ855f3Nq5QJ MZZ5GCkP3OGFz5sfa3vt3g+0WbmdisCqvIVT1sQ1o6R7tFp11NVWY4/BfnLFiRBQ98fRX1VM7tLkJiunEaSrg1thuB78nnJ6ptI2HcJ7W8zseP+G+gzGPUB5 T2h6e3W1PUFQSxZQAMJTYzeNXGR8gqs/4P2ssHBstiA0TC5S9BHKZhF7A/Gv3W+IKHfNV+zpaJ51L7dgmAUx4w2X4LmGu2fXT77wPLFlKr8BHn0WOxO8xvfK 214y+QSwrtG26CyC9tBjTqLpJQcGWtH6EgNd15WgYrJ7vKyY9a2ioSuefUtM4SRWxUqH8CCR/HTj61hFfHf1w5jml8tw/Ry6I6Da40pIIJYZNmneFoPvJNxP pQ2ym/Iih1SdVCpc
-X-Soverin-Id: 01a14e67-c168-71c1-8639-4924ddc596e7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmMsRKJX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831251F000C4;
+	Sun, 18 Oct 2026 17:47:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792345691;
+	bh=dY2M5OxJo8HeSyHYgOk8jaF2BQkfRQ9MFiTg1z74do8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=WmMsRKJXRHA7kPl/KchgJmnzSCOk7/+AC+7m/LM0me8m9EDoyPAcPxzuBhYDus1Km
+	 zWbojCUpK18UhP3qRdL892hvkftGS4bxpMycE0ee/k+gptg+4P3hSHAuuUzTG/p1As
+	 54GX7SH6OudgfWflcFNGP4tsQSeVKdwpKyEg45qLjNj8n9tuECQ69gts09fcFByRXc
+	 hmtoM0NETvSt6Wr4Sn1NvZ+wemUmxcV0qNQyCpDMGi0exdaQ3m9ECEZpgJNVkdEWma
+	 qJSjO/hV5zpUoxxpsxOell4pJwwp7y+RLR0CTEA+6Ngh6Zk5ypQTwMjq8o4O1FFGkE
+	 Ttx+6MC2wKGLg==
+From: Mark Brown <broonie@kernel.org>
+To: Val Packett <val@packett.cool>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
+ Conor Dooley <conor+dt@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261016073157.611956-1-val@packett.cool>
+References: <20261016073157.611956-1-val@packett.cool>
+Subject: Re: (subset) [PATCH 0/5] Enable soundcard on Motorola Edge 30
+Message-Id: <179218647657.3162228.4284806308774013026.b4-ty@b4>
+Date: Fri, 16 Oct 2026 22:34:36 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 18 Oct 2026 11:46:25 +0200
-Message-Id: <DM7V9WDDVQ2I.3THP2TDPTP994@izzo.pro>
-Cc: <federico@izzo.pro>, <luca.weiss@fairphone.com>, <val@packet.cool>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: [RFC] power: supply: qcom_battmgr: implement battery charge control
- on kodiak phones
-From: "Federico Amedeo Izzo" <federico@izzo.pro>
-To: <linux-arm-msm@vger.kernel.org>, <linux-pm@vger.kernel.org>
-X-Spampanel-Class: ham
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1766; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=QWq3i3vzm1mSRgoW4PRUGVCNPZiytoi3lzMyn9N9VfE=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLKusjnsvXlOalPSOZVfXa8bu/+I8OkxWf7w8jAqFpoSy
+ Prz5FfRjlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEyk/gwjw8zn6WtWG1dc15Wp
+ 0V5uN3veliU7/bv4ZY/ZWDjIsS209mH4K6D/WvhS66x3x/XOFOqIcstM+Pr2/T21BemvF0Wc+JK
+ lzA0A
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hello,
+On Fri, 16 Oct 2026 04:31:48 -0300, Val Packett wrote:
+> Enable soundcard on Motorola Edge 30
+> 
+> This series enables sound support on motorola-dubai, at least the
+> speakers.. The WCD that handles microphones and analog USB-C sound
+> is left out because it would first need:
+> https://lore.kernel.org/all/20260522-kodiak-elite-macros-v1-1-487661ac1270@fairphone.com/
+> 
+> [...]
 
-I want to implement battery charge control support on two kodiak phones:
-motorola-dubai and fairphone-fp5. I kindly ask your feedback on my=20
-implementation proposal below.
+Applied to
 
-This feature also known as "charging limit" or "battery health" lets the us=
-er
-limit the battery charging range to 0-80% tipically, in order to extend the
-lifetime of the battery. It can also be used with a lower range 0-50% to
-prevent battery degradation on devices always connected to a charger.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.4
 
-Newer SoCs like SM8550 and X1E80100 implement charge control in the battmgr
-firmware, but kodiak (SM8350 in qcom-battmgr.c) does not support that (I tr=
-ied
-using the same property ID as newer SoCs with no luck.
+Thanks!
 
-Looking at downstream implementations, both dubai and fp5 implement the abi=
-lity
-to stop and start the charge with custom extensions to the battmgr firmware=
-,
-while the actual charge control logic is implemented in a kernel driver (du=
-bai)
-or in a userspace java service (fp5).
+[1/5] ASoC: qcom: qdsp6: q6routing: add Senary MI2S ports
+      https://git.kernel.org/broonie/sound/c/2b20c976bb63
+[2/5] ASoC: qcom: sm8250: add Senary MI2S RX support
+      https://git.kernel.org/broonie/sound/c/41c6eb15291f
+[3/5] ASoC: dt-bindings: qcom,sm8250: Add Motorola Edge 30 sound card
+      https://git.kernel.org/broonie/sound/c/a0f1887655af
+[4/5] ASoC: qcom: sm8250: Add motorola-dubai soundcard compatible
+      https://git.kernel.org/broonie/sound/c/32c9d661dab0
 
-My plan is to expose the start/stop firmware capability of the two phones u=
-sing
-the charge_behaviour sysfs property, then implement the charge control logi=
-c
-(start/stop charge depending on current level vs thresholds) in the qcom-ba=
-ttmgr
-driver itself and expose the sysfs properties charge_control_start/end_thre=
-shold
-to let userspace change the thresholds. The scope of this "software"
-implementation would be limited to SM8350 in qcom-battmgr as later SoCs can
-already do this in firmware.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Best regards,
-Federico Amedeo Izzo
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
