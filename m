@@ -1,59 +1,55 @@
-Received: from mta1.migadu.com (out-63.mta1.migadu.com [95.215.58.63])
+Received: from mta1.migadu.com (out-74.mta1.migadu.com [95.215.58.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1306643802B
-	for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2026 07:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D58A442373
+	for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2026 07:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792135962; cv=none; b=IE+hcpecYprf9lvidCiF+rt5OMEgKnlF3L2COKdbKNKBDmpo89/EXY82PyzsnmLRWBNmN1mz73S5Z6uPe/V5vzHcTXmnxd6gECT+eUtYNxOfY1sofPIL9Z86NcNKR8/gD3Y/wzpm1DoRWjr+VhMOuqlVeadiNKG3wX7f+ieZHxU=
+	t=1792135968; cv=none; b=HdFJX9xDnz6l4M77aTDwQsvNTJDJuzeNMe33UFR2L6rOesUlD+C6EBTPvU3VCg6mXvxIKYzarnBOhkiC+TA9x0byClpbXrwGW9//uLdY6NX8IWCsMazAaZ1RRLTFYthHSf+BweHoDHyUV4C6rkEfzLcFFMi7CWGl2PHeVdy6/gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792135962; c=relaxed/simple;
-	bh=+nU5/8RgiTGOWC6vO2b1821wiTATXqeosmxe4CwjTUM=;
+	s=arc-20240116; t=1792135968; c=relaxed/simple;
+	bh=h4iQMDwculI35BN+CaCK0/O9tu5VYhaUA1qiA1U2urM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTXx6uoXt/Qz1vfT9icLLe1DYffgiFrUwtcyljat9QvX5RgZFihrnUue9XWZCrUyqY1YUzof1Wskv7LRj29+222CQ5FhQFFK0vNAM9aJunQUTikxcOYtYO2snxs74PZnVSqMdKX9gCsnoxkyzRHrqI8bRIssELPBuXKOXLoAqKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=G+0dyq6z; arc=none smtp.client-ip=95.215.58.63
+	 MIME-Version; b=CC8attNvTX2Vuktqbu33+xJCA1yttn3HLebhXOIWGaEyYJzt085TJeFsaROpaAHEIDaBEooITdYMTIMXj8Pzhx07IS6pXSxuVYCHmcSJPHRhIKYpLpHUVxLwu7HA3DILIUIpN0LgRdfFr088zLn0kJ81DT+L4jaVvWIcQnLi7/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=R6TDZH4u; arc=none smtp.client-ip=95.215.58.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="G+0dyq6z"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="R6TDZH4u"
 X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=+nU5/8RgiTGOWC6vO2b1821wiTATXqeosmxe4CwjTUM=;
+DKIM-Signature: a=rsa-sha256; bh=h4iQMDwculI35BN+CaCK0/O9tu5VYhaUA1qiA1U2urM=;
  c=simple/simple; d=packett.cool;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792135959; v=1; x=1792740759;
- b=G+0dyq6zd6RFOCb/rfELb9R2m65A3JTIsyu4NuI8gw8ujzSVGm3aHJ8h8ZllfkO529N3rTqz
- 9JeWZmIgVp7O2Sb1Ukl54ExW9J69lupNKx53l0tgykShQ2R1iYFRL5vtCm5wckcEJcgXAnp8AS7
- 8UOQjPn5jH7hCc7XyLLGc2ZBapaY7aQ8YNewq6N1oarm6lCbqn2SKrsh36AVG6Bwy0MyKE+EfVD
- 6m5EQcf/T9m1srFIxDwOiYmb1WaD/t/EAAcPpJl+sBFPmb1Cj9Riqpfo6AY1CelKS7I9A9xXf3c
- taaZI1AcIpnGUD1DV1TAhF5U2bkpCl85gXg7fD/IiNdfQ==
+ t=1792135964; v=1; x=1792740764;
+ b=R6TDZH4ufGC7yzzou84+p5kCxMO2nPvFjhPSm+HcYRnua+1vv7GsfWpqoy/nR9/dkb8UXvz4
+ zmH8asAy08i9x2HXQI1zJmXe6oiaEbSRfV1ki8R4XxiOn7U0H55UyMNFELtaiieEebe9cUyeDTb
+ 2GuidxlumJL9qGToz5WdBc5cgcwAvoFBzyo3lLSh4Kutwfze7q64nWsFIoWtY/Nr1ZpMu46mG5O
+ urxvYPyE8OJklvMEehA2d3jK8Tl2Qp+EGty7kpYUDycFYQrXLTXQrstofDC5BNdjZltBL+S/ZGk
+ g360KnFTY30/WWoJvMBP2pUnp298JRI5DHbm6rm/8m4Uw==
 X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 70dc0017cd89afea;
-	Fri, 16 Oct 2026 07:32:38 +0000
-X-Mizu-Trace-ID: 70dc0017cd89afea
+Received: by smtp.migadu.com with ESMTPS id 26581679077c411a;
+	Fri, 16 Oct 2026 07:32:44 +0000
+X-Mizu-Trace-ID: 26581679077c411a
 X-Migadu-Flow: FLOW_OUT
 From: Val Packett <val@packett.cool>
-To: Srinivas Kandagatla <srini@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Val Packett <val@packett.cool>,
-	Bjorn Andersson <andersson@kernel.org>,
+To: Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Val Packett <val@packett.cool>,
+	Mark Brown <broonie@kernel.org>,
 	Luca Weiss <luca.weiss@fairphone.com>,
 	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Conor Dooley <conor+dt@kernel.org>,
 	~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH 4/5] ASoC: qcom: sm8250: Add motorola-dubai soundcard compatible
-Date: Fri, 16 Oct 2026 04:31:52 -0300
-Message-ID: <20261016073157.611956-5-val@packett.cool>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5/5] arm64: dts: qcom: motorola-dubai: Add sound card with aw88261 speakers
+Date: Fri, 16 Oct 2026 04:31:53 -0300
+Message-ID: <20261016073157.611956-6-val@packett.cool>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261016073157.611956-1-val@packett.cool>
 References: <20261016073157.611956-1-val@packett.cool>
@@ -65,26 +61,179 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a compatible for the SM7325-based Motorola Edge 30 which can use this
-machine driver.
+Enable the sndcard node with three MultiMedia frontends, a USB offload
+RX link, and two Awinic AW88261 speaker amps on senary MI2S.
+
+While here, use the correct compatible for audiocc for this phone,
+and remove references to power-domains from a 'reserved' node.
 
 Signed-off-by: Val Packett <val@packett.cool>
 ---
- sound/soc/qcom/sm8250.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../qcom/sm7325-motorola-dubai-common.dtsi    | 119 ++++++++++++++++++
+ 1 file changed, 119 insertions(+)
 
-diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
-index 2d49b04cb1f6..5866f1f34b3d 100644
---- a/sound/soc/qcom/sm8250.c
-+++ b/sound/soc/qcom/sm8250.c
-@@ -215,6 +215,7 @@ static int sm8250_platform_probe(struct platform_device *pdev)
- static const struct of_device_id snd_sm8250_dt_match[] = {
- 	{ .compatible = "fairphone,fp4-sndcard", .data = "sm7225" },
- 	{ .compatible = "fairphone,fp5-sndcard", .data = "qcm6490" },
-+	{ .compatible = "motorola,dubai-sndcard", .data = "sm7325" },
- 	{ .compatible = "qcom,qrb2210-sndcard", .data = "qcm2290" },
- 	{ .compatible = "qcom,qrb4210-rb2-sndcard", .data = "sm4250" },
- 	{ .compatible = "qcom,qrb5165-rb5-sndcard", .data = "sm8250" },
+diff --git a/arch/arm64/boot/dts/qcom/sm7325-motorola-dubai-common.dtsi b/arch/arm64/boot/dts/qcom/sm7325-motorola-dubai-common.dtsi
+index 3860ab8508a0..1e1c195de1af 100644
+--- a/arch/arm64/boot/dts/qcom/sm7325-motorola-dubai-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm7325-motorola-dubai-common.dtsi
+@@ -16,6 +16,8 @@
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
++#include <dt-bindings/sound/qcom,q6afe.h>
++#include <dt-bindings/sound/qcom,q6asm.h>
+ 
+ #include "sm7325.dtsi"
+ #include "pm7325.dtsi"
+@@ -699,6 +701,40 @@ &gpu_zap_shader {
+ 	firmware-name = "qcom/sm7325/motorola/dubai/a660_zap.mbn";
+ };
+ 
++&i2c1 {
++	clock-frequency = <100000>;
++
++	status = "okay";
++
++	/* Bottom speaker */
++	aw88261_r: audio-codec@34 {
++		compatible = "awinic,aw88261";
++		reg = <0x34>;
++
++		dvdd-supply = <&vreg_l18b_1p8>;
++		sound-name-prefix = "Amplifier R";
++		firmware-name = "qcom/sm7325/motorola/dubai/aw88261_acf.bin";
++
++		awinic,audio-channel = <0>;
++
++		#sound-dai-cells = <0>;
++	};
++
++	/* Top speaker / ear speaker */
++	aw88261_l: audio-codec@35 {
++		compatible = "awinic,aw88261";
++		reg = <0x35>;
++
++		dvdd-supply = <&vreg_l18b_1p8>;
++		sound-name-prefix = "Amplifier L";
++		firmware-name = "qcom/sm7325/motorola/dubai/aw88261_acf.bin";
++
++		awinic,audio-channel = <1>;
++
++		#sound-dai-cells = <0>;
++	};
++};
++
+ &i2c4 {
+ 	clock-frequency = <100000>;
+ 
+@@ -732,6 +768,11 @@ &ipa {
+ 	status = "okay";
+ };
+ 
++&lpass_audiocc {
++	compatible = "qcom,qcm6490-lpassaudiocc";
++	/delete-property/ power-domains;
++};
++
+ &pm7250b_adc {
+ 	channel@4e {
+ 		reg = <ADC5_AMUX_THM2_100K_PU>;
+@@ -972,10 +1013,22 @@ &pon_resin {
+ 	status = "okay";
+ };
+ 
++&q6afedai {
++	dai@147 {
++		reg = <SENARY_MI2S_RX>;
++		qcom,sd-lines = <0>;
++	};
++};
++
+ &qfprom {
+ 	vcc-supply = <&vdd_qfprom>;
+ };
+ 
++&qup_i2c1_data_clk {
++	drive-strength = <2>;
++	bias-pull-up;
++};
++
+ &qup_spi13_cs {
+ 	drive-strength = <6>;
+ 	bias-pull-down;
+@@ -1066,6 +1119,72 @@ &rmtfs_mem {
+ 		    <QCOM_SCM_VMID_NAV>;
+ };
+ 
++&sound {
++	compatible = "motorola,dubai-sndcard";
++	model = "Motorola-dubai";
++
++	pinctrl-0 = <&lpass_i2s2_active>;
++	pinctrl-1 = <&lpass_i2s2_sleep>;
++	pinctrl-names = "default",
++			"sleep";
++
++	mm1-dai-link {
++		link-name = "MultiMedia1";
++
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
++		};
++	};
++
++	mm2-dai-link {
++		link-name = "MultiMedia2";
++
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA2>;
++		};
++	};
++
++	mm3-dai-link {
++		link-name = "MultiMedia3";
++
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA3>;
++		};
++	};
++
++	i2s-dai-link {
++		link-name = "Senary MI2S Playback";
++
++		codec {
++			sound-dai = <&aw88261_l>, <&aw88261_r>;
++		};
++
++		cpu {
++			sound-dai = <&q6afedai SENARY_MI2S_RX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++	};
++
++	usb-dai-link {
++		link-name = "USB Playback";
++
++		codec {
++			sound-dai = <&q6usbdai USB_RX>;
++		};
++
++		cpu {
++			sound-dai = <&q6afedai USB_RX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++	};
++};
++
+ &spi13 {
+ 	status = "okay";
+ 
 -- 
 2.55.0
 
