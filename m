@@ -1,55 +1,54 @@
-Received: from mta1.migadu.com (out-74.mta1.migadu.com [95.215.58.74])
+Received: from mta1.migadu.com (out-250.mta1.migadu.com [95.215.58.250])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430B03AAF52
-	for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2026 06:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE924219E9
+	for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2026 07:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.250
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792132571; cv=none; b=tKf122DvkU3He+kXiL2+1yfoNVVI6tNODOD9Y/HS6AU3XItlFsJMzBHM2TAZnYCgJ+jBf/MwNGwOKQhFVxlX1BpUo2EdjBnBgFAFCFANu9W3NkakPNQAsbTzfK6ajXFW2eunGju+BQ2b4OB6IaedKfA0RyNh101w5rYXAI9UbDY=
+	t=1792135933; cv=none; b=R+g3unnU8VuWk8AWrbwY9kqXbELO1E4AFt6zBGJ7lnA3AdG8FAkm0uvJ3xh8rYWCvzwG54sH/+WC/3UH81sdRGFsbR2SQ1UXjWp4DrXdgS5eL7a1kQWT5LsJxsRs8LMMuV2AEJu1SDGJeu+3FWRIafwz4cBBhswi991pE2mXZ/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792132571; c=relaxed/simple;
-	bh=FMULLhup5HxbZ62tpmVqhAwf9hbLzat0PudWDGHNiYM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EfVmZTMgDKIzEXOPq8Hf3lD5UP3Wh1aZMXxZeRbQ9tgUXY5u3QvvaMBR8gfbURqQJaVn3VkcHYViuQblOz84r2JYqq5eD/gQLvEF3w7qOBOy2qMf0S5zebZH6Of8uO5co0ulRrXpxFJtoK3Arrp8aa/pjTq/e+K85jdrudR7sUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=CvbPcpll; arc=none smtp.client-ip=95.215.58.74
+	s=arc-20240116; t=1792135933; c=relaxed/simple;
+	bh=9DtZpCIRDOliA3QoJp8RXKIGTL5jZ5YPhYQMEBLV5GY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uF6j/pr8WLqIq49HFBP6O282ZvOhwCeBfoWVzPK+VG5lOrenneYsLWFNbk6tItmXqI7eT95Wws6jozZvP8UrJrJUfVJbR/b+1MwiR8oyb2uiYsiMgYtumIp7TiinT2WTFl8yky/k2CDEqgZVeHZQPzXC1+nD/CnTxHIjzPRl1hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=qfW4Whzp; arc=none smtp.client-ip=95.215.58.250
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="CvbPcpll"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="qfW4Whzp"
 X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=FMULLhup5HxbZ62tpmVqhAwf9hbLzat0PudWDGHNiYM=;
+DKIM-Signature: a=rsa-sha256; bh=9DtZpCIRDOliA3QoJp8RXKIGTL5jZ5YPhYQMEBLV5GY=;
  c=simple/simple; d=packett.cool;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792132562; v=1; x=1792737362;
- b=CvbPcpllizDVQslEA8T8vTrQgs8cllH0v/IsNZ0nz7+28DKWetcktDjvZtlNTL3hOkjBZ2q0
- cnrCAZ+6VUVL3FWAfimw0k+klqf77g8BIDI4FKrgFONSl/bWgYwJ2TXxLhbfFsiWq/5nTzPfA+N
- NieSNcYTtmZWELvcbrR1Y8ORl/eAzJmE/o4WAnYIlSQAZW5d/YNnUFWg+2m5RZgvZNjbAGBLluJ
- /mihl4GMVLTElxq1px7Ktd6JSGl4izmcwFrnrCxR959rlHfLcP/jCW61J6qqjcxFcUDXQU3NLXL
- /joC4Y0TaOMT9cuUcieStnsctKhtI/bKIJMmitZxdpL3g==
+ t=1792135929; v=1; x=1792740729;
+ b=qfW4WhzpArFPt1zqbj5s2a+Pc57XVkwgMEMfdQBZQ1T2zX4kInSSHx6PCX5q9nP6tc3eNJ1t
+ f21LeDeMhU+y1mLiXPcQYVtCfb4oNaUpD0wHcsJ1ul10nG8yRAUK7YJQa2aGvhCqDRPtwtjQPUv
+ 4/baIkz4gccd1lMn8Nib22K6ixP+ZF6jVR6nq/bmOZcKdbTShLtUOvzm9IN+GGDh8UTDD403j2c
+ SK+REqQkQE1xR7yylzH2Ga1o0qbdj5qJscIrJv3RuNuN/Cgu4W93BeaTxa+IHyRwXbUn/xXf2I2
+ Ai+QpigaSc3uVX1ik1xcpLVtk51sb0pMtk3fPXp6cLRNA==
 X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a73d9cd8a502dbf2;
-	Fri, 16 Oct 2026 06:36:02 +0000
-X-Mizu-Trace-ID: a73d9cd8a502dbf2
+Received: by smtp.migadu.com with ESMTPS id c249511dffadb7a4;
+	Fri, 16 Oct 2026 07:32:09 +0000
+X-Mizu-Trace-ID: c249511dffadb7a4
 X-Migadu-Flow: FLOW_OUT
 From: Val Packett <val@packett.cool>
-To: Srinivas Kandagatla <srini@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
+To: 
 Cc: Val Packett <val@packett.cool>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Bhushan Shah <bhushan.shah@machinesoul.in>,
+	Mark Brown <broonie@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Luca Weiss <luca.weiss@fairphone.com>,
-	Antoine Bernard <zalnir@proton.me>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Conor Dooley <conor+dt@kernel.org>,
 	~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND v2] ASoC: qcom: qdsp6: q6afe: fix clk vote response type mismatch
-Date: Fri, 16 Oct 2026 03:29:17 -0300
-Message-ID: <20261016063536.598610-1-val@packett.cool>
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] Enable soundcard on Motorola Edge 30
+Date: Fri, 16 Oct 2026 04:31:48 -0300
+Message-ID: <20261016073157.611956-1-val@packett.cool>
 X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -59,91 +58,36 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The response sent by the firmware when requesting a clock vote (opcode
-AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST) does not actually have
-the same opcode + status payload as APR_BASIC_RSP_RESULT. Rather, it
-returns one single u32 which is the client_handle that must be used in
-future unvote requests for the same clock.
+This series enables sound support on motorola-dubai, at least the
+speakers.. The WCD that handles microphones and analog USB-C sound
+is left out because it would first need:
+https://lore.kernel.org/all/20260522-kodiak-elite-macros-v1-1-487661ac1270@fairphone.com/
 
-As a result of this type confusion, the status returned by the callback
-to q6afe_vote_lpass_core_hw was actually an out-of-bounds read. It was
-only interpreted as success (0) most of the time due to luck, but there
-are some reports of random errors such as:
+The senary MI2S patches were previously part of:
+https://lore.kernel.org/all/20260506204142.659778-1-val@packett.cool/
 
-[   20.961100] qcom-q6afe aprsvc:service:4:4: AFE failed to vote (3)
-[   20.961131] Failed to prepare clk 'core': -110
-
-Fix by correctly interpreting the response as a single u32, and actually
-store it as the client_handle to ensure unvote would work correctly.
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/5976946.DvuYhMxLoT@antlia/
-Fixes: 55e07531d922 ("ASoC: q6dsp: q6afe: add lpass hw voting support")
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Signed-off-by: Val Packett <val@packett.cool>
----
-
-Previously part of a series:
-https://lore.kernel.org/all/20260506204142.659778-2-val@packett.cool/
-
-but it's actually independent and reviewed, let's try again with just this..
+and that series mixed up too many things and got bogged down due to
+the TDM stuff that's not relevant to this device..
 
 Thanks,
 ~val
 
 ---
- sound/soc/qcom/qdsp6/q6afe.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/qcom/qdsp6/q6afe.c b/sound/soc/qcom/qdsp6/q6afe.c
-index f0ff1350e9dd..9ac51c304ead 100644
---- a/sound/soc/qcom/qdsp6/q6afe.c
-+++ b/sound/soc/qcom/qdsp6/q6afe.c
-@@ -393,6 +393,7 @@ struct q6afe {
- 	struct q6core_svc_api_info ainfo;
- 	struct mutex lock;
- 	struct aprv2_ibasic_rsp_result_t result;
-+	uint32_t vote_result;
- 	wait_queue_head_t wait;
- 	struct list_head port_list;
- 	spinlock_t port_list_lock;
-@@ -1010,13 +1011,14 @@ static int q6afe_callback(struct apr_device *adev, const struct apr_resp_pkt *da
- 	const struct aprv2_ibasic_rsp_result_t *res;
- 	const struct apr_hdr *hdr = &data->hdr;
- 	struct q6afe_port *port;
-+	uint32_t *vote_res;
- 
- 	if (!data->payload_size)
- 		return 0;
- 
--	res = data->payload;
- 	switch (hdr->opcode) {
- 	case APR_BASIC_RSP_RESULT: {
-+		res = data->payload;
- 		if (res->status) {
- 			dev_err(afe->dev, "cmd = 0x%x returned error = 0x%x\n",
- 				res->opcode, res->status);
-@@ -1043,8 +1045,10 @@ static int q6afe_callback(struct apr_device *adev, const struct apr_resp_pkt *da
- 	}
- 		break;
- 	case AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST:
-+		vote_res = data->payload;
- 		afe->result.opcode = hdr->opcode;
--		afe->result.status = res->status;
-+		afe->result.status = 0;
-+		afe->vote_result = *vote_res;
- 		wake_up(&afe->wait);
- 		break;
- 	default:
-@@ -1955,6 +1959,8 @@ int q6afe_vote_lpass_core_hw(struct device *dev, uint32_t hw_block_id,
- 			       AFE_CMD_RSP_REMOTE_LPASS_CORE_HW_VOTE_REQUEST);
- 	if (ret)
- 		dev_err(afe->dev, "AFE failed to vote (%d)\n", hw_block_id);
-+	else
-+		*client_handle = afe->vote_result;
- 
- 	return ret;
- }
+
+Val Packett (5):
+  ASoC: qcom: qdsp6: q6routing: add Senary MI2S ports
+  ASoC: qcom: sm8250: add Senary MI2S RX support
+  ASoC: dt-bindings: qcom,sm8250: Add Motorola Edge 30 sound card
+  ASoC: qcom: sm8250: Add motorola-dubai soundcard compatible
+  arm64: dts: qcom: motorola-dubai: Add sound card with aw88261 speakers
+
+ .../bindings/sound/qcom,sm8250.yaml           |   1 +
+ .../qcom/sm7325-motorola-dubai-common.dtsi    | 119 ++++++++++++++++++
+ sound/soc/qcom/qdsp6/q6routing.c              |  11 ++
+ sound/soc/qcom/sm8250.c                       |   9 ++
+ 4 files changed, 140 insertions(+)
+
 -- 
 2.55.0
 
