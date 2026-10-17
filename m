@@ -1,123 +1,112 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.fhannenheim.net (mail.fhannenheim.net [188.245.251.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61D62FFDFC
-	for <phone-devel@vger.kernel.org>; Sat, 17 Oct 2026 13:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEB14CF494;
+	Sat, 17 Oct 2026 15:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.251.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792243748; cv=none; b=ol2B9uuGXqXEsXRDwo4t9FHPIXhBLRuWPgiOFPQVCobPMxVBbgTkhkBJsezNwOI94LNA+xkG2XegqijG4gzvhjsc3GkKKE/vTsgpeADpgd2PgbTdOJ2DTWJMYDI7inJJAF6JO0XjNq2BJJN73O5mDqkbKgiSutCOcqrQKWvFcOA=
+	t=1792249992; cv=none; b=QQ2dC6EuUHyfOChbc7DOz+7QZ5ERyKr3LOMrtKHXxDq4M2SujuUyIHG7pmEeQ4HS+bU8+YwMHjeq+d3XuxKOPs2CT6FKdhCza1dQnzUBkoR8wk44uv2kMsuDmWULcTFoLrBcyzAbkfwjY48xw9fOqA0z4gZvXfTGUyu0oerpRXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792243748; c=relaxed/simple;
-	bh=MlOIkzfTSdzbzhKZope6zdJW1Tz0EBjzJbGpxaanTYA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sJxl90QL6QGB2moR74f44ROEYKnwEnUgfhaUN7fbmbgciszNYdpumR6Gs1YVF90y4ccIaIO4RPoHqaQkmJhP1VLPtuH+yvitmSwCrMLhLcI5D7ey0m0aRnp33OQAu9SMaXcDMThqfJiCr1sntjEAZiFeatRiI771JFA2EeNqEtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=clZW414U; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792249992; c=relaxed/simple;
+	bh=JSNeOaQKXiIe8vupH6RjAUk9yYQ+XjlAkHGWzDIwtAQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o4D4e89RlroDYk+FwEdAyuJfhWOjO54Ofizq+g0p0Q1KU2SVzXz0q+l8mePc18wEYjO+7860HnxMVyWEfZd+QnOOXmB6/dnFGcBiXKAya2Ekw088hnSIdbp18VO0cluUoBknkllGw+Zc8s5I44/MBo8z1XyWJDJuzjkrjQJaa7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net; spf=pass smtp.mailfrom=fhannenheim.net; dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.b=42DtV5Gw; arc=none smtp.client-ip=188.245.251.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fhannenheim.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="clZW414U"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48df54150dfso484331f8f.0
-        for <phone-devel@vger.kernel.org>; Sat, 17 Oct 2026 06:29:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792243745; x=1792848545; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o5K6Tgc0KOXuZjCEEfd87yj6b3Ngd/fmCUzUiRYVE9w=;
-        b=clZW414UUl7h40jP67q//PxrHJBSoLXux1wD0nM2w5ZS59YrsjPau85lNpMapQDCTZ
-         B8WudYBkhKEmr6S1fvjeX3sgdnMI+q2e+cvqYNz6C646KM3RwJ/jqUAjjko+O6KDd+Id
-         DMb34B1wrwvS8KatX5jTrApC+wNLRfbJrJhu6ZBza9SwyW23q2+iSqgRD3lua5MyyTWj
-         4fgfaj2iIiDm2+c5Ljn4C/JceDLTx6zfy85hi0FSasXf8AHuxSKEXoBqKMHgu4OfUs4B
-         gvq7GYejX5MpUycIKpgvfnjuf99lr++8oRjyu0jTErWxOupaVXxBqy23dfeVcUvrnE21
-         c2oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792243745; x=1792848545;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o5K6Tgc0KOXuZjCEEfd87yj6b3Ngd/fmCUzUiRYVE9w=;
-        b=vvRr1WWI4DM6ErzBnzPDug9w3y0mq4XprzKBCOoHBdxsjnlxWwvBiGD4TyKbsHnzV2
-         7VBj/SUjNATgz1EPgR2HxVEotYyrWs0nZmvsB0TR0LH3rD0zoPFRaVX2j0fffeGKn1pT
-         nL1Cx2qQf4lPTowEAzwzzDR/gm+6lUJnVNxIALEIs/HLE+NbV3vXOphH9jp5qEVLT1Bt
-         YFH6DUmoT5/CawShb1WnjlRPmCGu8FsfHv4ZBa9nNRsY1ywYF7i4Cqn/oHQqsb/B59Qy
-         jB8fRIfe06t8LH4hzUfemj034sPqb1WN9W8sLRtJ4YIb7GnCOqaPqqvWCzUltOEClqJG
-         KJPg==
-X-Forwarded-Encrypted: i=1; AKwUvBwAbAllfCF9z9dd/HMCznN6VQ1y7fN0BDhv80kz8/OCXT/bIKZI53N7ovPQ8cz/ZxiUFv8CK20l3uop2g==@vger.kernel.org
-X-Gm-Message-State: AFq9FYKn4T6l9HLQexVVCsp2PUXiFokbZfUMKJVXpRmH4UyaGTGPxXuB
-	AygZ3YF3xWv8klZfZTSfndM8dnZLPYvGGnd6ky0IJO3iEf1pJtCEQYnM
-X-Gm-Gg: AYBFou1Ng+n1tK8iRIaF0XM+lbgcQ3lXcjnxdBo4pXncpz3s5WzuK3gRmkFr+V+FcWu
-	P5nJqeCFGxLXdEBHfvUa7EduIdc9l68YJEie9YzNeL81VtGp+P6iood+btxAQf57eb/R8JfIB0H
-	fesFnrx9QKsEQsNOZCaVuLy6YRwS8z1UfMavS6sck9o8vdXiY/4k4CXLSmK+1rwJYLXnlmoY1Fi
-	WgibB1gZ9Nkzz1mDcZw87n1un9eHUbyHjHrl/V0iDIwuf3cp5bmDBjRX0XBsGs5s2bii8Qc7abr
-	qafGIRXRVKM3qQZdXryGGZNzandTu/wRm0QgZB2sdeZ5/NALzDv8+q1QsSYFX4VIjopTybEIEzY
-	GDzRcQJ23oZlBipGjFcv6lCHDO0nCl06JuHc6QUfud81HGtwE8in3XZf1FXK9PRedVa0Zrikcf6
-	M7vpda5rnzHpIztsl20lmF+kOe9MQ8bH8afdYXCqRQD7CGkkMNGMtE7Sq8s3vcGrkKmlypE/szS
-	+I=
-X-Received: by 2002:adf:e199:0:b0:487:6f2:1a4c with SMTP id ffacd0b85a97d-48e07bb98d9mr5122636f8f.25.1792243744983;
-        Sat, 17 Oct 2026 06:29:04 -0700 (PDT)
-Received: from [192.168.0.114] ([88.223.153.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd4f9c41sm11998520f8f.38.2026.10.17.06.29.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Oct 2026 06:29:04 -0700 (PDT)
-Message-ID: <b33efcca-eaed-4efe-99c6-035afd73dec5@gmail.com>
-Date: Sat, 17 Oct 2026 16:29:03 +0300
+	dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.b="42DtV5Gw"
+From: Frieder Hannenheim <git@fhannenheim.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhannenheim.net;
+	s=mail; t=1792249988;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uoFo/hNDqrRKck0lH7GUEcxK96J7iZti/tlzZ+VcH/M=;
+	b=42DtV5GwXD7olX1vsqGR6Ur6V0v2eTFA3uYSNftBdRMES60zXlQiRLD1mJpzo+bwNxcJ4U
+	sbGVOvgAKzfp25Hq6UvTX2d4zfZs0qZclFBVyj8as7WepkYzvM9DEGgJIdFhpsRNRO+KTI
+	VjZpV/ybenkFU7DPNeNRN2myQsLcl7A=
+Subject: [PATCH v3 0/3] Add OnePlus 8T
+Date: Sat, 17 Oct 2026 17:12:33 +0200
+Message-Id: <20261017-kebab_dts-v3-0-5fc3ca52a383@fhannenheim.net>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] arm64: dts: qcom: sm7125-samsung: add initial device
- tree
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Stefan Hansson <newbyte@postmarketos.org>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- David Heidelberg <david@ixit.cz>, Abel Vesa <abelvesa@kernel.org>
-References: <20261013-sm7125-samsung-v4-1-3233901b48bb@gmail.com>
- <5fb086d1-7725-4d8b-a2c9-7627f6da7cd9@oss.qualcomm.com>
-Content-Language: en-US
-From: Erikas Bitovtas <xerikasxx@gmail.com>
-In-Reply-To: <5fb086d1-7725-4d8b-a2c9-7627f6da7cd9@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOQQ7CIBBFr2JYi2Ggra0r72GMKe2MRSM1gETT9
+ O5CXarLl/z3Zibm0Rn0bLeamMNovBltArVesW5o7Rm56RMzKWQFAkp+Rd3qUx88J1DUVFWJDXU
+ s7e8OyTyX1uH4Yf/QF+xCDuTFYHwY3Ws5FiHvfnUjcMGBEEGKooVa7yl9YtEOaG4bi4HlepR/f
+ Zl83NaqqJQm6tW3P8/zG65i8aL6AAAA
+X-Change-ID: 20261015-kebab_dts-f13f9665e9fc
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Robert Oscilowski <drgitx@gmail.com>, 
+ =?utf-8?q?Jean-Fran=C3=A7ois_Bobier?= <jf.bobier@gmail.com>, 
+ phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frieder Hannenheim <git@fhannenheim.net>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1962; i=git@fhannenheim.net;
+ h=from:subject:message-id; bh=JSNeOaQKXiIe8vupH6RjAUk9yYQ+XjlAkHGWzDIwtAQ=;
+ b=owGbwMvMwCWWw1h8YvtkuWDG02pJDFmXJ2RnND94fv1lzVpz89Wn8w8ol0vauItciznau8390
+ 4X8iY95OkpZGMS4GGTFFFmcp0v+sK8U1tEP/6cIM4eVCWQIAxenAExk+iOG/74Tsvd0ruq5GZ+x
+ 4V2fdnfKjgeHnx1eKLThqK3hZu6KO9cZ/lf8+KK8/X7J5l2Tn11exK177Jm7/MrWkBDWrd8NNnM
+ eTeMAAA==
+X-Developer-Key: i=git@fhannenheim.net; a=openpgp;
+ fpr=439719F83F79132C2F57FE216C0173C8B7931E53
 
-On 10/16/26 13:56, Konrad Dybcio wrote:
-> On 10/13/26 3:58 PM, Erikas Bitovtas wrote:
->> Samsung Galaxy A52/A72 are devices released on atoll (SM7125) platform
->> in 2021. Add initial device tree for SM7125 Samsung platform with
->> +&soc {
->> +	i2c_17: i2c-17 {
-> 
-> This is not a MMIO device, so it doesn't belong under /soc
-> 
-Will move it to / in v5.
-> Have you tried using the bus through the normal QUP driver path?
-> 
-No, I haven't. GPI DMA support for this platform is not yet upstream.
->> +		compatible = "i2c-gpio";
->> +		sda-gpios = <&tlmm 51 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
->> +		scl-gpios = <&tlmm 52 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-> 
-> style nit: (foo | bar) instead of (foor|bar), please
-> 
-Will fix that in v5.
->> +&usb_1 {
->> +	qcom,select-utmi-as-pipe-clk;
-> 
-> Is there no superspeed / DP altmode?
->
-I could not find anything that confirms super-speed or DP altmode on
-these devices. Besides, ufshcd-qcom fails with "link startup failed 1"
-after setting super-speed and removing "qcom,select-utmi-as-pipe-clk".
-> Konrad
+Adds a basic device tree for the OnePlus 8T (kebab). Common
+values for OnePlus devices using the sm8250 SOC are defined in
+sm8250-oneplus-common.
+
+This basic device tree brings up a framebuffer, UFS, battery monitoring,
+volume keys and UART. Further functionality will be brought up in
+subsequent patch sets.
+
+Signed-off-by: Frieder Hannenheim <git@fhannenheim.net>
+---
+Changes in v3:
+- create a new commit for dt-binding addition
+- reorder /delete-node/s in sm8250-oneplus-common.dtsi
+- remove prototype revision msm id
+- remove zero-value board id
+- reorder pinctrl properies with name at the end
+- alphabetically order volume button nodes
+- rename vol-down-n -> vol-down-l
+- remove zero ecc size in ramoops
+- add comments describing reserved gpio ranges
+- correct pm8008 pinctrl
+- Link to v2: https://patch.msgid.link/20261015-kebab_dts-v2-0-e783463bffd3@fhannenheim.net
+
+Changes in v2:
+- Add dt-binding for oneplus,kebab
+- rename power button gpios to match sm8250-samsung-common
+- remove unnecessary qup_i2c7_default and qup_i2c7_default nodes
+- remove qcom,kona from top-level compatible
+- enable i2c2 and add pinctrl to pm8008
+- remove unused pinctrl node in pm8008
+- Link to v1: https://patch.msgid.link/20261015-kebab_dts-v1-0-1fee1204a18b@fhannenheim.net
+
+---
+Frieder Hannenheim (3):
+      dt-bindings: arm: qcom: Document OnePlus 8T
+      arm64: dts: qcom: Add sm8250-oneplus-common.dtsi
+      arm64: dts: qcom: oneplus-kebab: new device
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ .../arm64/boot/dts/qcom/sm8250-oneplus-common.dtsi | 607 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sm8250-oneplus-kebab.dts  | 130 +++++
+ 4 files changed, 739 insertions(+)
+---
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+change-id: 20261015-kebab_dts-f13f9665e9fc
+
+Best regards,
+--  
+Frieder Hannenheim <git@fhannenheim.net>
 
