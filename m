@@ -1,84 +1,62 @@
-Received: from mail.fhannenheim.net (mail.fhannenheim.net [188.245.251.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477A93C9896;
-	Sat, 17 Oct 2026 18:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.251.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38801342151;
+	Sat, 17 Oct 2026 21:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792261017; cv=none; b=TACn1xveBgT+SBOa+wo9OAgqlqmDLgEhql/9Om7Pja2FQY2BrYRWEJKdg6HkcYs1efaUjGuSngTXQRRoEqMKwhGgGsYyL84sUfXdIDfMVVqchsrDVf3SVIeUn8ShZcP6tc/GRKAN6SqO42X8XCHIF3/NUONnYDgNmHK4+9SdTPM=
+	t=1792274196; cv=none; b=JGKI/zMHYMVLOZK7JNGK5NViaWsydbhpa9U8EmC3GgsGNEqg+/9ub5Men5+KWWLfJd1HPW+afm7Q619tahc87NqhoTW0i1cx/iag0FlR0WAz3Ate2eVW9M0u0DI/ODJ5RmAC/jWEmwSEje7ituPcdDsDx0LdcIqn9vQebWQ2ZwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792261017; c=relaxed/simple;
-	bh=BC6COJBLLPRdm3aPF3SVrdiVDoHuNBhfnORCAam0ro0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mVnnRU7uq0E2ap/gdX9ScUx+NBuTGBCX9MclCOigt+9+33z+Ana5IVrCn2euJ0QbwhNXNBzidUWUfnyGpYDnHB5+N0FpTz/l8Ip4w0DQaQk3FoYTIE78rGagrXIKlLnW/Ge55r5jph7m7O/kzsKG39adce0e4QeCf088mke1vmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net; spf=pass smtp.mailfrom=fhannenheim.net; dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.b=5nUle1P8; arc=none smtp.client-ip=188.245.251.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fhannenheim.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.b="5nUle1P8"
-Message-ID: <d8fc8b20-4745-49f7-9519-9b52a9621173@fhannenheim.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhannenheim.net;
-	s=mail; t=1792261014;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g4Cf/7e+t31/uvBZmrssJApZ+Bs7m6M0ki7dD67CZDY=;
-	b=5nUle1P8gtdcj+UlVidXY7ErSP560QHaiErjMMMPzwrEW9tmUc6RSXdbbG0+13knksnpJC
-	wMZnCdInzwBNQwm8PPSMVWNSe0df3IlREnFq10C3Jhqcda1Am/lf3lZU0e7tJDCVDRwXxE
-	42cn2xWcTtBBcZ700fGbhre/ho5JXQk=
-Date: Sat, 17 Oct 2026 20:16:52 +0200
+	s=arc-20240116; t=1792274196; c=relaxed/simple;
+	bh=5ZPsLoEJodQ3pwl9rPZZQdVSfFrzD2H4J67Pnm3gOT4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=PzXbF//uWOYn81sRFNHqwlzJkAik+I7O0VXz9jMbvnMxkMNHPSchaD4QZajQCNCAi0IM9LxKccoSf9WpT4zqyof5Leq9pS1YPtwt6WAtBpP9OBMRNSMYsLUfGEyxGpAXJdwUAhtknKU2C2v6zqbVV/qQ0hj0NHA6Pdu/HgfTshY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D491E1F000C5;
+	Sat, 17 Oct 2026 21:56:34 +0000 (UTC)
+Received: by venus (Postfix, from userid 1000)
+	id 61A4418233B; Sat, 17 Oct 2026 23:56:33 +0200 (CEST)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Casey Connolly <casey.connolly@linaro.org>, 
+ Sebastian Reichel <sre@kernel.org>, Fabricio Akio <fabricioakio@gmail.com>
+Cc: Robin Snyders <robin@snyders.xyz>, David Heidelberg <david@ixit.cz>, 
+ phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20261002-qcom-smbx-enable-order-v1-1-7df92bd809db@gmail.com>
+References: <20261002-qcom-smbx-enable-order-v1-1-7df92bd809db@gmail.com>
+Subject: Re: [PATCH] power: supply: qcom_smbx: set the charge enable after
+ software control
+Message-Id: <179227419338.76434.14581539706136595064.b4-ty@b4>
+Date: Sat, 17 Oct 2026 23:56:33 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Frieder Hannenheim <git@fhannenheim.net>
-Subject: Re: [PATCH v3 1/3] dt-bindings: arm: qcom: Document OnePlus 8T
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Robert Oscilowski <drgitx@gmail.com>,
- =?UTF-8?Q?Jean-Fran=C3=A7ois_Bobier?= <jf.bobier@gmail.com>,
- phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261017-kebab_dts-v3-0-5fc3ca52a383@fhannenheim.net>
- <20261017-kebab_dts-v3-1-5fc3ca52a383@fhannenheim.net>
- <ced5461d-4c56-4250-9a0c-cafde5d08f12@kernel.org>
-Content-Language: de-DE
-In-Reply-To: <ced5461d-4c56-4250-9a0c-cafde5d08f12@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
 
-On 17.10.26 19:34, Krzysztof Kozlowski wrote:
-> On 17/10/2026 17:12, Frieder Hannenheim wrote:
->> Add compatible for OnePlus 8T
->>
->> Signed-off-by: Frieder Hannenheim <git@fhannenheim.net>
->> ---
->>   Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
->> index 50cc18a6ec5e..6e3fdce92798 100644
->> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
->> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
->> @@ -1070,6 +1070,7 @@ properties:
->>                 - qcom,qrb5165-rb5
->>                 - qcom,sm8250-hdk
->>                 - qcom,sm8250-mtp
->> +              - oneplus,kebab
-> 
-> 
-> o < q, please don't break existing sorting.
-> 
-> Best regards,
-> Krzysztof
 
-Right, q such a weird letter to me that my intuition always sorts it 
-wrong. Will fix. Thank you.
+On Fri, 02 Oct 2026 22:29:32 -0300, Fabricio Akio wrote:
+> The init sequence sets CHARGING_ENABLE_CMD before CHGR_CFG2 selects
+> software control of the charge enable.
+> 
+> The Motorola Moto X4's bootloader leaves the charger watchdog armed to
+> disable charging when it bites, which it does after a few minutes in
+> fastboot. Charging then stays disabled in the next boot until the cable
+> is replugged. Setting the command after CHGR_CFG2 re-enables it.
+> 
+> [...]
 
-Kind regards,
-Frieder
+Applied, thanks!
+
+[1/1] power: supply: qcom_smbx: set the charge enable after software control
+      commit: 1fba787142011145e1071cee9448b3677fb2323d
+
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
+
