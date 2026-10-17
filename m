@@ -1,258 +1,518 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2326F3C8C74;
-	Fri, 16 Oct 2026 21:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D0218E025
+	for <phone-devel@vger.kernel.org>; Sat, 17 Oct 2026 10:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792187548; cv=none; b=QyyHxOqpY1fJf5waALAb5ekQRFjKKZjmWNxxqeYjRIKRaraRpaq1e4/ZyXLuEVKgyZTUyKY1kmeZhbfMmBrHTc6eYwRr/FwsFq9VTh3bvFtU/1eSy98qpUjDbDRxWONyU2PBm+CeyjtcT9Nwa/D5BmJhP3lcP6qyZBIqdfYfW0M=
+	t=1792231278; cv=none; b=tYybUNb9quziSDcoVOLeAyK/ajsKdWJ++SSJdGUgfKT0Z18+Wm7HrLG3bUz4Z6O/E5Miq8A590Jwz0Ig8pu4bPuJrg1exIRFHFbgGMAyInUXZP8XFi2jNEFWOET8HL7j4SWtJvc4tU+B6cn6MXU4jl3oSJr3NAnAUMVH3l1qB9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792187548; c=relaxed/simple;
-	bh=/X3zmd/w1MxITRY95sziVrw8/iiMEHN/vWnCVXAZW7s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VL9rFtUXd2wLNyYa7FGRcEjyY/a+di7o9wxwJxIGiSeHBqm3lUmvKbHJy4BgpvZgu777YeQv+l2bvif98wBu89LzsfCOAFO70m1HFAzbVfOEF2ZMmYGPisVWS5qBJdl2n/+zZLpmizPe2pCAooOVXVs6HXp1ERXf3twa2cB4AIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+DCkd1k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1792231278; c=relaxed/simple;
+	bh=LVhunIGi+1kymI40gl1s+wmjtCY7K/lv3AXeNGSKWKs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oY1iHwR+5vSXitn24l/e7i9MwlIeDYAZms3ds8zzSZX0WCQ+ZqBh8ER7v81dJEb+Ro90ZRtIV8meLJPeJIxMxOy0O5i+5EydYZxonyc7VvN7KaXJsEw5KNGqYm9aWB7gNVt5k2Lsu1HZchQALEdMdTI/5yoaCYGbM4YCSwZuA7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ML4bog11; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+DCkd1k"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D36B7C2BCFA;
-	Fri, 16 Oct 2026 21:52:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792187547;
-	bh=/X3zmd/w1MxITRY95sziVrw8/iiMEHN/vWnCVXAZW7s=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=C+DCkd1kyesT45QauOaLVNmIiuXFvdvMbxIYGmyoZf45bjH2TTfFxfM2dgY3mkjTt
-	 AHI93JB1kjvYILDQCL+YyOlmRQ73gakxtpdA9nUWk4HhfVOFRV3eZDEHR8tl2FkBid
-	 9MBM5ZRS4xHNwYuWZsBAMPaKTNk/oYLbE7tXBhuFZrxz5Lo1Hv25VGvfPkcMFmUz+p
-	 IQ07cE9XuVFKEcMrIMAhRBYK1PycI9Rn1k1KxjbHTUgx5fPCK7ZYTvG93IpL6ukgiM
-	 6NnGTqw3R0Fi1U/CW1Y4WbOAk+ke0UN0JfoGoiltoXshMEk6+vQ9QM/ZOttoRh3qnz
-	 0tZ5AHN5f+QPg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B47F7CCF2C4;
-	Fri, 16 Oct 2026 21:52:27 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Fri, 16 Oct 2026 23:52:21 +0200
-Subject: [PATCH v6 2/2] arm64: dts: qcom: sdm845-google: Add WCD9340 codec
- and microphone capture
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ML4bog11"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48b001cd92bso312703f8f.2
+        for <phone-devel@vger.kernel.org>; Sat, 17 Oct 2026 03:01:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792231273; x=1792836073; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AEW+uW8P27My+8CTtMqBOat+Y6bq8IsOAnfriF6HTc0=;
+        b=ML4bog11GkKrVujiJwAhrHBmy0XJjlgaikuRyBOSOUHazkzz1e79LbP8L9ajslFm5v
+         tGfg6tmwzPfY3d5yJZUk7sZchyAwSqMSTMJb60X+ClzGgaQB4Stvu+g5sshWO+m+WEOR
+         pPJLSUeocatNmdhqQfnOp71j3nzsiJUC01c49ZQLNjVREUNZpA44VUysOrCrVhYQAm7C
+         o4ZZSq7mG7LuOa+rz/g3gkdbkadbwUD5VnGn2oeocre+SZOHGvjMcrWZQ6HaDWdwUApy
+         X84+/viveKuKeMdcB7NKVEMYVWU+PUSrnlBzH4/pzvr6IUlxj1kymVao4jwUcRWO0PaS
+         9KvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792231273; x=1792836073;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AEW+uW8P27My+8CTtMqBOat+Y6bq8IsOAnfriF6HTc0=;
+        b=tpG3vwhfWaHpCkFNJXUHfDxf5M8Ayx3lYOLXFZE8CvPYUguAJfNg7tpeTGikrU7k2q
+         mSuXhZMj8h+EcQihyo5HJSQTZTYWpG5Y7U/72VCV/6tE88jJfMF54QJwyS3+acMCly1G
+         Llk3ajcziyW+8uVMRVhTgO92SQ/y9JczxE8CW+5i+4WhDyngLFA81X0jroMpjw90+Lf2
+         xr4C8+jmcFEXsaDDVLrBPjBAdXHnC6SCvBxgwLAmOxecUtZDirJfhypDUvviYgVUksuj
+         EAp0Gjpk60brBoi5aEt1H7Nkg472X6f+XqWy9Tn1gUSgtO3ppdhuofvq2sXNDx4jefML
+         xteQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx92NQ+0VhcvKt0QRm2ah4N+fAO4hSfACUEaMPpLkWHSIVGjy0XRzgdq9Lh2FIx7HMQiAzs+oDFHXgPxw==@vger.kernel.org
+X-Gm-Message-State: AFq9FYIBbDX1nuclf3Js/m1AAvBJz7OoemCiLFXgLncRtKXlTYwJN4Dr
+	nNtPNnZ9df9yLUhXaGMjS+ziKwiohjgYM6v+miSkHIud1XThMi9ofhAc
+X-Gm-Gg: AYBFou2uCG0XzyiWVzuqZpIravp9i+VlX0qy6/+ExrbUEVdtkvV2pq4w1x/ebnmZWKT
+	H6fQb4K6hyGoSA2MIeL0MtvsjreBdNZWgIgY5eVdGa0O/EzyWnTu4UQrRaC6J9KTtd8fUIiskgq
+	rgrJiH+lJBnj3rnV0PdvLXWJG+eKQnu6R5YnfIoYI6z+vaKLQs8huatI+9e0SWaAu5zuz9Ozv7Q
+	xPT/WCB0mbtSVI3Jsqyq9OioW1OmsiPTdOX/HGococb/4TIW64PaV8E3F8gTJs3fMAb+wdqdcTG
+	5dc8wRON58GdyK9W+Xa1P3CosbmWfKwJnssWi47gDS1NAAoJ/4b5GEcnI5s5d8kEbhyfQ1ODcMF
+	8GYftFE3A18u0r8QdyLc/dSv82NuXbSYkeZJoJbdbidXHSvWM22K5xyeT9BD9Qiiw6EIsc+gSvp
+	jDd/lWhOkIbNwnbWilCAU4GD1lIf8Y/I3zWaUBqNcfsmWGBx1/BAsz/0ECivT5pu1a+ugFAV3ig
+	a7RMcDspnTE5+62lqMOOM8/sQ==
+X-Received: by 2002:a05:6000:298d:20b0:48c:43a4:37f2 with SMTP id ffacd0b85a97d-48e07bbe81fmr2929017f8f.17.1792231272677;
+        Sat, 17 Oct 2026 03:01:12 -0700 (PDT)
+Received: from localhost.localdomain ([188.190.249.216])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dfd471a64sm11176218f8f.6.2026.10.17.03.01.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Oct 2026 03:01:12 -0700 (PDT)
+From: Vladyslav Tymoshchuk <tvlad744@gmail.com>
+To: Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>,
+	Val Packett <val@packett.cool>,
+	Federico Amedeo Izzo <federico@izzo.pro>,
+	linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Vladyslav Tymoshchuk <tvlad744@gmail.com>
+Subject: [PATCH v2] ASoC: codecs: aw88261: complete the start at trigger time
+Date: Sat, 17 Oct 2026 13:00:40 +0300
+Message-ID: <20261016120000.aw88261-trigger-v2-1-tvlad744@gmail.com>
+X-Mailer: git-send-email 2.45.1.windows.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261016-pixel3-audio-v6-2-11c88448b3be@ixit.cz>
-References: <20261016-pixel3-audio-v6-0-11c88448b3be@ixit.cz>
-In-Reply-To: <20261016-pixel3-audio-v6-0-11c88448b3be@ixit.cz>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- David Rhodes <drhodes@opensource.cirrus.com>, 
- Conor Dooley <conor+dt@kernel.org>, Abel Vesa <abelvesa@kernel.org>
-Cc: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, 
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, patches@opensource.cirrus.com, 
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4188; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=fI7A/5RiukFa0xOXY64dBcvV3k0LObsxRG+TKhW69sM=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq0pya7mNGQmYwuz/Ftu263gZOuTcutmceIt0y7
- Ca5c92tywCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCatKcmgAKCRBgAj/E00kg
- cjH9EACyuB2RE1aXYBfMTr3qEF7BRp2E8mJ5GB0LswS0VRMqlkgCwEn7wvAVgrzZkSPgOgEJw9S
- v5AnBQva/ezC0qGMkuOdcypNfLWmxtcOOs5o7LVOEEtRDAwO7bY3znJT7E5iSAzEv0F0XT87shC
- h02GjlhCMwV/DrKU16ofUoEieGYH+PwpYRyRpwvk97QdsJ720z7TjNU5dp0X4z8HYqdnXQKWPh+
- WIsZ1LDbo90Iz6jMJqnJ4Ek4BNPl7Wy1GyYttfHObWRgebnxrxolz6WdeAd2CiWQ/m7J408QoPl
- PyJBFdZpLd34N48VU+8zT46ojiFTvDKpUkLFjGqmpjhwuZiHd71BvkT8SXHv0H5gUWyXFATN8SN
- 4rno7o2XeHH1sTXC7J6k3atSbyyxahJlH/5i5T7s2c4zXtwf8DApOrL6Oss5gBdgb170mNQa4Gl
- hX4hkw8MKOFUsJmSuN8cBwRjjEyvxyvBGE79fhCgQ7boj7RVfza7sdO8tppyoorMzvJCMER2rP/
- ZMnmowkN9mo531ozlEoMOUkhQWfbfMkadQWLkKaSAR+UF9hHiMd7T/1t8wiYnm2DyghNyxEbLXE
- cMLV8DVkhmD6nMc4VL8peVNvUb2YaTtd84O1kYXGDMofvHifrDHp2XsfytyNbGdXz+aDkV8xApt
- L/lcU9VGSj2kIpQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Transfer-Encoding: 8bit
 
-From: David Heidelberg <david@ixit.cz>
+The amplifier is started from the PRE_PMU event of its AIF widget, that
+is from DAPM in prepare. aw88261_dev_start() waits up to 20 ms there for
+the PLL to lock to the bit clock and powers the amplifier down again if
+it does not.
 
-The Pixel 3 sound card so far only drove the two CS35L36 speaker
-amplifiers. Wire in the WCD9340 codec , add a SLIMbus capture link
-for it and route the three digital microphones
+The Qualcomm AudioReach backends only start their graph, and with it
+the I2S/TDM clocks, in trigger since commit b54a38af7138 ("ASoC: qcom:
+q6apm-lpass-dai: move graph start to trigger"). There every start fails
+with "start failure (-1)" and the speaker stays silent for the whole
+stream, as seen with six AW88261 on a TDM link of SM8750.
 
-Based on work done by Casey Tunturi.
+Split the start at the first step that needs the bit clock, the PLL
+lock check, whatever the host does:
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
+ - PRE_PMU clears power down (PWDN), configures the I2S interface and
+   the PLL and writes the boost settings of aw88261_reg_force_set().
+   The amplifier stays powered down (AMPPD) and muted.
+ - The unmute, called after the trigger of the CPU DAI with
+   .mute_unmute_on_trigger, does the rest: it checks the PLL lock,
+   clears AMPPD, checks SYSST, enables the feedback and unmutes. If the
+   PLL does not lock, "start failure" is logged, the amplifier is left
+   as PRE_PMU left it and the next trigger start tries again.
+ - The mute in trigger undoes the unmute (mute, feedback off, AMPPD),
+   and POST_PMD sets PWDN as before.
+
+So only the steps that need the clock run in trigger: 14 register
+accesses and 1 ms per amplifier for the unmute when the PLL has locked,
+12 and 1 ms for the mute. The same steps run there on hosts that have
+the clock running from prepare. aw88261_reg_force_set() only writes
+boost settings and now runs before AMPPD is cleared rather than right
+after.
+
+wsa883x and wsa884x split their start the same way, with the
+configuration in DAPM and GLOBAL_PA_EN in the trigger-time mute. The
+vendor driver of this amplifier family (aw882xx) also starts the
+amplifier from .mute_stream, with the same sequence.
+
+The register accesses go over I2C and sleep, so they need a nonatomic
+trigger, which the Qualcomm DPCM links using this codec have. On an
+atomic PCM, as seen from substream->pcm->nonatomic in .startup, PRE_PMU
+does the whole start as before and the mute callback does nothing.
+
+POST_PMD can also run for an amplifier that was never powered up, as
+seen when the card is registered, so make "already power off" a debug
+message.
+
+Assisted-by: LLM
+Signed-off-by: Vladyslav Tymoshchuk <tvlad744@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 58 ++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+Changes in v2:
+- Do not move the whole start into trigger (Mark). PRE_PMU keeps what
+  does not need the bit clock (PWDN, I2S and PLL setup, boost
+  settings); only the PLL lock check, AMPPD, the SYSST check, TX and
+  the unmute run at trigger, and the mute at trigger undoes them.
+- Keep the old behaviour on atomic PCMs (Mark: "Are we *sure* there are
+  no other users out there?"): the driver checks
+  substream->pcm->nonatomic in .startup and then does the whole start in
+  PRE_PMU and nothing in the trigger-time mute.
+- One attempt at trigger, no retries there: if the PLL does not lock,
+  "start failure" is logged, the amplifier stays powered up and muted
+  and the next trigger start tries again. The retries of the register
+  update stay in PRE_PMU.
+- "already power off" is a dev_dbg as in v1, now for another reason:
+  POST_PMD runs for amplifiers that were never powered up when the card
+  is registered (six times at boot here).
+- Rebased on sound/for-next with "ASoC: codecs: aw88261: expose
+  hardware mute control"; the unmute honours its mute_st as before.
+- v1: https://lore.kernel.org/r/20261014120000.aw88261-trigger-v1-1-tvlad744@gmail.com
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-index 68d26c1a06d0c..8e303a91bfaa2 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-@@ -4,18 +4,20 @@
- 
- #include <dt-bindings/arm/qcom,ids.h>
- #include <dt-bindings/dma/qcom-gpi.h>
- #include <dt-bindings/input/linux-event-codes.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
-+#include <dt-bindings/sound/qcom,wcd934x.h>
- 
- #include "sdm845.dtsi"
-+#include "sdm845-wcd9340.dtsi"
- #include "pm8998.dtsi"
- #include "pmi8998.dtsi"
- 
- /delete-node/ &mpss_region;
- /delete-node/ &venus_mem;
- /delete-node/ &cdsp_mem;
- /delete-node/ &mba_region;
- /delete-node/ &slpi_mem;
-@@ -512,16 +514,20 @@ dai@72 {
- 		qcom,tdm-data-align = <0>;
- 	};
- };
- 
- &q6asmdai {
- 	dai@0 {
- 		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
- 	};
-+
-+	dai@1 {
-+		reg = <MSM_FRONTEND_DAI_MULTIMEDIA2>;
-+	};
- };
- 
- &qupv3_id_0 {
- 	status = "okay";
- };
- 
- &qupv3_id_1 {
- 	status = "okay";
-@@ -539,40 +545,81 @@ &qup_uart9_tx {
- 
- &sound {
- 	compatible = "qcom,sdm845-sndcard";
- 	model = "Pixel 3";
- 	pinctrl-0 = <&quat_mi2s_active>, <&quat_mi2s_sd0_active>,
- 		    <&quat_mi2s_sd1_active>;
- 	pinctrl-names = "default";
- 
-+	audio-routing = "DMIC0", "MCLK", /* Top mic */
-+			"DMIC0", "MIC BIAS1",
-+			"DMIC3", "MCLK", /* Top-edge mic */
-+			"DMIC3", "MIC BIAS3",
-+			"DMIC4", "MCLK", /* Bottom mic */
-+			"DMIC4", "MIC BIAS4";
-+
- 	/* mm[0-9]-dai-link nodes must be positioned first regardless of sorting */
- 	mm1-dai-link {
- 		link-name = "MultiMedia1";
- 
- 		cpu {
- 			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
- 		};
- 	};
- 
-+	mm2-dai-link {
-+		link-name = "MultiMedia2";
-+
-+		cpu {
-+			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA2>;
-+		};
-+	};
-+
- 	cs35l36-dai-link {
- 		link-name = "Speaker Playback";
- 
- 		codec {
- 			sound-dai = <&cs35l36_bottom>, <&cs35l36_top>;
- 		};
- 
- 		cpu {
- 			sound-dai = <&q6afedai QUATERNARY_TDM_RX_0>;
- 		};
- 
- 		platform {
- 			sound-dai = <&q6routing>;
- 		};
- 	};
-+
-+	slimcap-dai-link {
-+		link-name = "SLIM Capture 1";
-+
-+		codec {
-+			sound-dai = <&wcd9340 AIF1_CAP>;
-+		};
-+
-+		cpu {
-+			sound-dai = <&q6afedai SLIMBUS_0_TX>;
-+		};
-+
-+		platform {
-+			sound-dai = <&q6routing>;
-+		};
-+	};
-+};
-+
-+&swm {
-+	/*
-+	 * Nothing hangs off the codec's SoundWire bus on this board: the
-+	 * speakers are CS35L36 amplifiers on QUAT_TDM. With an empty bus the
-+	 * controller reports port mismatches and frame-generator timeouts on
-+	 * every boot.
-+	 */
-+	status = "disabled";
- };
- 
- &tlmm {
- 	gpio-reserved-ranges = < 0 4>, /* SPI (Intel MNH Pixel Visual Core) */
- 			       <81 4>; /* SPI (most likely Fingerprint Cards FPC1075) */
- 
- 	nfc_default: nfc-default-state {
- 		enable-pins {
-@@ -718,16 +765,27 @@ &usb_1_qmpphy {
- };
- 
- &venus {
- 	firmware-name = "qcom/sdm845/Google/blueline/venus.mbn";
- 
- 	status = "okay";
- };
- 
-+&wcd9340 {
-+	/* PM8998 LN_BB_CLK2 feeds the Pixel Visual Core on this board */
-+	clocks = <&rpmhcc RPMH_LN_BB_CLK3>;
-+	reset-gpios = <&tlmm 64 GPIO_ACTIVE_HIGH>;
-+	vdd-buck-supply = <&vreg_s4a_1p8>;
-+	vdd-buck-sido-supply = <&vreg_s4a_1p8>;
-+	vdd-tx-supply = <&vreg_s4a_1p8>;
-+	vdd-rx-supply = <&vreg_s4a_1p8>;
-+	vdd-io-supply = <&vreg_s4a_1p8>;
-+};
-+
- &wifi {
- 	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
- 	vdd-1.8-xo-supply = <&vreg_pmu_xo>;
- 	vdd-1.3-rfa-supply = <&vreg_pmu_rf>;
- 	vdd-3.3-ch0-supply = <&vreg_pmu_ch0>;
- 
- 	qcom,snoc-host-cap-8bit-quirk;
- 
+On the users: in mainline, linux-next and sound/for-next the only one
+is the Fairphone 5 (qcm6490-fairphone-fp5.dts, "fairphone,fp5-sndcard"
+in sm8250.c), whose links qcom_snd_parse_of() makes nonatomic. Out of
+tree I know of the Fairphone 6, motorola-dubai (Federico's patch) and
+the OnePlus Pad 3, all Qualcomm. A user with an atomic link keeps the
+current behaviour with this version.
 
+The vendor driver (aw882xx, checked in the module shipped on the
+OnePlus Pad 3) starts the amplifier from .mute_stream with the same
+sequence (PWDN, PLL check, AMPPD, SYSST check, TX, unmute) and stops
+it fully on mute; it does not set .mute_unmute_on_trigger, so there
+the mute callbacks run from prepare and hw_free.
+
+Tested on a OnePlus Pad 3 (SM8750, six AW88261 on two I2C buses, TDM
+from the AudioReach DSP) with the same change on our v7.3-rc5 based
+tree, with PipeWire and with a small ALSA test program. That tree also
+has a battery monitor and a 10 ms sleep after the mute in the stop
+sequence, which mainline does not have. Times were taken with ktime
+around the work under the lock (test-only instrumentation); the six
+amplifiers run one after the other.
+
+ - Unmute at trigger: 4.3 to 7.3 ms per amplifier, 26 to 38 ms for
+   all six (9 starts; an earlier series of 5 starts: 4.1 to 9.1 ms,
+   25 to 46 ms).
+ - Mute at trigger: 13.9 to 17.6 ms per amplifier, 88 to 101 ms for
+   six (10 stops), including the local 10 ms sleep. Without it, as in
+   this patch, that is about 4 to 7.5 ms per amplifier and 27 to 41 ms
+   for six (not measured on its own).
+ - Prepare part in PRE_PMU: 4.5 to 6.2 ms per amplifier, 28 to 35 ms
+   for six (up to 8.7 and 47 ms when the device is reopened back to
+   back). This is where every start failed before.
+ - The write that starts the stream (graph start plus the six unmutes,
+   test program, 3 runs): 28 to 36 ms, against 52 to 57 ms with v1 in
+   the same test.
+ - No "start failure" at all. SYSST reads 0x0311 on all six during
+   playback, also after two PipeWire restarts. After a prepare without
+   trigger all six are powered up with AMPPD and HMUTE set and SYSST
+   reads 0x0000; after close they are off.
+ - Listening: two series of six PipeWire playbacks of five 40 ms pips
+   100 ms apart followed by a tone, nine of them started with the
+   device closed and three with the PCM already running. All five pips
+   were heard every time, and in the second series also found in a
+   recording by a phone next to the tablet and by the tablet's own
+   microphone, the first pip as long as the others. No clicks were
+   heard; the tablet's microphone shows a short transient in the unmute
+   window that the phone recording does not.
+
+As with v1, a stream started with only one period of data can underrun
+while the trigger runs: the test program, which starts on its first
+10 ms period, got -EPIPE on its second write in 3 of 3 runs. The
+trigger is shorter than with v1 but still longer than one period.
+PipeWire, which fills the buffer before it starts, never underran.
+
+The analysis, the change and this text were drafted with an AI
+assistant (see Assisted-by); I reviewed them and ran the tests above.
+
+ sound/soc/codecs/aw88261.c | 161 ++++++++++++++++++++++++++++---------
+ sound/soc/codecs/aw88261.h |   4 +
+ 2 files changed, 126 insertions(+), 39 deletions(-)
+
+diff --git a/sound/soc/codecs/aw88261.c b/sound/soc/codecs/aw88261.c
+index 7303dc9eb4e0..0c4e3c54773c 100644
+--- a/sound/soc/codecs/aw88261.c
++++ b/sound/soc/codecs/aw88261.c
+@@ -187,12 +187,8 @@ static int aw88261_dev_configure_syspll(struct aw88261 *aw88261)
+ 		return ret;
+ 
+ 	/* The polarity of the bit clock (BCK) */
+-	ret = regmap_update_bits(aw_dev->regmap, AW88261_SYSCTRL_REG,
++	return regmap_update_bits(aw_dev->regmap, AW88261_SYSCTRL_REG,
+ 			~AW88261_BCKINV_MASK, aw88261->bck_inv_value);
+-	if (ret)
+-		return ret;
+-
+-	return aw88261_dev_check_pll(aw_dev);
+ }
+ 
+ static int aw88261_dev_check_sysst(struct aw_device *aw_dev)
+@@ -497,24 +493,47 @@ static int aw88261_dev_fw_update(struct aw88261 *aw88261)
+ 	return ret;
+ }
+ 
+-static int aw88261_dev_start(struct aw88261 *aw88261)
++/*
++ * First part of the start, which does not need the bit clock: power up and
++ * configure the I2S interface and the PLL. The amplifier stays powered down
++ * (AMPPD) and muted.
++ */
++static int aw88261_dev_power_up(struct aw88261 *aw88261)
+ {
+ 	struct aw_device *aw_dev = aw88261->aw_pa;
+ 	int ret;
+ 
+-	if (aw_dev->status == AW88261_DEV_PW_ON) {
+-		dev_dbg(aw_dev->dev, "already power on");
+-		return 0;
+-	}
+-
+ 	/* power on */
+ 	aw88261_dev_pwd(aw_dev, false);
+ 	usleep_range(AW88261_2000_US, AW88261_2000_US + 10);
+ 
+ 	ret = aw88261_dev_configure_syspll(aw88261);
++	if (ret) {
++		aw88261_dev_pwd(aw_dev, true);
++		return ret;
++	}
++
++	aw88261_reg_force_set(aw88261);
++
++	aw_dev->status = AW88261_DEV_PW_READY;
++
++	return 0;
++}
++
++/*
++ * Second part of the start, which needs the bit clock as the PLL locks to
++ * it: check the lock, enable the amplifier and the feedback, and unmute.
++ * On failure the device is left as aw88261_dev_power_up() left it.
++ */
++static int aw88261_dev_enable(struct aw88261 *aw88261)
++{
++	struct aw_device *aw_dev = aw88261->aw_pa;
++	int ret;
++
++	ret = aw88261_dev_check_pll(aw_dev);
+ 	if (ret) {
+ 		dev_dbg(aw_dev->dev, "pll check failed");
+-		goto pll_check_fail;
++		return ret;
+ 	}
+ 
+ 	/* amppd on */
+@@ -525,7 +544,10 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
+ 	ret = aw88261_dev_check_sysst(aw_dev);
+ 	if (ret) {
+ 		dev_dbg(aw_dev->dev, "sysst check failed");
+-		goto sysst_check_fail;
++		aw88261_dev_i2s_tx_enable(aw_dev, false);
++		aw88261_dev_clear_int_status(aw_dev);
++		aw88261_dev_amppd(aw_dev, true);
++		return ret;
+ 	}
+ 
+ 	/* enable tx feedback */
+@@ -534,8 +556,6 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
+ 	if (aw88261->amppd_st)
+ 		aw88261_dev_amppd(aw_dev, true);
+ 
+-	aw88261_reg_force_set(aw88261);
+-
+ 	/* close uls mute */
+ 	aw88261_dev_uls_hmute(aw_dev, false);
+ 
+@@ -548,26 +568,12 @@ static int aw88261_dev_start(struct aw88261 *aw88261)
+ 	aw_dev->status = AW88261_DEV_PW_ON;
+ 
+ 	return 0;
+-
+-sysst_check_fail:
+-	aw88261_dev_i2s_tx_enable(aw_dev, false);
+-	aw88261_dev_clear_int_status(aw_dev);
+-	aw88261_dev_amppd(aw_dev, true);
+-pll_check_fail:
+-	aw88261_dev_pwd(aw_dev, true);
+-	aw_dev->status = AW88261_DEV_PW_OFF;
+-
+-	return ret;
+ }
+ 
+-static int aw88261_dev_stop(struct aw_device *aw_dev)
++/* Undo aw88261_dev_enable() */
++static void aw88261_dev_disable(struct aw_device *aw_dev)
+ {
+-	if (aw_dev->status == AW88261_DEV_PW_OFF) {
+-		dev_info(aw_dev->dev, "already power off");
+-		return 0;
+-	}
+-
+-	aw_dev->status = AW88261_DEV_PW_OFF;
++	aw_dev->status = AW88261_DEV_PW_READY;
+ 
+ 	/* clear inturrupt */
+ 	aw88261_dev_clear_int_status(aw_dev);
+@@ -582,6 +588,37 @@ static int aw88261_dev_stop(struct aw_device *aw_dev)
+ 
+ 	/* enable amppd */
+ 	aw88261_dev_amppd(aw_dev, true);
++}
++
++static int aw88261_dev_start(struct aw88261 *aw88261, bool enable)
++{
++	struct aw_device *aw_dev = aw88261->aw_pa;
++	int ret;
++
++	ret = aw88261_dev_power_up(aw88261);
++	if (ret || !enable)
++		return ret;
++
++	ret = aw88261_dev_enable(aw88261);
++	if (ret) {
++		aw88261_dev_pwd(aw_dev, true);
++		aw_dev->status = AW88261_DEV_PW_OFF;
++	}
++
++	return ret;
++}
++
++static int aw88261_dev_stop(struct aw_device *aw_dev)
++{
++	if (aw_dev->status == AW88261_DEV_PW_OFF) {
++		dev_dbg(aw_dev->dev, "already power off");
++		return 0;
++	}
++
++	if (aw_dev->status == AW88261_DEV_PW_ON)
++		aw88261_dev_disable(aw_dev);
++
++	aw_dev->status = AW88261_DEV_PW_OFF;
+ 
+ 	/* set power down */
+ 	aw88261_dev_pwd(aw_dev, true);
+@@ -618,7 +655,7 @@ static int aw88261_reg_update(struct aw88261 *aw88261, bool force)
+ 	return ret;
+ }
+ 
+-static void aw88261_start_pa(struct aw88261 *aw88261)
++static void aw88261_start_pa(struct aw88261 *aw88261, bool enable)
+ {
+ 	int ret, i;
+ 
+@@ -629,7 +666,7 @@ static void aw88261_start_pa(struct aw88261 *aw88261)
+ 				"aw88261_reg_update failed, cnt:%d, ret:%d\n", i, ret);
+ 			continue;
+ 		}
+-		ret = aw88261_dev_start(aw88261);
++		ret = aw88261_dev_start(aw88261, enable);
+ 		if (ret) {
+ 			dev_dbg(aw88261->aw_pa->dev,
+ 				"aw88261_dev_start failed, cnt:%d, ret:%d\n", i, ret);
+@@ -643,15 +680,15 @@ static void aw88261_start_pa(struct aw88261 *aw88261)
+ 		dev_err(aw88261->aw_pa->dev, "start failure (%d)\n", ret);
+ }
+ 
+-static void aw88261_start(struct aw88261 *aw88261)
++static void aw88261_start(struct aw88261 *aw88261, bool enable)
+ {
+ 	if (aw88261->aw_pa->fw_status != AW88261_DEV_FW_OK)
+ 		return;
+ 
+-	if (aw88261->aw_pa->status == AW88261_DEV_PW_ON)
++	if (aw88261->aw_pa->status != AW88261_DEV_PW_OFF)
+ 		return;
+ 
+-	aw88261_start_pa(aw88261);
++	aw88261_start_pa(aw88261, enable);
+ }
+ 
+ static int aw88261_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+@@ -865,10 +902,50 @@ static int aw88261_set_tdm_slot(struct snd_soc_dai *dai,
+ 	return 0;
+ }
+ 
++static int aw88261_startup(struct snd_pcm_substream *substream,
++			   struct snd_soc_dai *dai)
++{
++	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(dai->component);
++
++	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
++		aw88261->nonatomic = substream->pcm->nonatomic;
++
++	return 0;
++}
++
++static int aw88261_mute_stream(struct snd_soc_dai *dai, int mute, int stream)
++{
++	struct aw88261 *aw88261 = snd_soc_component_get_drvdata(dai->component);
++	struct aw_device *aw_dev = aw88261->aw_pa;
++	int ret;
++
++	/* No I2C in an atomic trigger: the start was completed from DAPM */
++	if (!aw88261->nonatomic)
++		return 0;
++
++	guard(mutex)(&aw88261->lock);
++
++	if (mute) {
++		if (aw_dev->status == AW88261_DEV_PW_ON)
++			aw88261_dev_disable(aw_dev);
++	} else if (aw_dev->status == AW88261_DEV_PW_READY) {
++		ret = aw88261_dev_enable(aw88261);
++		if (ret)
++			dev_err(aw_dev->dev, "start failure (%d)\n", ret);
++	}
++
++	return 0;
++}
++
+ static const struct snd_soc_dai_ops aw88261_dai_ops = {
++	.startup = aw88261_startup,
+ 	.set_fmt = aw88261_set_fmt,
+ 	.hw_params = aw88261_hw_params,
+ 	.set_tdm_slot = aw88261_set_tdm_slot,
++	.mute_stream = aw88261_mute_stream,
++	/* unmuted after the trigger of the CPU DAI, which may start the BCK */
++	.mute_unmute_on_trigger = true,
++	.no_capture_mute = 1,
+ };
+ 
+ static struct snd_soc_dai_driver aw88261_dai[] = {
+@@ -969,8 +1046,10 @@ static int aw88261_profile_set(struct snd_kcontrol *kcontrol,
+ 	}
+ 
+ 	if (aw88261->aw_pa->status) {
++		bool enable = aw88261->aw_pa->status == AW88261_DEV_PW_ON;
++
+ 		aw88261_dev_stop(aw88261->aw_pa);
+-		aw88261_start(aw88261);
++		aw88261_start(aw88261, enable);
+ 	}
+ 
+ 	return 1;
+@@ -1068,7 +1147,11 @@ static int aw88261_playback_event(struct snd_soc_dapm_widget *w,
+ 	guard(mutex)(&aw88261->lock);
+ 	switch (event) {
+ 	case SND_SOC_DAPM_PRE_PMU:
+-		aw88261_start(aw88261);
++		/*
++		 * Some hosts only start the bit clock in their trigger: when
++		 * the trigger may sleep, the unmute completes the start there.
++		 */
++		aw88261_start(aw88261, !aw88261->nonatomic);
+ 		break;
+ 	case SND_SOC_DAPM_POST_PMD:
+ 		aw88261_dev_stop(aw88261->aw_pa);
+diff --git a/sound/soc/codecs/aw88261.h b/sound/soc/codecs/aw88261.h
+index f16f9f8c40a2..eb366f1dde58 100644
+--- a/sound/soc/codecs/aw88261.h
++++ b/sound/soc/codecs/aw88261.h
+@@ -564,6 +564,8 @@ enum {
+ enum {
+ 	AW88261_DEV_PW_OFF = 0,
+ 	AW88261_DEV_PW_ON,
++	/* powered up and configured, amplifier off: waits for the bit clock */
++	AW88261_DEV_PW_READY,
+ };
+ 
+ enum {
+@@ -607,6 +609,8 @@ struct aw88261 {
+ 	unsigned int rxr_slotvld_mask;
+ 
+ 	bool phase_sync;
++	/* the trigger may sleep: the start is split between DAPM and unmute */
++	bool nonatomic;
+ };
+ 
+ #endif
+
+base-commit: 0f8bc3b93b76d16682a4d4999f9559b1e18016f9
 -- 
-2.55.0
-
+2.43.0
 
