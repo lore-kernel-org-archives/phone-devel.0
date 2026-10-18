@@ -1,320 +1,228 @@
-Received: from mta1.migadu.com (out-212.mta1.migadu.com [95.215.58.212])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [84.42.129.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D733E0081
-	for <phone-devel@vger.kernel.org>; Sun, 18 Oct 2026 23:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AFB3DAADB;
+	Sun, 18 Oct 2026 23:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792365200; cv=none; b=FyUAELSU9ICDMboDANaFjCDu1H8NnkwLUtE9enrSCZOHZlWN24kta2H/hUszLCQg/PWU5fcy48qPfi8M3Q+VlqHhQiSqRIVMQ3xqJ94AD3oIe+SvgZtDGGqk7XlX0MSKPzFhPXOaTEAzDifgt+OvV0WuLIUc3kTFf/p579GcI4k=
+	t=1792366202; cv=none; b=Ge+B7PTzUbRPQFNNIc6jJ1gFkmNhESYpCHro9v8z+99kuegreEQ7RrqZ1Xo0M11MXzQji2JAg/MbY6jdM2nAJP118ZubGDvARiXBBipHjJKIyINJcaijwuKHcy7BKLvfl5ntRXQvoBeG2k7fTo+mDTtzGAQbdVVXmhMa9hLt4VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792365200; c=relaxed/simple;
-	bh=/PRZQM6JuizaH0s04HVkxAjklqfezh2PIg3JP0mEO/w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKlp0TcJSPHlSNLhbNC4Misq2SjXKSdNGJR7J46z/k4lHhd8JDgnluxkp54QUSPCYPgFF41FBRbzh33ZnqwB0+sLsEZLMIbobmJUTf+9G+pjSH+AbmQb1G+V8ddV1a5J2HVtuqkvBDulDVuNxh+mWzZZdhLw9LOHkBeHiEmTdSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=V+g29J1i; arc=none smtp.client-ip=95.215.58.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1792366202; c=relaxed/simple;
+	bh=sAvbJTRu8ZSxB5bP58kEDYXqHsPZPLiCqrS9+gn/c4s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Yk55hPwEehGayV0h8h5NRJpGzcXfuBptXUnl/xzGTqYXHj8hoaUbTRBPFxbCJd62nBn+tqrWIZuQNqfkJ3mYkwhtDED99xRADCX97mA5BKY/5/UIbiMDTTJNMKgVRE9CovHyZAcNRW54aZs1012glnZq99GUyH2fkR93fPbUTTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=XMIr6sOp; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="V+g29J1i"
-X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=/PRZQM6JuizaH0s04HVkxAjklqfezh2PIg3JP0mEO/w=;
- c=simple/simple; d=packett.cool;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792365196; v=1; x=1792969996;
- b=V+g29J1iok/O2kUs0onlVaidCv/nNnVzUtAnp9iToY4ghGeFvTAxVEPNHlBVbR+rZ5lb9Keo
- Dg3mMqriV62cW90dVF9hlF8uoO9yv5YFuxregt9cwA+WIbw7OoMufrTMA/7R/HNrV9dMG9O1J7w
- 449GTIusm1v3q4WmmxIzdtqC5J68khIFl4fp0bJsOhe1tMHc7KWyNIAkkNdwc9Tkui89stHfxKH
- XlPGJltwhEcCA5O6rHQYxP3EbgCnO4UJUb36eqYx8/HLBzC/q1/ty7bT7F46iTgKVU3f+vAJ7xW
- QpfHjA35vvSfjNgrs+Bp/DhYvluztMmoXHvBMli9poOMQ==
-X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 72debcc7559da829;
-	Sun, 18 Oct 2026 23:13:16 +0000
-X-Mizu-Trace-ID: 72debcc7559da829
-X-Migadu-Flow: FLOW_OUT
-From: Val Packett <val@packett.cool>
-To: Srinivas Kandagatla <srini@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Val Packett <val@packett.cool>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ASoC: codecs: wcd937x: add USB Type-C analog audio mux support
-Date: Sun, 18 Oct 2026 20:12:30 -0300
-Message-ID: <20261018231244.1266926-3-val@packett.cool>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261018231244.1266926-1-val@packett.cool>
-References: <20261018231244.1266926-1-val@packett.cool>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="XMIr6sOp"
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 7D3D55340428;
+	Mon, 19 Oct 2026 01:29:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1792366194;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cxv9peWI8l26Jzq3BiiH6v311pkQdBeWOmm4lBs4J/Q=;
+	b=XMIr6sOpJebZ8drvpfLngwyVq+yCTExaENQKbETSYI/d+aEldmwEJxaQycNQN5xZQ8Ud7F
+	irj/ZsNYmP6OQUm/56fSwQBx7u5ovKkm3N9Co1up2gJw60lNPWA4OYRofgEOC8PVxkHk2c
+	gPJJJQ89VAiir90eG3Ycf18+r8CsZGo=
+Message-ID: <391498ea-51f1-4390-b84a-d0d738ec409d@ixit.cz>
+Date: Mon, 19 Oct 2026 01:29:53 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 06/12] usb: typec: qcom: Add gen1 Type-C port support
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Alexey Minnekhanov <alexeymin@minlexx.ru>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Lee Jones <lee@kernel.org>, Stephen Boyd <sboyd@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ phone-devel@vger.kernel.org, mfd@lists.linux.dev
+References: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
+ <20260926-typec-v1-6-31adc19f32c6@ixit.cz>
+ <4f089c98-a479-45c9-9b11-0207c895367a@linaro.org>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <4f089c98-a479-45c9-9b11-0207c895367a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On mobile devices, this codec is frequently paired with a USB-C SBU mux
-like the FSA4480 to support analog headphone adapters. To support this,
-register the codec in the Type-C graph whenever one is present in the
-device tree, handle the hotplug notifications and report detected GND-MIC
-pin swap back to the external mux as Type-C orientation.
+On 26/09/2026 16:22, Bryan O'Donoghue wrote:
+> On 26/09/2026 13:40, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Add a port backend for the first generation of the Qualcomm PMIC Type-C
+>> block, found on PM660 and PMI8998.
+>>
+>> On gen1 the Type-C CC logic is part of the charger's USBIN peripheral
+>> (base 0x1300) instead of the standalone Type-C peripheral used by
+>> PM8150B and later PMICs. All Type-C events (CC state change,
+>> tCCDebounce done, VBUS change and error) are signalled through a single
+>> aggregate "type-c-change" interrupt, the handler re-reads TYPEC_STATUS_4
+>> to find out what changed. The PD PHY is register compatible with PM8150B
+>> and is reused as is.
+>>
+>> Differences to the PM8150B backend:
+>>   - get_cc() returns -EBUSY until the hardware reports tCCDebounce done,
+>>     instead of using a software debounce.
+>>   - As a source, only the default and 1.5A Rp can be advertised, 3.0A
+>>     requests are advertised as 1.5A.
+>>   - The PBS workaround of the downstream SMB2 driver (TM_IO_DTEST4_SEL)
+>>     is applied on every power role change.
+>>
+>> VBUS sourcing is optional and only used when the connector provides
+>> a vbus-supply, as the charger doesn't expose a VBUS regulator yet.
+>>
+>> Assisted-by: LLM
+>> Co-developed-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
+>> Signed-off-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   drivers/usb/typec/tcpm/qcom/Makefile               |   1 +
+>>   drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c      |   9 +
+>>   .../typec/tcpm/qcom/qcom_pmic_typec_port_gen1.c    | 605 +++++++++++++++++++++
+>>   .../typec/tcpm/qcom/qcom_pmic_typec_port_gen1.h    |  15 +
+>>   4 files changed, 630 insertions(+)
+>>
+>> diff --git a/drivers/usb/typec/tcpm/qcom/Makefile b/drivers/usb/typec/tcpm/ 
+>> qcom/Makefile
+>> index cc23042b94878..b8b9350184c19 100644
+>> --- a/drivers/usb/typec/tcpm/qcom/Makefile
+>> +++ b/drivers/usb/typec/tcpm/qcom/Makefile
+>> @@ -1,7 +1,8 @@
+>>   # SPDX-License-Identifier: GPL-2.0
+>>   #
+>>   obj-$(CONFIG_TYPEC_QCOM_PMIC)        += qcom_pmic_tcpm.o
+>>   qcom_pmic_tcpm-y            += qcom_pmic_typec.o \
+>>                          qcom_pmic_typec_port.o \
+>> +                       qcom_pmic_typec_port_gen1.o \
+>>                          qcom_pmic_typec_pdphy.o \
+>>                          qcom_pmic_typec_pdphy_stub.o \
+>> diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c b/drivers/usb/ 
+>> typec/tcpm/qcom/qcom_pmic_typec.c
+>> index 41aaae6bb3724..ea1d5b0927436 100644
+>> --- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+>> +++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec.c
+>> @@ -12,16 +12,17 @@
+>>   #include <linux/slab.h>
+>>   #include <linux/usb/tcpm.h>
+>>   #include <drm/bridge/aux-bridge.h>
+>>   #include "qcom_pmic_typec.h"
+>>   #include "qcom_pmic_typec_pdphy.h"
+>>   #include "qcom_pmic_typec_port.h"
+>> +#include "qcom_pmic_typec_port_gen1.h"
+>>   typedef int (*pmic_typec_port_probe_fn)(struct platform_device *pdev,
+>>                       struct pmic_typec *tcpm,
+>>                       const struct pmic_typec_port_resources *res,
+>>                       struct regmap *regmap, u32 base);
+>>   struct pmic_typec_resources {
+>>       const struct pmic_typec_pdphy_resources    *pdphy_res;
+>> @@ -134,31 +135,39 @@ static void qcom_pmic_typec_remove(struct 
+>> platform_device *pdev)
+>>       struct pmic_typec *tcpm = platform_get_drvdata(pdev);
+>>       tcpm->pdphy_stop(tcpm);
+>>       tcpm->port_stop(tcpm);
+>>       tcpm_unregister_port(tcpm->tcpm_port);
+>>       fwnode_handle_put(tcpm->tcpc.fwnode);
+>>   }
+>> +static const struct pmic_typec_resources gen1_typec_res = {
+>> +    .pdphy_res = &pm8150b_pdphy_res,
+>> +    .port_res = &gen1_port_res,
+>> +    .port_probe = qcom_pmic_typec_gen1_port_probe,
+>> +};
+>> +
+>>   static const struct pmic_typec_resources pm8150b_typec_res = {
+>>       .pdphy_res = &pm8150b_pdphy_res,
+>>       .port_res = &pm8150b_port_res,
+>>       .port_probe = qcom_pmic_typec_port_probe,
+>>   };
+>>   static const struct pmic_typec_resources pmi632_typec_res = {
+>>       /* PD PHY not present */
+>>       .port_res = &pm8150b_port_res,
+>>       .port_probe = qcom_pmic_typec_port_probe,
+>>   };
+>>   static const struct of_device_id qcom_pmic_typec_table[] = {
+>> +    { .compatible = "qcom,pm660-typec", .data = &gen1_typec_res },
+>>       { .compatible = "qcom,pm8150b-typec", .data = &pm8150b_typec_res },
+>>       { .compatible = "qcom,pmi632-typec", .data = &pmi632_typec_res },
+>> +    { .compatible = "qcom,pmi8998-typec", .data = &gen1_typec_res },
+> 
+> I think this should be
+> 
+>  > +    { .compatible = "qcom,pm660-typec", .data = &pm660_typec_res },
+>  >       { .compatible = "qcom,pm8150b-typec", .data = &pm8150b_typec_res },
+>  >       { .compatible = "qcom,pmi632-typec", .data = &pmi632_typec_res },
+>  > +    { .compatible = "qcom,pmi8998-typec", .data = &pmi8998_typec_res },
+> 
+> Since I'm not sure "gen1" is a real thing and besides, I see this gen1/gen2/gen3 
+> stuff in CAMSS and it means almost nothing. The silicon version is the salient 
+> thing.
 
-Based on code from the wcd939x driver.
+Best I can do is GenZ.
+But now seriously, I hoped someone from Qualcomm will chime in and tells me how 
+is this type-c block generation properly called.
 
-Signed-off-by: Val Packett <val@packett.cool>
----
- sound/soc/codecs/wcd937x.c | 151 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 148 insertions(+), 3 deletions(-)
+David
 
-diff --git a/sound/soc/codecs/wcd937x.c b/sound/soc/codecs/wcd937x.c
-index 7ffbb445f8ac..770f5925e89f 100644
---- a/sound/soc/codecs/wcd937x.c
-+++ b/sound/soc/codecs/wcd937x.c
-@@ -8,12 +8,15 @@
- #include <linux/gpio/consumer.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/of_graph.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
-+#include <linux/usb/typec_mux.h>
-+#include <linux/usb/typec_altmode.h>
- #include <sound/jack.h>
- #include <sound/pcm_params.h>
- #include <sound/pcm.h>
-@@ -82,6 +85,13 @@ struct wcd937x_priv {
- 	struct regmap *regmap;
- 	/* micb setup lock */
- 	struct mutex micb_lock;
-+	/* typec handling */
-+	bool typec_analog_mux;
-+#if IS_ENABLED(CONFIG_TYPEC)
-+	enum typec_orientation typec_orientation;
-+	unsigned long typec_mode;
-+	struct typec_switch *typec_switch;
-+#endif /* CONFIG_TYPEC */
- 	/* mbhc module */
- 	struct wcd_mbhc *wcd_mbhc;
- 	struct wcd_mbhc_config mbhc_cfg;
-@@ -1869,7 +1879,7 @@ static void wcd937x_mbhc_moisture_config(struct snd_soc_component *component)
- {
- 	struct wcd937x_priv *wcd937x = snd_soc_component_get_drvdata(component);
- 
--	if (wcd937x->mbhc_cfg.moist_rref == R_OFF) {
-+	if (wcd937x->mbhc_cfg.moist_rref == R_OFF || wcd937x->typec_analog_mux) {
- 		snd_soc_component_write_field(component, WCD937X_MBHC_NEW_CTL_2,
- 					      WCD937X_M_RTH_CTL_MASK, R_OFF);
- 		return;
-@@ -1905,7 +1915,7 @@ static bool wcd937x_mbhc_get_moisture_status(struct snd_soc_component *component
- 	struct wcd937x_priv *wcd937x = snd_soc_component_get_drvdata(component);
- 	bool ret = false;
- 
--	if (wcd937x->mbhc_cfg.moist_rref == R_OFF) {
-+	if (wcd937x->mbhc_cfg.moist_rref == R_OFF || wcd937x->typec_analog_mux) {
- 		snd_soc_component_write_field(component, WCD937X_MBHC_NEW_CTL_2,
- 					      WCD937X_M_RTH_CTL_MASK, R_OFF);
- 		goto done;
-@@ -2634,6 +2644,40 @@ static const struct snd_soc_component_driver soc_codec_dev_wcd937x = {
- 	.endianness = 1,
- };
- 
-+#if IS_ENABLED(CONFIG_TYPEC)
-+/* Get USB-C plug orientation to provide swap event for MBHC */
-+static int wcd937x_typec_switch_set(struct typec_switch_dev *sw,
-+				    enum typec_orientation orientation)
-+{
-+	struct wcd937x_priv *wcd937x = typec_switch_get_drvdata(sw);
-+
-+	wcd937x->typec_orientation = orientation;
-+
-+	return 0;
-+}
-+
-+static int wcd937x_typec_mux_set(struct typec_mux_dev *mux,
-+				 struct typec_mux_state *state)
-+{
-+	struct wcd937x_priv *wcd937x = typec_mux_get_drvdata(mux);
-+	unsigned int previous_mode = wcd937x->typec_mode;
-+
-+	if (!wcd937x->wcd_mbhc)
-+		return -EINVAL;
-+
-+	if (wcd937x->typec_mode != state->mode) {
-+		wcd937x->typec_mode = state->mode;
-+
-+		if (wcd937x->typec_mode == TYPEC_MODE_AUDIO)
-+			return wcd_mbhc_typec_report_plug(wcd937x->wcd_mbhc);
-+		else if (previous_mode == TYPEC_MODE_AUDIO)
-+			return wcd_mbhc_typec_report_unplug(wcd937x->wcd_mbhc);
-+	}
-+
-+	return 0;
-+}
-+#endif /* CONFIG_TYPEC */
-+
- static bool wcd937x_swap_gnd_mic(struct snd_soc_component *component)
- {
- 	int value;
-@@ -2644,6 +2688,13 @@ static bool wcd937x_swap_gnd_mic(struct snd_soc_component *component)
- 	value = gpiod_get_value(wcd937x->us_euro_gpio);
- 	gpiod_set_value(wcd937x->us_euro_gpio, !value);
- 
-+#if IS_ENABLED(CONFIG_TYPEC)
-+	if (wcd937x->typec_analog_mux && wcd937x->typec_switch)
-+		typec_switch_set(wcd937x->typec_switch,
-+				 wcd937x->typec_orientation == TYPEC_ORIENTATION_REVERSE ?
-+					TYPEC_ORIENTATION_NORMAL : TYPEC_ORIENTATION_REVERSE);
-+#endif /* CONFIG_TYPEC */
-+
- 	return true;
- }
- 
-@@ -2761,10 +2812,24 @@ static int wcd937x_bind(struct device *dev)
- 	/* Give the SDW subdevices some more time to settle */
- 	usleep_range(5000, 5010);
- 
-+#if IS_ENABLED(CONFIG_TYPEC)
-+	/*
-+	 * Get the USB Type-C switch to send GND/MIC swap events.
-+	 * typec_switch is fetched now to avoid a probe deadlock since
-+	 * the switch depends on the typec_mux register in wcd937x_probe()
-+	 */
-+	if (wcd937x->typec_analog_mux) {
-+		wcd937x->typec_switch = fwnode_typec_switch_get(dev->fwnode);
-+		if (IS_ERR(wcd937x->typec_switch))
-+			return dev_err_probe(dev, PTR_ERR(wcd937x->typec_switch),
-+					     "failed to acquire orientation-switch\n");
-+	}
-+#endif /* CONFIG_TYPEC */
-+
- 	ret = component_bind_all(dev, wcd937x);
- 	if (ret) {
- 		dev_err(dev, "Slave bind failed, ret = %d\n", ret);
--		return ret;
-+		goto err_put_typec_switch;
- 	}
- 
- 	wcd937x->rxdev = of_sdw_find_device_by_node(wcd937x->rxnode);
-@@ -2852,6 +2917,12 @@ static int wcd937x_bind(struct device *dev)
- 	put_device(wcd937x->rxdev);
- err_component_unbind:
- 	component_unbind_all(dev, wcd937x);
-+err_put_typec_switch:
-+#if IS_ENABLED(CONFIG_TYPEC)
-+	if (wcd937x->typec_analog_mux)
-+		typec_switch_put(wcd937x->typec_switch);
-+#endif /* CONFIG_TYPEC */
-+
- 	return ret;
- }
- 
-@@ -2874,6 +2945,61 @@ static const struct component_master_ops wcd937x_comp_ops = {
- 	.unbind = wcd937x_unbind,
- };
- 
-+#if IS_ENABLED(CONFIG_TYPEC)
-+static void wcd937x_typec_mux_unregister(void *data)
-+{
-+	struct typec_mux_dev *typec_mux = data;
-+
-+	typec_mux_unregister(typec_mux);
-+}
-+
-+static void wcd937x_typec_switch_unregister(void *data)
-+{
-+	struct typec_switch_dev *typec_sw = data;
-+
-+	typec_switch_unregister(typec_sw);
-+}
-+
-+static int wcd937x_add_typec(struct wcd937x_priv *wcd937x, struct device *dev)
-+{
-+	int ret;
-+	struct typec_mux_dev *typec_mux;
-+	struct typec_switch_dev *typec_sw;
-+	struct typec_mux_desc mux_desc = {
-+		.drvdata = wcd937x,
-+		.fwnode = dev_fwnode(dev),
-+		.set = wcd937x_typec_mux_set,
-+	};
-+	struct typec_switch_desc sw_desc = {
-+		.drvdata = wcd937x,
-+		.fwnode = dev_fwnode(dev),
-+		.set = wcd937x_typec_switch_set,
-+	};
-+
-+	typec_mux = typec_mux_register(dev, &mux_desc);
-+	if (IS_ERR(typec_mux))
-+		return dev_err_probe(dev, PTR_ERR(typec_mux),
-+				     "failed to register typec mux\n");
-+
-+	ret = devm_add_action_or_reset(dev, wcd937x_typec_mux_unregister,
-+				       typec_mux);
-+	if (ret)
-+		return ret;
-+
-+	typec_sw = typec_switch_register(dev, &sw_desc);
-+	if (IS_ERR(typec_sw))
-+		return dev_err_probe(dev, PTR_ERR(typec_sw),
-+				     "failed to register typec switch\n");
-+
-+	ret = devm_add_action_or_reset(dev, wcd937x_typec_switch_unregister,
-+				       typec_sw);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+#endif
-+
- static int wcd937x_add_slave_components(struct wcd937x_priv *wcd937x,
- 					struct device *dev,
- 					struct component_match **matchptr)
-@@ -2907,6 +3033,9 @@ static int wcd937x_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct wcd937x_priv *wcd937x;
- 	struct wcd_mbhc_config *cfg;
-+#if IS_ENABLED(CONFIG_TYPEC)
-+	struct device_node *np;
-+#endif /* CONFIG_TYPEC */
- 	int ret;
- 
- 	wcd937x = devm_kzalloc(dev, sizeof(*wcd937x), GFP_KERNEL);
-@@ -2951,6 +3080,22 @@ static int wcd937x_probe(struct platform_device *pdev)
- 
- 	wcd_dt_parse_mbhc_data(dev, &wcd937x->mbhc_cfg);
- 
-+#if IS_ENABLED(CONFIG_TYPEC)
-+	/*
-+	 * If the node has a port and a valid remote endpoint,
-+	 * consider HP lines as connected to a USB-C SBU mux
-+	 */
-+	np = of_graph_get_remote_node(dev->of_node, 0, 0);
-+	if (np) {
-+		wcd937x->typec_analog_mux = true;
-+		cfg->typec_analog_mux = true;
-+
-+		ret = wcd937x_add_typec(wcd937x, dev);
-+		if (ret)
-+			return ret;
-+	}
-+#endif /* CONFIG_TYPEC */
-+
- 	ret = wcd937x_add_slave_components(wcd937x, dev, &match);
- 	if (ret)
- 		return ret;
--- 
-2.55.0
-
+[...]
