@@ -1,171 +1,148 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8D83E3D9F
-	for <phone-devel@vger.kernel.org>; Sun, 18 Oct 2026 23:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A4838A717
+	for <phone-devel@vger.kernel.org>; Mon, 19 Oct 2026 06:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792367593; cv=none; b=aZ6ANnoUB/PvYodXBg4mTPNrimTT2H3PALtvR8QflmyNr60eBzTq8j9QmO3g86w4QCg/LUGPEHn94tbuCycIuqEuYg7cucZXNbOpgu+enzCAVYlA24c3QwAvKRJ/8BoCC5GqJHX/FKcm0QZ/W1ypLrvhJVewgJkyU/KyDVtoi8E=
+	t=1792391479; cv=none; b=u3Zr3Y9FY/N+Lk5F1m9wp02F3G+mahVbw90rq3T4rVCfU62ONMyIN6oql5wUnNi5MHTQRYpMWj+LeSdKVTHffqZFIInCLSkYfIAzP6xASbYzHaxOYG8lFCc9oYD18INxciBb2UE2oSLA8v0WE0Q2/eoxmVZOgCRzlm1YjhdkSgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792367593; c=relaxed/simple;
-	bh=6g5HKqFJHy+jPg5eI51EkhtmHAefO2ruYtPIveQKssg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aNFqk1JPLQ52i+EELIVzJ3LeeobepCkWUG6dK2anKum60YkxbFiHn27TO05xcZsAx9jB31HVwUT1KpJAQ4WQEUDro8zQabBAmK42njPV0NFwlbJC6I2/NUgYxhXrFqQSnmMzlX4lc4qPL+5gL0bBPcS4yD6nXT634BcViM1tNc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VvdU+p5P; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dfGYZBv7; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1792391479; c=relaxed/simple;
+	bh=txq8RXRx0od5LxWggME7R2j18CbFPKPl0i4VxtB+JkI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dPG049RmAQc2rHjazE93MHI14H1a7TYmE+gYN6eKJWHMzZFVNrDWiGCKhWq5IKrMaismQN5inPlRAbYB0qHEimlY0uby0MKrSD0S7Kzjne3hiZ1lDb0XWy5lp8eQjWYT2BEWTlG0twILFycO14mCCotYL4hIXVmmjRrCuALyMhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=gB2mun92; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VvdU+p5P";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dfGYZBv7"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69ILjWx34015127
-	for <phone-devel@vger.kernel.org>; Sun, 18 Oct 2026 23:53:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=p0UcZjLCI5EsaKXVYEifEeVT
-	wnpPCrWb11gsbObd+YU=; b=VvdU+p5P2HVWGIS4IDl2/9rNdQMdmpu70XGjiIUY
-	9xHLxWOawWeirSqftTIKVKv6NbgJHmQWMi+0W/CKA+JzhkyWi+g3cy9Sm5yCSIhG
-	huY/BmDcqjOHV3qZPkCUoZWYK0ReofsIbivraCWuYwvXCwyCIFqO4Keu2tMwn6BC
-	dZeYzOA5OrY51NjeI7U5h/3mByROVrnmAb5SQDm+Lc4K32xxKsBJDRTLlMuk0K14
-	ivOLMc3VJYrLyTB5WhtjfhJ9p+dVs4BH62+U0afgjCtekfWdeTuLWZ/L7WBvFiKs
-	xq7Kd/M/HhlIuUPFznC0Wd0+k4ZjG6xh0s78LQm1nego9w==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hc1d7v5f0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <phone-devel@vger.kernel.org>; Sun, 18 Oct 2026 23:53:10 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a082c014aso394913185a.0
-        for <phone-devel@vger.kernel.org>; Sun, 18 Oct 2026 16:53:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="gB2mun92"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a1ec92f655so1821255e9.0
+        for <phone-devel@vger.kernel.org>; Sun, 18 Oct 2026 23:31:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792367590; x=1792972390; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p0UcZjLCI5EsaKXVYEifEeVTwnpPCrWb11gsbObd+YU=;
-        b=dfGYZBv7HXtuU/YG6FHj3A/85Kw52GTaPFEVGAnZdrCmNB8u7bi1VINRrj/1qF/3aQ
-         8fTx4eJg3IIKF7aPAf/PzYd0QC6S60sYGPAU/syn5aeVhoTMax6VYwd6g1vDSpZoR03T
-         OviyiwJj+Dz174yiTKU3qcMqIQo88h3cM9VMBvjiB2FODJA6WBpjJRF+1D/ojt5WaJUj
-         SXusdtykdp+1qx2MLtGZbE5wd6Afuwc81TRL3xQaR/ekC3r1ScWF2su9UR+p6lxZSjxh
-         sXNIqsAZckDXZx9D07kiZPNITh03Cl//9JbxyDtxso3/cPeo7ygUIhzuNnzWboHbYsbE
-         NxnA==
+        d=fairphone.com; s=fair; t=1792391475; x=1792996275; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=GCThCQjiUFY5+/PZUxZkIpMCNGyKmzi9/ufOgt9jdnM=;
+        b=gB2mun92gI5039yDs820EXCenQU4tVDsv3Prgr8rZMNT5VsFeW/f66W7ql3eDaHDn+
+         9i9gxp8FhRhOXLs6877qJyVC/oW1+EZnGO2u9NFBWrkg1gQ3HaHr3LcAxBVb5LUCqALB
+         ssWJ8rwNZFAVKPWldDuYZahXm9JnKmZ3+J8voNQQC/HA7TGlTD+/ACEWeoorbjDIFuS3
+         47mu+F3VTHYq90ksAuIyGu6ILJlJkElv5QMWyxVWN64lWYenwSkaxhAks3AXEqfCS8CJ
+         /ufeVlIO3ghzlhRLrxD0BwzGWelv/1zMgfowJTTahr9yWgSxwl1+/fpbssSYrDiiA8B4
+         2lSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792367590; x=1792972390;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p0UcZjLCI5EsaKXVYEifEeVTwnpPCrWb11gsbObd+YU=;
-        b=HkZ9YL7SP5a5SN5N/4HSvTP/4oskj/VrDdTMJJezRjpYzVL7L8wDimOipuA8MmX6PT
-         vGEw3witSCgCfUucz8StuwVRxbRuxbyCRwJYjEffdIK9NpirY3nCRGfi74EPokePE6np
-         Plx0FqhWmqaZdMFw3uonzkt/hk5MJj7eAFyPAIIqoUvDq7RlMWBzKvicAR7Ybt0UoJsg
-         j+l6K7+Agl1toKGwJeX1xuwh/pGxZqn+j36/+cDCG3yu8jhPeLFgvapXOMAkWlPB5F38
-         4WfYC+gKNJk8pYLP6+PBE9SDxHcB6hcdclBiF8RCoze9qSwpkc+a1tCqh3wc7Q8wXLUx
-         9h5g==
-X-Forwarded-Encrypted: i=1; AKwUvBxDTrNe//F3d0tLZn0+pQH1MDEjchqlrEozdRb9FWBc7qAZI+qSrAjZD9hdpstw2vFke5SKHMzd4ncN7A==@vger.kernel.org
-X-Gm-Message-State: AFq9FYJF+XMLJdsvFW+LylBwFLmEr0mVKLojvNC8vHOMzSpoa8ZzxcYT
-	b7Zj6pRWJzAHp6QkxBJD8J+aRm0CPv4cH8Fl/nCH3Z0oFROeO0dY4+oLqIboE2tvvIaVfxfEv5K
-	wsEbY0mNVE1yGcPt8HqiOcZ5MouVQU9TiNe373u99hTCI264hss9pKnMFDMkjnwLCHQ==
-X-Gm-Gg: AYBFou02mE3VOT8Z0K6uVVnQGsKG9ylG4Oj/TOliqDy9+KCCuRxbZP8faxnII4/B/oL
-	uUySbkRckwMlwlobOgzbjZLkEaczkFSJlwvYthyqAWC/VG3Kx/Az9XaPTw7NJPpznKO3Z4MwD7y
-	kPm/t9SpjisZl7o0j83HVaWj5u+sG1fKre7zool4kkjV4X8ywVgn7Lah2CyzLiJcVNmT7t5tp9y
-	4jdCim/JtsQk2J+72h5SZpQMb0R9eIn9OiQBHFdgH/4zTNtTf2EzbeX+hg3kFpmOa2pmCcvfuGL
-	0nlf+bTDID5KBYf1Uh5GcFDWlUYu2Mju6Ua+wBs5iUAXlRO7xmYS9RERghAIk9z9obOxRF3wJj5
-	/Dc53+BnNiL6q43FJgdG3Nb9zCjMdUStIVt2AGBGakUPVAz1sAfyvfopjMRxh0FFd+zenrSUdDz
-	ODxiKa3acxgtoz
-X-Received: by 2002:a05:620a:a181:20b0:93f:2479:2b4 with SMTP id af79cd13be357-93f247904fbmr734308085a.10.1792367590003;
-        Sun, 18 Oct 2026 16:53:10 -0700 (PDT)
-X-Received: by 2002:a05:620a:a181:20b0:93f:2479:2b4 with SMTP id af79cd13be357-93f247904fbmr734306785a.10.1792367589543;
-        Sun, 18 Oct 2026 16:53:09 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5be4a42ade9sm1616881e87.14.2026.10.18.16.53.07
+        d=1e100.net; s=20260707; t=1792391475; x=1792996275;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=GCThCQjiUFY5+/PZUxZkIpMCNGyKmzi9/ufOgt9jdnM=;
+        b=ZITglnaUMiWEt4MWVzEHzsTWvGD2+s3vBaAqugvvvUilEBYicIcTxh3IfJVqmg0noc
+         42228pe3zz7I2L/ESIKN21fE0UV5P69ZO+XLfYcBKPckz03gkZqkMoT1JZ11NGSylPsT
+         d95OZh2waF0KKkjdlbrWi4HzHw94VJXByvaZ9dVzTf7mMNHFQDD1C/zRDKv3e/2AxLpP
+         dZtvCWMnL+5FMqGHT6vog42ZXDA6qM1huQPWALCYtTGTRZ7bz+htuzmIrlXK3R2NUhbe
+         S3gRc0chGimUmy+Mv0tVlBwaI/o5QSrSKnHfVPpolgYym/YZkKGFu+uWALdIGbP8m7lz
+         T4Pw==
+X-Forwarded-Encrypted: i=1; AKwUvByyHTY+7alYY4ULPQhvu9i/DsngGmInGr527ow3aC3n21UpM8ddiIROAZS4BTqPB1IYvq2n8HU57C86kQ==@vger.kernel.org
+X-Gm-Message-State: AFq9FYLvKb/U2KXRBnzljjwiwA/sdif/177hixUW11n3tmLHGDMx3OdC
+	RoGrj72bekuhmwedABGMqp6akzxxBjk6KcxT7nPb+xRNqo1r0YSytBXE/nB3s6CPepc=
+X-Gm-Gg: AYBFou2jlfhgd/pVK+X3YPuYUzJyOfvRRVT3pZog5AXGfYlCPyZs2spvh8TMiN5bTS4
+	TimYLmgbX5ZuGRJGXRysD/GdIWspaiMRb3qzUMDStgUKNZZ5cVxRklclHMOXqB4kH58BQ50JYBt
+	DkvIgrnRjxTSIZsBhwn84yfkhnL8f+7hoNxqC7c/7+WxmTR8HXd43WGJk3pvOh2IcahaZsmq+Rm
+	g+B1DqGvl/sZNK8yUu3/KBG+hLBQvoDtOWJtRHrmk90/EkzwF8lIXMSOeNK/Dl8DoyhS55w9jg3
+	LlMayckZSnDbMH3/TyYEiVPUNBnoiKILUm3WmCeQqClW+LkauazBV0Xwaobl6y6V+DcQ3C4vitE
+	v0D3nBOgDfRK6UrDWzKslKzNSvnXYjrh1ybJzLZVA5+kzRe+JDAMeXBCzB+rGMH/vNNorb5gL2K
+	N4Sz+8yF/mvU8jUA8LMwd43u0W4uRLiu5Kpd6BIARGA+YU15QVyxfxcnjkCAh/msfADdsfkXFTY
+	dz2XDBhrIQn
+X-Received: by 2002:a7b:c3c1:0:b0:4a1:8849:17ae with SMTP id 5b1f17b1804b1-4a1c663b460mr166458235e9.1.1792391474870;
+        Sun, 18 Oct 2026 23:31:14 -0700 (PDT)
+Received: from [192.168.200.185] ([122.164.127.22])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-183190aa411sm29269239c88.4.2026.10.18.23.31.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Oct 2026 16:53:08 -0700 (PDT)
-Date: Mon, 19 Oct 2026 02:53:06 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc: David Heidelberg <david@ixit.cz>,
-        Alexey Minnekhanov <alexeymin@minlexx.ru>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Lee Jones <lee@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, mfd@lists.linux.dev
-Subject: Re: [PATCH RFC 00/12] Qualcomm Type-C support for 1st generation
-Message-ID: <eodzuccugtdn42basgpczett4yatyirog4nxwe5rhg5xf46ibp@jzcjmje4aqc3>
-References: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
- <voc4ie6fcegr3thk5n6dib4pkdxmracch4hhgjdih6pxrq2bfm@lq7mx4flowqk>
- <f85cdfb7-b797-4b4b-9937-670c6dfe52c3@ixit.cz>
- <zb3s4fmwx7vu3kcqigensacbgdqoaqnipfn4ntx4dh7ahrfr42@hvdw36dqb3qn>
- <5c41ef43-a065-46e3-9522-faaf3884b487@linaro.org>
+        Sun, 18 Oct 2026 23:31:13 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Mon, 19 Oct 2026 11:59:20 +0530
+Subject: [PATCH] arm64: dts: qcom: sm6350: Add memory-region for audio PD
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c41ef43-a065-46e3-9522-faaf3884b487@linaro.org>
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE4MDA5NSBTYWx0ZWRfX8DETNyeu3MTe
- itl+Q7SnKc0D6UAtI3eJFQrIkWxilqtEFosNFvjJ6q+TJZvcr+fogn6RnA9vIixXuSqPgLZKVNi
- geL1prYx9pJPbR5rG2VrQldpJAc9w2I=
-X-Proofpoint-ORIG-GUID: dXsBv6CQ1iZFkWO2Ov9pxRlTm4fnfYOe
-X-Proofpoint-GUID: dXsBv6CQ1iZFkWO2Ov9pxRlTm4fnfYOe
-X-Authority-Analysis: v=2.4 cv=K4O3jCWI c=1 sm=1 tr=0 ts=6ad55be6 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=3RZNE-nbyhM6VGf7PbYA:9
- a=CjuIK1q_8ugA:10 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE4MDA5NSBTYWx0ZWRfX6wZZO4aU/FWZ
- Io7ZYxLbyER/xW5p2VLGkZtoPE8oiZRTf+geGmKEKbdZSr6CZD0gI1EGtRJ1Bo/kCs8PQlEwzws
- Xwvgvi6V6QDV8/y+AllfhPcPkXiA1YWK55Uzl8XxU4n/K9bpId1jpnWLpTvNTTdBClVtfRrX8fF
- oJ0HSYnvGCno6wNIcy+ozosF0O1QP3PgcQ6ghClTYGZFWWn0RGE4IqJcd3zb2yfhZ7Ip42tw18M
- 55Tf3S27gtKAeJAoD3uJjpeqLC/qLGbZ5juoyOAkRLdjpBKQEpdiz53I3ynZXaLLgxHHNXyTnCC
- nXd/u6vMTAPt+W7kVIfT436z2UylxZfdLgt04ueh4C9oc8mHz0hv3/JXTgnp3sYzs5lyflJNUJS
- GgRoTgCHMvDXd1xKQwBILL6BP7lzKwjevm9Bnnk2ct5wrqRgxuW5ujvPsf3e5buqr7KichfjmGI
- oiteYlUpr6jsRCOxswA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-18_05,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 priorityscore=1501 phishscore=0 clxscore=1011
- adultscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610180095
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261019-sm6350-fastrpc-memory-v1-1-1d4edb11238d@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NQQ6CMBBFr9LM2klakCJcxbAoddCatGCnGAzh7
+ lZh+ZL331+BKTpiaMUKkd6O3RgyqJMA+zDhTuhumaGQhVZSNchel5XEwXCKk0VPfowfVHVjz7o
+ 21UWWkLdTpMEt/+6125nn/kk2/WKHEek158O0a9AbJrSj9y61ItCS8DjV0G3bF0qB9fmqAAAA
+X-Change-ID: 20261019-sm6350-fastrpc-memory-179c467a5803
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792391467; l=1793;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=txq8RXRx0od5LxWggME7R2j18CbFPKPl0i4VxtB+JkI=;
+ b=VEH2q6yE78YozhInji/DsMmhOONcl0mWskWd4bhyhR4rM3/IPyw042bVDiaHZPQLu2pvNLIXv
+ KKDA0CcERGFBiGbXdcaCCFB+6gPQjZWmgFORriHY4/Cfw2G8WLopGiH
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-On Mon, Sep 28, 2026 at 04:54:08PM +0100, Bryan O'Donoghue wrote:
-> On 27/09/2026 17:33, Dmitry Baryshkov wrote:
-> > > > One major comment. As we see, on SMB2 PMICs parts of the Type-C
-> > > > functionality are provided by the charger / FG device. I guess that on
-> > > > SMB5 PMICs we will get the same problem once somebody tries to implement
-> > > > additional charger features. Would it make sense to rework the PMIC TCPM
-> > > > driver to be a composite driver, taking several components via the
-> > > > existing Linux interface?
-> > > As this gets decided from the QCOM side, I'm fine with whatever suits the
-> > > hardware best.
-> > Bryan, as you are a maintainer of the PMIC-TCPM? Would the use of
-> > components be fine?
-> 
-> I mean maybe. Would it not make more sense to land the TCPM functionality
-> and then look into adding charging moving then ?
-> 
-> i.e. finish off adding this piece first
+Reserve memory region for audio PD dynamic loading and remote heap
+requirements. Add the required VMID list for memory ownership
+transfers.
 
-The problem is that we already have SMB2 charger, which accesses the
-same region. In theory it is possible to say that USB-C driver conflicts
-with the charger "for now". In practice, I think, it might be better to
-sort that out from the beginning. You didn't have this issue when
-working on PM8150B support since we never needed charger for that PMIC
-series.
+Fixes: efc33c969f23 ("arm64: dts: qcom: sm6350: Add ADSP nodes")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-But, then it's up to you and David.
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index e0506fada32d..11c1df6e7a4c 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -11,6 +11,7 @@
+ #include <dt-bindings/clock/qcom,rpmh.h>
+ #include <dt-bindings/clock/qcom,sm6350-camcc.h>
+ #include <dt-bindings/dma/qcom-gpi.h>
++#include <dt-bindings/firmware/qcom,scm.h>
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/interconnect/qcom,icc.h>
+ #include <dt-bindings/interconnect/qcom,osm-l3.h>
+@@ -689,6 +690,14 @@ cmdline_region: memory@ffd00000 {
+ 			reg = <0x0 0xffd00000 0x0 0x1000>;
+ 			no-map;
+ 		};
++
++		adsp_rpc_remote_heap_mem: adsp-rpc-remote-heap {
++			compatible = "shared-dma-pool";
++			alloc-ranges = <0x0 0x80000000 0x0 0x80000000>;
++			no-map;
++			alignment = <0x0 0x400000>;
++			size = <0x0 0x800000>;
++		};
+ 	};
+ 
+ 	smem {
+@@ -1430,6 +1439,9 @@ fastrpc {
+ 					qcom,glink-channels = "fastrpcglink-apps-dsp";
+ 					label = "adsp";
+ 					qcom,non-secure-domain;
++					memory-region = <&adsp_rpc_remote_heap_mem>;
++					qcom,vmids = <QCOM_SCM_VMID_LPASS
++						      QCOM_SCM_VMID_ADSP_HEAP>;
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
+ 
 
--- 
-With best wishes
-Dmitry
+---
+base-commit: ad304bc4f861beeb20f6fb189783284e17557338
+change-id: 20261019-sm6350-fastrpc-memory-179c467a5803
+
+Best regards,
+--  
+Luca Weiss <luca.weiss@fairphone.com>
+
