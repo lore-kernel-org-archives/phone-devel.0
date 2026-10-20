@@ -1,62 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.251
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.6
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792513290;
-	b=tA+o2qcOcDLh3w3MWgFjzRfe7vhQXD8c4RdDeAWw/LVqmOl7JZ+m7CClnZH42ulLVNbZ
-	 7CYPDbEMkgWoYcMaV9dmh5DcpyRoqMpmKytwZLrG6kuDy0huGOqSQMeQ4Dds0UCec3HjT
-	 caZTG2AFmzxR49TOqz5NPkevVdM/Q4wnno+j703xtKBc+s6exV+KQMC+ogsjGLFltmBSP
-	 vFWYO6L3//3Nj8ksHpRGjYH0WI70EGFAP1Ng56C6zPkomLcoPx41a+HGMhUPI9MaM/EER
-	 PZDZJ70mSLdNAvB4BDhEucdw3CFTv4nsUHEBFoHm/0NEjuzhzo3DozvgpdUV3qYOiTw==
+	t=1792513299;
+	b=QOg4YR0cKZTGT9A0L7cZB2JTPAYRwJXDbg9m9kcNkPe/g6+J9FlTHFaTGWpmLVZdCvKe
+	 2DESM5ZU5UymxusgpBwEcDbRzluyN7U+VK4TvUOguUkDYxRhujfoQlHGyuzjQ1LWCSBJT
+	 9Tsjqqmx5WFJ5GakcvcPxNoVS/6IGst3eZIM7hOWA0G/Jr/17mXAAKIj0a+2IVmT5EZcy
+	 guOAS4ZYQaNbiICdIheMPNfh4mk1fskFlCaXv2QekrCGncKM/fWeQ1J1KEuVkqtsSsoIF
+	 4ZCMg+m1U//soVe2bvJLAW0ANFjSYj932xehb5lsPUAUr0Egk47eXRDGaiv+w5SWPHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792513290;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792513299;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=pxcH42x189/zaOrwEfxK0dZti1fheIX3Rga1B4Am/Tw=;
-	b=GdN4vGbaw0y5C7l7gXtWsyctBKLOsirGedbimJOutZJEQudF4PX9Mdw5jgwM7K44GxLZ
-	 O3tnIQlu79lgZ5PFqazfb9is1tep6cmAG/iryqdEmaAKBJJa8Fbp7MD96nlQhM2J6tT1A
-	 8vPgZBr6nEe/6CyVEZQW6p9Ygo9NNaT09FmPUc+tfPRk9Be+qLw9MjIJr+b5fy4CEauJP
-	 ttdJK4R3SDUiFScvZX1pXsrkIriWwrTgMPvP83DKiDvpigJ2WQq7wzykWYlsQehwqryca
-	 49uhv/uyk6hEmshfX1dYe5HsCnygsFl8QTKfgg7smOAkwqVZJUFk5HogEJ4W3TqGfwQ==
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=2aKFnBqY+ZOSc2qg+3ps+Ris0ORSO71jh1jEIP3HX84=;
+	b=Pq2TiugLJQBPqCkHIUNFZxJhzkYUQIOUggMUEKSZeMN7ALPcHPdiPwT6VI2YGVCLj1O/
+	 O0aHKOrmfRcliICGcNKoNeUuMJEJTRK/ggyX6VXZLCz3pDKTAKiNvQF/57Yu5tms4/uh6
+	 o633m3gu8JGPRVCWjLHLqvls8SZn3PpR6s2rIiBl7vUsiqVOxNr9CLh2yklaEPUZyiDqu
+	 EcU/j/acLPo3p1KLf5P4VEkB31dr06OA5binyquSnM1d8A7APymSmAshl3Ed8OgadEB4+
+	 LzJ0RVNAhYkz+qhDgiK56OIj3dqp/xM4KfbroXHF3Znahif6f+r366tl4hQijFXQWyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=packett.cool;
 	spf=pass smtp.mailfrom=packett.cool;
-	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=l1QiNQXS;
-	arc=none smtp.remote-ip=95.215.58.251
-Received: from mta1.migadu.com (out-251.mta1.migadu.com [95.215.58.251])
+	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=CamxvQrt;
+	arc=none smtp.remote-ip=95.215.58.6
+Received: from mta1.migadu.com (out-6.mta1.migadu.com [95.215.58.6])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEF2606A31F
-	for <phone-devel@vger.kernel.org>; Tue, 20 Oct 2026 16:21:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DEF2606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6003A606A339
+	for <phone-devel@vger.kernel.org>; Tue, 20 Oct 2026 16:21:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6003A606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=l1QiNQXS
+	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=CamxvQrt
 X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=49a+oRA1lv+Mz1o41YRrStLBxL2F34gYMEViUmKV2t4=;
+DKIM-Signature: a=rsa-sha256; bh=j16WdnSx3DNDWkxVUpc7etCn7NUgxL1/ifcQaa0wdeU=;
  c=simple/simple; d=packett.cool;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792513287; v=1; x=1793118087;
- b=l1QiNQXSTgs0KInbxTTQOwL+qD4qZLQM++ij0ACwxGBCsbFZeCw4Y7MBBUWhDuLOJJxHpdKi
- o5NWyVrSNkDmQXgDt3msA6n7jlbHcj4D9jsgOnHm1PVHvVTvNQKykqGpE2zY+ZTdrpmaMHS8KcX
- TPjb4/Q+zjSdub5SeKewDBG+pHc2oa1B4lv2xIDhf/py+rvsuyt9/jrlKUJeDKkNQ6/H8YKhExJ
- FIBuy8RLbzpxnbQhkQoa+8R2M2LkH9kGKa9+xeguza6vBYvo1XbCVPHijxz37U92NSIMIfUIEcN
- I2bsecLbYVOT/HIMs5ebStfU0FAqjf92F8bFeMBIzXYPg==
+ t=1792513296; v=1; x=1793118096;
+ b=CamxvQrtSdpdGwGuwW/GaYEsC5yhqMhYcrj7dDRobknnPPAlDDrHVpUBqPSm828w7jTwUFPs
+ 5yHWAWSpe5QhUs72vR0CQetjZkrfKQ0i9qn4HwELJKWMan6jz63RqttBXZM/suLo4BdbpxSxPni
+ 1bWHn7MfBAq21oQJiNbhsOxtextArNPTJbfWhChUGOHZUKssUsYkGnnVQMzOOOoqQeFjyjIoLfy
+ OuVpZGncNfHUREh5ernS+2JQKILkTlBRt4HXF7vA/UIe5R79Ao8ES4CHZ9Oxpu1y59b0oyPWZDX
+ QZ7smUdb6jL7c/oL8Ltjx7DOMZe7qfLd6My9vtZkZKBVA==
 X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 4ab1a25d000ef3f3;
-	Tue, 20 Oct 2026 16:21:27 +0000
-X-Mizu-Trace-ID: 4ab1a25d000ef3f3
+Received: by smtp.migadu.com with ESMTPS id 35bc12ad2e011340;
+	Tue, 20 Oct 2026 16:21:36 +0000
+X-Mizu-Trace-ID: 35bc12ad2e011340
 X-Migadu-Flow: FLOW_OUT
 From: Val Packett <val@packett.cool>
-To: 
-Cc: Val Packett <val@packett.cool>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Cc: Val Packett <val@packett.cool>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Bjorn Andersson <andersson@kernel.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Luca Weiss <luca.weiss@fairphone.com>,
 	~postmarketos/upstreaming@lists.sr.ht,
@@ -64,10 +64,12 @@ Cc: Val Packett <val@packett.cool>,
 	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v3 0/2] usb: typec: fsa4480: Support reporting hotplug events to a codec
-Date: Tue, 20 Oct 2026 13:20:29 -0300
-Message-ID: <20261020162101.1527014-1-val@packett.cool>
+Subject: [PATCH v3 1/2] dt-bindings: usb: fsa4480: Add an optional audio port/endpoint
+Date: Tue, 20 Oct 2026 13:20:30 -0300
+Message-ID: <20261020162101.1527014-2-val@packett.cool>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261020162101.1527014-1-val@packett.cool>
+References: <20261020162101.1527014-1-val@packett.cool>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -79,32 +81,145 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently the fsa4480 USB-C SBU MUX is not actually used with audio
-codecs in mainline. I have gotten it to work with the wcd937x codec
-on sm7325-motorola-dubai (copying the Type-C notification handler
-code from wcd939x to wcd937x, will be sent after this).
+The fsa4480 mux is physically connected not only to a Type-C port
+controller, but also to an audio codec which has to be notified when
+an analog audio accessory has been plugged in.
 
-v3:
-  * Put the codec mux/switch refs after unregistering our mux/switch
-    in fsa4480_remove (sashiko-bot)
-v2: https://lore.kernel.org/all/20261020081343.1507986-1-val@packett.cool/
-v1: https://lore.kernel.org/all/20261018225906.1265299-1-val@packett.cool/
+Describe a second port intended for the codec. Keep it optional to make
+sure existing device trees do still validate.
 
-Thanks,
-~val
-
+Signed-off-by: Val Packett <val@packett.cool>
 ---
-
-Luca Weiss (1):
-  usb: typec: fsa4480: Report switch & mux events to codec
-
-Val Packett (1):
-  dt-bindings: usb: fsa4480: Add an optional audio port/endpoint
-
  .../devicetree/bindings/usb/fcs,fsa4480.yaml  | 94 +++++++++++++------
- drivers/usb/typec/mux/fsa4480.c               | 57 +++++++++--
- 2 files changed, 116 insertions(+), 35 deletions(-)
+ 1 file changed, 66 insertions(+), 28 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
+index 89b1fb90aeeb..ee00c7ce0c50 100644
+--- a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
++++ b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
+@@ -9,31 +9,11 @@ title: ON Semiconductor Analog Audio Switch
+ maintainers:
+   - Bjorn Andersson <bjorn.andersson@linaro.org>
+ 
+-properties:
+-  compatible:
+-    oneOf:
+-      - const: fcs,fsa4480
+-      - items:
+-          - enum:
+-              - ocs,ocp96011
+-          - const: fcs,fsa4480
+-
+-  reg:
+-    maxItems: 1
+-
+-  interrupts:
+-    maxItems: 1
+-
+-  vcc-supply:
+-    description: power supply (2.7V-5.5V)
+-
+-  mode-switch: true
+-  orientation-switch: true
+-
+-  port:
++$defs:
++  controller-port:
+     $ref: /schemas/graph.yaml#/$defs/port-base
+     description:
+-      A port node to link the FSA4480 to a TypeC controller for the purpose of
++      A port node to link the FSA4480 to a Type-C controller for the purpose of
+       handling altmode muxing and orientation switching.
+     unevaluatedProperties: false
+ 
+@@ -69,14 +49,57 @@ properties:
+                   - AUX+ connected to SBU2
+                   - AUX- connected to SBU1
+ 
++properties:
++  compatible:
++    oneOf:
++      - const: fcs,fsa4480
++      - items:
++          - enum:
++              - ocs,ocp96011
++          - const: fcs,fsa4480
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  vcc-supply:
++    description: power supply (2.7V-5.5V)
++
++  mode-switch: true
++  orientation-switch: true
++
++  port:
++    $ref: "#/$defs/controller-port"
++
++  ports:
++    $ref: /schemas/graph.yaml#/properties/ports
++
++    properties:
++      port@0:
++        $ref: "#/$defs/controller-port"
++      port@1:
++        $ref: /schemas/graph.yaml#/properties/port
++        description:
++          A port node to link the FSA4480 to an audio codec for the purpose of
++          handling Audio Accessory Mode muxing and orientation switching.
++
++    required:
++      - port@0
++
+ required:
+   - compatible
+   - reg
+-  - port
+ 
+ allOf:
+   - $ref: usb-switch.yaml#
+-  - $ref: usb-switch-ports.yaml#
++
++oneOf:
++  - required:
++      - port
++  - required:
++      - ports
+ 
+ additionalProperties: false
+ 
+@@ -98,9 +121,24 @@ examples:
+             mode-switch;
+             orientation-switch;
+ 
+-            port {
+-                fsa4480_ept: endpoint {
+-                    remote-endpoint = <&typec_controller>;
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++
++                    fsa4480_sbu_mux: endpoint {
++                        remote-endpoint = <&typec_controller>;
++                    };
++                };
++
++                port@1 {
++                    reg = <1>;
++
++                    fsa4480_audio: endpoint {
++                        remote-endpoint = <&audio_codec>;
++                    };
+                 };
+             };
+         };
 -- 
 2.55.0
 
