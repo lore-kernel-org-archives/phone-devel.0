@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792525829;
-	b=kYud027ty63vvbjx9GocOO6uSBLD5Fu+uJyWLz3KCS4iNHdBU4jjEsGVdNF5d6ljBh7E
-	 ffvQYbVUxAwpPanf42i53ywCw+y40jCrI1gTGMqdOx9BfiEQ/68L+mzKiv2Nn3aMuqUYT
-	 F7eapuJTiTsKIuh4a//xgdmS58pIp9Cypl081uhSOMiOhz4wGfoMXmeYHJfHjXT6/ueyd
-	 cj+7PNU/A15doRmWqco03hyDeCuDBUZ2lDcTpqgiz5/ebBCkYD8tTLwuIgzNnUIHnk0Te
-	 2ejO4Gcz83AlsMjBKcfN9R8QRRnz6pn/LIowywv3KgN9tb1Vrb4Db7aiuLDuvyarLbA==
+	t=1792528112;
+	b=AwQ/qJ6uLi/VYCD7NceKWSXA9FaMqFgaTutzL09LuNl11Vxw6qv51YhssbQ2++vTwomW
+	 x3rEtbRLmxYixO11CB9LwnzHIRhqmjbvu1MF8rGeZJptvNgREMrkQHX+5NAohlnOcwoWQ
+	 wHLShzw37WXvGN0Eugd7wdep5Jj8xHaoxL/fLCmwA6O5q50B3WvQYvL1kUPoKx9PdI0VF
+	 lX1Iy6s2ghfKE0Rk5PjxyGuz/Sh9GSxqVUV+OH1846cCnHOJO+3vLw5xEsIvu5x+jkLHX
+	 yx3Oxz2bYztrWvxJQm4dOjzLIPShHilyXWt1Gk3ogakEOesG6e21kRWHKBX2K5Ak6qg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792525829;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792528112;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=hPa4PG254yePdehpmJWqML5hqKXw+sws5WB7y+lwM98=;
-	b=jGOmQZAtC3+Dfd5BM5pJy8G2sreqEBG2wcLm8s8IcdQW3fMjskwrnIvq0JizSnY8b3CR
-	 CBDbLeI1wnKb9zx0BB9qOEK6sfniEIsUAAH+yn2lrBMWm+fiZD1nxEhz/SBQ2j+IZx0SY
-	 HD/32uAKv+4LUN3UVZObft43T0ZRh39kQUc8YJMO8jCs2kH2d8wRzbXRTiMzYXiX/aDcP
-	 T1hr7ZgclFDbmxo5tgqYrHJ19tXyFyRFut2vKNmanaWUt6ntg2LQivlLNaAv1mtIAMzvX
-	 Seyoksy67NCLb4QAkBzOofMTH0AThpKziMEpcPbULkTlAEaRC09mZY6J5NIcPzKKY+g==
+	bh=WD8/5T9Ciuv9waWrVcsqINmUY5GBTSG2x1F4rJwpQ/U=;
+	b=YXO4MlGY7oOiRmPSTvxyGSdKtdRyoInAxFg6zMIcu/TNUAL+1lhgFKwTnaNEVVMlYi82
+	 RDQY0T56SvpXZ/Yoell4mafkNlba8bJQYLqWtbnRILt6Sn2A22zBze7jzrS5BSOBY7ky9
+	 xI1SwLUgnthyzqhtvanyTA8ysydbS3mlUwK4BBpmkcSjDXPljxGOSBuB9rny/bR1xrpw+
+	 HDe0UOxdqERrYD2ecI9GYkOwwfAIC+4oPFW6HYWd2f9bZxFH6QuFfupN/Es86O6Pbt6ZF
+	 WuLAq5NbdMqcMaCEtit4pp+VtzCcnoRDhQPAGduWP6qPD4SNxwYeTaeqbTYNyYJJ7xw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=NuIBbCyO;
-	arc=none smtp.remote-ip=209.85.167.50
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AWU0KiMC;
+	arc=none smtp.remote-ip=209.85.167.43
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E26606A31A
-	for <phone-devel@vger.kernel.org>; Tue, 20 Oct 2026 19:50:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8E26606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CADD606A31A
+	for <phone-devel@vger.kernel.org>; Tue, 20 Oct 2026 20:28:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CADD606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=NuIBbCyO
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5ba3fba0080so2592261e87.1
-        for <phone-devel@vger.kernel.org>; Tue, 20 Oct 2026 12:50:28 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=AWU0KiMC
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5bcdae234ecso701166e87.3
+        for <phone-devel@vger.kernel.org>; Tue, 20 Oct 2026 13:28:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792525827; x=1793130627; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792528110; x=1793132910; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hPa4PG254yePdehpmJWqML5hqKXw+sws5WB7y+lwM98=;
-        b=NuIBbCyOHLjMgBRgN0U2pccaR1TZLAsQhr1eI7b9dpYjk5TlNnN94DdOAXN19YkR7D
-         FAf8nTaWqBcQbkylIxVI5KyXHkXknkDYt7DbtIn1A08do1AD1oVysJRCpy81PHz37BEm
-         x014kEN3iJ04lFyi8hElEoVGeEPXX/8cBi5LcFdm5PQXylCE54Y2pr0yKGA4R6VQAHdi
-         /HLYIHUAF/4tIGEKKW05bLQEnDiGo1snPRRas0w4qeATPZuUYn9RTZssEOckbbc6bnQ0
-         pDMMs1XJUDvJJslhQxV2fG2OAscyUOSOnaNVGwJjLjWHyWx9fVUSKYloowuqwMfn+P9z
-         ydRg==
+        bh=WD8/5T9Ciuv9waWrVcsqINmUY5GBTSG2x1F4rJwpQ/U=;
+        b=AWU0KiMCQabspfqJkK9CfxUvhC0CCjGRLp7SAqZU6Rc6n5torA6hasvYpWaTV2N3ji
+         Jw0FYcG2XXVhTr+R8zjSN8ITdr9miql1hKSRtulhsSD5yOJHtwUPEUokoMiJoZEbPaXF
+         9dvaVfjIdr705QrfFXguCgF/8R1xzSnxYnJ3ppeIBDMenoU0rzOASd6YmepZFqbXjfRI
+         fVcyHLXCVnUDW31COcZk3S2+Ek+9jH10GqvZKz5mPCBdMsPVNLMMKelgmxwOCPJbcVgS
+         ZI7zFmtYew2OObafY/IKGvIlvM4FHVXbnQma71ENcRmeYEfC+naiMqtrfsUxdKifnGsc
+         9smQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792525827; x=1793130627;
+        d=1e100.net; s=20260707; t=1792528110; x=1793132910;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hPa4PG254yePdehpmJWqML5hqKXw+sws5WB7y+lwM98=;
-        b=YNxiZn3Zjs7qFI5XiWGItlmHdr0CNJ/JcbMbIQmR6kTPR9wESOJ4q6OkaTxQowrmjA
-         V6mVcMOUiL+rDR6ui91+PsRSO5M9XPjQ8dUwYCbhYwcTy4BEC9MbSuY6+TbqtLEuKGJh
-         XlLxUjIXPpn1/L/x/18wBPLBI6FiJh7vAFlOiz+oQDDNST+JjxDxAQJckqAqoMQ6WFmH
-         jbCJVHexgE+VPup397xhD0Ph57gjUjC5zGtzVTdm4hZg+5fc9A19oQrHcHL0tvzbPwPa
-         nMe0/aUV8wu4ZZLxYR5Bp+JyLU2HuoBJUlIVuTRf46AKgvfdGTEH8NAbs22yuy2JCSKA
-         6nHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwxH7azviCPNQI+7048XD6sdlao56O+rV2XrCIz+wAzft4GX49vQCUH7I1tfliMWVBbQ0Z1NTzqB5MAmA==@vger.kernel.org
-X-Gm-Message-State: AFq9FYLd7lAL0vUxMqk+mkBawlxFu9M8x7G4EA7ONd+mWucM5WWS0khm
-	oEjUROVonAYIGWkZKncrV137yYSB61TPG/JS6QkoLuG89fhGt0GWLdkG
-X-Gm-Gg: AYBFou13eLCg0snBBFE15n0FS2/lmglZUfIMGU63j/QZv6sD5J9B2UDGgF/P7Qxx2Fs
-	4qvfVaVZH+MEcOWsnBdt/Dq+8Z18x4cAU9f8quWThAnMysbrSgbPNVyT1ya7vwESfXVipp3ybou
-	CFuLVz0Fe8G4S4S/O6cB6r9OJGNfIVJCoO0rbneJIe5LvhpgLIbMR1WqBVYv+T0Z5m1pH8xspXF
-	LhsHmv4LX91t4bUlM8yHgswek3BCMNVUQGxvEbKvNV3Ph41Y9lwJc3DLNkXUwuO3qqxXgFQKkQt
-	cMfi9QdEAqlDLnka1Xpia6ZrmJglt26YxSJXPwaasVJNiDaq0OIsY6CW23vIj+EM9aoQpa+vCH4
-	OSgw0FT8dE+oJEK+rLuQSwI6/mqC8gNLGLgM8oZfdFwvusK/OpsWshVzeXINO7LAUP/R4i9SasL
-	68zKoMleIeJ8NoNyslYT3OpYrPBuBqeKFPmlyqOXWfEdxlXfw/pgV5MKNwOImjQvJEL90YcEkTa
-	rd5SVB1L+NvT+EKTFNZGCY8qsesl/lwKUA+rEeaZR5b1S/awilwZCm4egfHbHJeiSm4zOtxSZ5N
-	n9VHc3yrAG4IjVaNb1jkWsAym5cHFpd4or6ouTMO1iq8YjQJRKjJ8gzvJodqC3efqQaO0dmNcQJ
-	kLA==
-X-Received: by 2002:a05:6512:3a8a:b0:5b8:bc5e:b57f with SMTP id 2adb3069b0e04-5bfa1c1fb76mr4379e87.55.1792525826617;
-        Tue, 20 Oct 2026 12:50:26 -0700 (PDT)
+        bh=WD8/5T9Ciuv9waWrVcsqINmUY5GBTSG2x1F4rJwpQ/U=;
+        b=RqPenocyJNZJHbONBBwk7NuFMHD4NEnUP3yWKFMdiatautUqiVkEwq37f7wpJGOIKG
+         T/YWnfSu/gPuZdA2YCLVGufm6AsB2WF+YPJbzuoa2nNih151jQ1QdYXdm8O21rgckc0E
+         b7mZyEQwBYmy6V7pOtMwLjdRaT4u0bgNzIk/oLjXEib1LL5O7oZJZLC4rUNHfY39GbPp
+         9dHOzjg+K6eh6ZxZSvVW8jfNT8Mrvs5JAHXjabRNKT5YGmL1Af7x3pwd/M/Pg4zkpQcM
+         oDODKxvdeXEwu9s3Dg7rqs8za0i/EY+dJ1/NeqD1tuJ10lKd0zY/H21hviyzs0VSgfCJ
+         EYVQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxnR+LkKkdWMK1fAzXJnjIbXmTmwor/IWZ3D8r/uvd1sUwC8tEz0fQLF3h/xxCRNmke17o7xmr1NCPrOA==@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ+mlzIThcc0sKe0CnFlv8EoK7gJvlGy9Q6ScPBxOmx/D7ZU3pC
+	htt7wHFXexKIE+e7zOyluLijZPG8QEGugLkZyVBTgQjzp2M1TBat6fPB33U3o/tA
+X-Gm-Gg: AYBFou3iC2drvfRBbwhi6IfVhAZUoNhrY51EJmFsTy+e6DnV62/3PrPl435hsYCQRie
+	Ty+3BcAnxj21KU9PrF/2oMAcLJ7Lml7Xkgxk0oyt6qJNzt+8nSV2XMLyR5cf97rVU2PEg9XPCJh
+	gEfKYveTszQQLxL1YOsLlvxfbiHPB1RpwSKWC7M8R5gu64IYOcj5mjcdLKblohCdsJPrBO1hskN
+	000FMVvWTqLs5D2t4uXDD7PBm/e9thjSmbb3Z0IDDIMYINVBN0uDmrhlGFVcvdOqDyBQSXl3+w9
+	iP36UdCVf3advGdrKJwDFmK4G86uvjk/BWNTD07vfGIxTKlbvtrVVasosHclyVxpIrKbjLsKG7D
+	G8lD/c8m7H5wNAvDwqhkyHJSGyp/7tnYQPKPQ+KuHFSQRNeKiRxVkE/UaEWn6RJkqwUEXjVT36E
+	vLk483WO2Q1V+R4Bdt/oD4LleuKlZp3l6F4k/flMBIkdojqlz0G4J15nxuu9GME6aC/yMhII8Xq
+	bqXdZq7g+ryl4Xg1gLoN7oSOwVu7Sg9y3fHdRXkDvlWl9ZcBivsC+ITYFl7QADFtwPURhQaEHGj
+	jy1nOEalnhIiymx0QlICsEFYXHRLqHkZTh3GjPCqQE9oVg7ngZruVd2jkIoWN+L61SJ7V24t18V
+	eEQ==
+X-Received: by 2002:a05:6512:1589:b0:5be:680d:6e18 with SMTP id 2adb3069b0e04-5bfa1be6184mr25360e87.10.1792528109517;
+        Tue, 20 Oct 2026 13:28:29 -0700 (PDT)
 Received: from kompukter-Systems ([83.142.235.16])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfa11a8caesm75345e87.5.2026.10.20.12.50.25
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bfa1230c48sm88136e87.66.2026.10.20.13.28.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Oct 2026 12:50:26 -0700 (PDT)
+        Tue, 20 Oct 2026 13:28:29 -0700 (PDT)
 From: Andrey Derkach <gabin278@gmail.com>
 To: David Heidelberg <david@ixit.cz>
 Cc: Jeff Johnson <jjohnson@kernel.org>,
@@ -92,11 +92,11 @@ Cc: Jeff Johnson <jjohnson@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	phone-devel@vger.kernel.org
 Subject: Re: [PATCH v4] wifi: ath10k: make in-order rx amsdu buffers persistent
-Date: Tue, 20 Oct 2026 22:50:20 +0300
-Message-ID: <20261020195021.1133728-1-gabin278@gmail.com>
+Date: Tue, 20 Oct 2026 23:28:25 +0300
+Message-ID: <20261020202825.1178464-1-gabin278@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261020-ath10k-a-msdu-v4-1-670b69d39059@ixit.cz>
-References: <20261020-ath10k-a-msdu-v4-1-670b69d39059@ixit.cz>
+In-Reply-To: <20261020195021.1133728-1-gabin278@gmail.com>
+References: <20261020-ath10k-a-msdu-v4-1-670b69d39059@ixit.cz> <20261020195021.1133728-1-gabin278@gmail.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -108,24 +108,15 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Tue, 20 Oct 2026 20:52:07 +0200, David Heidelberg wrote:
-> The WCN3990 firmware may split an A-MSDU across multiple HTT "in-order"
-> indications. Mainline drops these ("failed to extract amsdu: -11",
-> rx_confused, recovery), collapsing throughput under load on affected
-> devices. Stash the MSDUs of an incomplete MPDU in the driver state so
-> it can be completed by the next indication instead of being dropped.
+On Tue, 20 Oct 2026 22:50:20 +0300, Andrey Derkach wrote:
+> Throughput is the same as with the old version, about
+> 60 Mbit/s here.
 
-Tested on a Lenovo S5 Pro (SDM636) with a 7.2.3-based tree, on top of
-"wifi: ath10k: trigger hardware recovery upon rx failures", replacing
-the older out-of-tree version of this patch we carried before.
+The 60 Mbit/s was a board data problem on my side, unrelated to this
+patch. With the right board data the link runs at VHT-MCS 9, which
+exercises the patch much more: during a 120 s TCP download at
+172 Mbit/s the firmware split an A-MSDU 211 times in 62,700 in-order
+indications. The patch resumed all 211, with no warning and no
+recovery.
 
-During TCP downloads the firmware split an A-MSDU across two in-order
-indications (once in about 39,000 indications so far, counted with
-kprobes on the stash and resume paths). The patch stashed the MSDUs and
-the next indication completed the MPDU, with no warning and no
-recovery. Throughput is the same as with the old version, about
-60 Mbit/s here.
-
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.1.0.1.c2-00455-QCAHLSWMTPLZ-1
-
-Tested-by: Andrey Derkach <gabin278@gmail.com>
+My Tested-by above stands.
