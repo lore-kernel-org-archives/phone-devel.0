@@ -1,56 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=31.31.198.150
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792696159;
-	b=bCxpqc3b6HKdKnsoyowphmMmLod2K114iMc9V1ahIB/GA4AMHOgVnM3gUD2Fqa9kaGaG
-	 1+qP7ZYDVdH/c1Pv1QE1Hmmav1IoxTv1l6bAoc5Cy19r+VxcsnXgvI7KSZTVl71sDyxqm
-	 rR/NAjnx4B0/oD9xciO98XUfiRVB9zpyFRgyxkWYlRyBrcxniaKkUA7K9OUdxPkQllPiz
-	 RhhTjsoRyLF9J6RgsE924XIHz5spZCJxdRNcfs5e0HGFejhqTNGyfGeEXkV8BjtxwgaF6
-	 L93fhwsVIeXGrz1BqYqH+Nz9O8LW1vIFtJwy6cr3WMWYXipIeYbZjkRNJvlElVtA1iw==
+	t=1792707951;
+	b=PV207yYiIFbY5nlRBvYWPNW4ExrdkkXezq9uE0ipuSIp6MEUe3VaSpsXWxsjuoBN2n/y
+	 9g1kUb+YkCqIifwNbL8H6ZSvcqKMqjcZxWgleGn6ziD4GxHOUPMMyLTdi+auSy0FOWKRi
+	 zCBAXt82RZT92LHWKY2KkxHTMeK+lv3gjO+cd3LLLvZGrBMOCUQwbz/L9tc5tI02/GrKR
+	 JqPF3QTAsx0UEQhWhYKofUW//wRRN7J74Cg9S0K0RohM+viwxZ22Bq6jZ7MP7cF7oNSn2
+	 XTse6W0mPoH8bXFERBntsVX3JMEhVD+z96O9sGo6DWK071v4bUgJfg09KBNDdm9DyoA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792696159;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=pPtOarc+/Pj81jSX9HNNfT9z9z/i6TL+1wTNdbkyejY=;
-	b=FGX5/QoNhk9QqJM93iz/Rrlfa1iIyEZSikpQ+7XHIzGudIFpk1n3p/MmQb2LSKlw9gV0
-	 C0hsEC09xzJjsSOnpIbbZwy9dvtDsdt9bEU0oKmroBiQxouJtp+/iTGIHsRjz7EWfhnsP
-	 CADBaKGA88eD0CiSMDaFudpHbEsThypjnRDzD7MkgRw+YJSEO3bsiwMDMUE3VHQAdWckg
-	 hF3qZIR5L5wBqZNXXtKa01rI816Up7UPJzR9Nb3TPiYEFGBxZKrjZDsQZ7xnb13qKcO0Y
-	 mhPlQHjA6E8t+ZUtparDPvKDpT33/7RVaByoQAA15pegj96tvfKGJc6C7MtpZbxjyNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792707951;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=HFfwzZz7066EUgLs0i/+JThY7WAkNK+ZFFeFAWc6oco=;
+	b=AD9sFvPx/vE/3RDXRKHtJ8r4Bfyr+S4tFDYKf1IVB7Vx7K9RA7q/gA5dHZPxU9Iw4FyR
+	 V/M64u3JYdHUzqNRjtVCJB4qvnnNxv6VdfXyCR42x70I+36jAz5M7LbERbv9oghEYT0LY
+	 lRWc/+Y/nuDeMEoETv5MRW09HdFgXg8Ik0fqKc5DxSLYXorZMxASyS53e3T0IM1lfZmFq
+	 ljXftQV2/yS5H16IQ5FUiUsa0JpeqYwCUXenSx/gQx4+PpuH0c1PViwUWxJKTpLx7xmpm
+	 k53f9xBvOnQ2R/gFnzG2MaCYwFMTArxQA+R9bwDikPEP2k8iwO68tw7t0d0OKlOkSCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ixit.cz;
-	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=gIPnZ1g5;
-	arc=none smtp.remote-ip=84.42.129.46
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+	dmarc=none header.from=minlexx.ru;
+	spf=none smtp.mailfrom=minlexx.ru;
+	dkim=pass header.d=minlexx.ru header.i=@minlexx.ru header.a=rsa-sha256 header.s=dkim header.b=zXqbsytS;
+	arc=none smtp.remote-ip=31.31.198.150
+Received: from sm24.hosting.reg.ru (sm24.hosting.reg.ru [31.31.198.150])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7783606A319;
-	Thu, 22 Oct 2026 19:09:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7783606A319
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3437C606A31B;
+	Thu, 22 Oct 2026 22:25:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3437C606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=minlexx.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=minlexx.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=gIPnZ1g5
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 38F8153400AE;
-	Thu, 22 Oct 2026 21:09:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1792696156;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pPtOarc+/Pj81jSX9HNNfT9z9z/i6TL+1wTNdbkyejY=;
-	b=gIPnZ1g5wYFqPKHjd3+wKw7Y3RIXcpxXV9CNE4OVDt6Ettkg4+fGlaSJqN6RnmiGMvgBBj
-	sGYFz9vCfAWs73C+uBKYUQAl/u4aj7Kuc2nZmAPUVrTLyFjUJwsdVYQZltoF3+wJ7Bl74W
-	u6od9W9dHI794LTp8RBtUYHaEP1x8+o=
-Message-ID: <9833cca3-710e-41ca-baad-1e8d15ccc0bc@ixit.cz>
-Date: Thu, 22 Oct 2026 21:09:15 +0200
+	dkim=pass (1024-bit key, unprotected) header.d=minlexx.ru header.i=@minlexx.ru header.a=rsa-sha256 header.s=dkim header.b=zXqbsytS
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=minlexx.ru;
+	s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
+	Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=HFfwzZz7066EUgLs0i/+JThY7WAkNK+ZFFeFAWc6oco=; b=zXqbsytSaa7ri06ojN2htb7KSM
+	KasZ9wW9CKrBp0Y/s+XLPQza3adfAJ8/YatdkKTrgYPkS+Qqxr4X3NQTshlWZf5C41OklsfNUz4nX
+	nrHAgOoqPCdp+PaHwE0MNM+gcWWc/Rq02gerVY7VeEMYtK8Hx6BTgC19+J9JmJhuoQM4=;
+Received: 
+	by sm24.hosting.reg.ru with esmtpsa (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(envelope-from <alexeymin@minlexx.ru>)
+	id 1xK1E9-00000002NZj-41hE;
+	Fri, 23 Oct 2026 01:25:38 +0300
+Message-ID: <83eb62f2-1bf2-401f-96a4-c0a8ed7cc0a4@minlexx.ru>
+Date: Fri, 23 Oct 2026 01:25:37 +0300
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -61,87 +59,74 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] dt-bindings: arm: qcom: Document OnePlus 8T
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Frieder Hannenheim <git@fhannenheim.net>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Robert Oscilowski <drgitx@gmail.com>,
- =?UTF-8?Q?Jean-Fran=C3=A7ois_Bobier?= <jf.bobier@gmail.com>,
- phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261019-kebab_dts-v4-0-bb6db87ff15f@fhannenheim.net>
- <20261019-kebab_dts-v4-1-bb6db87ff15f@fhannenheim.net>
- <20261020-musical-merciful-nautilus-aea420@quoll>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20261020-musical-merciful-nautilus-aea420@quoll>
+Subject: Re: [PATCH] power: supply: qcom_smbx: read the charging status
+ without the power supply
+To: fabricioakio@gmail.com, Casey Connolly <casey.connolly@linaro.org>,
+ Sebastian Reichel <sre@kernel.org>
+Cc: Robin Snyders <robin@snyders.xyz>, David Heidelberg <david@ixit.cz>,
+ phone-devel@vger.kernel.org,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261008-qcom-smbx-psy-race-v1-1-cb49fe7b4336@gmail.com>
+Content-Language: en-US
+From: Alexey Minnekhanov <alexeymin@minlexx.ru>
+In-Reply-To: <20261008-qcom-smbx-psy-race-v1-1-cb49fe7b4336@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 20/10/2026 09:50, Krzysztof Kozlowski wrote:
-> On Mon, Oct 19, 2026 at 12:18:08PM +0200, Frieder Hannenheim wrote:
->> Add compatible for OnePlus 8T
->>
->> Signed-off-by: Frieder Hannenheim <git@fhannenheim.net>
->> ---
->>   Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
->>   1 file changed, 1 insertion(+)
+On 08.10.2026 23:56, Fabricio Akio via B4 Relay wrote:
+> From: Fabricio Akio <fabricioakio@gmail.com>
 > 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> smb_get_iio_chan() reads the charging status through
+> power_supply_get_property(chip->chg_psy), but chip->chg_psy is assigned
+> only when devm_power_supply_register() returns, and the power supply
+> core already calls get_property() from inside the registration, for its
+> uevents. If another driver has taken a reference to the supply by then,
+> as a fuel gauge naming the charger in power-supplies does, the core lets
+> the call through, and reading CURRENT_NOW or VOLTAGE_NOW dereferences
+> the NULL chg_psy.
+> 
+> Read the status from the hardware with smb_get_prop_status(), as the
+> STATUS property itself does.
+> 
+> Fixes: 8648aeb5d7b7 ("power: supply: add Qualcomm PMI8998 SMB2 Charger driver")
+> Signed-off-by: Fabricio Akio <fabricioakio@gmail.com>
+> ---
+>   drivers/power/supply/qcom_smbx.c | 8 +++-----
+>   1 file changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/power/supply/qcom_smbx.c b/drivers/power/supply/qcom_smbx.c
+> index 3951326f488f..6e0796730c59 100644
+> --- a/drivers/power/supply/qcom_smbx.c
+> +++ b/drivers/power/supply/qcom_smbx.c
+> @@ -607,12 +607,10 @@ static void smb_status_change_work(struct work_struct *work)
+>   static int smb_get_iio_chan(struct smb_chip *chip, struct iio_channel *chan,
+>   			     int *val)
+>   {
+> -	int rc;
+> -	union power_supply_propval status;
+> +	int rc, status;
+>   
+> -	rc = power_supply_get_property(chip->chg_psy, POWER_SUPPLY_PROP_STATUS,
+> -				       &status);
+> -	if (rc < 0 || status.intval != POWER_SUPPLY_STATUS_CHARGING) {
+> +	rc = smb_get_prop_status(chip, &status);
+> +	if (rc < 0 || status != POWER_SUPPLY_STATUS_CHARGING) {
+>   		*val = 0;
+>   		return 0;
+>   	}
+> 
+> ---
+> base-commit: aac26bee2287c88af5be5a5ff96d783b19a28790
+> change-id: 20261008-qcom-smbx-psy-race-521568f9cfde
 > 
 > Best regards,
-> Krzysztof
-> 
+> --
+> Fabricio Akio <fabricioakio@gmail.com>
 
-Heya,
+Tested-by: Alexey Minnekhanov <alexeymin@minlexx.ru>
 
-on one hand you push for 'xiaomi,dipper' -> 'xiaomi,mi8' which seems reasonable.
-
-What we can't have 'oneplus,8t', so we keep consistent real names?
-
-David
+--
+Regards,
+Alexey Minnekhanov
