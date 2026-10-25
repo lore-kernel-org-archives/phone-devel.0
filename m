@@ -1,79 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792967297;
-	b=zxn6upMDXo53SDiin84GqAf2oCHuMZuku3TZHpv6eGeYUH5ruQ7T6WLuS4fd9PSwTmuP
-	 fPFPhQdjip6gSkz1jMrQTloOGCiFaWCtKq0oT+bxXggkpkCoGstD2x0reB/FFCzgWb2fg
-	 s+9ycLQzgoaC/8t90tFVxVK5PlsGwY/XbNWtCW5bVv5eyz6Xoc4ecTRmmgdJmQnypa1CD
-	 77ofBS6omQHZkoi7kwSHxG1fGiYpnAP4H+8lfk8NhygOD5rGlpxAGmUMvxhjSATx/LJ2F
-	 MEzIGTiCTOS8ktmXF3DKIjqOewTwaBh0ViIxlZnkWgYLMGIgPV+mhdxsqYCVgpe5isw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792967297;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=jBGXedtFj5yMPt41b+rMsSFilMVowbpHnBCDEXrvcwA=;
-	b=U5kDu0XUXq2/3vCwMeKtX1+MRlQaqW5j11wMYlVDi0Wu6Mp6W97oKpwouYThen7w1zs1
-	 Dn93BBOuz+DaI2S6M9KE4oOxIgvgKtn4pcOZtXL9CUqifCBFUICGC5t9mLhUOFi/tgaBW
-	 I/YhuTiNUBEr2o9Nqs0LIM5m8TU21GYuai4TOKEYLHjknArfY0yNfuMQI9EsuPHRnINua
-	 jDGz8TpgMsuQAv9SU1p358o3m867Rqu21BCo78MM24teN66c8qIW2cMY2Citk72rdfCvY
-	 ivCwbU23pgd47hkN+wUuA61UIRZtROJbE7qmYZ7PzVPmgsSkprc6oyGswPqmkALna4Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5kAK9eB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0595606A31A;
-	Sun, 25 Oct 2026 22:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5kAK9eB
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1792967296;
-	b=XC4d7REHp8iXlwAsKu7/avsurvknEWfmddmFuOgfdvAOhue6IyVNhELiObSVrxMZLKhb
-	 e2Dgyl6OUbHuLZbDlTCYFRrepE03ylPW3zSukBChXaxXjyyneVNvpvCkKf5F7eZqjodCi
-	 6fRNpFVtw6ScGYL8lz5q8iRu8/QQ92GK1hMAiiBF9+w86pzveFJvA8lsJZpRdi0XOxrxZ
-	 0m+8LJzQz+P7BPILXxCEFndlUqx0x/rVREY0QI8llaY7HQ3cFRk5/SWSAWZ57m0RMp7O9
-	 qCh1TyvmqFgYK/3ClwyrQsDNv8yq/GoL8pMd/vpMZHliwCGTwPURxxl+1gCa7IDNrkw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1792967296;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=jBGXedtFj5yMPt41b+rMsSFilMVowbpHnBCDEXrvcwA=;
-	b=d9OuDLD69yhAbwtuJS4JeZ4KLl8zEAVloxj1AyrY2SOqnAF1unRE4i51QHz8tz4l26A9
-	 T4vsuMrK9kULagEwYpbp2y2glGvZB0c6iALpUMRDJWrpNCWpfsv4NObSqg8jZ+znZnkql
-	 rd5MRysJlkUG83LU+1muu8Wm/rzGmOGTFcOhTRwxkmnCpgpkerPMtcYfck83r3ECG5i79
-	 h7iMjyej4pjme1KSFgTdaV/P7j2W9k1dt/TJL7PRWEu4OBPrrmT19CGcl9qceEyl4xqrV
-	 u5el6MEVBBQ5ckKOIjMGQehZbZy8e1zxh0O4V/kexArxf31PfeZ3tJ6mtYACPoefiiA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1792967416;
+	b=XyLNqi2P/is+RzUupJrCrJVLqTp9Hkn5o5HZG38kuZ82dGqzrhJFPwRZFhXQPIi586iN
+	 N6YAIMOZ74QoXAmZwRnp43Bk+c6IZEi98hO9WrblrIGu2XRoYCnUcWpjA7z3jHFvGBaEa
+	 lyXO0ec+q00zNimWcSvTIYFPe4HXOGXTl2XC4kJ0vmJPFzlujAf15pz12ihyaGSdZWu27
+	 Tc0Q6bm/fCOalCftYBflTly4d0oI4Flqxg3SqnOhNund6MvinPLoiUnkEmIpVcV35pjOg
+	 W7NaroaIrRyYHLuqWwZSspBm8xx2UibeL1nzHezGJCG4znId+snn+LU2nEBMxOJ+p2g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792967416;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=fDWb9AesW86OHa5AcGp256kq5+uqGSj+V/E/pkUOy8s=;
+	b=XfZbDGlwfUyOL8FgZUeCGKv9WH83P7sPkZjuFLUtHyAaYxUthJuCrQUD/ZiLr/qsBjSd
+	 p7baxP2g8ukIPmVOXWoLWH4ZjWBmQ92QoMk9gZuQBoiEEVMdUX/W6aRAlys59KX3Sstlb
+	 SzAXbkQnsFRbONouSwxoVT0Xj59/r8XmrA+O5mZFNs6QWawu6LlzfPpWgzmISnKlb0Q9F
+	 L7atRrSjB0ayTpM0ozSkUONbiSM1NPtsM19UggLmCKdFocy1QVgvGeun2PusUt0x0vG+K
+	 bqn4ivWz5TbhZjKkk1IcF1PrH7juDW+fWtFD/uVyck/AKG4GzoP0EG53cThmVdUl+9Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=ixit.cz;
+	spf=pass smtp.mailfrom=ixit.cz;
+	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b="jSaUz0/U";
+	arc=none smtp.remote-ip=84.42.129.46
+Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id ADC341F01825;
-	Sun, 25 Oct 2026 22:28:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792967296;
-	bh=jBGXedtFj5yMPt41b+rMsSFilMVowbpHnBCDEXrvcwA=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=P5kAK9eBwYKnFill6BjwP6J5P4mWqL6AJoEL6L/5/hb0XJmGmntRQHvPHxCtTap3S
-	 CXYxBS/aaa3Qh6/c7e93VHRRVxBe8/neyZOfRfgAG0GhIzd5vXdYKQoxLVX53z7NLW
-	 6eB8qFsMgPXCqOs2jUTzTOU5H9fjDiJNH9HyKxO2JVE/UDr7+dkmhJ9gwcGkv//PET
-	 NlZUIxHY9vrCYlQ2q61v2CXh+JBL4K9j19ISbDziC9t9RYkeCZb3N380iKRiOqQ6g6
-	 K3UjFUWvSKVo2sz/eJ0Ji/OlUSN7BJrpX8tLZPmbnE6x1G2RTXUR8uRGkwSGq5ttxD
-	 cYVXcko4cV9ow==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 267BC44ADF;
-	Sun, 25 Oct 2026 22:28:15 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 25 Oct 2026 23:28:13 +0100
-Subject: [PATCH] arm64: dts: qcom: sdm845-google: Move panel pins into
- common
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79057606A31B;
+	Sun, 25 Oct 2026 22:30:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79057606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=jSaUz0/U
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 474AF5340E03;
+	Sun, 25 Oct 2026 23:30:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1792967413;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=fDWb9AesW86OHa5AcGp256kq5+uqGSj+V/E/pkUOy8s=;
+	b=jSaUz0/UbpFaLbdYZvXZGIce7Of4cPVH9SQLD8tEu0VLZ9aizfdZq0a8BERLIJC4CEdXNP
+	qVWT565XZ3J22Ks1PNf4uDJai9yNUuQa4mHDJza4TovmCSBn0Aa2Ivp0aOYu/9ffm6h4XE
+	Cxv5Z/C34yTY/zKFLhKXCQyLj9SMD10=
+Message-ID: <36df49c8-cb1c-4a4e-8c7c-47825fbf326f@ixit.cz>
+Date: Sun, 25 Oct 2026 23:30:13 +0100
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,147 +60,98 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261025-pixel-panel-pins-fix-v1-1-7cde6f7ca861@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QoCIRBFf0XmuQGdKKJfiR5sd9wmwsRpF0H89
- 7R9uXAunFNBOQsrXE2FzJuofGIHdzAwPX1cGGXuDGTp7CydMEnhNyYfx0pUDFKQOBAdw0wXstD
- VlLnf/+ztvrOujxdP39GC1n6ehVk9eAAAAA==
-X-Change-ID: 20261025-pixel-panel-pins-fix-2ef223fd2820
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Joel Selvaraj <foss@joelselvaraj.com>, 
- Casey Connolly <casey@connolly.tech>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, Vinod Koul <vkoul@kernel.org>, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Petr Vorel <petr.vorel@gmail.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2816; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=sZieprxE4e1RIG8z6t14P5reed770kk+50G6rXBQCqo=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq3oJ+en+4/21fx6ETZOMR/4ZxYH/0jNcVLy9fa
- XhiVr9xT02JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCat6CfgAKCRBgAj/E00kg
- cnu8EADJgEy9gtlVyB/MBlIDisr8uSn3q7V8RQbuFp0zlCmixuOczwSqLvqdcVHmJD48cWluUs5
- r1WRvjRyE5Hs9fPCc6yzRGzbAW0ALINPMhInIzRRikLkJTz8Tc4N/0xorCdc6zFfIB412Iv+FZR
- +LThREZvwGYo+EombXjyJNybm7CDCtXgWR8s3+u8UyQVY7Jb3r+p9dq3pq4WcCX8ars02wOHu7a
- Qxzmupa5ed/WXM3R1t/q/bAbhq1R+DQjat+ACWHO4pmQid3W5W52SXPlyHQaJdrx7d9TIFH92hA
- 6IJnSCtGTyRks0jNrCLq+B7muymD1dN/Bfkyh0SMu6wQBKwAvZtarwNxeuQYr4kepyvWcVTmRZi
- 8HrYsbt7swrPBDbpN4uV9UUmWZM6J2MKfTYAQYcIIVD+fRay4pJ2mMKZDbfP3rrFhoYnYSPKqtj
- AkeTVysMqInbeezc1Vq8wVYeAP8SvRG3MkPAWb7R5JDkZpcru5nFjYRCnVHZAwbbO0x2270ffh5
- WX3h5BuFNanyxkiWccaKlIy5YDx07TL6kyOSZLpfmGOdxeLhPArc4hZNgci0/tzbCtUCNU5ESg5
- fP11dU6xtEXVyzUSYNPgn9eGZDQWPjnhoPw7kVr3U16rRRiRfNmc0iUTo1bd39nDVDxAmy4Pfsk
- hZyasE5jYS9MZbQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/11] arm64: dts: qcom: sdm845-google: Move panel pins
+ into common
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Dzmitry Sankouski <dsankouski@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>
+Cc: Petr Vorel <petr.vorel@gmail.com>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz>
+ <20260924-crosshatch-panel-v2-10-08d5c7bf72fc@ixit.cz>
+ <667fe242-7779-4a8b-aa01-19277ff8d6d1@oss.qualcomm.com>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <667fe242-7779-4a8b-aa01-19277ff8d6d1@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-From: David Heidelberg <david@ixit.cz>
+On 30/09/2026 12:39, Konrad Dybcio wrote:
+> On 9/24/26 4:01 PM, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Both devices share the pinctrl configuration.
+>>
+>> Reviewed-by: Petr Vorel <petr.vorel@gmail.com>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+> 
+> no real reason for this to be separate but okay..
 
-Both devices share the pinctrl configuration.
+Thanks for the review. Au contraire, since the series didn't got into 7.4 which 
+sentence me for maintaining it in our tree, I sent this one separately here:
 
-Fixes: a678adbf2d22 ("arm64: dts: qcom: Add support for Pixel 3 and Pixel 3 XL")
-Reviewed-by: Petr Vorel <petr.vorel@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Retained R-b from previous series, added Fixes: tag.
+https://lore.kernel.org/linux-arm-msm/20261025-pixel-panel-pins-fix-v1-1-7cde6f7ca861@ixit.cz
 
-https://lore.kernel.org/all/20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz
+moving bits within the DT is causing too much pain during the rebases.
+Hopefully one day will sdm845-next will have 0 patches, but it's not today.
 
-While it's not obvious from current DT, as we upstreaming Pixel 3 XL
-bits, we already know this block was misplaced.
+David
 
-This will save us some unplesant rebase conflicts while we upstream the
-rest of the panel for Pixel 3 XL and other bits.
----
- arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts | 18 ------------------
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi  | 16 ++++++++++++++++
- 2 files changed, 16 insertions(+), 18 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-index fa89be500fb85..a000c75494f1c 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-@@ -61,29 +61,11 @@ &mdss_dsi0_out {
- };
- 
- &mdss_dsi0_phy {
- 	vdds-supply = <&vdda_mipi_dsi0_pll>;
- 
- 	status = "okay";
- };
- 
--&tlmm {
--	panel_default: panel-default-state {
--		reset-pins {
--			pins = "gpio6";
--			function = "gpio";
--			drive-strength = <8>;
--			bias-disable;
--		};
--
--		te-pins {
--			pins = "gpio12";
--			function = "mdp_vsync";
--			drive-strength = <2>;
--			bias-pull-down;
--		};
--	};
--};
--
- &wifi {
- 	qcom,calibration-variant = "Google_blueline";
- };
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-index f1379857e2742..d54cb47cdf95b 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-@@ -473,16 +473,32 @@ &qup_uart9_tx {
- 	drive-strength = <2>;
- 	bias-disable;
- };
- 
- &tlmm {
- 	gpio-reserved-ranges = < 0 4>, /* SPI (Intel MNH Pixel Visual Core) */
- 			       <81 4>; /* SPI (most likely Fingerprint Cards FPC1075) */
- 
-+	panel_default: panel-default-state {
-+		reset-pins {
-+			pins = "gpio6";
-+			function = "gpio";
-+			drive-strength = <8>;
-+			bias-disable;
-+		};
-+
-+		te-pins {
-+			pins = "gpio12";
-+			function = "mdp_vsync";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+	};
-+
- 	nfc_default: nfc-default-state {
- 		enable-pins {
- 			pins = "gpio25";
- 			function = "gpio";
- 			drive-strength = <2>;
- 			bias-pull-down;
- 		};
- 
-
----
-base-commit: 20a33c6b6cbe7e4805dfb6cd68816937443aa148
-change-id: 20261025-pixel-panel-pins-fix-2ef223fd2820
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
-
+> 
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> 
+> Konrad
 
