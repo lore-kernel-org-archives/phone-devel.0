@@ -1,56 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792967416;
-	b=XyLNqi2P/is+RzUupJrCrJVLqTp9Hkn5o5HZG38kuZ82dGqzrhJFPwRZFhXQPIi586iN
-	 N6YAIMOZ74QoXAmZwRnp43Bk+c6IZEi98hO9WrblrIGu2XRoYCnUcWpjA7z3jHFvGBaEa
-	 lyXO0ec+q00zNimWcSvTIYFPe4HXOGXTl2XC4kJ0vmJPFzlujAf15pz12ihyaGSdZWu27
-	 Tc0Q6bm/fCOalCftYBflTly4d0oI4Flqxg3SqnOhNund6MvinPLoiUnkEmIpVcV35pjOg
-	 W7NaroaIrRyYHLuqWwZSspBm8xx2UibeL1nzHezGJCG4znId+snn+LU2nEBMxOJ+p2g==
+	t=1793012953;
+	b=OZeBGE1lQG7Oz838YTSg7nUN0lnUYFhvp34ZRfC24dzXRx3eAlwkPyWVAGrhlYQP1KoF
+	 vm2ud9cnC1w+vg6W5cvHD5CbWKE9GeLie1oP68QgH19hMnwzAbxOhkDouTrQHIPrYQHF7
+	 TVjZcCVLwghvrxLTtQjTcOJuQ7JGCutDsS3oYMFKKAXbIChEnqWmFVwzBCbQc7FmUefdC
+	 V5qB3ZC3R09xJgqgfbeISipridXeMMCa1Dpd8lVjX6FZU+b4KdzdJuk944O+OkLluHMZ9
+	 ojeIqYdX3Ua6sDx+HGWCptMVHF3SxAl9FuCmjQ0clEoq0r76q0MfTApq8T/mUxuYN8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792967416;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=fDWb9AesW86OHa5AcGp256kq5+uqGSj+V/E/pkUOy8s=;
-	b=XfZbDGlwfUyOL8FgZUeCGKv9WH83P7sPkZjuFLUtHyAaYxUthJuCrQUD/ZiLr/qsBjSd
-	 p7baxP2g8ukIPmVOXWoLWH4ZjWBmQ92QoMk9gZuQBoiEEVMdUX/W6aRAlys59KX3Sstlb
-	 SzAXbkQnsFRbONouSwxoVT0Xj59/r8XmrA+O5mZFNs6QWawu6LlzfPpWgzmISnKlb0Q9F
-	 L7atRrSjB0ayTpM0ozSkUONbiSM1NPtsM19UggLmCKdFocy1QVgvGeun2PusUt0x0vG+K
-	 bqn4ivWz5TbhZjKkk1IcF1PrH7juDW+fWtFD/uVyck/AKG4GzoP0EG53cThmVdUl+9Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793012953;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=8NovCQH940na+gosyoo7UWT5zfsY+yv5JWNQkZbmeL0=;
+	b=o4+vtXaOLCKBQglOHTODPc5Si6cVY60z54FY2HtnLjkewClucnBZfHXBnvBERTjJBjSS
+	 w0VhF0rxfM1Z+vJ5chPy57OqAkwj2g3BES6mRWJkuYDqlgp52P0poFR/pT4mS741ltOvG
+	 d1ABQV+amdHpjrW1tpWxJlRDCbVMiWBOT7bff9eXdkNp9vvrSpqJsHPJiU4qQOH9IwFi/
+	 Ak7MCLjcDj3+HgLBOhh9DEKiWuGIxTToWAXRHt5QC3+64OA9/WT+1yKDrOmpnC5/ZJm7D
+	 s1+cl5lFWyQB3juRMXyJozCA9aqAo6gXKScRW/UYiJC6M3J9JNznIXOlD8q0qehD36A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ixit.cz;
-	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b="jSaUz0/U";
-	arc=none smtp.remote-ip=84.42.129.46
-Received: from ixit.cz (ixit.cz [84.42.129.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CIIbWtkh;
+	arc=none smtp.remote-ip=198.175.65.10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79057606A31B;
-	Sun, 25 Oct 2026 22:30:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79057606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66013606A31A;
+	Mon, 26 Oct 2026 11:09:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66013606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=jSaUz0/U
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 474AF5340E03;
-	Sun, 25 Oct 2026 23:30:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1792967413;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fDWb9AesW86OHa5AcGp256kq5+uqGSj+V/E/pkUOy8s=;
-	b=jSaUz0/UbpFaLbdYZvXZGIce7Of4cPVH9SQLD8tEu0VLZ9aizfdZq0a8BERLIJC4CEdXNP
-	qVWT565XZ3J22Ks1PNf4uDJai9yNUuQa4mHDJza4TovmCSBn0Aa2Ivp0aOYu/9ffm6h4XE
-	Cxv5Z/C34yTY/zKFLhKXCQyLj9SMD10=
-Message-ID: <36df49c8-cb1c-4a4e-8c7c-47825fbf326f@ixit.cz>
-Date: Sun, 25 Oct 2026 23:30:13 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CIIbWtkh
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793012953; x=1824548953;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MlcDPbq8YL7OdWQu9xDbnnlqJLjzqxo74xBBo/QFseQ=;
+  b=CIIbWtkh9W1ZlA5E/XRxWLd/Lwxg5OmHHnuaRXqzjP0kIUhGpnPaLowy
+   yAXqF4iRl8NHbTeE2SnAcpu4WgLrB3MaTOKz4U+ZIKcuBarJV/gAgofa4
+   N3WKUHBZ6Lxdh1A/C1CRxBv/+pfECwYYS4a4T7+FPsCJPBN4lJ9wHhfAG
+   GX0BzAhEAhTRhCN3PCHPfZP6/Xj1i4lGWxawdCwHpfPJavWixJ3CRpn11
+   3MYjkjOyURlHCK4VoS0IsE38/rhOOeaMLtxff8OJK9g57wuiObHGBSlIf
+   ZrkTC7EpZ05D5J4/PDppoKaMVRoe/svQUxjmCvJH3HGN9/fzsw0ak1KJd
+   A==;
+X-CSE-ConnectionGUID: Lkr2tMdPQqWtonOz8NfV5A==
+X-CSE-MsgGUID: pLokmp6/TDSBkQq8F3z1OA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1567230"
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="1567230"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2026 04:09:12 -0700
+X-CSE-ConnectionGUID: Pji25Z/gSYWakq1dFtDIMA==
+X-CSE-MsgGUID: twf3KC97TzuRlYmB1RWPTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
+   d="scan'208";a="4637081"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa009.fm.intel.com with ESMTP; 26 Oct 2026 04:09:09 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id F178A99; Mon, 26 Oct 2026 12:09:07 +0100 (CET)
+Date: Mon, 26 Oct 2026 12:09:07 +0100
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Val Packett <val@packett.cool>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] usb: typec: fsa4480: Report switch & mux events
+ to codec
+Message-ID: <at800xHh8lvwsi-8@black.igk.intel.com>
+References: <20261020081343.1507986-1-val@packett.cool>
+ <20261020081343.1507986-3-val@packett.cool>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,98 +90,152 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/11] arm64: dts: qcom: sdm845-google: Move panel pins
- into common
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Dzmitry Sankouski <dsankouski@gmail.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>
-Cc: Petr Vorel <petr.vorel@gmail.com>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz>
- <20260924-crosshatch-panel-v2-10-08d5c7bf72fc@ixit.cz>
- <667fe242-7779-4a8b-aa01-19277ff8d6d1@oss.qualcomm.com>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <667fe242-7779-4a8b-aa01-19277ff8d6d1@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261020081343.1507986-3-val@packett.cool>
 
-On 30/09/2026 12:39, Konrad Dybcio wrote:
-> On 9/24/26 4:01 PM, David Heidelberg via B4 Relay wrote:
->> From: David Heidelberg <david@ixit.cz>
->>
->> Both devices share the pinctrl configuration.
->>
->> Reviewed-by: Petr Vorel <petr.vorel@gmail.com>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
+On Tue, Oct 20, 2026 at 05:12:54AM -0300, Val Packett wrote:
+> From: Luca Weiss <luca.weiss@fairphone.com>
 > 
-> no real reason for this to be separate but okay..
-
-Thanks for the review. Au contraire, since the series didn't got into 7.4 which 
-sentence me for maintaining it in our tree, I sent this one separately here:
-
-https://lore.kernel.org/linux-arm-msm/20261025-pixel-panel-pins-fix-v1-1-7cde6f7ca861@ixit.cz
-
-moving bits within the DT is causing too much pain during the rebases.
-Hopefully one day will sdm845-next will have 0 patches, but it's not today.
-
-David
-
+> In the Type-C graph, the FSA4480 switch is in between the USB-C connector
+> and the audio codec, but the audio codec also needs to receive the
+> switch and mux events from the FSA4480.
 > 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Update the driver to get an Type-C mux on the next endpoint and
+> broadcast the recevied mux & switch state to it.
 > 
-> Konrad
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> [val: enable the SENSE/MIC bits; put the refs in fsa4480_remove]
+> Signed-off-by: Val Packett <val@packett.cool>
 
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+>  drivers/usb/typec/mux/fsa4480.c | 57 +++++++++++++++++++++++++++++----
+>  1 file changed, 50 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
+> index bea0c1deec94..93faa81d0879 100644
+> --- a/drivers/usb/typec/mux/fsa4480.c
+> +++ b/drivers/usb/typec/mux/fsa4480.c
+> @@ -60,6 +60,9 @@ struct fsa4480 {
+>  
+>  	struct regmap *regmap;
+>  
+> +	struct typec_mux *codec;
+> +	struct typec_switch *codec_switch;
+> +
+>  	enum typec_orientation orientation;
+>  	unsigned long mode;
+>  	unsigned int svid;
+> @@ -115,7 +118,8 @@ static int fsa4480_set(struct fsa4480 *fsa)
+>  		}
+>  	} else if (fsa->mode == TYPEC_MODE_AUDIO) {
+>  		/* Audio Accessory Mode, setup to auto Jack Detection */
+> -		enable |= FSA4480_ENABLE_USB | FSA4480_ENABLE_AGND;
+> +		enable |= FSA4480_ENABLE_USB | FSA4480_ENABLE_AGND |
+> +			 FSA4480_ENABLE_SENSE | FSA4480_ENABLE_MIC;
+>  	} else
+>  		return -EOPNOTSUPP;
+>  
+> @@ -162,7 +166,11 @@ static int fsa4480_switch_set(struct typec_switch_dev *sw,
+>  
+>  	mutex_unlock(&fsa->lock);
+>  
+> -	return ret;
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Report orientation to codec after switch has been done */
+> +	return typec_switch_set(fsa->codec_switch, orientation);
+>  }
+>  
+>  static int fsa4480_mux_set(struct typec_mux_dev *mux, struct typec_mux_state *state)
+> @@ -185,7 +193,11 @@ static int fsa4480_mux_set(struct typec_mux_dev *mux, struct typec_mux_state *st
+>  
+>  	mutex_unlock(&fsa->lock);
+>  
+> -	return ret;
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Report event to codec after switch has been done */
+> +	return typec_mux_set(fsa->codec, state);
+>  }
+>  
+>  enum {
+> @@ -287,6 +299,19 @@ static int fsa4480_probe(struct i2c_client *client)
+>  		FIELD_GET(FSA4480_DEVICE_ID_REV_ID, val),
+>  		FIELD_GET(FSA4480_DEVICE_ID_VENDOR_ID, val));
+>  
+> +	/* Get Codec's MUX & Switch devices */
+> +	fsa->codec = fwnode_typec_mux_get(dev->fwnode);
+> +	if (IS_ERR(fsa->codec))
+> +		return dev_err_probe(dev, PTR_ERR(fsa->codec),
+> +				     "failed to acquire codec mode-switch\n");
+> +
+> +	fsa->codec_switch = fwnode_typec_switch_get(dev->fwnode);
+> +	if (IS_ERR(fsa->codec_switch)) {
+> +		ret = dev_err_probe(dev, PTR_ERR(fsa->codec_switch),
+> +				    "failed to acquire codec orientation-switch\n");
+> +		goto err_put_mux;
+> +	}
+> +
+>  	/* Safe mode */
+>  	fsa->cur_enable = FSA4480_ENABLE_DEVICE | FSA4480_ENABLE_USB;
+>  	fsa->mode = TYPEC_STATE_SAFE;
+> @@ -310,8 +335,11 @@ static int fsa4480_probe(struct i2c_client *client)
+>  	sw_desc.set = fsa4480_switch_set;
+>  
+>  	fsa->sw = typec_switch_register(dev, &sw_desc);
+> -	if (IS_ERR(fsa->sw))
+> -		return dev_err_probe(dev, PTR_ERR(fsa->sw), "failed to register typec switch\n");
+> +	if (IS_ERR(fsa->sw)) {
+> +		ret = dev_err_probe(dev, PTR_ERR(fsa->sw),
+> +				    "failed to register typec switch\n");
+> +		goto err_put_switch;
+> +	}
+>  
+>  	mux_desc.drvdata = fsa;
+>  	mux_desc.fwnode = dev_fwnode(dev);
+> @@ -319,18 +347,33 @@ static int fsa4480_probe(struct i2c_client *client)
+>  
+>  	fsa->mux = typec_mux_register(dev, &mux_desc);
+>  	if (IS_ERR(fsa->mux)) {
+> -		typec_switch_unregister(fsa->sw);
+> -		return dev_err_probe(dev, PTR_ERR(fsa->mux), "failed to register typec mux\n");
+> +		ret = dev_err_probe(dev, PTR_ERR(fsa->mux),
+> +				    "failed to register typec mux\n");
+> +		goto err_unregister_switch;
+>  	}
+>  
+>  	i2c_set_clientdata(client, fsa);
+>  	return 0;
+> +
+> +err_unregister_switch:
+> +	typec_switch_unregister(fsa->sw);
+> +
+> +err_put_switch:
+> +	typec_switch_put(fsa->codec_switch);
+> +
+> +err_put_mux:
+> +	typec_mux_put(fsa->codec);
+> +
+> +	return ret;
+>  }
+>  
+>  static void fsa4480_remove(struct i2c_client *client)
+>  {
+>  	struct fsa4480 *fsa = i2c_get_clientdata(client);
+>  
+> +	typec_mux_put(fsa->codec);
+> +	typec_switch_put(fsa->codec_switch);
+> +
+>  	typec_mux_unregister(fsa->mux);
+>  	typec_switch_unregister(fsa->sw);
+>  }
+> -- 
+> 2.55.0
+
+-- 
+heikki
