@@ -1,53 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=5.75.144.95
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793107346;
-	b=GnaRgoXht2wiE3F2o95l96QrJVYqD+bc14BAjy9A+9EVMc0oNkTY+epZm69IzKqTj8OA
-	 TOCfQL6DdsxJxh/u1mEXAZ7mbCObfOWWjJZu+VacQbzy1atTcgCUBteHrArwWmrbC1ACn
-	 1KYoH6JyQdr+0zOGO+ZYgsafVgG9HIpohrJ8hjjNjKE0YaCYCW2GPEvyB8AAj+IREIzEV
-	 qqRxz4k78faNz43hW6cU9bexzqq/PWJfc2d9fhd9lSqFmp2ThwlM+mMw03FIDm87v9lbw
-	 XAx3+X2dcSKKt/ny1gJjiBTeEqVeLohu/2CBunAU0S83qjvE1FfbJRAWkodjFCsFIzQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793107346;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Xj67NiJh2Z4pdwze/JwyyrlvFS2Frq0bavp1aNAOF+Y=;
-	b=y3ZBdxLsPK2WIywQAKyM1BBTH8l6WLOHB/S9yG7WnQSAkUgb91lvApRy1qq6gplcSa7M
-	 pFs+cqvymC9x+kiJsjcj7hrVBH2i10cpbOgAENpep1GqKmZfjmT/ZB7tZ4VITsrAqFWnK
-	 b9PF7JRPSihjzwCD5m0v9+Nrr3UmViKTxcVvfUJ2nlVeP4rwcobxqrQMRPvHeNu4YSf5/
-	 V7a6iy45DJcdWXvph4Liy2ZDlHE7WyjAVuxdWlfPmp9zyDbUdpTe1W2tR8dUoIhtQ00yo
-	 +OVrut1YcfWJJgzAo5A8GeN4FMFYeDmsIqUv5J6kPN1kW/s+5dApWrL2LAAl4gRThpw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mainlining.org;
-	spf=pass smtp.mailfrom=mainlining.org;
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=rsa-sha256 header.s=202507r header.b=mxxbttXc;
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=ed25519-sha256 header.s=202507e header.b=eTsWZ5U5;
-	arc=none smtp.remote-ip=5.75.144.95
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793117743;
+	b=NPYGo1VkzbV4TrZ4vymtJDndi+OW35mkP47djHEpYrKdnIWCN64KAjY4xzvlcYmETzGl
+	 wAnKKInk+W1ZETPdesdfWe80Joooc0SmSC2YTUwV4QRBSc8AHlS4xy/RvKNM8tMRW8LbR
+	 fVOqXVGWtHaNRkLIJg88FV2Ag8Pm8Gv+qBVGYSd4wmhAc2BZwXlqV/PiCcceeGf67Uxqm
+	 qSMoE9vJ5/y346bBQdN7RlVkRRdR+oevRuZxp4sue5CC5HEoJ+8w+8PhJ/NyMsaVbAg/G
+	 iA8+q0DP5LEqYDIC1koD/IcsTfWtQo0nSJjBITlldEQNokitBo1+AShEWMP4KiQVkmQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793117743;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=/1+qVb57zvLsyGfD3ibPABn1ocLm+f+LfQNxDlA5Sa4=;
+	b=AV74Hb6txwbNAR/f0HE2Dm5HnAH6IHmPb7OPyiV435rQ5sbWs6Ep7QByXPbLMCExY/o5
+	 oxxsBCgOjyyVqtP+sD84Ie1zHIAlZ9oREQEp5k15f5vM3chqQ1Sh9RG8iW4LClLW71XFg
+	 WSJePeIGFeWjpkzqsSxfGuwclhsvS5YOCxJwec4FJkkGgE6y1wfTCM98RJ9DboVR90Lsx
+	 V0oxsbEX0pe/j8+qyVPvB3cExm67vc/O/Ce0XAgJvImyDLOGda+vopiqAMLMdMxLteAKI
+	 D4ApdpZmf8HW+5c53QxdBG3qlLGqRaacnWwlnce/npewLhcxh7iBN0pD/Iq02F39OFA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KHaksePs;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF2D606A31A;
+	Tue, 27 Oct 2026 16:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KHaksePs
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793117742;
+	b=iF6S0g6aFF9OklV15d6JH/oEqZr3oWuk+3KAqV+FAfxOUF9izHQOqWPOckECC7Vw//Oy
+	 mYPyxhuGahHhpqM2EAoGHohnghIdMoN+Aqc5BKAJU8fFSM5lFYkDMP2znE0P6NLUfLTLA
+	 MbTkfDA7h6oCbw2gkJrdYBqfZ2cZOOSHQraVS01Yd4CGjC4oLajW11kDQtfVLGRnqJQr9
+	 XZprXW3jLGg7WI5TrS1SEg6GbaS/bad3zVwbw9FD9dYq9sAmIuiTM6EbYPCtv6sKzU8nT
+	 /EB4tzILFVyL9FNCnholu6c0Bov9LqCJgdVv2dRvVegxVI3AGZcPwjQlog6wZEXwOkg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793117742;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=/1+qVb57zvLsyGfD3ibPABn1ocLm+f+LfQNxDlA5Sa4=;
+	b=w81KB7+f0OFR6veUC6B22OUG83Qo3sDYmayqpOLXWCLRjaCHFQpZxSgzKQWi3qpiOEXF
+	 5BOmGbP2dYwl+0pmxoafZfLqEjm89Yrk8wwDIidAWVtnIUx/PpsvM+6fSiX0DnCeAFtvx
+	 UOv8cUVaAtnJ/IGDjtb6P+rtyBT/7DKGOvlxlmkZo62+LAmsdpj12boi7ocEo1fcfCeE9
+	 giVj4lzHVwvyViE7+MGkKbA3Yexpk5r0zJq1Ws14ZDMFfw3si4HdrsuaUO5ovT39vSere
+	 EHkUDqOfX9bgNiphWduN31Al4DMTJ/H6+HoZo9WL3Wxiu9zz19zhyjAnvZ5KFD3cfUw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B08B606A31D;
-	Tue, 27 Oct 2026 13:22:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B08B606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mainlining.org header.i=@mainlining.org header.a=rsa-sha256 header.s=202507r header.b=mxxbttXc;
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=ed25519-sha256 header.s=202507e header.b=eTsWZ5U5
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1793107318; bh=Xj67NiJh2Z4pdwze/Jwyyrl
-	vFS2Frq0bavp1aNAOF+Y=; b=mxxbttXc1kwRAw4uFr6Joln+wd89lpfwXB3f0rPAO4vYimMZh7
-	jvVbJ/fWa2pt91BX37u4bOR1QAyWdKL/UBi9irf9pvF6r1GsNgAAdAOBCggwJdYbYd8MGYbKBcb
-	IC8a5slECJdOA/6e+GRAJupr0Z3LlxDEoRrOPQqYt5QNtKh2g2rNfHOjHC4IEgG6U7P4aDgRLxE
-	4FrXQHIR1FTK9819rifvTRK2ku6pUXnTGP6noUTAxhSXGTmAep0w/Uo888MdzxZza7w9yo98LAC
-	w5cleacP1J8MXMNn+7DtOuZMy7sgE7iZVCS3leZn1nar8BkA2KG1+SoegpudNixb3pg==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1793107318; bh=Xj67NiJh2Z4pdwze/Jwyyrl
-	vFS2Frq0bavp1aNAOF+Y=; b=eTsWZ5U5a1kSPxUaMDFdlMnVdcfluYbi3UyR/neQ+3HarpYrgO
-	xKOLXAksCoxT2sfC1Nn2S6fCPflmtLkTAiCw==;
-Message-ID: <524ccb0f-8880-4552-8549-88a9d68e3faa@mainlining.org>
-Date: Tue, 27 Oct 2026 16:21:55 +0300
+	by smtp.kernel.org (Postfix) with ESMTPS id EBF0F1F01825;
+	Tue, 27 Oct 2026 16:15:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793117742;
+	bh=/1+qVb57zvLsyGfD3ibPABn1ocLm+f+LfQNxDlA5Sa4=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=KHaksePsMes3VvIBAzpo/Vewuvon9PnUhpFXHRp1Ycr3iZK6d3/vdXTS682Awbd3a
+	 jNTAI3wHNeJPCqdSQUbTlcPTEGT/1vBHbsiDf4jHJsLXvYpGIriK8eNi+AbuFggu4c
+	 YHgtHVvtLiy7/OybE1UDlssf4QX0ISBHuzjsAd9DV1tGt7uMdt/5fvgsg5fwU8eQrE
+	 Fj8k+iiWBYP8M9Dn6gzhFfyZwPAwRx30cS+vIM1MRZ6AdMo88HOj8MNdpIw9fZZzv7
+	 4Sc2qsTMn9FAGzJWbwreTVT3s21VdpIon3VAqVWdXkE+lx08OpMABMsyC9+r0m7VW2
+	 t46EOEfZdmRSg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 4E35745153;
+	Tue, 27 Oct 2026 16:15:41 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Tue, 27 Oct 2026 17:15:37 +0100
+Subject: [PATCH v3] media: qcom: camss: Don't reject sensor links faster
+ than 4x the CSIPHY timer
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -57,221 +83,123 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/7] arm64: dts: qcom: Add initial support for MSM8952
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Konrad Dybcio <konradybcio@kernel.org>, Amit Kucheria <amitk@kernel.org>,
- Thara Gopinath <thara.gopinath@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Bjorn Andersson <andersson@kernel.org>,
- Abel Vesa <abelvesa@kernel.org>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
- linux-pm@vger.kernel.org, linux-input@vger.kernel.org
-References: <20261011-msm8952-initial-support-v5-0-1857074992ec@mainlining.org>
- <20261011-msm8952-initial-support-v5-5-1857074992ec@mainlining.org>
- <cf9aa65d-5603-425e-b09e-0a5ae86fa551@oss.qualcomm.com>
-From: Muzaffer Kadir <muzafferkadir@mainlining.org>
-Content-Language: en-US
-In-Reply-To: <cf9aa65d-5603-425e-b09e-0a5ae86fa551@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261027-csiphy-sdm845-limits-v3-1-c58917e14107@ixit.cz>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNOQ7CMBQFr4JcY+QlMYGKeyCKeCMfkUW2sRKi3
+ B07FKkQ5UjvzczIGwfGo/NuRs5E8NB3Cfh+h1RTd3eDQSdGjDBBKsaw8jA0E/a6rYoSP6GF4LG
+ khmtZ21LzCqXr4IyFcdVeb1/2L/kwKmRXXjTgQ++mtRtp3v1JRIop1lwQaY8qZewFRggH9UY5E
+ NmmONHih4IlhWBMy7IWRlqyKZZl+QBo78HLCwEAAA==
+X-Change-ID: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Bjorn Andersson <andersson@kernel.org>, linux-media@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3007; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=YngNkwq0tcL9PzNnoy5oOuxivPBzZW+yX4YIxcz9VjA=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq4M4sHysknjH4WTsZyWkGpInzz0sse10LN+oGu
+ LzBgYQacXGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCauDOLAAKCRBgAj/E00kg
+ ct0GEACJ8rn600wBR0k5Z1JbaLYFD61PRSQA05cvG01mbkv3yrDyjRxDJSDoLU1Hud9eZh0PlmN
+ g3V0sUmz/i6gzp/bgieRRnXGLj7gTElwpYQORX04ggzT/Q+HB302jsvkuxuBUf2/Ly+9Zc9Uu3x
+ 2ThAX7a0ufkI7KlDtKJHtOTJPPNZkjxrErGYonI9bHNCIh6oifO4J9DUOew7lRnF0/UtvhUvZZj
+ jonRCzQQOP63yxrS80V+uZXHrCfcnXaC6tVRBxpN+d9GrFCkjGNbAa+nkK+pP1m+wapQ5lyxODB
+ Cen/fMp+IPA7zlXN6iE73Vf49+gHNnCvGZGOOE5hDIEdpaNsEg1BQQw3LtYzcPTJWYemukMq08s
+ uqacGib7nDzC0lFq5Yj6VdipZhgf6R9df2pWOGYzZmwGF2FE7nwI8WHNiPc0YmWNNHZkR3C9X2b
+ RIq1Dfl2CebMQlcpsNnRvbfhSI0+SI36LThMxKjlIa3eH9tanNcg8lyjJioC6B2YCxmnejl1+eQ
+ U/70CCqLTn7UFWiHBmEUa8/Qoh6kZWiWREIjN4RWB3bJjYhZozCWwHr35DNC2ckI6hB4Tvy36oK
+ n9glKnmFI77jx3URR4NZmCeqEwfqsYBAHf0x/zrkirs/4xSEtHQsQRpS0guLfxwdyDkHVoTwjkd
+ Ln2CQ+ROZ/2mvxQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 Content-Transfer-Encoding: 7bit
 
-Hi Konrad,
+From: David Heidelberg <david@ixit.cz>
 
-Thanks a lot for review,
+The timer clock has no such relationship to the link rate. Both the 2ph
+and 3ph code use it only as the reference for csiphy_settle_cnt_calc(),
+where a faster link makes the settle count smaller, not larger: at
+269.33 MHz the count converges to 16 as the link rate grows. The vendor
+driver pins the timer to 269.33 MHz for every sensor (it is the highest
+rate in the SDM845 clock plan) and streams this exact link with it.
 
-On Mon, 26 Oct 2026 16:01:49 +0100, Konrad Dybcio wrote:
-> On 10/11/26 6:51 PM, Muzaffer Kadir via B4 Relay wrote:
->> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
->>
->> Add initial support for MSM8952 SoC.
->>
->> AI help is used for calculating qfprom nodes.
->>
->> Downstream reference for port is [1] which is very lightly modified
->> version of [2].
-> 
-> Generally this looks good, couple more comments
-> 
-> [...]
-> 
->> +	soc: soc@0 {
->> +		compatible = "simple-bus";
->> +		ranges = <0 0 0 0xffffffff>;
-> 
-> this is equal to `ranges;`
+Clamp to the highest listed rate instead of failing, the same way the
+unknown-link-rate case is already handled.
 
-Changing this to empty ranges would make ranges property
-to expect parent and child size-cells and address-cells to
-be equal but root size-cells and address-cells are 2 and soc
-size-cells and address-cells are 1.
+Solves issue on sdm845 that caps the link at ~1.02 GHz,
+so the Samsung S5K2X7SP, ~2.3 Gbps/lane, link 1.15 GHz) fails with
+Pixel clock is too high for CSIPHY
 
-The Devicetree Specification describes an empty ranges as:
-"If the property is defined with an <empty> value, it
-specifies that the parent and child address space is identical,
-and no address translation is required."
-(Devicetree Specification v0.4, section 2.3.8)
+Fixes: bbde31047434 ("media: camss: Use optimal clock frequency rates")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Tested on SHIFT 6MQ with sdm845-next-20260820-9.
+---
+Changes in v3:
+- Added R-b and Fixes: tag.
+- Link to v2: https://patch.msgid.link/20260914-csiphy-sdm845-limits-v2-1-622db5a6ebf0@ixit.cz
 
-So this change creates these warnings:
-/soc@0:ranges: empty "ranges" property but its #address-cells (1) differs from / (2)
-/soc@0:ranges: empty "ranges" property but its #size-cells (1) differs from / (2)
+Changes in v2:
+- Drop the camcc change entirely; the 269.33 MHz ceiling stands. (Konrad)
+- Fix the check in camss instead: clamp the timer clock to the highest
+  listed rate rather than failing, matching the vendor driver.
+- Link to v1: https://patch.msgid.link/20260822-csiphy-sdm845-limits-v1-1-d360bf7cd38f@ixit.cz
+---
+ drivers/media/platform/qcom/camss/camss-csiphy.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-I will keep this unchanged.
+diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
+index f99eea2ef2289..985171276ce47 100644
+--- a/drivers/media/platform/qcom/camss/camss-csiphy.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
+@@ -159,25 +159,23 @@ static int csiphy_set_clock_rates_legacy(struct csiphy_device *csiphy)
+ 			long round_rate;
+ 
+ 			camss_add_clock_margin(&min_rate);
+ 
+ 			for (j = 0; j < clock->nfreqs; j++)
+ 				if (min_rate < clock->freq[j])
+ 					break;
+ 
+-			if (j == clock->nfreqs) {
+-				dev_err(dev,
+-					"Pixel clock is too high for CSIPHY\n");
+-				return -EINVAL;
+-			}
+-
+-			/* if sensor pixel clock is not available */
+-			/* set highest possible CSIPHY clock rate */
+-			if (min_rate == 0)
++			/*
++			 * The timer clock is only the reference for the
++			 * settle count and does not need to track the link
++			 * rate. Use the highest listed rate when the link is
++			 * faster than the table covers or unknown.`
++			 */
++			if (j == clock->nfreqs || min_rate == 0)
+ 				j = clock->nfreqs - 1;
+ 
+ 			round_rate = clk_round_rate(clock->clk, clock->freq[j]);
+ 			if (round_rate < 0) {
+ 				dev_err(dev, "clk round rate failed: %ld\n",
+ 					round_rate);
+ 				return -EINVAL;
+ 			}
 
-> 
-> [...]
-> 
-> 
->> +		sdhc_1: mmc@7824900 {
->> +			compatible = "qcom,msm8952-sdhci", "qcom,sdhci-msm-v4";
->> +			reg = <0x07824900 0x500>, <0x07824000 0x800>, <0x7824e00 0x200>;
->> +			reg-names = "hc", "core", "cqhci";
-> 
-> Please break up these into one-per-line (also for properties below)
-> the last reg entry needs a leading zero
-> 
-> (in general one-per-line is cool)
-> 
-> [...]
-> 
-> 
->> +		usb: usb@78db000 {
->> +			compatible = "qcom,ci-hdrc";
->> +			reg = <0x078db000 0x200>,
->> +			      <0x078db200 0x200>;
->> +			interrupts-extended = <&mpm 58 IRQ_TYPE_LEVEL_HIGH>,
->> +					      <&mpm 49 IRQ_TYPE_LEVEL_HIGH>;
->> +			clocks = <&gcc GCC_USB_HS_AHB_CLK>,
->> +				 <&gcc GCC_USB_HS_SYSTEM_CLK>;
->> +			clock-names = "iface",
->> +				      "core";
->> +			assigned-clocks = <&gcc GCC_USB_HS_SYSTEM_CLK>;
->> +			assigned-clock-rates = <80000000>;
->> +			resets = <&gcc GCC_USB_HS_BCR>;
->> +			reset-names = "core";
->> +			hnp-disable;
->> +			srp-disable;
->> +			adp-disable;
->> +			ahb-burst-config = <0>;
->> +			dr_mode = "otg";
-> 
-> dr_mode = otg is default - you can drop it
-> 
-> [...]
-> 
->> +			pll_opp_table_c1: opp-table {
->> +				compatible = "operating-points-v2";
->> +
->> +				opp-499200000 {
->> +					opp-hz = /bits/ 64 <499200000>;
->> +				};
->> +
->> +				opp-806400000 {
->> +					opp-hz = /bits/ 64 <806400000>;
->> +				};
->> +
->> +				opp-960000000 {
->> +					opp-hz = /bits/ 64 <960000000>;
->> +				};
->> +
->> +				opp-1094400000 {
->> +					opp-hz = /bits/ 64 <1094400000>;
->> +				};
->> +
->> +				opp-1344000000 {
->> +					opp-hz = /bits/ 64 <1344000000>;
->> +				};
->> +
->> +				opp-1440000000 {
->> +					opp-hz = /bits/ 64 <1440000000>;
->> +				};
->> +
->> +				opp-1516800000 {
->> +					opp-hz = /bits/ 64 <1516800000>;
->> +				};
->> +
->> +				opp-1651200000 {
->> +					opp-hz = /bits/ 64 <1651200000>;
->> +				};
-> 
-> Drop the last entry for the same reasons you explained
-> 
-> [...]
-> 
-> 
->> +		a53pll_cci: clock@b1d0000 {
->> +			compatible = "qcom,msm8939-a53pll";
-> 
-> This needs a 8952-specific compatible (bindings-only fallback
-> is fine)
-> 
->> +			reg = <0x0b1d0000 0x40>;
->> +			clocks = <&xo_board>;
->> +			clock-names = "xo";
->> +			#clock-cells = <0>;
->> +		};
->> +
->> +		apcs2: mailbox@b1d1000 {
->> +			compatible = "qcom,msm8939-apcs-kpss-global", "syscon";
-> 
-> Likewise
->> +			reg = <0x0b1d1000 0x1000>;
->> +			clocks = <&a53pll_cci>,
->> +				 <&gcc GPLL0_VOTE>,
->> +				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
->> +			clock-names = "pll",
->> +				      "aux",
->> +				      "ref";
->> +			#clock-cells = <0>;
->> +			#mbox-cells = <1>;
->> +		};
->> +
->> +		adsp: remoteproc@c200000 {
->> +			compatible = "qcom,msm8996-adsp-pil";
-> 
-> And likewise
-> 
-> also IMEM, DSI, RPMPD, RPMCC
-> 
-> [...]
-> 
->> +	thermal-zones {
->> +		aoss0-thermal {
->> +			polling-delay-passive = <250>;
-> 
-> TSENS sensors are interrupt-driven so you don't need polling
-> 
-> AOSS is surely the wrong name - that hw didn't come until years
-> later than 8952 was released. I can't find a mapping of the
-> sensors for this SoC right now, so either drop these or give them
-> some generic names
+---
+base-commit: 151a134a4e6ec66f69db8750c66006f5207f7a9d
+change-id: 20260822-csiphy-sdm845-limits-b1e3dbaf5d38
 
-Understood, I will change these to generic names
-(excluding known ones from downstream)
+Best regards,
+--  
+David Heidelberg <david@ixit.cz>
 
-> 
-> [...]
-> 
->> +	timer {
->> +		compatible = "arm,armv8-timer";
->> +		interrupts = <GIC_PPI 2 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
->> +			     <GIC_PPI 3 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
->> +			     <GIC_PPI 4 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
->> +			     <GIC_PPI 1 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
->> +		clock-frequency = <19200000>;
-> 
-> Drop this property, it's only needed for very broken FWs
 
-For other parts I will change them as requested.
-
-Best Regards,
-Muzaffer Kadir
