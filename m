@@ -1,56 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.85.9.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793131830;
-	b=CzZ+JszjrbbSx4XR8oO65XQwTdLC+XixUwXXZQ7hnpHaGR4rgJq5RIEihZ5Olt0HLFpV
-	 RgiZrvQefIlF412M+9ThFLO/zO1DQdZn8Tau3K419vXSdCLEfibaAmvALqQRr1jXcLwI2
-	 f24p4GStdunvRba3c2944nh8zAY6D9hpGvlc1aghF0o4JbseSopQkEXEFrObWgA/Q2m16
-	 3wFNW6GH2f1EFRz28+dE2QntosGHjlveeLJ2ajNX6WzLlR7Omaq3+BjywIURSeIioiVpB
-	 glSyHIGcSArzvyWiwU5Mw3NMx/gVmtvKHmQvm5I1DPZmO5TSKarMza7jxTAwqJLzTHw==
+	t=1793138504;
+	b=c1gxDPTI67nG1xipvvjma8kJ1Tn0LBVRn59wEGnhbTI3Nx55lGzph8MqwQIO6MFQoO2X
+	 N3STRsjElq255NnhCdAFzzqz4RTjrodJyIkzK+XOeCcze8mCNNQiM4iuut4XsA3Ux3yPr
+	 cUbu8OHug5GhLK7543k3EXROPBcBEZXzHhrmVZjt0PERNqP2m6PWlyn2T7RAjhtnpZ/rA
+	 iEj+6bMmKpe9mnxZb4ehxCg45vJqSasOKCGDdyiEpziJj8GCgM52Za2uKubDUPvhlhs1Z
+	 /Bvp5TRTBU2SNnlkQILrc+NvYC/BsGhz/ADi1mr6G0ZHbs8Ej15KrNhv5FIe+zU9evg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793131830;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Zs8+7dqFRjW6RKjJ6/I76FxDxXQBC+jlTIwYBbsLR+M=;
-	b=CWzWTrFkSnHkiX3RDOUXN90DI1LvQD1BfvKTQlKcf1M6jfZqFWMfnV4X61ssM3rRPnN4
-	 OuM+b73So6xigCbR5yJdD5YSc3Rhkjnvo6Y4B9DsnDQSv2GWDQbYcdVGg0rL8oaWWv3Is
-	 swJgsCKVk32UziSb2OaNfGHzhiu9fbemZZHx9GISoVxgAdgT7K4bkfBHLbPNOB8E0ZUGB
-	 +oVflVY9gRbGLyFyPMH0QnJxGcI+E+uif/nDUpoWzU79VjAT/MVCq8jax3Iq6oNmnEO90
-	 5fcidXCGQ/UcJMV/jkLi8lGYJEZdg6eDtKp/3PI2v51PuGJDmj+v1Gos2k0dxwDZmIA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793138504;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:Mime-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mime-Autoconverted;
+	bh=Ktjma6HcQWv7GiJJjj8PL5RwgoM4aJvF0tpv2up6UU8=;
+	b=2CET29gf1XrF8f0DtJz2ne3Nz7j6mWQfAz7XYx9ADVHlVxBzmo+s8YgJOb5NTxThsu69
+	 PoMJoiEY41BJO1Ee6CGnDP/fVOXEJMR6AJjIrtx8TMvWi0TopViizCmCyTUcvvTNwmRzb
+	 1myT/U4YzRqhoeQN+9FoxSuAD2V5cJhUXpbCYPlvAJUwwaZ5QDZT4FUPOwJ079VH0Wply
+	 FRU7RWP2dJaar8RqVrClqj/MpvNE9P32xUJJgSTD/+odTjXORo3Mrm42xwJw6OQLXRCO6
+	 HRqGi4h7rJiYEtoxWzZGCwV1PmZ6gf5in5X7OLq3EWU+QldfOFZ6PAQh8pNpkUpv5lA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ixit.cz;
-	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=AMSDWnv+;
-	arc=none smtp.remote-ip=84.42.129.46
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+	dmarc=pass header.from=irl.hu;
+	spf=pass smtp.mailfrom=irl.hu;
+	arc=none smtp.remote-ip=95.85.9.111
+Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2066606A31A;
-	Tue, 27 Oct 2026 20:10:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2066606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=AMSDWnv+
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 0F01A53401D6;
-	Tue, 27 Oct 2026 21:10:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1793131827;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zs8+7dqFRjW6RKjJ6/I76FxDxXQBC+jlTIwYBbsLR+M=;
-	b=AMSDWnv+eT86kaPcLmdSSrGcPVkvj/ZcO4jb+7yLClOxs7tcuY9TQP2Ip6cowhu5cqsPG+
-	8TcIFM2qm3SNf2+p7C42SuA3rwNNL6QPqP5LqVRlccpUY1LuNGzaj60MvEARGysJbHme0+
-	tEOGW66lGAGo5gU4GW3ZeBn55pZ7rPw=
-Message-ID: <a60e8a48-9a02-404b-b4f4-8b8f0a4fec9b@ixit.cz>
-Date: Tue, 27 Oct 2026 21:10:26 +0100
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 8BF27606A322;
+	Tue, 27 Oct 2026 22:01:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BF27606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from fedori.lan (51b68114.dsl.pool.telekom.hu [::ffff:81.182.129.20])
+  (AUTH: PLAIN soyer@irl.hu, SSL: TLS1.3,256bits,ECDHE_RSA_AES_256_GCM_SHA384)
+  by irl.hu with ESMTPSA
+  id 0000000000080879.000000006AE11F3E.0002F671; Tue, 27 Oct 2026 23:01:34 +0100
+From: Gergo Koteles <soyer@irl.hu>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+  Rob Herring <robh@kernel.org>,
+  Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>,
+  Bjorn Andersson <andersson@kernel.org>,
+  Konrad Dybcio <konradybcio@kernel.org>,
+  Arnd Bergmann <arnd@arndb.de>, Gergo Koteles <soyer@irl.hu>,
+  Griffin Kroah-Hartman <griffin.kroah@fairphone.com>,
+  Enrico Cic <enrico@privacyrequired.com>
+Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+  phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: [PATCH 1/3] dt-bindings: input: Add compatibility for Awinic AW86224
+Date: Tue, 27 Oct 2026 23:01:23 +0100
+Message-ID: <353fe3fa68e74c46b88df51b303a7d23235d5ea7.1793135056.git.soyer@irl.hu>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <cover.1793135056.git.soyer@irl.hu>
+References: <cover.1793135056.git.soyer@irl.hu>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -59,124 +61,40 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/12] Qualcomm Type-C support for 1st generation
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc: Alexey Minnekhanov <alexeymin@minlexx.ru>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Lee Jones <lee@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
- linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org, mfd@lists.linux.dev
-References: <20260926-typec-v1-0-31adc19f32c6@ixit.cz>
- <voc4ie6fcegr3thk5n6dib4pkdxmracch4hhgjdih6pxrq2bfm@lq7mx4flowqk>
- <f85cdfb7-b797-4b4b-9937-670c6dfe52c3@ixit.cz>
- <zb3s4fmwx7vu3kcqigensacbgdqoaqnipfn4ntx4dh7ahrfr42@hvdw36dqb3qn>
- <5c41ef43-a065-46e3-9522-faaf3884b487@linaro.org>
- <eodzuccugtdn42basgpczett4yatyirog4nxwe5rhg5xf46ibp@jzcjmje4aqc3>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <eodzuccugtdn42basgpczett4yatyirog4nxwe5rhg5xf46ibp@jzcjmje4aqc3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-On 19/10/2026 01:53, Dmitry Baryshkov wrote:
-> On Mon, Sep 28, 2026 at 04:54:08PM +0100, Bryan O'Donoghue wrote:
->> On 27/09/2026 17:33, Dmitry Baryshkov wrote:
->>>>> One major comment. As we see, on SMB2 PMICs parts of the Type-C
->>>>> functionality are provided by the charger / FG device. I guess that on
->>>>> SMB5 PMICs we will get the same problem once somebody tries to implement
->>>>> additional charger features. Would it make sense to rework the PMIC TCPM
->>>>> driver to be a composite driver, taking several components via the
->>>>> existing Linux interface?
->>>> As this gets decided from the QCOM side, I'm fine with whatever suits the
->>>> hardware best.
->>> Bryan, as you are a maintainer of the PMIC-TCPM? Would the use of
->>> components be fine?
->>
->> I mean maybe. Would it not make more sense to land the TCPM functionality
->> and then look into adding charging moving then ?
->>
->> i.e. finish off adding this piece first
-> 
-> The problem is that we already have SMB2 charger, which accesses the
-> same region. In theory it is possible to say that USB-C driver conflicts
-> with the charger "for now". In practice, I think, it might be better to
-> sort that out from the beginning. You didn't have this issue when
-> working on PM8150B support since we never needed charger for that PMIC
-> series.
+Add the AW86224 haptic driver to the binding documentation for the
+AW86927 and AW86938, as this binding needs the same properties.
 
-I looked into the smbx vs Type-C overlaps.
+They are not compatible though, because the chip identification works
+differently compared to the 86927/86938
 
-I see that charger DCIN (0x1400) is mostly mirrors (both address and values) the 
-register set of USBIN (0x1300), thus I assume charger accessing these registers 
-is correct.
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+---
+ Documentation/devicetree/bindings/input/awinic,aw86927.yaml | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Type-C driver accesses 0x1300 but mostly different registers (with some 
-exception of initialization and smbx.c 'FIXME: This will be handled by the 
-type-c driver').
-
-So that leads me to the conclusion that smbx should continue to access 0x1300 
-range, while Type-C must access the range. Only things which needs to be moved 
-from smbx to type-c is the type-c initialization.
-
-Do I get it correctly?
-
-Thanks
-David
-
-> 
-> But, then it's up to you and David.
-> 
+diff --git a/Documentation/devicetree/bindings/input/awinic,aw86927.yaml b/Documentation/devicetree/bindings/input/awinic,aw86927.yaml
+index bd74b81488f6..655633527c01 100644
+--- a/Documentation/devicetree/bindings/input/awinic,aw86927.yaml
++++ b/Documentation/devicetree/bindings/input/awinic,aw86927.yaml
+@@ -12,11 +12,9 @@ maintainers:
+ properties:
+   compatible:
+     oneOf:
++      - const: awinic,aw86224
+       - const: awinic,aw86927
+-      - items:
+-          - enum:
+-              - awinic,aw86938
+-          - const: awinic,aw86927
++      - const: awinic,aw86938
+ 
+   reg:
+     maxItems: 1
+-- 
+2.56.0
 
