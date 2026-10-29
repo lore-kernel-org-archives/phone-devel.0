@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.85.9.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793310394;
-	b=icB4v0uAbwBL2wAhXuADTO3+dwyKlqZPXfArkVsWHQTUKOEE2at/rp7LxJ02cANfgTwd
-	 D2AtxjRAgJqPVuKNUYJC0JQsEuV0LwIpbbzpc6D/2/ce3gl7BdxcaMox5YHcSaFiEP7Du
-	 z0Gr7TQva/A1Lb81Orag8iijTNVjO1GsQ+2AT9bi6cBgPbyElrNKkNMbaVCV4viT/6eUr
-	 N2e5hBmJ/70ukeMzIKiS/2bHHtScC2pouzheW9kT47vIvYKF4fvalNDM9RfOtgP0Sg2dX
-	 Ax1ZRt/m7peAxlgZMvKZn0clxl0wSfq9jQbuQbzSrHH4uUcV5fQcszF7qRbMv6FgaQQ==
+	t=1793310395;
+	b=N1XQvBaHOi+kmc65fNrfVTSoBLoFHTs/efuO9+vzv2H6x9CEK+at++jkiCEqiBgzWcfX
+	 ovAiQmGwCKg8cBqReE9kYvdI+hMdGGh6lIZDKcezbJVGR8NB+IW04MMfRGdn/OppvAg9w
+	 u08Sz1FyzTugaEaXgTRJbwv74Wbf2KKXffK0J0W9hv+tlqTPO0ZJfbl921Uq6cP9mhcj4
+	 UNvyROTTUa+tNkQM+PKxLUwf+wFsQOYhRhWCbrbCqD9ITHvXUoXalkNr7a9wEmVPVs1gg
+	 iMVZ+xLNqjc5k6kDeJmwN/lq9lxUOoxEttOySwiuwmYtT7ulRqg0XHLQJY1aoH6r5cA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793310394;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793310395;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mime-Autoconverted;
-	bh=04LMkDhbrL6DP7mew2dKrJK4JmZYGpbNrQFKebWxKY8=;
-	b=Du0G0FOrGQ41Nxl2nweNuuml1IY4IsrehnQitLYi48MhaY8GfBtRlrMRtmEfjXmEU0ed
-	 ztf/PN/Hmq6I0jOhez4RYm1KUpYOX7Ul66kW13hs/FxlgLjztrqOCGLupnwpHSIl9L7Z7
-	 z1qd3raF/ANPymxiVvk6C/HpMaGnB3a6Ow2xoWHHGUObMRkSPbAyDnfvfk8FzKjzTwv61
-	 dQjdCYNGzOPqV1owHU7H5TDM7YCUZ++QYu40kChjxfmRCEzpETCfvTfw+Spje0uTNSlJ/
-	 FA4bvPJzPnrYYvhF7wwYm/eN6GYbHrdYJAM3unoMSb+gQEAjDerjHyUo8xOtBpBttyw==
+	 In-Reply-To:References:Mime-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mime-Autoconverted;
+	bh=R8aPoXyKfMT+bONY62G7lc//xT+eeMGpJAGl+cHyS4o=;
+	b=sSgFWdW66e31r+uiiHXY/nOXnzbCf28QN6M7QQmaccgNZnR5j6t20GNeTJz75jgLp4pa
+	 wHvA90VFLzcjSjkqew4+b01ODEvPxZ5yencS7Zg74dqjM2/mMCdkHuXqNRNCsqyS/M96d
+	 6xtZS5lrmwmq4Yf918kzXX60PxO8/VrgbkGd72cKi5iiEZFT+wP4OXjnp/Zvw+gjL/hj+
+	 pj+GBuF9LJHrKhQjI05DHfK2p2nAogyDzcLsUJLbIKkcsq0pyeRnVClv1gaExdz9LbINJ
+	 IOiYHhcfbs/fSZxp6eMLHVJ3u0SSa8QQkFA0jNqHHdUem9oKsNz4aYE6ag4dUAuM9kQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=irl.hu;
 	spf=pass smtp.mailfrom=irl.hu;
@@ -25,15 +25,15 @@ Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 9BBD8606A31C;
-	Thu, 29 Oct 2026 21:46:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BBD8606A31C
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 06C8A606A32E;
+	Thu, 29 Oct 2026 21:46:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06C8A606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
 Received: from fedori.lan (51b69268.dsl.pool.telekom.hu [::ffff:81.182.146.104])
   (AUTH: PLAIN soyer@irl.hu, SSL: TLS1.3,256bits,ECDHE_RSA_AES_256_GCM_SHA384)
   by irl.hu with ESMTPSA
-  id 0000000000080988.000000006AE3BEB2.00036878; Thu, 29 Oct 2026 22:46:26 +0100
+  id 000000000008098F.000000006AE3BEBA.00036879; Thu, 29 Oct 2026 22:46:26 +0100
 From: Gergo Koteles <soyer@irl.hu>
 To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
   Rob Herring <robh@kernel.org>,
@@ -46,10 +46,12 @@ To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org,
   linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
   phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH v3 0/3] W86224 haptic driver
-Date: Thu, 29 Oct 2026 22:46:07 +0100
-Message-ID: <cover.1793308351.git.soyer@irl.hu>
+Subject: [PATCH v3 1/3] dt-bindings: input: Add compatibility for Awinic AW86224
+Date: Thu, 29 Oct 2026 22:46:08 +0100
+Message-ID: <ceec2d2a29dd6cdfd984b964ad3a91601490a76e.1793308351.git.soyer@irl.hu>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <cover.1793308351.git.soyer@irl.hu>
+References: <cover.1793308351.git.soyer@irl.hu>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -63,36 +65,40 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-Hi,
+Add the AW86224 haptic device to the binding documentation for the
+AW86927 and AW86938, as this binding needs the same properties.
 
-This series enables the haptics of the Motorola Edge 30.
+They are not compatible though, because the chip identification works
+differently compared to the 86927/86938
 
-The first patch adds the binding documentation for the AW86224, which is 
-compatible with the AW86927 haptic driver.
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+---
+Changes in v3:
+ - none
 
-The second one contains the driver. The AW86224 differs from the AW86927 
-in many respects, so writing a new driver seemed the simpler approach.
+Changes in v2:
+ - add only the new element (Krzysztof)
 
-The third one enables it in the sm7325-motorola-dubai-common DTS.
+---
+ Documentation/devicetree/bindings/input/awinic,aw86927.yaml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-I removed Enrico from the v2 recipient list because his email address is
-not working.
-
-Sashiko found a bug in the 3rd patch, which was fixed in v3.
-
-Gergo Koteles (3):
-  dt-bindings: input: Add compatibility for Awinic AW86224
-  Input: aw86224 - add driver for Awinic AW86224
-  arm64: dts: qcom: sm7325-motorola-dubai: Add vibrator support
-
- .../bindings/input/awinic,aw86927.yaml        |   4 +-
- .../qcom/sm7325-motorola-dubai-common.dtsi    |  11 +
- drivers/input/misc/Kconfig                    |  12 +
- drivers/input/misc/Makefile                   |   1 +
- drivers/input/misc/aw86224.c                  | 582 ++++++++++++++++++
- 5 files changed, 609 insertions(+), 1 deletion(-)
- create mode 100644 drivers/input/misc/aw86224.c
-
+diff --git a/Documentation/devicetree/bindings/input/awinic,aw86927.yaml b/Documentation/devicetree/bindings/input/awinic,aw86927.yaml
+index bd74b81488f6..264c4c8f7a65 100644
+--- a/Documentation/devicetree/bindings/input/awinic,aw86927.yaml
++++ b/Documentation/devicetree/bindings/input/awinic,aw86927.yaml
+@@ -12,7 +12,9 @@ maintainers:
+ properties:
+   compatible:
+     oneOf:
+-      - const: awinic,aw86927
++      - enum:
++          - awinic,aw86224
++          - awinic,aw86927
+       - items:
+           - enum:
+               - awinic,aw86938
 -- 
 2.56.0
 
