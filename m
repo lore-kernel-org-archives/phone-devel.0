@@ -1,73 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793348339;
-	b=vWARb85smxwlSnP3RkjeqZ++7SLkxrFlL+eN/q+ggc/L5Q+QUd9W/dq517hcJgwkoAty
-	 Fco2LZ1ykVmZk+FHZY7v1XVEWbFRXotWbaVLuY2/lnxa3nUsiuctec1JxhpZ8FAE4ajUk
-	 5NtqDsPCN6AF3XfmSzEHQ3+F5FXc3ivXEXEPLWonuI7udLYBkmMRR01TnIB+KaV9vXfai
-	 bSfeVBfU6aZIEKv14pUPR6FXi9ud0w0kvDyS1L6O0hFet6WnLeQVFUnqZw7kEbD2DXNCw
-	 P8SD1LTZbe1HxlfqKcIDRxzZR5kmTvzB8VYK1XwuBKbXn5PdIlzV7no6YP5R5JUzZhg==
+	t=1793378271;
+	b=T+Gbs4CAix/jEG4LMN9TbUhNps2UFpds1L7diQoKKRzlTi50QoFIfc0MxYTxtuTb9A43
+	 2I6Ip6apZCvofN/MK6qCklMp+X5BR/Fogdw5+To73RjP7Yh2vxGyKlZw36gZx38brNYIC
+	 mtBfj0TQ8KHuCpZcN8N51MLYeeOi9hD9Ynpxnb2BRgMwEyVAfZM1m+jEFp1oYd4xOY/2o
+	 D7nKyb1bDtakrc6h5QjL1qw/7qtQ90gbTKt0SC8HNFTX4yom04Q1uN0KbLdH5mrfjyqYP
+	 FE9N3BpClm9pBO4AONbJlP3wChRQHNpJLURIEEVUQlgYJp1WtWfIX90Gk9TtZltjs7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793348339;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793378271;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Mb9nK7C88AA0XX7+dkq9DLF84KPAyUNf2hmpuTFCm7A=;
-	b=wTR2UaW2wQQigE1RsMhiREjrW31u3f9Ef0Y/u6urDt+OiDxOhhMtIeSn9M3ilsAilmzo
-	 XWk4GSHL4QYE897dULFiazTydWOZlpGmlSi2EfcPpO9faNStybrabG6fzIt7Zr2KrjWyt
-	 xBEH7aVnmJ72ZF9S5RDctKwb/DxsNEG/t6XVUYVGWraRUFmG/xY6l8bWvgpQp2SkDaA7g
-	 53LjvHu4r3OLgrQ30npwHZACFC5p8tJ6b8yUrSLPw1Q3lwMtEyhKlhqd8HjEMgG2KccFg
-	 52FMXqX1RLL5yiH/Esl8KNb3pZR476S68MB4y/fWBTndueDWAyqQakP2fOJVyM8tnWw==
+	bh=7d1lCXfokWEj2gU8Igqxg+UFuk512owNqo1b4Avmm/M=;
+	b=X5IJYUqQx3d3Heg2IFvpemO9BoR1JGmHE9kUihhHf7A2nxjyQN+SH6UooCUn+nYto3NM
+	 jHy5RO0Zm7l2K3qdjoT4k3sTxE9azfA7+LBriBDMlySzbkGRYBLhZaz0TRPoGQi+ctp94
+	 9PuDJGnkC7CxttNK1ucDIDc6loLflN+cLqJOWBbOGpcAmsKXZjBWrI14symNaNHHHQZuH
+	 NwHOUvjmy5yBpAv6vcLbzQ9xNQnU6S7U8kuIklK38hT9e3g4pYkyfko1hXtw3K+vtaR7c
+	 FMq9MdHwPdhHVDK2rtLg1cdfcK3NexjSK94dFCwuF9csXFta6w/tNXJIFpL37GHyY+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aGi+krf7;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ol18xVxM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888C7606A31A;
-	Fri, 30 Oct 2026 08:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330B5606A31E;
+	Fri, 30 Oct 2026 16:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aGi+krf7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAB71F000C1;
-	Fri, 30 Oct 2026 08:18:57 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ol18xVxM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C383E1F000C1;
+	Fri, 30 Oct 2026 16:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793348339;
-	bh=Mb9nK7C88AA0XX7+dkq9DLF84KPAyUNf2hmpuTFCm7A=;
+	s=k20260515; t=1793378271;
+	bh=7d1lCXfokWEj2gU8Igqxg+UFuk512owNqo1b4Avmm/M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aGi+krf7xcDXjZG+aCrcGgkyMEdP0I3fr312ylcIHL5Et2iKMPq8Fw7kIY64ar+uR
-	 KoIYVG7NZPLH+o7p19hommRYKC4Nz90DVmSr4bGhrvD1k+njk7BD0EIemrLvqkAcl6
-	 dAAKbGpEfLhQF/63qbcJv/CnWcp6jdJcxYnCaI4SFLeDS/x5YEhEXxkDoEeCRgxvD0
-	 cy/G3LljTTFpRAKYc36ayAwb6RKh15aYm8qnKjwC+juFRSnioV2XLb6CUnDtLnVtQB
-	 ZhXHPJdE63+YBhHN6LHdXdnLnK5stfFGsL5S94nkKjGosdRlpyVVTGSkHfj0NDhViZ
-	 KmZQI/iHYHJ9A==
-Date: Fri, 30 Oct 2026 09:18:55 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Muzaffer Kadir <muzafferkadir@mainlining.org>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Rajendra Nayak <quic_rjendra@quicinc.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Jassi Brar <jassisinghbrar@gmail.com>, Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	Brian Masney <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Krishna Manikandan <quic_mkrishn@quicinc.com>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
-	linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	freedreno@lists.freedesktop.org, linux-remoteproc@vger.kernel.org, linux-input@vger.kernel.org
-Subject: Re: [PATCH v7 03/11] dt-bindings: watchdog: qcom-wdt: Document
- MSM8952 watchdog
-Message-ID: <20261030-encouraging-diligent-kudu-dbd1a7@quoll>
-References: <20261030-msm8952-initial-support-v7-0-ad748ace375d@mainlining.org>
- <20261030-msm8952-initial-support-v7-3-ad748ace375d@mainlining.org>
+	b=ol18xVxMdakMmQ5o6hmkFU+jYtBnvdSdUFnrhXqci8M4OykyzE2NMVRH/egBxaTTU
+	 VFE5WBaDBbhH5qQ5rJcdM++3JI2fhZIPpJ2ueerpveoxEqQ71C8PZS0OnLQab4SQOU
+	 Q+G6xuCI2/urWo4OXD+FGMyT3fzL9ojuBwO9Txabrj+d/mJp1XWMhJvMriCR5OT2s/
+	 PZb2gt+i768FF1mO/dqFkWPTmgz5x8QA985kKFojROCBIpFOlqoLKRa39qC6LKjgqd
+	 GN/O3WsHoZvBysPeEeP0zc3UVoaO7qWmwiAev+GfwMThbLmbfw6677Ol9rgJkgPX9J
+	 2VhtlM7bEqeyA==
+Date: Fri, 30 Oct 2026 11:37:48 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Val Packett <val@packett.cool>
+Cc: Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	phone-devel@vger.kernel.org, linux-usb@vger.kernel.org,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: usb: fsa4480: Add an optional audio
+ port/endpoint
+Message-ID: <179337826787.501373.7297897424032125426.robh@kernel.org>
+References: <20261020162101.1527014-1-val@packett.cool>
+ <20261020162101.1527014-2-val@packett.cool>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -77,20 +66,24 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030-msm8952-initial-support-v7-3-ad748ace375d@mainlining.org>
+In-Reply-To: <20261020162101.1527014-2-val@packett.cool>
 
-On Fri, Oct 30, 2026 at 12:02:34AM +0300, Muzaffer Kadir wrote:
-> Document the watchdog found on MSM8952.
+
+On Tue, 20 Oct 2026 13:20:30 -0300, Val Packett wrote:
+> The fsa4480 mux is physically connected not only to a Type-C port
+> controller, but also to an audio codec which has to be notified when
+> an analog audio accessory has been plugged in.
 > 
-> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
+> Describe a second port intended for the codec. Keep it optional to make
+> sure existing device trees do still validate.
+> 
+> Signed-off-by: Val Packett <val@packett.cool>
 > ---
->  Documentation/devicetree/bindings/watchdog/qcom-wdt.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>  .../devicetree/bindings/usb/fcs,fsa4480.yaml  | 94 +++++++++++++------
+>  1 file changed, 66 insertions(+), 28 deletions(-)
+> 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-
-Best regards,
-Krzysztof
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
