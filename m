@@ -1,62 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=35.89.44.33
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793378271;
-	b=T+Gbs4CAix/jEG4LMN9TbUhNps2UFpds1L7diQoKKRzlTi50QoFIfc0MxYTxtuTb9A43
-	 2I6Ip6apZCvofN/MK6qCklMp+X5BR/Fogdw5+To73RjP7Yh2vxGyKlZw36gZx38brNYIC
-	 mtBfj0TQ8KHuCpZcN8N51MLYeeOi9hD9Ynpxnb2BRgMwEyVAfZM1m+jEFp1oYd4xOY/2o
-	 D7nKyb1bDtakrc6h5QjL1qw/7qtQ90gbTKt0SC8HNFTX4yom04Q1uN0KbLdH5mrfjyqYP
-	 FE9N3BpClm9pBO4AONbJlP3wChRQHNpJLURIEEVUQlgYJp1WtWfIX90Gk9TtZltjs7A==
+	t=1793389743;
+	b=3vLcRj9iAtyE9WScRIuRktWzCGmvYfU+rTIIoSyF9Nb3zSPTJakux/BhUC2xjMPCBT6k
+	 SDO/xK/X8xf4av0o5U5lIjglHTeI9XyfwZaCJkYIws9yNgSqUj6aF5E0CW95RUjqmehNW
+	 G0RmHoNZo2c9HwO7PbTbDvF1qdFiN2mLhOC0iCjoCfAvIj3AcJ54gMYdytlYFBzibUZ18
+	 BIq+n7tg4rsvnI2oXgiPlyfEjSqCeR3OJFqhhSugrkbvE2zxi4VNT2eV9cErxH/jaYbUo
+	 F2gsyh4ntrH/OmBsgigaXq7AQFtUTOT4DLqoTuC6wjwFW9FQVA2G+89ODSHeZfQ2Djg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793378271;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=7d1lCXfokWEj2gU8Igqxg+UFuk512owNqo1b4Avmm/M=;
-	b=X5IJYUqQx3d3Heg2IFvpemO9BoR1JGmHE9kUihhHf7A2nxjyQN+SH6UooCUn+nYto3NM
-	 jHy5RO0Zm7l2K3qdjoT4k3sTxE9azfA7+LBriBDMlySzbkGRYBLhZaz0TRPoGQi+ctp94
-	 9PuDJGnkC7CxttNK1ucDIDc6loLflN+cLqJOWBbOGpcAmsKXZjBWrI14symNaNHHHQZuH
-	 NwHOUvjmy5yBpAv6vcLbzQ9xNQnU6S7U8kuIklK38hT9e3g4pYkyfko1hXtw3K+vtaR7c
-	 FMq9MdHwPdhHVDK2rtLg1cdfcK3NexjSK94dFCwuF9csXFta6w/tNXJIFpL37GHyY+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793389743;
+	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:
+	 X-Source-L:X-Exim-ID:X-Source:X-Source-Args:X-Source-Dir:
+	 X-Source-Sender:X-Source-Auth:X-Email-Count:X-Org:X-Source-Cap:
+	 X-Local-Domain:X-CMAE-Envelope;
+	bh=Z8g4xiibKWQuuJs7EMwmXcAQgq7/Z7zwBqVvlgwyNzc=;
+	b=yMOrXOaPdOgrLG/aqqANaayMxFscBi2xvYXI+HRzxmuuoVUCzx8yFU+FVI/Juv8eDWyf
+	 8NZyZLraK+Vb5H+Yv3LlQIMcSiARdqnjK/juO+02W/cTPWhST9IS5N/FfHL1Nu199zeJH
+	 bpb11JfyFCEcYakw6r1YW4pEEVLrFtlYqsyMOCZcGKfib2D8yK7CRmPHXvhntkcPnb/Kt
+	 ZUdWLFcKYKJlmF6bB+77WsTtLJBET7yzlD/7jGfOVqrOTMyq5i5rKga8XeEDnBJZzGbS/
+	 /GLuDXMjqJJQPuaDmt2LEaJi315SCyrcIRMswly+oIXZicE69uAgBMbmx399r4dXUig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ol18xVxM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=roeck-us.net;
+	spf=fail smtp.mailfrom=roeck-us.net;
+	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=yPk7oTaK;
+	arc=none smtp.remote-ip=35.89.44.33
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330B5606A31E;
-	Fri, 30 Oct 2026 16:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E14F606A31C
+	for <phone-devel@vger.kernel.org>; Fri, 30 Oct 2026 19:49:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E14F606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ol18xVxM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C383E1F000C1;
-	Fri, 30 Oct 2026 16:37:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793378271;
-	bh=7d1lCXfokWEj2gU8Igqxg+UFuk512owNqo1b4Avmm/M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ol18xVxMdakMmQ5o6hmkFU+jYtBnvdSdUFnrhXqci8M4OykyzE2NMVRH/egBxaTTU
-	 VFE5WBaDBbhH5qQ5rJcdM++3JI2fhZIPpJ2ueerpveoxEqQ71C8PZS0OnLQab4SQOU
-	 Q+G6xuCI2/urWo4OXD+FGMyT3fzL9ojuBwO9Txabrj+d/mJp1XWMhJvMriCR5OT2s/
-	 PZb2gt+i768FF1mO/dqFkWPTmgz5x8QA985kKFojROCBIpFOlqoLKRa39qC6LKjgqd
-	 GN/O3WsHoZvBysPeEeP0zc3UVoaO7qWmwiAev+GfwMThbLmbfw6677Ol9rgJkgPX9J
-	 2VhtlM7bEqeyA==
-Date: Fri, 30 Oct 2026 11:37:48 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Val Packett <val@packett.cool>
-Cc: Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	dkim=pass (2048-bit key, unprotected) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=yPk7oTaK
+Received: from eig-obgw-6001b.ext.cloudfilter.net ([10.0.30.143])
+	by cmsmtp with ESMTPS
+	id MqZbx61vIaC0UMsazxDOek; Fri, 30 Oct 2026 19:49:01 +0000
+Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
+	by cmsmtp with ESMTPS
+	id Msayxf0EU1xnwMsazxIHgi; Fri, 30 Oct 2026 19:49:01 +0000
+X-Authority-Analysis: v=2.4 cv=OsxPyz/t c=1 sm=1 tr=0 ts=6ae4f4ad
+ a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=M0FbrtG7MMAA:10 a=OuZLqq7tAAAA:8
+ a=EUspDBNiAAAA:8 a=3OfnbWqpRXkE7MXKp-4A:9 a=CjuIK1q_8ugA:10
+ a=AKGiAy9iJ-JzxKVHQNES:22 a=KPbNTLLc3YvdawN95zVk:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
+	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
+	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Z8g4xiibKWQuuJs7EMwmXcAQgq7/Z7zwBqVvlgwyNzc=; b=yPk7oTaK9jPnNUqNMPC6twzpsT
+	nytbZs7aIA1qfH8e9yM5XmhTrSl/cYbIZ9RliN0XK6PH+8fH6iMHI1gCwt/eOdzUc49xyR7pm2jYG
+	R9wLgSVekO9zz7XW1C3SjWJ2jdanQoPmO4H3xTNiPdbDJTuDCzQpc8aBllvgvys8U4au70SjQAcVr
+	9kcENVpW6s4Z+c++LnSDgqh02SbHMxe8Bio+xFCpQVb4Mg/zNG/QunFRcwYu/SoYh8Aehzm3qPknX
+	EZ4s/wFn4ZXU94FbWoY7yOx8zm4QD7ylqGwONkzT2WrVTWpzZjoPkVFtX5kt1BNNAWsdLe/GcdbYI
+	A7exSNtw==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:44054 helo=server.roeck-us.net)
+	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <linux@roeck-us.net>)
+	id 1xMsat-00000003tHT-0RvI;
+	Sat, 31 Oct 2026 01:18:55 +0530
+Date: Fri, 30 Oct 2026 12:48:52 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Muzaffer Kadir <muzafferkadir@mainlining.org>
+Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org, linux-usb@vger.kernel.org,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: usb: fsa4480: Add an optional audio
- port/endpoint
-Message-ID: <179337826787.501373.7297897424032125426.robh@kernel.org>
-References: <20261020162101.1527014-1-val@packett.cool>
- <20261020162101.1527014-2-val@packett.cool>
+	Conor Dooley <conor+dt@kernel.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Krishna Manikandan <quic_mkrishn@quicinc.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-remoteproc@vger.kernel.org, linux-input@vger.kernel.org
+Subject: Re: [PATCH v7 03/11] dt-bindings: watchdog: qcom-wdt: Document
+ MSM8952 watchdog
+Message-ID: <7ba73247-d832-423b-8020-21cc135cd02b@roeck-us.net>
+References: <20261030-msm8952-initial-support-v7-0-ad748ace375d@mainlining.org>
+ <20261030-msm8952-initial-support-v7-3-ad748ace375d@mainlining.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -68,22 +118,37 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261020162101.1527014-2-val@packett.cool>
+In-Reply-To: <20261030-msm8952-initial-support-v7-3-ad748ace375d@mainlining.org>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1xMsat-00000003tHT-0RvI
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (server.roeck-us.net) [108.223.40.66]:44054
+X-Source-Auth: guenter@roeck-us.net
+X-Email-Count: 11
+X-Org: HG=direseller_whb_net_legacy;ORG=directi;
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfPm8fqs+1sWsamGTskY7mWGHN53eQq5FL0pXArwce3eR+737oy7A8fPRJbXeLOkTwxy3QFalYe3yeptL8GscllWVS4lMCFHZaEWAK4AyNJ0ZFBRJUgb3
+ zNH2btkhoIC+TUMSjnFaoJX2RTsej6i6PTaz/l1/nBA9+2/ZKYk8aWDvWzzTR8XAcQuk56C78FBS1cgFh4W3o127dzqexkgb889UvOTnyQgL7g8Iiezou9id
 
-
-On Tue, 20 Oct 2026 13:20:30 -0300, Val Packett wrote:
-> The fsa4480 mux is physically connected not only to a Type-C port
-> controller, but also to an audio codec which has to be notified when
-> an analog audio accessory has been plugged in.
+On Fri, Oct 30, 2026 at 12:02:34AM +0300, Muzaffer Kadir wrote:
+> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
 > 
-> Describe a second port intended for the codec. Keep it optional to make
-> sure existing device trees do still validate.
+> Document the watchdog found on MSM8952.
 > 
-> Signed-off-by: Val Packett <val@packett.cool>
-> ---
->  .../devicetree/bindings/usb/fcs,fsa4480.yaml  | 94 +++++++++++++------
->  1 file changed, 66 insertions(+), 28 deletions(-)
-> 
+> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Applied.
 
+Thanks,
+Guenter
