@@ -1,112 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=24.134.29.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793389743;
-	b=3vLcRj9iAtyE9WScRIuRktWzCGmvYfU+rTIIoSyF9Nb3zSPTJakux/BhUC2xjMPCBT6k
-	 SDO/xK/X8xf4av0o5U5lIjglHTeI9XyfwZaCJkYIws9yNgSqUj6aF5E0CW95RUjqmehNW
-	 G0RmHoNZo2c9HwO7PbTbDvF1qdFiN2mLhOC0iCjoCfAvIj3AcJ54gMYdytlYFBzibUZ18
-	 BIq+n7tg4rsvnI2oXgiPlyfEjSqCeR3OJFqhhSugrkbvE2zxi4VNT2eV9cErxH/jaYbUo
-	 F2gsyh4ntrH/OmBsgigaXq7AQFtUTOT4DLqoTuC6wjwFW9FQVA2G+89ODSHeZfQ2Djg==
+	t=1793395721;
+	b=KpUhVuEampRMe7t1qKIScNtiF8mywOUC8HkNxAZK84NM0eyBZVINAMLHMgrgVr8ZvfvN
+	 FvHyU64Dih+g/zeFGRMiKPD3swVq3xvhO2+7gK4DEOGqGfMxd9gFtV3l81HO9hPcSZXrM
+	 68+BhHh1iE91HmlBPOp0giy2wbCHmqmfkcGFd6ciLGeNbcZ9HrakW09xo79VfbXnukm7L
+	 JQ4aCr2ugnkXgTeATdZSJqIqeqJFkAS1aU8XgNPL/nKAOB1y8bUfVMdruFXReW6S5LqTr
+	 TPC9OeEeSOAhTbi7cdiz7+I+KH1lyZpuRsGMW4+CHKTlXpUU/FMlhY8O5DtnJyNsEqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793389743;
-	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:
-	 X-Source-L:X-Exim-ID:X-Source:X-Source-Args:X-Source-Dir:
-	 X-Source-Sender:X-Source-Auth:X-Email-Count:X-Org:X-Source-Cap:
-	 X-Local-Domain:X-CMAE-Envelope;
-	bh=Z8g4xiibKWQuuJs7EMwmXcAQgq7/Z7zwBqVvlgwyNzc=;
-	b=yMOrXOaPdOgrLG/aqqANaayMxFscBi2xvYXI+HRzxmuuoVUCzx8yFU+FVI/Juv8eDWyf
-	 8NZyZLraK+Vb5H+Yv3LlQIMcSiARdqnjK/juO+02W/cTPWhST9IS5N/FfHL1Nu199zeJH
-	 bpb11JfyFCEcYakw6r1YW4pEEVLrFtlYqsyMOCZcGKfib2D8yK7CRmPHXvhntkcPnb/Kt
-	 ZUdWLFcKYKJlmF6bB+77WsTtLJBET7yzlD/7jGfOVqrOTMyq5i5rKga8XeEDnBJZzGbS/
-	 /GLuDXMjqJJQPuaDmt2LEaJi315SCyrcIRMswly+oIXZicE69uAgBMbmx399r4dXUig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793395721;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=Q2MJeKo5+imuAu/kO4ie1/rEON2AWd/TPuI7iRI57xA=;
+	b=Jdxfdq8aspnQrUeFTbbIFmDcUBJtTk41GHIbx3QBSWa9xVWagbkZBjrwfW9tudD6RcR7
+	 R/5uF/4Lkoe62gr2zANfzRvXI10AiVZjfBK6dE7bgkPRmtWA8Nrc/ggdIdc6+1FEvtYF4
+	 Eqk9+1nco4Lerl5yFd9ZyAbb1kEV9fHklvNi7vT7lQD7CslR8Ida4WPYl1W6RuFcygwR5
+	 a8bhObmuEy9nBjSsmgcT0QctSeDxzrAxTHNDs0slhU/lvDTPLpI2rvYp0XjkU97B/U16F
+	 9UAiRghgDUOcGMe/y+PqgD/TzO6by3Fzlq5rZ3TuoGZavS13/+gtVKNHwWzjIG2YOHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=roeck-us.net;
-	spf=fail smtp.mailfrom=roeck-us.net;
-	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=yPk7oTaK;
-	arc=none smtp.remote-ip=35.89.44.33
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=sigxcpu.org;
+	spf=pass smtp.mailfrom=sigxcpu.org;
+	dkim=pass header.d=sigxcpu.org header.i=@sigxcpu.org header.a=rsa-sha256 header.s=2024 header.b=CK4i0K4j;
+	arc=none smtp.remote-ip=24.134.29.49
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E14F606A31C
-	for <phone-devel@vger.kernel.org>; Fri, 30 Oct 2026 19:49:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E14F606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4290B606A31C;
+	Fri, 30 Oct 2026 21:28:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4290B606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=yPk7oTaK
-Received: from eig-obgw-6001b.ext.cloudfilter.net ([10.0.30.143])
-	by cmsmtp with ESMTPS
-	id MqZbx61vIaC0UMsazxDOek; Fri, 30 Oct 2026 19:49:01 +0000
-Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
-	by cmsmtp with ESMTPS
-	id Msayxf0EU1xnwMsazxIHgi; Fri, 30 Oct 2026 19:49:01 +0000
-X-Authority-Analysis: v=2.4 cv=OsxPyz/t c=1 sm=1 tr=0 ts=6ae4f4ad
- a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
- a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=M0FbrtG7MMAA:10 a=OuZLqq7tAAAA:8
- a=EUspDBNiAAAA:8 a=3OfnbWqpRXkE7MXKp-4A:9 a=CjuIK1q_8ugA:10
- a=AKGiAy9iJ-JzxKVHQNES:22 a=KPbNTLLc3YvdawN95zVk:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Z8g4xiibKWQuuJs7EMwmXcAQgq7/Z7zwBqVvlgwyNzc=; b=yPk7oTaK9jPnNUqNMPC6twzpsT
-	nytbZs7aIA1qfH8e9yM5XmhTrSl/cYbIZ9RliN0XK6PH+8fH6iMHI1gCwt/eOdzUc49xyR7pm2jYG
-	R9wLgSVekO9zz7XW1C3SjWJ2jdanQoPmO4H3xTNiPdbDJTuDCzQpc8aBllvgvys8U4au70SjQAcVr
-	9kcENVpW6s4Z+c++LnSDgqh02SbHMxe8Bio+xFCpQVb4Mg/zNG/QunFRcwYu/SoYh8Aehzm3qPknX
-	EZ4s/wFn4ZXU94FbWoY7yOx8zm4QD7ylqGwONkzT2WrVTWpzZjoPkVFtX5kt1BNNAWsdLe/GcdbYI
-	A7exSNtw==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:44054 helo=server.roeck-us.net)
-	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <linux@roeck-us.net>)
-	id 1xMsat-00000003tHT-0RvI;
-	Sat, 31 Oct 2026 01:18:55 +0530
-Date: Fri, 30 Oct 2026 12:48:52 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Muzaffer Kadir <muzafferkadir@mainlining.org>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Krishna Manikandan <quic_mkrishn@quicinc.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-remoteproc@vger.kernel.org, linux-input@vger.kernel.org
-Subject: Re: [PATCH v7 03/11] dt-bindings: watchdog: qcom-wdt: Document
- MSM8952 watchdog
-Message-ID: <7ba73247-d832-423b-8020-21cc135cd02b@roeck-us.net>
-References: <20261030-msm8952-initial-support-v7-0-ad748ace375d@mainlining.org>
- <20261030-msm8952-initial-support-v7-3-ad748ace375d@mainlining.org>
+	dkim=pass (2048-bit key, unprotected) header.d=sigxcpu.org header.i=@sigxcpu.org header.a=rsa-sha256 header.s=2024 header.b=CK4i0K4j
+Received: from localhost (localhost [127.0.0.1])
+	by honk.sigxcpu.org (Postfix) with ESMTP id 836F9FB03;
+	Fri, 30 Oct 2026 22:28:30 +0100 (CET)
+Received: from honk.sigxcpu.org ([127.0.0.1])
+ by localhost (honk.sigxcpu.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id IRo5TVH5itQ1; Fri, 30 Oct 2026 22:28:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1793395709; bh=+1w+85RD7w4UnRjdm8J4R3VqC+3RczStkHgePle7OxY=;
+	h=From:Date:Subject:To:Cc:From;
+	b=CK4i0K4jhEZWzOf1q465F7ET2FtWqiH6FrawmN2VH4qmhAFrt372/G2gYyLK2lqHX
+	 aXNW1p3MNuB81aN3Yt08HcBkbB5CnxPGl+f++8b0/ZJw863ztoMhpTGOkLtBI9sjoQ
+	 KgDJZ5JPf+svGRTtUlt8Xg6qMH+lEWpDenOb4xuQwcmRJ9S5z5zPitruZbZgtoSdZg
+	 1usakaVuybXJvxD83PkALPq3x8e3rYzh61PCutEs1+/gvs6xAcHbwwqpsXXdkLo02w
+	 VTLnmIWpk7MrUDoig74ax00K50ILoYDuPcf1rrdBDh7N5Ossj7JgmS+ekY0bFx0adK
+	 Ok+ldc0nE3qAw==
+From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Date: Fri, 30 Oct 2026 22:27:38 +0100
+Subject: [PATCH] arm64: dts: sdm670-google-common: set chassis-type
+ property
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -116,39 +62,74 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261030-msm8952-initial-support-v7-3-ad748ace375d@mainlining.org>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1xMsat-00000003tHT-0RvI
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (server.roeck-us.net) [108.223.40.66]:44054
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 11
-X-Org: HG=direseller_whb_net_legacy;ORG=directi;
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPm8fqs+1sWsamGTskY7mWGHN53eQq5FL0pXArwce3eR+737oy7A8fPRJbXeLOkTwxy3QFalYe3yeptL8GscllWVS4lMCFHZaEWAK4AyNJ0ZFBRJUgb3
- zNH2btkhoIC+TUMSjnFaoJX2RTsej6i6PTaz/l1/nBA9+2/ZKYk8aWDvWzzTR8XAcQuk56C78FBS1cgFh4W3o127dzqexkgb889UvOTnyQgL7g8Iiezou9id
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261030-pixel3a-handset-v1-1-0ad9b0d17a76@sigxcpu.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQqDQBAEvyJzzsK6SwTzFfGgO504IkZ2VATx7
+ xnJseiuOkmRBUqv4qSMXVS+s0H5KCgN3fyBEzam4ENV+ujdIgem2DkbWbG6KjwTcx3AAJm1ZLz
+ tcheb9s+69SPSemfoun6suAIKcwAAAA==
+X-Change-ID: 20261030-pixel3a-handset-625cdd92edee
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Arnaud Ferraris <aferraris@debian.org>, 
+ phone-devel@vger.kernel.org, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=909; i=agx@sigxcpu.org;
+ h=from:subject:message-id; bh=AqNdVruHbG38YtXFTnNXKwTljWAhcUZCAfLxnzf90QQ=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
+ UhqQWNzbVlnQnE1UXY4RjkyekQ1TWx5WlB1S2oxTWxyY0tON0VUCkkvb09oeFRLbmdSUG85QnZN
+ OGlKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYXVVTC9BQUt
+ DUkFsdjRaU1N2ekI0eXYrRUFDc01uemRyN250Y1pIc3dHbFNEOUd0Z3FqMlAzU2dSQTI1eDJqbA
+ o1SVE2bGdDcFp0eXQxMG1IbTZ6d0piMURJdWVybUxCeUtOYVFhL1c1M1FWWk1nZnFtNDZtVTUwU
+ XhGQ1dLU2kvCnNOYjk4TlNJRG44Zm9GNTVkNWhmZ0xsam80RFlqQ1I2VlpaOUxEN2lMWnhaY0hC
+ ZzFEZUNJazd0eHpsVmJMeEwKVUlTNWR5VzVZeFpNcjFWUzFWdVcwV1dFLzBJTTR6SVJwUTJIcHB
+ xdU5xRGg4dGNFc1RFNjV2aFhkTTBXOCtRZApQT0Z2RzNXQ2lKczJWeW5vVUNxcHM2UVBxWDdmR1
+ RjWUk1VnhZSjE5b2FxY3RkNWhMdmhQbzFTeDA5MFR0TC9PClNxZS9BTU1HYXdYT3JBT3VIUEk5K
+ 1lLRjFrY0FoRkVsaW9Gd2VpUGtia1daNlEveXcyMTd6WWwwSDdUaFYzdUMKTEF5YWZWUVBpYlNt
+ UkV4NHpiRlVwa3F4WkhYRGd1TEpiM1Z6TmR4ME9lSGdIdFdpV25CTUx1RWlRNVUrRko2YgpjZmF
+ ONXBTZUJmTUcrejJzZ0E0RE4zbmswRjBTUHVubUlOVUtPc0NWTDUyb055bHQyMVR3VWJ2MS95UG
+ E1QURYCnBrTU5pVnNWQStqN3lpekNGY00za3RLcStkMDFWZDlJVUQxQTdhUEhxeUJ2dWpWU1Fza
+ GxDeVc2bDQ5UmNJcDUKeUFZd3hLMVgyb1Vxa21IUFRzNi9PVTlLZmFvNHFRL2pESWR3L0RpdDVN
+ bUhYN3pYQk1ja0FvODdWTDMwZW1vNApDL3lDdGFoMS95SDlOWFY1R1hLRTJFUlduMjRORjZUV1M
+ rejFOZm5abDdRZlQxZ2lQQlNtalhNazZrWlZrUS9ZCmNycU1kZz09Cj1MSmo5Ci0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
+ fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
 
-On Fri, Oct 30, 2026 at 12:02:34AM +0300, Muzaffer Kadir wrote:
-> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
-> 
-> Document the watchdog found on MSM8952.
-> 
-> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Arnaud Ferraris <aferraris@debian.org>
 
-Applied.
+The Pixel 3a/3a XL are mobile phones, we should ensure userspace can be
+aware of that by setting the `chassis-type` property.
 
-Thanks,
-Guenter
+Signed-off-by: Arnaud Ferraris <aferraris@debian.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+---
+ arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+index 4ce9b62abe53f..8f91faf8a9cc5 100644
+--- a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
+@@ -27,6 +27,8 @@
+ /delete-node/ &gpu_mem;
+ 
+ / {
++	chassis-type = "handset";
++
+ 	aliases {
+ 		serial0 = &uart12;
+ 	};
+
+---
+base-commit: abf8c33470f78e2226ee3dcdc69004660020ab47
+change-id: 20261030-pixel3a-handset-625cdd92edee
+
+Best regards,
+--  
+Guido Günther <agx@sigxcpu.org>
+
