@@ -1,78 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793459124;
-	b=k27hN6TrbJjpmO7Gg3wWUUQeVu2kiwo3ZgxCioEqKG+IpKtTmPYP7PZtP+XGkE42VCSu
-	 bludLJL6xWdYUzLO7OzjvpPhHK312c6WBLqMDXeR1J0qa6zs7KrYxUPq5pEnLgjAtOGYB
-	 hQ02Tfn9bfip04yvXO8p/3mXutJ6MSyW2l2h1g11Cf9fXeBgi1IPfVHbJWJhA3QSZeB+V
-	 JAS4QKoJB2axJk3ImfrK6Dyp4FV0fJxBmReCBBEaBTjCOKmjumamkAoYvIE6JK0ZiMjnn
-	 NCErhE6hjzQ9hMuYHFal09ACRH/BSHNHdH94CKRy0EUkkSIH8g8HIGdp5GRAH2vm+ig==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793459124;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=SQqLEFbgZFouwcF6/RQEgTplyebDM/+Zzfi67y+ba60=;
-	b=bqepSpIFqTiu+NvOkX4h3rbqFz6prE7WNORrDvVhSRcmZPFMGyDe0uFQFi7xOJ1LWOdH
-	 BD3fPZqaZ1gQLXMo1mZARzWr/xgNUzR5Y+1mgA+82idx/lYCBffxDvDz7wYHj5jYVIkUR
-	 9pSysVF4TeCeB7a7Lk2yHCqLnn4qW9veRmFdImK2+iXagLweJkm/lumiTUues0ReUlV3s
-	 hUfL8WYttpgdzi6xdS6CuUXKsS7Q4WI4gHXXBI5fwpg5j8vbRivFw1OTeZXcpNUBpNTUh
-	 Kpy7F5kBcbaXwfZObXv6fcHrT++eDzeko79ME2PkxfNpQpNArXKfrxwbF1kh7sIcBmg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="I9/g11TC";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DA4606A33E;
-	Sat, 31 Oct 2026 15:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I9/g11TC
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793459124;
-	b=Gv4JX9jIyXZddcA4dEV8nmsPi0gBfTLau0auSYicvPcPjJHG+awGcl2XtapUlkdBvqpE
-	 pk0VRaqHFW8TqsGi51Vcdx+5wu2lXREZxgoKgg8y03zxZYGfkvjzk5vdrK2NZDIu5tRla
-	 MwKEWzqT0JyEyBujBRWwIymSP2isz34j8ZZQl9BGvXoW3rAuZmH5aE/hJ+GmuNOopYbid
-	 wOkvfZNeZV+4pmg3baB6aEe2kUrKSrIrEb0Oc93XcUK/h0QdKG1TlXWKc29MNizxYg9Kq
-	 OBfhLPvHtd6+9wOxURABbCzoLpLdv30HJVS6Jc2czyPkdGdI91uHBKpiDpTgTcoHahA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793459124;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=SQqLEFbgZFouwcF6/RQEgTplyebDM/+Zzfi67y+ba60=;
-	b=LRO/srd6UTQe8ZNaf+EHwxK/oT87g/dn7poyeBeYHGCxuOfUedLq6M04qg8SAXPLpH3o
-	 Q5oU1DY43XOFh3szJ98uXqtGcVNiFspv6RWubO8oRER+InhuhpRv+BeTufkNcW9n2Br7G
-	 UVpeHQCxXmhHS94xpIpr99jDI1JYVSgXDP5WQXSmGxCOLTsRQZgA58MbeU5ivRFuB3uZk
-	 BPSWhuVLUQ6kJzc0B8DaxS8fF80YUHuQSbOdMHDaTqh2lv/tsq32YVU/B8F+aUlfI8UAy
-	 tuUzbWbsuQiFfJiiQgEM0arHmTjmZxRy0ONOn3Gl1Pd7xjs9hm1HCmDGCvIMREapBJg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793469070;
+	b=4PBPpEYcIqEOE5UFGPUrvGvzWw8QsPt3D/z+6UZu7UjG1tpO3RoVCj2rGTuTAGDDOp8s
+	 D9ed39LOyXqR4uKPv4ec/Xc+rylnyMGRGvQ3gJx2l+QP2AxRaU3UV2R5b+SZaQ+P+I7Y9
+	 sxVvHI8CLaj41jTO/2pHRk2wnKHA4RzJjh+p2KgcWAwdhUQcEnL8fQY3jpUmT3UTuV2kD
+	 OPWdpDGD2+2YzvPlgPw0+AYLyBq349qGC2fhlxkH8cLqXKXFxuRc2eV5eq38VSC3IOf6x
+	 8RQc9/ZiZkSk7RaVYg0cT+ctvfcCaJKNf/B6niEt9VDONbr4nDTp4z85Us1z2jri4xw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793469070;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=IQoWXAKk9lqD1Qmoebed09zFK+xDXdwlybu0gIZTbec=;
+	b=ihW4Yi2PQ98m2I9FQct5GkshNVv0MrGFNfuS2NU7bybEXlS/+JHwefwR5NbIjZjauIt3
+	 i8wGEG28EtDQLxhK/67r664NFjJClWsXLY+jQ5cjckDOCfYcG9QOTysSCbdvJg3M3CnC0
+	 WEwpgFlGq+SQRNlYEaEVuLGtLBOvsUfvc3LWvX4Dfkzda1Dq60fx6LgjSi4fcbyYa6Tb4
+	 4vs3e17lQOrKjw+svir/y76cp1EJwnVMhwRyK7plzeoolnr01mr7tIq87W8UMXDlx+y+0
+	 JII0FwvjPaU/9vndjLIENEeJvVjyWuamStpKKqsosabEZaUuMdCkw+5ixaLUrc+T+sA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=ixit.cz;
+	spf=pass smtp.mailfrom=ixit.cz;
+	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=qWkuBQNY;
+	arc=none smtp.remote-ip=84.42.129.46
+Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 27DD11F0093A;
-	Sat, 31 Oct 2026 15:05:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793459124;
-	bh=SQqLEFbgZFouwcF6/RQEgTplyebDM/+Zzfi67y+ba60=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=I9/g11TC2DTE76Co2puP9pIhfItvQm+c4YG4R114IO++V6s5b2TyDOLYZHwqIaCFR
-	 u/0BK3TBDRHuKE8vrRDKjC7MmEnCnmYWENPf28a5HPVREEumxurmPg0VifH9gPG+7S
-	 wiXwdjjWNpOl0/zimi1aKFMKMlgPVBnDyjrZkZkyAroCPc2Agp7Jsht88e1Emui+wA
-	 Q+R22ntqrgfDQZH5S4x89b3yGLVucFftS8xsY2rAjvHzJAvQj0/RpMqe7IaQ9y1JiD
-	 jop4iwukoaav8JDbAcpsxR7gqIiZLdxSUb+Rx/Q07kJPTPmyYJ7iIk/NmxvzuciIjB
-	 qya4ExXrB/UnA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 9255C45F17;
-	Sat, 31 Oct 2026 15:05:21 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sat, 31 Oct 2026 16:05:03 +0100
-Subject: [PATCH 06/11] arm64: dts: qcom: sdm845-google: Enable vbus support
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE66E606A31D;
+	Sat, 31 Oct 2026 17:51:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE66E606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=qWkuBQNY
+Received: from [IPV6:2a03:a780:1ab:100::816] (unknown [IPv6:2a03:a780:1ab:100::816])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 74C4D534039C;
+	Sat, 31 Oct 2026 18:51:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1793469061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=IQoWXAKk9lqD1Qmoebed09zFK+xDXdwlybu0gIZTbec=;
+	b=qWkuBQNYm8KcojK3IiyoBl4GkijX36G3HPKFqaSBDfY8IL38/4dS79wFvr6ExE7xDWTZfK
+	XXp1nB9qy1/MIdhVfhGN+0B88c6pWFN2tphkWN0aPTwTgGFIRSZ0hDRSufs331CdLTnCGf
+	4uRwZ35twK+UBJSolp+gANQpyEANNWQ=
+Message-ID: <85282bf5-6d08-4d4f-b4b8-c80bb4bb2317@ixit.cz>
+Date: Sat, 31 Oct 2026 18:51:00 +0100
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -82,87 +60,77 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261031-pmi8998-vbus-v1-6-4d805e5a0f27@ixit.cz>
-References: <20261031-pmi8998-vbus-v1-0-4d805e5a0f27@ixit.cz>
-In-Reply-To: <20261031-pmi8998-vbus-v1-0-4d805e5a0f27@ixit.cz>
-To: Alexey Minnekhanov <alexeymin@minlexx.ru>, 
- Robin Snyders <robin@snyders.xyz>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Wesley Cheng <quic_wcheng@quicinc.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Casey Connolly <casey.connolly@linaro.org>, 
- Sebastian Reichel <sre@kernel.org>
-Cc: Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- Sebastian Reichel <sebastian.reichel@collabora.com>, 
- linux-pm@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=892; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=7CBgv18ArIrBQNH4lCvE3E/2X60T84ZTgUfqUmKu+ko=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq5gOvv5xQ1k7s4cFeL5ZqPIxziSgGitRTmeU24
- 5sg/WzYggKJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCauYDrwAKCRBgAj/E00kg
- chb0EACUTL7lE5X5Q7FTtXZFrl+epB3s3olPUiP/HWtks0Vblmg6JoQFCCtnneEeqBLOf52z/TR
- aC+em7aBcpWRM0Np4h2HPJiqdG8NiLibkGhJ6ldEFRSFJcit/eCi66iguTn1pUgU/itbEKpv7em
- LKSXLktslC23r6txip2w6WgIVxqyeirFnt2I0iTQ5myuRZmI8RgK3c+d6jW9Clfuti9KLlhQyRs
- zS8WRKqfXoL3cFfUfK9lXFlDX/Sy/m2VtypSr4ug8vpgS0LdeXBUhyfqyPIFeMpj0AoImUAMZSj
- dHn3+SuU4wZ83kBacXf5a0sQftZdfD83LtyNDQfAxRWsra4C0UuIz+NTnRR0D/OKdY2dBMSsiFQ
- cc3Pi3Mm7RoUnkqZy8GXNyF8L37WrhznOf24q28IrVcsyFujJufmFF7+nEuCp7DxcW2tHK/YkZu
- SZ5s9NvKidYhE0gZZlKoaRrOs+vdnQNgXblXFsFQjU/07FciKH04D63QF1ORVSUWXGAklFmlVcd
- NvVj19MYaidU3J64Jl9m2EvpQJAsasPrqNOweGxp0x1NMLjeuVFCqBEnCnDsO4RJ7MLUsZX0mhu
- AR9ChUa9lSM1IOBNShuZHij4+dh+cq9wMaUARcPrw6CeK8370KwAovHggTLRqSF7o5Y7L35fKw4
- 2o6eVEFG83vQnnQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-Content-Transfer-Encoding: 7bit
-
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: sdm670-google-common: set chassis-type
+ property
+To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Arnaud Ferraris <aferraris@debian.org>,
+ phone-devel@vger.kernel.org
+References: <20261030-pixel3a-handset-v1-1-0ad9b0d17a76@sigxcpu.org>
+Content-Language: en-US, cs-CZ
 From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20261030-pixel3a-handset-v1-1-0ad9b0d17a76@sigxcpu.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On this device, vbus was setup and switched off by the charger driver.
-Enable proper driver.
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-index f1379857e2742..1cffe3c7cf76a 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-@@ -451,16 +451,23 @@ &pm8998_resin {
- };
- 
- &pmi8998_charger {
- 	monitored-battery = <&battery>;
- 
- 	status = "okay";
- };
- 
-+&pmi8998_vbus {
-+	regulator-min-microamp = <500000>;
-+	regulator-max-microamp = <1500000>;
-+
-+	status = "okay";
-+};
-+
- &qupv3_id_0 {
- 	status = "okay";
- };
- 
- &qupv3_id_1 {
- 	status = "okay";
- };
- 
-
--- 
-2.55.0
-
-
+On 30/10/2026 22:27, Guido GÃ¼nther wrote:
+> From: Arnaud Ferraris <aferraris@debian.org>
+> 
+> The Pixel 3a/3a XL are mobile phones, we should ensure userspace can be
+> aware of that by setting the `chassis-type` property.
+> 
+> Signed-off-by: Arnaud Ferraris <aferraris@debian.org>
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> ---
+>   arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+Reviewed-by: David Heidelberg <david@ixit.cz
