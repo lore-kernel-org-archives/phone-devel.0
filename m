@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793459124;
-	b=sZbVibkoNvXFvy+D2a7vnEts4I/f8wtz+20j45NdX/rvIv+nqSYJ54Oxt6HbrX8/OKSu
-	 Ugv0ZgU5XVAPwWEU68xQHFYVG8uPHueUTWCuoE5NWhcpLxla8L3ITDvsU5XfVlfCpL8wy
-	 +aN2qGF3Sij+lJXLDCxsLGf8SB7yvxc8Pm1/U/4NM3hzv/5DISkziUOyYXY7ffZzy0vPq
-	 s642aAz/nhAW/Edfgo/jvJQhsqp5gV56knCHTNPFWNMpNQrB+9E4cRI0ql8YJ3RI8C5Jm
-	 ZnKc5ClSll6fsyc/GP2e0Fh8hQy24JmPqEVivxoVc9oDZBA0Y5tycbjy6pa8mE+4hqw==
+	t=1793459125;
+	b=mMHoKQLV8SqFP4q8YGIGFIM7QgzQGt0SOvlufB+0YvBLRjuVh8EKi8NQnASMTlY11Pcq
+	 lLMXs7xvUacrz72Ey4/Lt/UueiimTGnlivAKXI3i1bDqKy72t22r2MiPZJxDzwf9DZRxG
+	 uFsJuBKsljnt/H0k+c8C1e6iVNNGaZ2kbIzSmsjLkk/CqZipO9M9kxu/SN1MLEWIqkWGQ
+	 22IXdjERg0reIjoLgZbcuhfu9azq1tvth9+OalyqN1RM0Mg571KTpPBCCkEQ+J0OQet05
+	 +9F//gJVaqh6gtgKGjPjCifhKgSZ5iWwMXOR4Qsho1QiJ7QXpgOMfWPZNaJLu7QMjYw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793459124;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=9C4ZjeGlLcuAui4y7jh5NYMKLKYFHpEacS1pEe8tg1I=;
-	b=GSDW5MYl6iLV/CIKvfvFx0pYkQmQJVX8edJLvS2EN35VlQM6m9a0xibO8rShvorC2h7B
-	 ceQM+Q4dl/SCG6B0u8Tcs8YDjS6kvnTSKUA+qZ8fPYSgS0sh+e4NrRHgPQkstW4iDyqGu
-	 1cdrwZTDEJ76gbydUuNG046o0HYhyjyJM9j5+AOraOIAITmT0lLpupvS4TFZhMi/nr9l+
-	 dyJlmY2wTc4zGQbIq2CiuAaERZ89u9AOkr0IkbT79i0LPNbYvXyGB9/8TJte7ksVQTZiZ
-	 DnPO/Spmr8C4ZjSLr3nBa6FRr6G8n+BcrJlzbAZEoi89LR764Fzm3fd7eb2TIDklw+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793459125;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=k+6zsmvtRENf7Mri4E14HPcjVt27QJWZ3dorS/q0bNA=;
+	b=r7ArHwENT5C43kATs2mXDMds4yWOJwwh75Zgnu0kKsKK0jQtpHJhEC7PH8cYG0bvUpvO
+	 eBZ0j4B0U5+U+mJgRYlYw4fbyvGrLJ8qk/4THiIUd9NXqoyn0hqs15j0KZXF8BOFHdl3U
+	 XFBkmaUi1lzR7cUUPQV09AhaelVleewRgg6bN/EeTfvc1q+meGjhcGpHI+LEtP1J5VCHu
+	 FhmCueGM5m6O9ksRC08IvaHhARP3LUiJMhDLG6bJei/ia89pinhd1qIjd3jf/K5/4EFw6
+	 wXIMxEtEPp7iwpl6Nm3rYgUOZesU16xLJ5ab13vbrlh1jK/N07hsIe/ozt0YQ5ITPFA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W0XmjDZS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fWNr2tTn;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABD8606A325;
-	Sat, 31 Oct 2026 15:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F2E60A2610;
+	Sat, 31 Oct 2026 15:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W0XmjDZS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fWNr2tTn
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793459123;
-	b=mmZjST9fFrmMYN57KcIQ3Rl/p6mcwJPl2WrVGAZ7YTOALV6j+cG/ydQTjnwSi781Ul/r
-	 GtHnSza1PcjxE38VBcfzgQn42lqO2pOmTS12+W75mRLU+C4X+oc1Ac1Huh3+nUi8I0D3B
-	 FbTu0DNgSRDWGH/TeUH+rOXDwpfjYHtfoW76TUu4CPi2X5oc2TDLIzAWjNQ1MHhlxDQv+
-	 0Nh5VN4C3lst5VZFg66o9d5Snntr5A8J2EyeVxiq4JviAlO5BcyAfo61HCBxUx4Ls8FQ2
-	 mXNxn/J4dQ19vwMfG25ZJ5VawunkIMfr7cf74wmw/ezER/XgdQclJHazW6Y4VP8wjNQ==
+	t=1793459124;
+	b=mAj51xzXFga6PaYVJt/0aWeB+t/jQnmm7hWz3I/BUJ7EkO7rnWqqQ1FTwj6GvMuBJIfV
+	 b/t7gdlvWmM5uagyOIBb8n15Ppb3lgANY0H9lMs/pGkPTbgv3yHzsXI0ZX18opiDaRKdu
+	 H4MA7B9rQDHfJG/L0oP5AyoPoKrF1q2fr46Uwc2e5V+FC5P6bp85wz+a64pWUxpBLTucC
+	 mVd8toCW3lyQy2jzYEGvHm9bHxcfDzneOD5LdqA2IIKQ0t0rCe4w30tKVpyS/R3G2eBKv
+	 70vvP7MgQWq42uBdWo/cCiyOMX/1mWRUZPtLJdnRd+NA2bbOGrIJ+ay4yGh57/YIVTw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793459123;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=9C4ZjeGlLcuAui4y7jh5NYMKLKYFHpEacS1pEe8tg1I=;
-	b=mZqsHxNAWXwwOHvH4PVyxsoi2QFcGivtAuggwt4RA3NYPzcngRDEHYpxXwSWCTNqbQVZ
-	 HqbIDIDARb4eqfSKXeeidTjCzUdGA1t/gexqQlGh9GE3Z3n+briyOs14t9FKZ6iLwCCIy
-	 24nOe+6KzEImJeXZlAPhxDptoAQRYia6nVqp821PGfQG2UJgK7/XoXCWGNeuWAAJL+/Tx
-	 5sRI4hxDOPJwkqUUMmodmbbkX7rsiqqosCPg087HOrRqPHJeVdXLdoRKdW62j3q2bBRQz
-	 xeLlIzaoE2eblTMY0SUJx2dboMXzJ5iz0CU/MfRjCxJtvG86zabvmgb8CJTVR9G2WfA==
+	c=relaxed/relaxed; t=1793459124;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=k+6zsmvtRENf7Mri4E14HPcjVt27QJWZ3dorS/q0bNA=;
+	b=mMlaBj/RoJSmL/VTtxzRlFbABXkCRK2cjdoBRNbOtEuCbh5HkPpnjfPOY24nnQ4uigAk
+	 xTfKb3vj1OH8+guw6kH82E0futo6d5+sljHqCo0hBCj+0HjBwNBYBuT4t7MXvAIrO9aIR
+	 iA5qXjQChkngRphCukqDuAeBMvq+vHPtUzXBy8etP+FwTzRKxWYzPTT+F1nn8MfbBJHG8
+	 57OPL8PNoHVNnnn4vwbxNYQTBPgM/olG6Jxi1AOxtP4DKS66MDTLwV+JAyrZoawZjFBtW
+	 hVlgAnHgvYIcGpIS46nH+0nPTPJoFbywGhxHhX2DgrGCQt48tV3zY3cOXyGP9Mrj1Qg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id E85031F00919;
-	Sat, 31 Oct 2026 15:05:21 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id CB86F1F00A21;
+	Sat, 31 Oct 2026 15:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793459123;
-	bh=9C4ZjeGlLcuAui4y7jh5NYMKLKYFHpEacS1pEe8tg1I=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=W0XmjDZSjIxtxJKHIaVPoncPmnDGGEjwfp43gM6yElzclpa9Hm5EbEOcZhpe5TiYx
-	 gEpRAM/D2jGH5MuiZCOn85u5l9AIMOtxcN2f+7LY+C6ooSJNjlRh6Wgwdp4s0EBRB+
-	 sqCkfR5pdLHhCXNg2ICN1BWr40eNjm2iO2uauHffVVMuuOLxRJg21twNCjBv2KYe8j
-	 qy7lG2ZmnazqlQLKV3LH9fOnokrM0KFJyoZpCKZ4Hv5XmGkEdUEKX3G1vzOBOZch1P
-	 NUMOJmQ0lamPWvZEMjet9slrlC2cRv/AyFZIzQ3fq8LpC7xROZWMS9joMEaR9lIs0L
-	 QIByZIJKehArQ==
+	s=k20260515; t=1793459124;
+	bh=k+6zsmvtRENf7Mri4E14HPcjVt27QJWZ3dorS/q0bNA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=fWNr2tTntygH7YJVmmnF2RaMVThfsEC/vl9BGAEA5Byuv+SHNXd78RET2mWdWIs0X
+	 wANupC4n2mJpVdukaPCpVEqDYt9lJkHoUlBGmVYwg3YmcgxWZjJvqTCcydD/AFFJHV
+	 aLEGI5c9e8X9j7eIEvWRmgxeCqFma/S6pyb867RspuUYs5AL9m5P8kRIWvasN5y5Aj
+	 hUAAZn8kkJdOxpc8OAtv0G329Fj1JZ2/YxuO3hLwZ1JIUG+5VaWi1cy3qGK7albr55
+	 6MP6OJ0g5Do4XKvj7NQbDhUCgA+yn666clFo+QoJ1uW/VOvz5yotS0o8tpGVpOG76m
+	 i0cddprCZNtrA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 44CE045F03;
+	by lkml.kernel.org (Postfix) with ESMTP id AB4A945F1F;
 	Sat, 31 Oct 2026 15:05:21 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH 00/11] Enable Qualcomm VBUS block on PMI8998 and PM660
-Date: Sat, 31 Oct 2026 16:04:57 +0100
-Message-Id: <20261031-pmi8998-vbus-v1-0-4d805e5a0f27@ixit.cz>
+Date: Sat, 31 Oct 2026 16:05:05 +0100
+Subject: [PATCH 08/11] arm64: dts: qcom: sdm845-shift-axolotl: Enable vbus
+ support
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,11 +84,9 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDAyNz3YLcTAtLSwvdsqTSYl0jI3MLY/NEk5S0RAMloJaCotS0zAqwcdG
- xEH5xaVJWanIJyAyl2loAC6LVK3AAAAA=
-X-Change-ID: 20261027-pmi8998-vbus-227837a4dfa0
+Message-Id: <20261031-pmi8998-vbus-v1-8-4d805e5a0f27@ixit.cz>
+References: <20261031-pmi8998-vbus-v1-0-4d805e5a0f27@ixit.cz>
+In-Reply-To: <20261031-pmi8998-vbus-v1-0-4d805e5a0f27@ixit.cz>
 To: Alexey Minnekhanov <alexeymin@minlexx.ru>, 
  Robin Snyders <robin@snyders.xyz>, Liam Girdwood <lgirdwood@gmail.com>, 
  Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -104,79 +102,68 @@ Cc: Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org,
  linux-pm@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2484; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1003; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=QQTUMzJbcnskHluf3ZL3QNJlfDwcPnf44W0frCsxGxM=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq5gOuRG6OIDtxI8rAcGvhRdIxcCWngaL+/WZFI
- CdLu+FYCNuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCauYDrgAKCRBgAj/E00kg
- crk9D/90HtW5E6+cyVh6rw4Iek3eaVQP76zsks5ArdVIuVL3D6DB6lLWVkCG8d1gr0V2iKCphOq
- RfI8MH4K0Fv+cWgWQU/lhd5LqOLZy7N5Od+p+U2jHVA9Hj3cQ8XuxXsNNX9G5MImU9vcsSMkd1F
- ELM36G2WmADaj8+wbq/gJuTd3rU4IuPcqhw9zdT302Otu+Wz2T/RU1xGfCExnYevLCvmwm6HaJ2
- ZUsBz2743Xrf0/V6VNE2rizwHx0SxBOXgjK7IQbPxIMpFiPpJcQs1eVgkboMLms5UOYEv8+1S6p
- izULFYgLKdOMA+3+0KqLEqDFNWED9ZxNArKoJSccse/XMzTC4hNLciJXo6kCVFlOLQC2BN4UMTr
- uzYDNvz1D8w5PA9vJ7SbS0ywg45ME4jydPx1k5HBW3TxxnXjavNUYIzOYU9BNoauuuk5rb8pben
- C5u6CLFyoFOECUoqr7J1r7NWpaYghd556nZytkPhbMs1cx+SufIPbghTcRSIgR2GfwrnPB4B/qv
- a8pwy7de+4HvF/O00XD14M4u0UB5O85Yeki2XfNSwbTWjvJZL+WKkuabs3t5IMg1bRGfR7aakn8
- rg/H5wQJzJ1VIi9tVDNwZrkavd8c8cjtS4wfB6h8dXn1DFyF93TkSHrNcZfuciWpNUsmoH+VPvU
- gNloHtrPXsb7DRw==
+ bh=VGlvhzohfkCXo1xrxHnzPQfZCT11uvlRraEHS3HXGX8=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq5gOw+Qmkgmz0PHHPS9JPGISet/lf4b1azhgkm
+ QrX0PCfidqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCauYDsAAKCRBgAj/E00kg
+ cpwED/9nRiTgNmILcJASqhq+aaUj6Vfii4ZSQ0MJlW1/fTweMIee6vNAV51NrpYcrfHRkmpK46B
+ smg0rtNPpOb86pkthZ+A3MPCXQAdlr6j3HhhKtQe7BxMzInp53qDpWBhwHPqpaZMo0jQM1zUtuI
+ PYWjfU8KOI+/UKTef+Yq7A8cmNqBdWEDWfqoTxHDYu594rt69n6XRF+Ls+qVCW8GNvHOIDE19eI
+ 0dQRDsM5eUbs+F2UbKOLpPUi1dLb/h46fip7SID/2JmurfbO9woKrT8LMyour+W8k1/neup6qDm
+ HmiNa+pKnM9dw3N+OrZekID7WjCW7Yi/kQyEXwywccCwx9Ow1m0FtXKrwrUIZjA6X8Aiw4z6/f+
+ KxqM6s06RtAu9WgxV59C/mcFloiKJJYz/DwsGRm8Fj9naGA4ndazsM0dT9mEBEaW2u9+6lrxDIU
+ k1agmTFJMhftbj1JCTvKSRrTvBFtdOcgXrt0rdt+ypDWhJ+9XdSpjuY34G437M/Q2DChp1PGx64
+ gmdlPslCtA13tgmK/Os5l7on2MWt6bos61p7OiT1YwFomsdZL6aWTZfse2LGaVi7icoutK8vhQB
+ J+CuvJ/QiKkPu6IR/kCOqcdWHtaMLgeSazaRXyl0x6OspQ9uKBNj4zNoYeqeQLoqfhCs+xyVHAY
+ EdQuJxWBBabhKxg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
+Content-Transfer-Encoding: 7bit
 
-Includes basic vbus regulator support for:
- - SHIFT 6MQ
- - Pixel 3 / 3a / 3 XL / 3a XL
- - OnePlus 6 / 6T
- - Xiaomi Poco F1
- - LG G7 / V40
+From: David Heidelberg <david@ixit.cz>
 
-All devices downstream sources using default range 0.5 - 1.5 A.
-
-Validated by looking for `qcom,otg-cl-ua` and default values when
-property is not set in the driver.
-
-This series shouldn't change existing behaviour (except register write
-execution order). Without Type-C driver this merely replace the write of
-the SMB charger to manually control the OTG block.
-
-As a follow-up with the latest upstreamed Type-C driver, this change
-will allow setting USB OTG, thus power devices connected to the phone.
+On this device, vbus was setup and switched off by the charger driver.
+Enable proper driver.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-David Heidelberg (11):
-      regulator: qcom_usb_vbus: Fix the MODULE_LICENSE() string
-      power: supply: qcom_smbx: Do not interfere with vbus driver
-      dt-bindings: regulator: qcom,usb-vbus-regulator: Add pmi8998 and pm660
-      arm64: dts: qcom: pmi8998: Add node for PMIC VBUS booster
-      arm64: dts: qcom: pm660: Add node for PMIC VBUS booster
-      arm64: dts: qcom: sdm845-google: Enable vbus support
-      arm64: dts: qcom: sdm845-oneplus: Enable vbus support
-      arm64: dts: qcom: sdm845-shift-axolotl: Enable vbus support
-      arm64: dts: qcom: sdm845-lg: Enable vbus support
-      arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable vbus support
-      arm64: dts: qcom: sdm670-google: Enable vbus support
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- .../bindings/regulator/qcom,usb-vbus-regulator.yaml        |  2 ++
- arch/arm64/boot/dts/qcom/pm660.dtsi                        |  7 +++++++
- arch/arm64/boot/dts/qcom/pmi8998.dtsi                      |  7 +++++++
- arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi         |  7 +++++++
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi         |  7 +++++++
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi             |  7 +++++++
- arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi        |  7 +++++++
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts          |  7 +++++++
- .../boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi      |  8 +++++++-
- drivers/power/supply/qcom_smbx.c                           | 14 --------------
- drivers/regulator/qcom_usb_vbus-regulator.c                |  2 +-
- 11 files changed, 59 insertions(+), 16 deletions(-)
----
-base-commit: 151a134a4e6ec66f69db8750c66006f5207f7a9d
-change-id: 20261027-pmi8998-vbus-227837a4dfa0
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+index 1b0eaeafbd517..124717214edd6 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+@@ -654,16 +654,23 @@ led-1 {
+ 		color = <LED_COLOR_ID_YELLOW>;
+ 		led-sources = <2>;
+ 		led-max-microamp = <100000>;
+ 		flash-max-microamp = <1100000>;
+ 		flash-max-timeout-us = <1280000>;
+ 	};
+ };
+ 
++&pmi8998_vbus {
++	regulator-min-microamp = <500000>;
++	regulator-max-microamp = <1500000>;
++
++	status = "okay";
++};
++
+ &qup_uart9_rx {
+ 	drive-strength = <2>;
+ 	bias-pull-up;
+ };
+ 
+ &qup_uart9_tx {
+ 	drive-strength = <2>;
+ 	bias-disable;
 
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
+-- 
+2.55.0
 
 
