@@ -1,58 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=24.134.29.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793395721;
-	b=KpUhVuEampRMe7t1qKIScNtiF8mywOUC8HkNxAZK84NM0eyBZVINAMLHMgrgVr8ZvfvN
-	 FvHyU64Dih+g/zeFGRMiKPD3swVq3xvhO2+7gK4DEOGqGfMxd9gFtV3l81HO9hPcSZXrM
-	 68+BhHh1iE91HmlBPOp0giy2wbCHmqmfkcGFd6ciLGeNbcZ9HrakW09xo79VfbXnukm7L
-	 JQ4aCr2ugnkXgTeATdZSJqIqeqJFkAS1aU8XgNPL/nKAOB1y8bUfVMdruFXReW6S5LqTr
-	 TPC9OeEeSOAhTbi7cdiz7+I+KH1lyZpuRsGMW4+CHKTlXpUU/FMlhY8O5DtnJyNsEqg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793395721;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=Q2MJeKo5+imuAu/kO4ie1/rEON2AWd/TPuI7iRI57xA=;
-	b=Jdxfdq8aspnQrUeFTbbIFmDcUBJtTk41GHIbx3QBSWa9xVWagbkZBjrwfW9tudD6RcR7
-	 R/5uF/4Lkoe62gr2zANfzRvXI10AiVZjfBK6dE7bgkPRmtWA8Nrc/ggdIdc6+1FEvtYF4
-	 Eqk9+1nco4Lerl5yFd9ZyAbb1kEV9fHklvNi7vT7lQD7CslR8Ida4WPYl1W6RuFcygwR5
-	 a8bhObmuEy9nBjSsmgcT0QctSeDxzrAxTHNDs0slhU/lvDTPLpI2rvYp0XjkU97B/U16F
-	 9UAiRghgDUOcGMe/y+PqgD/TzO6by3Fzlq5rZ3TuoGZavS13/+gtVKNHwWzjIG2YOHw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sigxcpu.org;
-	spf=pass smtp.mailfrom=sigxcpu.org;
-	dkim=pass header.d=sigxcpu.org header.i=@sigxcpu.org header.a=rsa-sha256 header.s=2024 header.b=CK4i0K4j;
-	arc=none smtp.remote-ip=24.134.29.49
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793459123;
+	b=dP9SUdUoqdUaWgHGfvSDFUG3JXx8MQVFjYcgCNc0WTEcqQCZbtkM10pVwmU10Wn+ufVk
+	 V3BcljRlKZuyccZkx8skI9ewMrwiel1g1HD4UNklFCS4JcPf/2eddYuN43Z6OGJJ5Sixz
+	 3ZGk6AgrJjKFpHZlUXwEqRfA9vFdSGbNFA5j/A/GJGcSHkkgyJXHBX7G05xlRznstzuvJ
+	 8/Fd7mIrAA5IGPRJ5Dblhm8GUieJDHPvoaRCCj2L34FWmcUAZ8h+ONtSSC0nVaMXMQchN
+	 0/ikWFr6XMZFIlpFbE8H6f4H9daihTt3VcOaAY3R2kBNs7wFVCKGYoXLG2ZX+GKFWbQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793459123;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=PCD/gBhQWHOD85GSHzF1y0CMZKDBwCfPG8eOkm8c4Go=;
+	b=ydR60MkIGytbBTsDBe095Hmc/Bv33PTY76Z6rHOgga78t2kTQCX5ioW4UAVj3ZOg/k/t
+	 JBhmkXKYjOkMzH/8GF99z9T4Reho3yvijcWsAzHN0qyuBcfrkBTS+vg0U1mmCrb6jfScE
+	 8K6xTRb/GwHYEhBVQyu9TQJ7rTyBzAA/rX6zcTGTZlU8wooEe9ihTPtpEcGmT16L2Fdhi
+	 kt6kffWg5SGI3/qjllcZqr0X1h9MdY5d24yIXfSDl1yw5bKp/792x4mGcQ73OQmzGBEv5
+	 LINwm2td/990cU30Zyl1BBT4K4aqyhgwBg2lbRT1O0qnappiehyyDei7QIM+8UMWO0g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YsxV+1Bg;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9C9606A31A;
+	Sat, 31 Oct 2026 15:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YsxV+1Bg
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793459122;
+	b=qDaSeLWStk7PHnm5utACGkvlwzhBWT15Vg4un9XjJVvz0c18TNANZwpEeJHU5UnldVML
+	 /3rvxGFMnVtsJsVG5GRK/lUAP1rvH4Cr6zGGVuNcBgt95nL5pZ6zy8x2NMfmbtFajzWgl
+	 mhqV/BoNXwqUDd19BNjo0gs+O1XgksVyr393CjNJZ90d2pjv9lV7KhjwRTUGgnztSWv3+
+	 ryYulvM31UmINYtcRX+q58YFflQpLncYLdxgE7Rj6W3o7nGx/cNlrgJ2YZNXS/4e/wMjO
+	 8gVgGFQSDGCpT9+K5be7OzYhPGkmeTFGEG4RQ/QysGPzOBHKTmiVGN5NdMv5vc/6AUA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793459122;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=PCD/gBhQWHOD85GSHzF1y0CMZKDBwCfPG8eOkm8c4Go=;
+	b=eE5LicnadHPN7nr7iXdjiGNINNCW8KGxpmNt1r4ORV0JaiGPN5nOl2HQ2e5JwhmdHBiz
+	 gSBhCxVTfTrQUiHZpkgD1pVDNoK1ufQwSkg6eAKfBaDMMv4MTHFPKyEYwrtJOJPZOx9q6
+	 g/Ty5gLevDBthdabMG7Nc7cEvKdjCSwJYTF3a1POpqNRv2tQKxzSRNulm5T8EIyYmBUey
+	 wcTcmFszRnXJ7T7GA5yhPrrnsOWRTNprxPtAeF4F2By9NHeesJsBwQLMQprVUbBMHbUqY
+	 zWunKfPBJl3TqjVC5n+YQ5ZIY+4O4jpntdBEDFsXPV/aMIYjNf17FCSOkcnGcHWvrsg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4290B606A31C;
-	Fri, 30 Oct 2026 21:28:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4290B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sigxcpu.org header.i=@sigxcpu.org header.a=rsa-sha256 header.s=2024 header.b=CK4i0K4j
-Received: from localhost (localhost [127.0.0.1])
-	by honk.sigxcpu.org (Postfix) with ESMTP id 836F9FB03;
-	Fri, 30 Oct 2026 22:28:30 +0100 (CET)
-Received: from honk.sigxcpu.org ([127.0.0.1])
- by localhost (honk.sigxcpu.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id IRo5TVH5itQ1; Fri, 30 Oct 2026 22:28:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
-	t=1793395709; bh=+1w+85RD7w4UnRjdm8J4R3VqC+3RczStkHgePle7OxY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=CK4i0K4jhEZWzOf1q465F7ET2FtWqiH6FrawmN2VH4qmhAFrt372/G2gYyLK2lqHX
-	 aXNW1p3MNuB81aN3Yt08HcBkbB5CnxPGl+f++8b0/ZJw863ztoMhpTGOkLtBI9sjoQ
-	 KgDJZ5JPf+svGRTtUlt8Xg6qMH+lEWpDenOb4xuQwcmRJ9S5z5zPitruZbZgtoSdZg
-	 1usakaVuybXJvxD83PkALPq3x8e3rYzh61PCutEs1+/gvs6xAcHbwwqpsXXdkLo02w
-	 VTLnmIWpk7MrUDoig74ax00K50ILoYDuPcf1rrdBDh7N5Ossj7JgmS+ekY0bFx0adK
-	 Ok+ldc0nE3qAw==
-From: =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Date: Fri, 30 Oct 2026 22:27:38 +0100
-Subject: [PATCH] arm64: dts: sdm670-google-common: set chassis-type
- property
+	by smtp.kernel.org (Postfix) with ESMTPS id E8EC61F0093A;
+	Sat, 31 Oct 2026 15:05:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793459122;
+	bh=PCD/gBhQWHOD85GSHzF1y0CMZKDBwCfPG8eOkm8c4Go=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=YsxV+1BgQaDGfWAUf4Pt7xgOXqzASD1WNojRtnwqPVBaWFxthNyFHmaisd7AY/1Uk
+	 3xazw0G0KhJ6ApyoNWpHOL0D16nfBHBOAhl7TtAZ/FsgJTgx2l2j3dB4HsNfZNA7J6
+	 aECKscaIPAyewkACXdsFfK00xvCKsOzEp5JbM7T7/OVzqLFG9S+6E6SkfqMnFx7FM9
+	 y3s+OFswo+5NksjeIb8mIzJwY36116UPCjxtRC9rRYKsvRxXWYvIQvBXzKI8WsmPoB
+	 U0rSyrckTZ6RMT9GhBDEx4aicuW1+3v9PXQ1xW4mwj8W4jiVtX3rTiAMooSfcS1gy3
+	 C8Cmb+iPtR3HQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 6B60945F0B;
+	Sat, 31 Oct 2026 15:05:21 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sat, 31 Oct 2026 16:05:00 +0100
+Subject: [PATCH 03/11] dt-bindings: regulator: qcom,usb-vbus-regulator: Add
+ pmi8998 and pm660
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -63,73 +84,85 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261030-pixel3a-handset-v1-1-0ad9b0d17a76@sigxcpu.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQqDQBAEvyJzzsK6SwTzFfGgO504IkZ2VATx7
- xnJseiuOkmRBUqv4qSMXVS+s0H5KCgN3fyBEzam4ENV+ujdIgem2DkbWbG6KjwTcx3AAJm1ZLz
- tcheb9s+69SPSemfoun6suAIKcwAAAA==
-X-Change-ID: 20261030-pixel3a-handset-625cdd92edee
-To: Bjorn Andersson <andersson@kernel.org>, 
+Message-Id: <20261031-pmi8998-vbus-v1-3-4d805e5a0f27@ixit.cz>
+References: <20261031-pmi8998-vbus-v1-0-4d805e5a0f27@ixit.cz>
+In-Reply-To: <20261031-pmi8998-vbus-v1-0-4d805e5a0f27@ixit.cz>
+To: Alexey Minnekhanov <alexeymin@minlexx.ru>, 
+ Robin Snyders <robin@snyders.xyz>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Wesley Cheng <quic_wcheng@quicinc.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Arnaud Ferraris <aferraris@debian.org>, 
- phone-devel@vger.kernel.org, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Sebastian Reichel <sre@kernel.org>
+Cc: Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ linux-pm@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=909; i=agx@sigxcpu.org;
- h=from:subject:message-id; bh=AqNdVruHbG38YtXFTnNXKwTljWAhcUZCAfLxnzf90QQ=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FJQVNXL2hsSksvT
- UhqQWNzbVlnQnE1UXY4RjkyekQ1TWx5WlB1S2oxTWxyY0tON0VUCkkvb09oeFRLbmdSUG85QnZN
- OGlKQWpNRUFBRUlBQjBXSVFSajlzemZsaUtkQ1NocktzTWx2NFpTU3Z6QjR3VUMKYXVVTC9BQUt
- DUkFsdjRaU1N2ekI0eXYrRUFDc01uemRyN250Y1pIc3dHbFNEOUd0Z3FqMlAzU2dSQTI1eDJqbA
- o1SVE2bGdDcFp0eXQxMG1IbTZ6d0piMURJdWVybUxCeUtOYVFhL1c1M1FWWk1nZnFtNDZtVTUwU
- XhGQ1dLU2kvCnNOYjk4TlNJRG44Zm9GNTVkNWhmZ0xsam80RFlqQ1I2VlpaOUxEN2lMWnhaY0hC
- ZzFEZUNJazd0eHpsVmJMeEwKVUlTNWR5VzVZeFpNcjFWUzFWdVcwV1dFLzBJTTR6SVJwUTJIcHB
- xdU5xRGg4dGNFc1RFNjV2aFhkTTBXOCtRZApQT0Z2RzNXQ2lKczJWeW5vVUNxcHM2UVBxWDdmR1
- RjWUk1VnhZSjE5b2FxY3RkNWhMdmhQbzFTeDA5MFR0TC9PClNxZS9BTU1HYXdYT3JBT3VIUEk5K
- 1lLRjFrY0FoRkVsaW9Gd2VpUGtia1daNlEveXcyMTd6WWwwSDdUaFYzdUMKTEF5YWZWUVBpYlNt
- UkV4NHpiRlVwa3F4WkhYRGd1TEpiM1Z6TmR4ME9lSGdIdFdpV25CTUx1RWlRNVUrRko2YgpjZmF
- ONXBTZUJmTUcrejJzZ0E0RE4zbmswRjBTUHVubUlOVUtPc0NWTDUyb055bHQyMVR3VWJ2MS95UG
- E1QURYCnBrTU5pVnNWQStqN3lpekNGY00za3RLcStkMDFWZDlJVUQxQTdhUEhxeUJ2dWpWU1Fza
- GxDeVc2bDQ5UmNJcDUKeUFZd3hLMVgyb1Vxa21IUFRzNi9PVTlLZmFvNHFRL2pESWR3L0RpdDVN
- bUhYN3pYQk1ja0FvODdWTDMwZW1vNApDL3lDdGFoMS95SDlOWFY1R1hLRTJFUlduMjRORjZUV1M
- rejFOZm5abDdRZlQxZ2lQQlNtalhNazZrWlZrUS9ZCmNycU1kZz09Cj1MSmo5Ci0tLS0tRU5EIF
- BHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=agx@sigxcpu.org; a=openpgp;
- fpr=0DB3932762F78E592F6522AFBB5A2C77584122D3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1294; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=8b76kVmv0SWaU2OFA005s+KLQA5vUoRMBd25Pd9muoU=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq5gOvbY+oPG3hlXZA9XqKAk3Vrm8L+RMaCUlD3
+ mLWP36ir4eJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCauYDrwAKCRBgAj/E00kg
+ cq9cD/49B8I13OS7eo7LRQmzgDIyJRzRCkX+iJZxX+yUi87mXltY84FGkEMBuSSy7LOEhOezFhb
+ MXLl8g4tUGflPLcBWoV2IdaVxV/ieR6x2kh1PYDrSoNqN28Q3qQRagDJx6Gt0ijfgBaEcAU0OmS
+ EfAA6FU73aIassgW7RVWsjpWdNWcH7zkmIrpPCSWc+r8rSYzXxAo6Gtse1yPK+CWQTT/cQmDpHi
+ V7I8X2EtDWoyOhbtRun8S8b7HlJcdi5sYBd7x2mXDoAIPekI0X1iCIloXk1AUqdd4j87O7nuLVX
+ ewFcyKJkzz4dkc9ehH0HcicJh+JDICKR7/dyF66inlJUSrGMXKVYRrBFuVc7uDpRoB+0ec688a1
+ 6BQ782d6oS3611pQTC8bSC0WBot34NnaHW4u6H6nLDnbH2mEFYMa2PjjjzaLIlPFzwMIXhumAKG
+ dmdX0+eGXHEseXY2CTABkYOK6t9fwOvF4R9ewLlSeTlsv9sZN9Rgj60BHrI2TYwgUApSYJC6uVI
+ sAIRJgMH0Z5WF96R8MAIbfPxP2xrpZjegfJxEJT3c2DzHW1ZDjdQNCIx4g4Ncz345+38VaeddwK
+ pNyqz+isUt5wvmaXZTOTyVYROs5tSyNbEZJqv06Z+2jwRTCA1eEj9gao5c9anvpSfPdShtXZW8e
+ LWGJmBuf2z3yv0g==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
+Content-Transfer-Encoding: 7bit
 
-From: Arnaud Ferraris <aferraris@debian.org>
+From: David Heidelberg <david@ixit.cz>
 
-The Pixel 3a/3a XL are mobile phones, we should ensure userspace can be
-aware of that by setting the `chassis-type` property.
+The VBUS register block on the PMI8998 and PM660 PMIC shares the design
+with the PM8150B one. Define corresponding compatible string, having the
+qcom,pm8150b-vbus-reg as a fallback.
 
-Signed-off-by: Arnaud Ferraris <aferraris@debian.org>
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi | 2 ++
+ .../devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml          | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
-index 4ce9b62abe53f..8f91faf8a9cc5 100644
---- a/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm670-google-common.dtsi
-@@ -27,6 +27,8 @@
- /delete-node/ &gpu_mem;
+diff --git a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+index 024b34d0eb1a6..3cdfb556662cb 100644
+--- a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
++++ b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+@@ -24,19 +24,21 @@ description: |
+ properties:
+   compatible:
+     oneOf:
+       - enum:
+           - qcom,pm8150b-vbus-reg
+           - qcom,pm4125-vbus-reg
+       - items:
+           - enum:
++              - qcom,pm660-vbus-reg
+               - qcom,pm6150-vbus-reg
+               - qcom,pm7250b-vbus-reg
+               - qcom,pmi632-vbus-reg
++              - qcom,pmi8998-vbus-reg
+           - const: qcom,pm8150b-vbus-reg
  
- / {
-+	chassis-type = "handset";
-+
- 	aliases {
- 		serial0 = &uart12;
- 	};
+   reg:
+     maxItems: 1
+     description: VBUS output base address
+ 
+ allOf:
+   - $ref: regulator.yaml#
 
----
-base-commit: abf8c33470f78e2226ee3dcdc69004660020ab47
-change-id: 20261030-pixel3a-handset-625cdd92edee
+-- 
+2.55.0
 
-Best regards,
---  
-Guido Günther <agx@sigxcpu.org>
 
