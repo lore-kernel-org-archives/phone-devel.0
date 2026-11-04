@@ -1,56 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793790984;
-	b=Mvjz5H+xTfCRuvyfC2obBEB/XAuFKRD/tipqEYXZOZccwBJ6jIQMLDtX7hHQCUkWSps0
-	 j0eAM6G8cO0KBIGfpu2WUNEtcKIwOpFgsSUBvXjDOzbGWE8IF3nFJqW9GA1J9GGWLxOEr
-	 VTXPbulY8M5p2p561OajuzHNR8Tn+FncK0UHzZXl/GcqoFevMrK1+rvl20Fq2pTSYgHdu
-	 mYvqktIGGq7ixFMhKobpcR8L3Qe1fYr41MDHJIp0qtyqnF4iSrVgoyxcFBiedXf96ggR1
-	 mtsNJOYEAtn1050YVRxyKyibYxB/JunzVs2hx1CD3K2addxwFx6f4Kx+MgvSNXQZsGg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793790984;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=vWwRvdhui2BuRbjKZxwRjdDIoXbJBDtn2jl2veq8E7Q=;
-	b=p2e5P6ZbcqqlfSnPb2K59Ah8wC/4FRKgGrqT8PV4y1ubzQ/HfpD86szuEJSu//3Tj3kf
-	 ApQdUL5jAcQf6MPaf0tbTNY48L1k0qjpfjf5MQSHLQBXgPTJ/iQCZjnLeF4e/9oOTdYaQ
-	 Ke2Ksg2n6q6Y1JEiIE3s8rkPoFf2LAGiC2by532NRjqpDzKdFEeEzJ6B2DQUmJ1lzPGWI
-	 7ymwCd9sahuNuwMJbojuP4t0eJ8q+oEorch5Zd2Y4LNW45xXli3da2PxQ6XHbolGo5JK2
-	 LF+v2Hkvj6/GeQOpbYoqIaV1YbK9odhPH2THSSAUSEomJK2Qzld2BlIdVv0pzIUvR4w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ixit.cz;
-	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=zitckMYB;
-	arc=none smtp.remote-ip=84.42.129.46
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793796943;
+	b=W1WC5nBG7Wp+2kwtyYrhzrkOWezgCNtdTaERTGUhOCsejDQKmZrwPJI43UqdJfjBSg92
+	 CYV4QTdXGT7aIHBP0GPYeDkwSmAeS1dRKItn1ji+L/xYnqpFAUt2SSeAGp0Qgl/tkLaTI
+	 ikgKBb5OaGvuOSyZa+Dcp51CImSgeYoCO3snK1crSENY0Lv3K7rkhrWVdAYyKTVbp0ntL
+	 s8I82DKmvlIf4lDoUm/mF3Sl541cbIjdg/2D1TOxIqvgs8rRacaM6b2ls7A7Xzywmm+gI
+	 ojKmjbYN96CdqFSXXxWheXR3B8+sqWfG+oBACFUX7ugvbJsL67w37y2WBIX1nbRfgTw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793796943;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=zyr22CI2CmOFNj4yZHB6ux7UUbGZeisiaWsSJL9ai6E=;
+	b=J1qTP/RrliVvfbPFQR1Rf8XbYkfJ6yEyAhd+fir+vklXPFe6BwD+2x/dRCJXLs5+fkbz
+	 uspBs5H9pD+MXXV09VMVO6wnSeYSzvkDoI12XZWN4Du6sKfgOppRHgRwBukCmliB1/EJ4
+	 NbkEqcwNiGZeD+aufgLlXATns0GvucJBjxPvGi9R8Feq8IXx36zD/TcJy2lo1wywm17ER
+	 6wT3FEUBOrARcn4gFrc3Dnm2I+PWqPKtxYrYLu9GWEhL/WWBF/GWNcjtiIfhruI0utd8W
+	 mSNZwbJQ0e4nWFE+eWjD3jz7oy23XdoLkBQNg/FKs/gnWEKQ1qEWkmumeLc/HAGOtrA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KJpRChMc;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D61606A31B;
+	Wed,  4 Nov 2026 12:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KJpRChMc
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793796942;
+	b=IiwfPC5Knh8ZMmbGjvdRp1oSF+oVReJD1UG8CQjvxfbgBYSXrhWY5BNtBAuH9Hvywezf
+	 riOJqCb2HSieVQM7iBzjyzVBEt6r2IeSWh5iwlsbAGwsJONOR7CaeT76DylV5Bu86UDHM
+	 QFpJBTvRgQi5JFD1JbxyIgBPApCknjeN+t2pugpRjf+6AzBvVuCgpjgMHVX1iGMu4ii2r
+	 Ya8ZyjykprBsMGd+OPMQInBdhYqFxMXceRoiS95mkDVM6Vrr4zVOMkvAw635yPL5D8fZ+
+	 PvONFdnlsUJN0u/Gu7RK2ogp8uijlof1UrEfV1yn4sThmFTfmj5CrBoDzMv0Y7P8EOg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793796942;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=zyr22CI2CmOFNj4yZHB6ux7UUbGZeisiaWsSJL9ai6E=;
+	b=IIgAQ5/ZmC0cxoWB5Hl6rLMFJ/nq/ylnWC0+MqlCNwh3Ea2f+8ssQiU8vJa1adF6ENcH
+	 noAmWuPcM9m4MeNN/HgHy5/v62RrWgmeZPmHM4gxk+eb0cHuPvZMSY2GCYAcJ+2RK6g75
+	 oghEFf6NGF5zeKpd/hcdX8KTpmXncf6MZbTigHo2ZjURM3QX08GOdZH3sj0PwbivGO1gC
+	 +YzSPWG+bjxa7NiEDLXprAH0wbARbcnMeIItTsN5zmNSE7gMCb0I+C0tbGHoBdGhzkktk
+	 xiohstEr/Y+EgqJiBpVDdCciV0E0gV7m5YP10SDuFdpZ9QpDyUvz9JopnzgtnKNMEEA==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3713606A31B;
-	Wed,  4 Nov 2026 11:16:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3713606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=zitckMYB
-Received: from [IPV6:2a02:21b4:885b:5e00:44b7:d675:5e82:f620] (unknown [IPv6:2a02:21b4:885b:5e00:44b7:d675:5e82:f620])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 9CFCB53401E5;
-	Wed, 04 Nov 2026 12:16:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1793790975;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=vWwRvdhui2BuRbjKZxwRjdDIoXbJBDtn2jl2veq8E7Q=;
-	b=zitckMYB2YR7JjxOSJr8rmJZd2DIdHaPrr7CPcdOPGghcFNw55QGnHKzvgXxqloaf5/UDw
-	tqRxJeGX+i7AX7Pec3gQapHWlZOnALAbgyXm45631GkkLuyEBHgmXHl601z8OqNwm7G7wq
-	gJIIZe4XUEj51j2/tGQBeLKzgdBOOCQ=
-Message-ID: <39f54b47-e21d-41e9-b7a3-12f121517f8d@ixit.cz>
-Date: Wed, 4 Nov 2026 12:16:11 +0100
+	by smtp.kernel.org (Postfix) with ESMTPS id 503471F0093A;
+	Wed,  4 Nov 2026 12:55:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793796942;
+	bh=zyr22CI2CmOFNj4yZHB6ux7UUbGZeisiaWsSJL9ai6E=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=KJpRChMcVbzmRlE+wlreOBcfm9NtES1wsEgtbfesqwQQRwL864GFq7GXF0SBH5oX8
+	 bS8F0NLSe+R9wUOL9x0Xvalv1a2KFXmvYEVvXmDYmHh4B+kUqlOEDj6VDce3IO1Jv7
+	 IDRY43Zxi0dW7x3Ze5xHFS9oi5dgNO+0OTwX11F+gp+dRRFMevHTBp7uoiE6SAOvkj
+	 7haESdwgQR4kRK3gkrRyddzpnepPtPPAPU1lIqXEF0SWbbau+o33zkGIAxJTK/dXM7
+	 PaWLr7tvcQQwlIU+Jjof5+DXOWKYyCH+4R7j24CAZMR1G7tX/GirCdnM1qJgGIsWep
+	 +1UT8V7nRz/2A==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id A2DA046E35;
+	Wed,  4 Nov 2026 12:55:41 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH RFC 0/3] Input - Tap to wake for FT5452
+Date: Wed, 04 Nov 2026 13:54:42 +0100
+Message-Id: <20261104-ft5x06-double-tap-v1-0-5a1bd80449cc@ixit.cz>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,119 +83,72 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next 1/3] wifi: ath10k: set the PMF peer flag on
- WCN3990
-To: "Nagashima, Shunsuke" <shunsuke@nagashi.ma>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
- ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
- Fabricio Akio <fabricioakio@gmail.com>,
- Aleksei Kharlamov <aleksei.kharlamov@gmx.de>,
- Conn O'Griofa <connogriofa@gmail.com>,
- phone-devel <phone-devel@vger.kernel.org>
-References: <20261016-ath10k-series-v1-send-v1-0-c847697b3558@nagashi.ma>
- <20261016-ath10k-series-v1-send-v1-1-c847697b3558@nagashi.ma>
- <CAFEp6-2xY_gM=FRUp3R30TZ-NgT=-eYnyz_BPE0vxEenv+202w@mail.gmail.com>
- <CACB3TCKq--tdL6j+uGR_dxGdy-gHxQhY8p0h6xxqi_4Fd3VEOQ@mail.gmail.com>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <CACB3TCKq--tdL6j+uGR_dxGdy-gHxQhY8p0h6xxqi_4Fd3VEOQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDQwMT3bQS0woDM92U/NKknFTdksQCXQsDI6CsQUqqsZGxElBfQVFqWmY
+ F2MxopSA3Z6VYiGBxaVJWanIJyDSl2loACo0QQHoAAAA=
+X-Change-ID: 20261104-ft5x06-double-tap-8022020de323
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1258; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=pzSw6TKmONM6czBm61/vbfVAdGJHk+kTaSJEbz59twU=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq6ytM/Owsjy5J6firfogdWwPvKt+ZEZb8PK7um
+ 529GuYtDsuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCausrTAAKCRBgAj/E00kg
+ chBsD/0YUwsWoetDiBLm9SRyuFDq/RO6ukE3DxRxLUgI7ht59clz+7UKoMKfrwC5SMJWI3CL4x+
+ YujCy4QgbLfQW1KwV+tR8eZkoDf6Qy6okZbNBRR1qKQZBeE0cFdXPVXYVCQvPtT2gqwQtuUxkoq
+ IZO9VNp5YBcuWMGcwJyh+quufE1lvkfOUQB4+gBtw6jRirm3gdAUOixoMZtvcHsuAnZYgKcv9ND
+ rC8G/djBpzK3qOCwzGLXFYyedgl2/XbABbmKoIjiMDl6HdBiSateeZuphC/+GM/M8/cyVmPrfiO
+ IPoO6sHE/EwA5HnERE6xd/czgqLqGruI6H5/4bNl5B+izcGLLt7ZLPOAZTBFEcaOfq/YfNYo7mB
+ N6FiJdWQ6gkhD5Jw0HZB6ErihUpK5+LpXgBO4tAMJTUqzcA59HCRGeIAZ35t2zMz8or/9p9NfJU
+ J1epB0Pq9BwUmqVrzejfiwS9uubHiLfzDj0GC8nCvamEbFLYxMGM19kQrLW0yG1ETbsxCjupZW/
+ 1blNrGbIggErc+bHW2etFmqL78GbMRqtInIS+WSUIdkjZ6DmNDrNPZBRki6jLsQ1L8UaUUIxRW9
+ 7jeZnFgiMhgQ4ZAGo+KbV/k3wDK1hva+sYq5PEd7OcPBTJrF309nNUM/7uteCDHJo3S9IaT4aYt
+ r0EqJWOJzgyyMrA==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On 02/11/2026 23:51, Nagashima, Shunsuke wrote:
-> Hi Loic,
-> 
-> On Mon, Nov 2, 2026 at 12:56 PM Loic Poulain wrote:
->> So why not updating firmware-5.bin file instead?
->>
->> There is a tool available here:
->> https://github.com/qca/qca-swiss-army-knife.git
-> 
-> Thank you for the suggestion and for the pointer to ath10k-fwencoder.
-> 
-> I had tried that first. On my comma four, a local firmware-5.bin with
-> the mfp-support bit set gave the same result as this patch: the
-> protected Deauth carried a live PN, and the next association was not
-> rejected. It is also the file I used for the overnight PMF runs in the
-> notes of patch 3.
-> 
-> I went for a driver change instead for two reasons:
-> 
->   - I was not sure whether it was fine to change a firmware file that
->     Qualcomm provides.
->   - Other devices seemed to have the same problem. No WCN3990
->     firmware-5.bin in linux-firmware sets the bit, including the newest
->     one (shikra), and Aleksei (WCN3988) and Conn (QCA9377) reported the
->     same issue in this thread.
-> 
-> So I'll drop this patch and send a firmware-5.bin update to
-> linux-firmware instead. Patches 2 and 3 do not depend on this one.
-> Should the update change the shared WCN3990/hw1.0/firmware-5.bin, or
-> add a file for one board?
+Sending RFC just to validate if this would be the correct approach to
+implementing the tap toi wake functionality
 
-ath10k-fwencoder --modify --features=wowlan,mgmt-tx-by-ref,non-bmi,mfp-support 
-firmware-5.bin
+I've tested this patch, it does wake up the phone.
+The second assessment is let device shell to react to double-tap input
+device when phone is only in screen-off mode, thus the second input
+device to bind to (when touchscreen is in the runtime sleep).
 
-for the OnePlus 6 (oneplus,enchilada) issue "speed not exceeding 10Mbit issue" 
-on the WPA3 enabled router for too.
+Feel free to skip detailed review for RFC v1, I'll polish the code for
+upcoming v2 submission, after design discussion and approval.
 
-David
+Thanks
 
-> 
-> Aleksei, Conn: a firmware file update only helps devices that load that
-> file. If you have time, could you make the same change to the
-> firmware-N.bin your device loads, test it, and send it to
-> linux-firmware?
-> 
-> I worked through this with Claude (AI). English is hard for me, so AI
-> helped write the English. I ran all the device tests myself on my comma
-> four.
-> 
-> Thanks,
-> Shunsuke Nagashima <shunsuke@nagashi.ma>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+David Heidelberg (3):
+      dt-bindings: input: touchscreen: edt-ft5x06: Add wakeup gestures
+      Input: edt-ft5x06 - Add wakeup gesture support for FT5452
+      arm64: dts: qcom: sdm845-shift-axolotl: Wake the system on a touchscreen double tap
+
+ .../bindings/input/touchscreen/edt-ft5x06.yaml     |  37 ++++
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts  |   6 +
+ drivers/input/touchscreen/edt-ft5x06.c             | 205 ++++++++++++++++++++-
+ 3 files changed, 244 insertions(+), 4 deletions(-)
+---
+base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
+change-id: 20261104-ft5x06-double-tap-8022020de323
+
+Best regards,
+--  
+David Heidelberg <david@ixit.cz>
+
 
