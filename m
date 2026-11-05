@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793796943;
-	b=X37dai5K7T7vGfO2P2ANv+8xcal91YSwQGCvG4yru8JaQ0PueDcWvMy61SbnzeySUhBX
-	 Fo7mdWGc7iMb1Y9kA+h4O6IYhqGXdA5O4VMsd75zN7ghli2pvYQKqh+tTSCNgn+E+a+4X
-	 h5FEhkT48DPAdQqW5UCxPuLGYELHWUJ2R5LwvgeIYo3qsNjb3Z6AMO8y8BRvZVeZXhsZj
-	 3fLaNDQ+U4HSZSIA3VCuID/xhX1wvmAT2lgCsWcAebN8W5PITDPy0EXlUsVAdPryCk58I
-	 eUzRhgoARLfFPYARgXbC/6RqZmPpimeU5pnLr4LJQMyhjbeWxo4Iur/bXTs61qyVW4A==
+	t=1793876106;
+	b=WmjcqveZ0gyhj3w/XoS3QvXKJHpGdTVD437kSrg6IoL5UlnaMSdcK8cOSrx8kWRvd3CJ
+	 3RVg4yrjOJ4c1l/XTsN4nuGbR1KZk7GYfVbykvsGFncOY+wvgpeXZ0jfmZv6r2gmXuspb
+	 HjA8SBjwTcyYhMzNzT3SdT2BYluCDQ5FXgtVWN342PyAgTw0ZFi5UK1PO79ch9h6zkRDO
+	 VKdLcyWMaCdkjghJwhIDH2NJFdKuNTogNpBiBeruCQ6U+vERkMn8VAD+2AodghWO6qhbx
+	 aHMYVdS4WctULEBknBoQ1D2PjeCg8D3+XYPD6hBNAeSICPOFHMedVmOmrjFHBMSDB6A==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793796943;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793876106;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=qi8G9UvFtYoe7/NNMKSW69kt3Fc1EXVO1pwg69nVuFo=;
-	b=hEyufO3c+2jjf+p/+8R3nMztRlUA7g3Uqmj0JHM7bdR04C4tFq/FnwF8AEEyrBax2Ws3
-	 5j5tmcP+WVSKzXYP1uro8Fnmq/Yqwc6GBCg87T5wgyblE5rwcUUjLG3Q5TAYL7u44IDB9
-	 Lei61pm7dVEzeXjRAvWNY7QxOEIkDWo7SUlTU9O2NWv59Zs7eXlEIetx0sCR4QzSek4Qj
-	 CFvoTMHmjFjU7MvkBwuELLHewE5nscu846gvQAQYyBMMSpDJPAhqGaV5xLXu3+Ddwm4Ck
-	 yX3jE7tGAmlinCGvUsbgyQTjl5GQbKKVomJEKefEeSZ3Xik/Ma5TDG+1RxGeo0/p9Rg==
+	bh=R7gLIWsMupYRCkClA57yuL3SZT3mZmUhwmn+PS25Xlg=;
+	b=Ohnq5QRP5/UAAnOy9I0pEmukAbgWhPPLP8UNc+krLe47Ab0jocO868N08Ekbl4ZKhS9A
+	 zwQ7DGgtRJ40Ckoi2Pz7Vi/oUeZyUFPakXFEv1TK5Fiys/1P+7EoDMfimu7+4+CNBydWX
+	 RaATQ/p3YNWEEJGuitHo+bGOltRwJlEe9eG8lx8ZCUjrifWSfDW3TBlP8eqketsklESPV
+	 BJWMuseR6Z7mYiNWBPcTRu6VEby/MAF64WIqBOIGxdCYd3PwaZOJPRH5C/MLMHA2EUxFm
+	 rfWRz12WGGASy0021MFYQgsO1Qzmg8jRzXkFgqB6DEjbeGWxafzphPjsWtqYG1vv+UQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MVdFEz7d;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Sv/SRLpo";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A056E606A329;
-	Wed,  4 Nov 2026 12:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE981606D80A;
+	Thu,  5 Nov 2026 10:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MVdFEz7d
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sv/SRLpo
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793796943;
-	b=gAjlQyQKkYX3VZt594y6wxQGhNFE4NBjj9hTdXX5nRe8lD4kfD5lr9kG1pGLG4UkOWD7
-	 yV2Aq0LpNf696j/IYXn8aMM70iAFtGygLvmFrQVynAt+3V2+v65ceRt8xad7AjD/A72pF
-	 YoQgvEqbMVY1lH3PisulhlQVaRX7cI+o4+nDrYKe79eVWkY0VC26Mi/0inD61jm4nOX2B
-	 JNDBmHSYlnzIKN7HWZcoN2v3q6B0Id797U9V1NAjc5h3j9jkrmfhlBdy16TpLcD3/XZD9
-	 SoLc/28cAqSvLgQLos7gGv54tqH6tiADCYXmtLM+C0kmDuR1OgjN//LeVLbVbk8BBvA==
+	t=1793876105;
+	b=EOh3wAvCERrs4H6v1IuC+Vxz1cWjT9rou/xl2ARbZTGZ8SEPJR/KEfWHKYiDfgFRYtzo
+	 yeGNc5mDjb++0M6/zrUb+n9b5JeVUCi0chS7bF7H0CXxk7Orhjj0GEiilz+NzmCyOYSoV
+	 h1XXrivGnbFzv5SNwJpmCzUK1JSYy7Rg7zwNovO9tOZIDXoYxLBNPtf9xUotrV5Hmorky
+	 XwVHPOwKRwGV7+zTSm5QqlGZVK6ZHTbRdMOMnuqao+aS5+Qkh0O088Y+kftroV7d/CAtH
+	 vUSQCrYgoxj9bqJSZ7O5WbCapgvJvrxdICFXQAj0OiGbhnBIB3O/yJWiOGW5PGZqtNA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793796943;
+	c=relaxed/relaxed; t=1793876105;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=qi8G9UvFtYoe7/NNMKSW69kt3Fc1EXVO1pwg69nVuFo=;
-	b=MNsLESujETidpsWGLoGZ2oKtTKcEm5Fkfm5raBkcnZ0KUscHgp1eONLqVG8SL8hLPh30
-	 LMorCwev8rREH2BAZZRetBe/DViwePVol2F9zHy9H68Ek+me/KGijaXIMzXpQZioQW1c3
-	 kvibBTPpYv/CAXvTGLpJeTGPogtLLCONdi11YtNJYxeozkerP1cJqNsEiBxMbA0qhUwJS
-	 xEs6aEaw/bJK9/+q0HbWKzHZVvAqdSkFHHcjkGR/V1aEHBeL1kN56/Q12sAL+oK7SHb1y
-	 pJWiujwWqkn1P0aVa7UU4UYc3G0FrSPfnk6IyMkCB87qq+wG4tMstlwvCY5wmfBdgtw==
+	bh=R7gLIWsMupYRCkClA57yuL3SZT3mZmUhwmn+PS25Xlg=;
+	b=UZnSs5HeJd7HiHEF0XZva2OoZNPHmpinAefXtAQ8RsXI60s5FfZLmBeAh/r9Zy87tb/N
+	 5HOWD9WEyNFIFbc18zRqdGs/xsgV+VomfKHgteFyQTBQrReS9nTsBc/j2h6KVwzaonIJc
+	 4JMe62zaaKtDmp12Fc4T4FXEpRzU0/zkifP/9zZtyudDSqfd13mck2nu/SxXhpkiJI9Cd
+	 N8lErXEKb7h7cTI/+s21Va+qXS5F9z11hrre4GSTPn4WDtwfdM5VRQo6WSsJhcmapoD29
+	 TEpFGOwnsmZCPI0imq7qND7AN7aZj5o3HR15kL6T3jE7xJjMSbyONyI+rsEUi8J6Qbw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 5537D1F00A02;
-	Wed,  4 Nov 2026 12:55:42 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id B50231F00A1D;
+	Thu,  5 Nov 2026 10:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793796943;
-	bh=qi8G9UvFtYoe7/NNMKSW69kt3Fc1EXVO1pwg69nVuFo=;
+	s=k20260515; t=1793876105;
+	bh=R7gLIWsMupYRCkClA57yuL3SZT3mZmUhwmn+PS25Xlg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=MVdFEz7dYH0yB+r3y2TT/KjcqCXOoaPFdgMDpJwU0JP1q8jOgMH7JLHklZMXpI2w8
-	 qVfixBnjyHUe1K9ZiLOqBrM50ciffBz8+897/GuX7gQ9ZWo7tvYDsYtx+vpdZ+B3z+
-	 4GljQfYdceHkzz66fP7EYw9yt52EJ0sK/LByJr9ff6+MdkStlCwzuXddoTXmMBlQrH
-	 3EJD9Qxcvv2qWmyXILQO8kxvxYrM85NoB/84+oqxqBsCHC8Pt6YJEjoMt4WWh5dHqT
-	 B8o/8uhvTjszZrRF/4lDvHyTg4qnU+UrKfCDsoH8pDo4UIySb4dtcYpHvtgc0pu/qb
-	 seQ8KH76Jx8wg==
+	b=Sv/SRLpo8Wq3sUkgCyP3AD5FhnpKUwQ4wCyaf1VHZ6M7JHJN8Ku1eHmTKNDBbid1L
+	 NsKVqgViGd+VR26gJs8nP2Ye4LO9DWzjoqFvhNSiHlXgmnmx6xd4674k1hkf5qCwWz
+	 TK2XczPFLHcLUbg6pPUMSzEQnbrW9MhrPmCO73t2nvih3JlqFhiOy/T5mgE3v7iWmz
+	 /f3r8Z82lqAahBeXQdUoLn9Qpmy9nBfHnEB8JFTQN5xZ8mKdGoFwIxqEWu9jGEE54K
+	 FflwEGcvQ8cDgYnjQByTMbQ/GNpwASvyG2UVOufD6oOuHPb5VaGPg2VsfyxVEqX0rb
+	 j+jCsif+u4tFA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D4CE946E3D;
-	Wed,  4 Nov 2026 12:55:41 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 04 Nov 2026 13:54:45 +0100
-Subject: [PATCH RFC 3/3] arm64: dts: qcom: sdm845-shift-axolotl: Wake the
- system on a touchscreen double tap
+	by lkml.kernel.org (Postfix) with ESMTP id 4A79A471EC;
+	Thu,  5 Nov 2026 10:55:03 +0000 (UTC)
+From: Muzaffer Kadir via B4 Relay <devnull+muzafferkadir.mainlining.org@kernel.org>
+Date: Thu, 05 Nov 2026 13:54:10 +0300
+Subject: [PATCH v8 06/11] dt-bindings: clock: qcom,a53pll: Add MSM8952
+ compatible
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,80 +84,105 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261104-ft5x06-double-tap-v1-3-5a1bd80449cc@ixit.cz>
-References: <20261104-ft5x06-double-tap-v1-0-5a1bd80449cc@ixit.cz>
-In-Reply-To: <20261104-ft5x06-double-tap-v1-0-5a1bd80449cc@ixit.cz>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Cc: linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1038; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=gVCDyYfuQzZ+YQquXafcJW7FFenl4GNi6oZKBwhfrWI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq6ytMe815RX1a0N0eshGYgGeLRlEwiMcSDon56
- mBRBAXxnT6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCausrTAAKCRBgAj/E00kg
- cqm4D/9hDSLf2LwEVC9LRzcuRML9wLXa9giF1R67yIzc+wlg0RuW6V+WNfwYs2VAWREjIsYemqx
- 1RwzoA46JMZEhNgxSxM8hGauxekMiuuJ76lBpBg2hiRIo78V8sdjiR3S2VftxQUzry2IhDlDO5X
- q4yRTKnaknvOTBIy/dQsldPRWqusokHEf6Fif/HnE3MUxSDcApky/o+ZaEZvgr4k1ODn3DbQVZ/
- ygwhqwH0HmP382ABkLUfQ0LEV+Ml2W1mv//ftrj78qlcpMFAKbixuM6Ssz4vR+JssMW110XmgYZ
- Z6t/7zwotfdbfd61wLiGnLeyGlRhNEhMn6elfCiFXR0HEUW0YVyz9SCNv0h7tEnTP/fXV0sh+DD
- wIDpNF73S6xMNjZ1giIi+BFu2G1cI8HwUdHnDoZtImte4AtfDhoUi9ECq4a6DOmjf0U1KLiQ47h
- NBWSPPWMqbi7IFxlEK/B8AyqNhy4GTcvYBa3DJ6zDci72pmftDYF1adtMVT545gnXcxkP1BpQCD
- sGvCAU8c1xhr6TF6lWPBTEexm6axM/9Xr8Hc+1pLmNgwjTFURn3zXCowdiBL3+Fidi2263oKA3T
- GtgQOdnsDHJF0lMg7owte2up+yHxR6txVhA+Hit+o6UxTYeudJM+nH6qfSzsIcNS9E1uJXTqy8P
- xdTasBdQuiARQPg==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Message-Id: <20261105-msm8952-initial-support-v8-6-311ae8e8f14b@mainlining.org>
+References: <20261105-msm8952-initial-support-v8-0-311ae8e8f14b@mainlining.org>
+In-Reply-To: <20261105-msm8952-initial-support-v8-0-311ae8e8f14b@mainlining.org>
+To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, 
+ Rajendra Nayak <quic_rjendra@quicinc.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, Abel Vesa <abelvesa@kernel.org>, 
+ Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, 
+ Rob Clark <robin.clark@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Krishna Manikandan <quic_mkrishn@quicinc.com>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
+ linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
+ linux-remoteproc@vger.kernel.org, linux-input@vger.kernel.org, 
+ Muzaffer Kadir <muzafferkadir@mainlining.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793876100; l=1455;
+ i=muzafferkadir@mainlining.org; s=20260816; h=from:subject:message-id;
+ bh=XCIEEjoD19j/AIKNwqTlsBvKPtPEgIUzUJWdLdc8miQ=;
+ b=FuyTp0ZryxCxUbbN5sUnAwICtuCjnzrSqGz1rYWnJrBRAY0QIV3MR6pCxjCuhss75PaF5PkMP
+ dfVIdPtvZD0DRyUrvt24f70eV179MSe+yXgyl6n9Lx4TjwxGi+O/JR9
+X-Developer-Key: i=muzafferkadir@mainlining.org; a=ed25519;
+ pk=4zkv4suQ3cYcO4Z7CrV8JSSjEGLBGepUtvQCFjgnYIU=
+X-Endpoint-Received: by B4 Relay for muzafferkadir@mainlining.org/20260816
+ with auth_id=954
+X-Original-From: Muzaffer Kadir <muzafferkadir@mainlining.org>
+Reply-To: muzafferkadir@mainlining.org
 Content-Transfer-Encoding: 7bit
 
-From: David Heidelberg <david@ixit.cz>
+From: Muzaffer Kadir <muzafferkadir@mainlining.org>
 
-The touch interrupt on GPIO 125 is routed to the PDC, so the panel can
-wake the phone. Report the controller's double tap gesture as
-KEY_WAKEUP.
+Document the a53pll found on MSM8952.
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../devicetree/bindings/clock/qcom,a53pll.yaml     | 25 +++++++++++++---------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index 1b0eaeafbd517..e4eef60271c55 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -504,16 +504,22 @@ touchscreen@38 {
- 		iovcc-supply = <&vreg_l14a_1p88>;
+diff --git a/Documentation/devicetree/bindings/clock/qcom,a53pll.yaml b/Documentation/devicetree/bindings/clock/qcom,a53pll.yaml
+index 1eec77e75a0a..4abfaa24bc71 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,a53pll.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,a53pll.yaml
+@@ -15,16 +15,21 @@ description:
  
- 		pinctrl-0 = <&ts_int_active &ts_reset_active>;
- 		pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
- 		pinctrl-names = "default", "sleep";
+ properties:
+   compatible:
+-    enum:
+-      - qcom,ipq5018-a53pll
+-      - qcom,ipq5210-a53pll
+-      - qcom,ipq5332-a53pll
+-      - qcom,ipq6018-a53pll
+-      - qcom,ipq8074-a53pll
+-      - qcom,ipq9574-a73pll
+-      - qcom,msm8226-a7pll
+-      - qcom,msm8916-a53pll
+-      - qcom,msm8939-a53pll
++    oneOf:
++      - enum:
++          - qcom,ipq5018-a53pll
++          - qcom,ipq5210-a53pll
++          - qcom,ipq5332-a53pll
++          - qcom,ipq6018-a53pll
++          - qcom,ipq8074-a53pll
++          - qcom,ipq9574-a73pll
++          - qcom,msm8226-a7pll
++          - qcom,msm8916-a53pll
++          - qcom,msm8939-a53pll
++      - items:
++          - enum:
++              - qcom,msm8952-a53pll
++          - const: qcom,msm8939-a53pll
  
- 		touchscreen-size-x = <1080>;
- 		touchscreen-size-y = <2160>;
-+
-+		wakeup-source;
-+
-+		event-tap-double {
-+			linux,code = <KEY_WAKEUP>;
-+		};
- 	};
- };
- 
- &i2c10 {
- 	/* SMB1355@0x0C */
- };
- 
- &i2c11 {
+   reg:
+     maxItems: 1
 
 -- 
-2.55.0
+2.56.0
 
 
