@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794141154;
-	b=F5fwLM8jGcyCW1ukFoEZxW2ZC+vmKv0xz+MdN6qqjvsUtv+MNYUBKSX7cLSJ17m1YWyU
-	 u1VGpCeo1RqMtDSuzViZVQKmq8L2uzITgbCWx1NE4SMf2PXEcsdvwFVHAzbRImHMA1niE
-	 lEK5SZAytKaRhtP7XOpAMvu5h8dTii8Qujic09O0PKn+mrpAruW0QHRJeMkDVIiHJC9PM
-	 1wD+E2yTvB2EtuMY8HVJKuVj7y/x9uHWEN1K7MZJEt48uOHODZPC0WKxEQK43QrDU5Ri2
-	 8nhTTfxfEwyLe722eRLs4EwDWJT1u8YoRLsBfKnFXkZ8tyJlSnE3Ex8UV0sTNi3nWSQ==
+	t=1794141155;
+	b=a8jorT81UsjrH8QMo/8QhsUc19h6pU3XyCBvDUQII5ZBfcmZu6n4NqRezo21ANao27Qt
+	 ESz1p7ErroZohvULiXfW+epgcQDzLZigeVNynfrJvqIKOBcakjS9In3nULYM+/vHWtKgu
+	 FqsxxQADTcqbGMnZn/RNlpiEteOtA2UlxP23fNDaGpfh5fRM6EFzJn7qW9wCiT4BFbKCf
+	 plVNS977ux71X+ZAaZhF7BcISGPODXRV96Ly+8lKW/rvhLPgabCsGVdPn2q9DyZ7q0CtH
+	 h+UR4eD2ToVFAfleXj05MSrjeBGNTIDqDZGH6PzOSSTfxW7PP2jkEWGPm70yZQyDAIA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794141154;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794141155;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=RztI6V2PThRIEHZuh9fdxJgBPEpj1vB8r2dlVTopDJ4=;
-	b=Sq/YbCk082JX+YisC/qZnQgMhpdqKvuz+0Nqj1PKyBgP5UDjWEcO/pZZulTOWJ9thupA
-	 +J5Z92MflkGZrZhvt1iOM88iViiDY5xdyb1EQwgXfru1KtlIYFNJug681UKDk1+1P7e2V
-	 0bJRK/uSJuEi4B1NWbt4ErEbxL1QJmUPhrZ5DeMt8H5nsGNGvzUDv3EJ1WzrOZzshP8jU
-	 sFuGhrdDlM4+0CMQNdnJDHnMO5CgTJWQkvAhnoUQ6aBYxUHa0wlW9uOuYn96AxgTMcJhL
-	 lDbKNvapz2EBQUx5IUC98eLqAeIabOl0ukQxUtduFg1A27InhCuOBq0roHpXKnceDUw==
+	bh=dgmC1dztGkS5ovK3PLxKYTHSkB6WJWqEHS4AboD7xzs=;
+	b=2qNDy3pr6Qbtro9+bA0zVCduZiOUlBumBP31WFJdCSnAdphADie2g43E0pKj/ArE5402
+	 eQKooWgFRkIVpiwYczAz0Ury/5GmNh1/y2GjZp+EJA4uxI2WOIJU4EzMmXMuF5apv0zdj
+	 3ZiH2Ux+LabPI6PdNbBgkDUeUeYCpGDYrIYJB3AR0GWUrtbTFGrh6Bd/UtbpRoWktTchN
+	 Z2ieH75JnPKczSTim/wRwvKHVsu0UeB61bt9BOWIPrPynBa30fWS/VMRTAIbrz064ZXRU
+	 oj3lEYqVT5I5mcudewWXp1tc6+1LvMT6KYuiVfW7f1+mqrAiwhWpjtN2EfFs79xkxEQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iouYYt4y;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OIRQed04;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8221E606A322;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822AC606A323;
 	Sun,  8 Nov 2026 12:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iouYYt4y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OIRQed04
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794141154;
-	b=ilY64JAUB82ZQLnxYdWwBURHUPrUV/K+uMQOZEp3RAk8YDDFhdOAQ4Wdx8GZxYifi91L
-	 8eDTLE8eBPTewv7BI3SCYJ06wuxRL+iSDkldkGagifflUaSP+4LUN1UYWmDHgLBDGczP9
-	 1/DfdD82kZuGZSURhbNORBeArGOSz8i+klBAZ8ChcdzvPnhoodkLKINpAk13Y3GCyLewA
-	 FPIViRqX8qbQUGzdBxmOdGORsM/AlwkH56myaWhLYrLtpvST0Tsl09PWR6VnJVFHlsytu
-	 +Xor8N4nfy0I9vVi30a3IPKDOwwzHwIOrBb2wwY9Ux1dQ3I7UBf+A7M/NZ2ydmJi1GA==
+	b=H9caFES20H4CqeiVplisIblfLv/v7TRvNVYEIORlp/BRoUf9+k9RvW6YZI10tmqP1Nm4
+	 PpNT1FM8Fuqbkx7WyfQda2cnzLSwxhBryJlhZ15OJQrTIJpjBB+s4Vkso5pNXNUJJSU5i
+	 2v1LQxBFhljhf2L1kQxypcgCUOchozriL0HexZl8P88cmByhNXtqtkEtQSjAaFBrgyoD1
+	 9LdS2Lz1d8jtCzD4liIvhO/2qVoyI9jN4u2tYAMlswad9MrB1lKhtVBfpxRt4Kgwo9980
+	 Dm7ySybIY00gWeEEugskp4ZkGZ5rby0jWwewz4s/GQfOra3sLADRAuoQBA2vsOmg43Q==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794141154;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=RztI6V2PThRIEHZuh9fdxJgBPEpj1vB8r2dlVTopDJ4=;
-	b=2ZvvE5CfPHiDUH9GyHzEyf5Du4U0fD3hXlzGFLWRJARmi4uICT0UGsb/AKoLPdtnFm11
-	 1B/qIngZvjsX/bwEsW1Y0kATmIt36RMecIanZ1aEytXjcsOBRtaqi8gkqmqxAUYc0G425
-	 WbPtqfAJSQoF8HuPqZ4yAiQ2maMfLfJ4LATKD3NZszeI8uZtD/PJAEQ7Sik/KuvoIN9ba
-	 bdsrvh3G1KuKtv9Ves9PXkOK27sTZ8SHMSdc/snCRxW0mItRL1brth2lFJnzEss2NS+DF
-	 yADSvVKdQ3J3THKqkbpOPzRtirkzH2G9Q13jNCgU735HyWlkxlng+yXuXxq0ZR1WJQA==
+	bh=dgmC1dztGkS5ovK3PLxKYTHSkB6WJWqEHS4AboD7xzs=;
+	b=i0Adj+2YQh8znN1Ino3EIUnB7/XivN1gqgJUmGk/SplbghK7pgQh96ZDeY1EImc7b8Fp
+	 LHN42MObeCga4G2giZLb0TYB1E59OOy3M3v7VmKIKTQqZaf2m9UATk8SEmif35IAN6pHt
+	 Jre4X9WiBFia6dET8brsgo7VkPr+ner4S/aoVJCRaf30G2s+PBdZ2C2StrDDzqYhwOUyw
+	 rdMVRQo9qoNAky/f6CfNwZEPpwkfdVT55UFl6FE215CIRyeGITjxQ8NVJZdzvBla/hFRY
+	 UAXLYrIGXAPE1tncE4R67voUgGnAC6OGlM5mcPe7ymgR7k45g3yaJaToXQ0rUWG0mTg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id BFC231F008A1;
+	by smtp.kernel.org (Postfix) with ESMTPS id CEDD61F008A4;
 	Sun,  8 Nov 2026 12:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794141154;
-	bh=RztI6V2PThRIEHZuh9fdxJgBPEpj1vB8r2dlVTopDJ4=;
+	bh=dgmC1dztGkS5ovK3PLxKYTHSkB6WJWqEHS4AboD7xzs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=iouYYt4y4+GTgOr2OCo5RHhDLjAT/HNBcCjSqCn0IvGL7b0RZeL3Rhmgbh6clbsBZ
-	 a1sONNMNEWh0pe031VNYkE7PmTb0XJ2yJ6tXI91LJm8NsnqHn52DGu6DlPa/W3Tlsp
-	 eVmZjq2Wzakng5WUjIaZA4Ymh8jnsEoL3RmHRlGqxyDZpc27zkf2SHwhW42QroJDUL
-	 TgNqUL0sLRqcOwKIV26wF9QhTievqxYxlR6/ivtBUUhIIiak/MIY+GloPk4J9M8d+k
-	 EErDI8V5nLZQOli9TBfCLfTAb1L21jU4z2I/PQZQEvGzJrEpPR4zhb54qTCtvgj5nG
-	 a/l8NZbk7fWBQ==
+	b=OIRQed04P9nFFUXPA5XJligUFFV8IkArFJqs5QUqkMbTip424fVrRrqndGcLLswq4
+	 GXGHQGdnTjaE2E2gjkCem7ZuJ8x4YAmFEzTObkNIAswQkOUQYdcVXFCKiTqtcKvZCo
+	 cA0rFTOCKuC3FwBQn66GQEpmwBEn5Z6ClYa1aNrR1+r9lAJhrPn5bOuZPdRaXvoRwV
+	 WwFwKHTfz0uY9yiRbL8/SXB4Bw0+Xj3C7OhWVvOVH7uLTL1hyvTS3bYH0lnPaRMhpF
+	 RTEKD8k+i7U0IJRHsI2XQuF14i7NO1yT9mwc20Tyh8s9Y1IvkMZfwb2VjAxcMG8ta/
+	 0pZgsP+ifp+3w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 4494647F69;
+	by lkml.kernel.org (Postfix) with ESMTP id 53F3047F6D;
 	Sun,  8 Nov 2026 12:32:32 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sun, 08 Nov 2026 12:32:23 +0000
-Subject: [PATCH v3 02/10] dt-bindings: display: panel: samsung,s6e3ha8: Add
- AMB630QY01 panel
+Date: Sun, 08 Nov 2026 12:32:24 +0000
+Subject: [PATCH v3 03/10] drm/panel: s6e3ha8: Introduce AMB577PX01 panel
+ compatible
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261108-crosshatch-panel-v3-2-87dd4ec4f7cc@ixit.cz>
+Message-Id: <20261108-crosshatch-panel-v3-3-87dd4ec4f7cc@ixit.cz>
 References: <20261108-crosshatch-panel-v3-0-87dd4ec4f7cc@ixit.cz>
 In-Reply-To: <20261108-crosshatch-panel-v3-0-87dd4ec4f7cc@ixit.cz>
 To: Dzmitry Sankouski <dsankouski@gmail.com>, 
@@ -102,21 +102,21 @@ Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
  linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2506; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1409; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=pZ1ZmXYMSPnJNhdcyRsXwav3/Ps9JEOeKZPs9vUMmAY=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq8GveYsFn4MOgQrLFx0dCv5N497ruFnJpbSIzr
- nMBWJw1ncqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCavBr3gAKCRBgAj/E00kg
- cud3D/9NnqzWe1/59sdRxpx6q+S/WSpsUSO/543/8NwT98l019Imrlzk+fmcmGvqKBc9k9f579J
- mShb9iBeXF9QIg7oRHm+ZjEX5TRUz9CAa7HrsCcLto0a1Gy2LUJZPN54qriSbdOKah3GRU+wdLN
- vVkg/+hYMzNy/CAuOYINJeuFGElcSAmiccPkz4Q5Wr9ftACSvOq+w3nKxEmAFspBoge+AOYaIRO
- ltAEDaU9TJAlWoHvPbY/5wyN0VREzZjk7p1pQ8H7jT01UMV/VUYdIwSsc0+tucglWs95tOI/bil
- CTm0m68+O2U9cXvF4dAAxCFH4Ynst8DHxeTFe5QX6aiqdxkcp2TdBtHz/1lFlNUz9GRd11XFRYY
- axVKhBR7HD233/h17dhkYQ5zOZmFiD6eRsEUrnQiMc8PJ52ajo4o9QqdCFh2CmlOVmPRXnKJyfT
- Wubgw8YJFtwXPBdOs6tEj2kzxF8Hq8ovLdIIMLr4cStXgitL5RH9eruK5GElAxHdKMAmSNsGeQ/
- CFpTjNUwrrKvHUg1WE9TjfdM2MQSSY6dDaEhUqqWWm17unBLlmU2Zd8ZvpfabCd/CVNpVytCP3r
- ewaloyOjWglTikrYJNaEpZYis7DhZJ/WgovsDInjDQXTxKUHkcCREJrTzHq9UexsYTLV7bZOFvb
- CLw1kFNtM2Vzbbg==
+ bh=rCrRxpJWEkA+wgegtsEKS9XsmbU7TwkO+KtW1/Btotk=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq8GveDbF7QshoXouh/LyZSBTuq4NEIs+zOioKc
+ LJAQQPVuPCJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCavBr3gAKCRBgAj/E00kg
+ cq8GEADNKdESp1A6wL4mOHYchMs/MZRUz7PXD1yIVwuMZsYRrlFfnW7Vtnty6KiZNb4fEm9RlB2
+ 3f02KyypqSH7ZVLgwYVO7FPNSHYo8tf0bj9mxXTTgsbEF7AbpmBxIkZLZUdM1WgRkUeftWCi9BS
+ ScEZ7p8KQDV7NNtYR6FuBrs3LNM2vbdcvScqTK+yipvMrjSLOGklM0X2hDfMhe3qz8IXF7QtAGy
+ H5eDcf2veq7alqn6wuraYVXKsqoOGgMOgGCCFAJPrKWv+yrSe1ZslWgfZug0423iImrM0QdxMeN
+ RA49h7Zju9fZ0IdiY9W1viy+iMSnJK5ch1+L7zJsLaDjufovvK5aLxNEqOH6UT4/oA7WnIyl/Ve
+ 7P2WfzUwxOriP4bXvvJnxc6BtvzuThBpTR+bHD52v5ASgb07dKdfDxGw6oQZAV3uRRUMHdJtoxF
+ gjq9tifNLJjqHQCv2ReAGppoJe/UdY5/kP6NOR+97u40p4MCMM7F5J5ZC/pYQnfyo+NSR1VYXw5
+ hzYVpBUwYlSZkGjfInlrY0Bo0voduu3tpeAlbHUyxqH7F0c1C93SrKgi/5mCkv2Ik2+7HKZS9qb
+ 3ErvWkeGek9AG6bDcFoUZknsorek6orvP+7jTo+0lNvEz0LDHBEyKg505vUBh1vjBCzuZXIKzz2
+ clY/HWsCfJN0Mkg==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -126,101 +126,41 @@ Content-Transfer-Encoding: 7bit
 
 From: David Heidelberg <david@ixit.cz>
 
-The Google Pixel 3 XL (crosshatch) uses a Samsung AMB630QY01 6.3"
-1440x2960 flexible AMOLED panel.
+S6E3HA8 is the DDIC, while the panel used on the Samsung Galaxy S9 is
+the Samsung AMB577PX01. Match on the new panel compatible, and keep
+the deprecated DDIC-only one working for existing devicetrees.
 
+Reviewed-by: Petr Vorel <petr.vorel@gmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- .../bindings/display/panel/samsung,s6e3ha8.yaml    | 41 ++++++++++++++++++----
- 1 file changed, 34 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
-index ca250b1b91712..dcf347fe5ca83 100644
---- a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
-@@ -7,48 +7,75 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
- title: Samsung s6e3ha8 AMOLED DSI panel
+diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c b/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
+index 078523df48860..45b1c522b0ccf 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
++++ b/drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c
+@@ -296,17 +296,18 @@ static int s6e3ha8_amb577px01_wqhd_probe(struct mipi_dsi_device *dsi)
+ 		dev_err(dev, "Failed to attach to DSI host: %d\n", ret);
+ 		return ret;
+ 	}
  
- description: |
-   The s6e3ha8 is a display driver IC used in 1440x2960 AMOLED panels from
-   Samsung Mobile Displays (SMD).
+ 	return 0;
+ }
  
-   Known panels:
-     - AMB577PX01, 5.77", Samsung Galaxy S9 (samsung,s6e3ha8-amb577px01)
-+    - AMB630QY01, 6.3", Google Pixel 3 XL (samsung,s6e3ha8-amb630qy01)
+ static const struct of_device_id s6e3ha8_amb577px01_wqhd_of_match[] = {
+-	{ .compatible = "samsung,s6e3ha8" },
++	{ .compatible = "samsung,s6e3ha8" }, /* deprecated */
++	{ .compatible = "samsung,s6e3ha8-amb577px01" },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, s6e3ha8_amb577px01_wqhd_of_match);
  
- maintainers:
-   - Dzmitry Sankouski <dsankouski@gmail.com>
- 
-+required:
-+  - compatible
-+  - reset-gpios
-+  - vdd3-supply
-+  - vci-supply
-+
- allOf:
-   - $ref: panel-common.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - samsung,s6e3ha8
-+              - samsung,s6e3ha8-amb577px01
-+    then:
-+      required:
-+        - vddr-supply
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: samsung,s6e3ha8-amb630qy01
-+    then:
-+      required:
-+        - vddpos-supply
-+        - vddneg-supply
- 
- properties:
-   compatible:
-     oneOf:
--      - const: samsung,s6e3ha8-amb577px01
-+      - enum:
-+          - samsung,s6e3ha8-amb577px01
-+          - samsung,s6e3ha8-amb630qy01
-       - const: samsung,s6e3ha8
-         deprecated: true
- 
-   reg:
-     maxItems: 1
- 
-   vdd3-supply:
-     description: VDD regulator
- 
-   vci-supply:
-     description: VCI regulator
- 
-   vddr-supply:
-     description: VDDR regulator
- 
--required:
--  - compatible
--  - reset-gpios
--  - vdd3-supply
--  - vci-supply
--  - vddr-supply
-+  vddpos-supply:
-+    description: positive boost supply regulator (ELVDD)
-+
-+  vddneg-supply:
-+    description: negative boost supply regulator (ELVSS)
- 
- unevaluatedProperties: false
- 
- examples:
-   - |
-     #include <dt-bindings/gpio/gpio.h>
- 
-     dsi {
+ static struct mipi_dsi_driver s6e3ha8_amb577px01_wqhd_driver = {
+ 	.probe = s6e3ha8_amb577px01_wqhd_probe,
+ 	.driver = {
+ 		.name = "panel-s6e3ha8",
 
 -- 
 2.55.0
