@@ -1,56 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.209
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794167084;
-	b=o7Ojkd6HU86IGNuyfhDOhixv9i4XhttOXajoJPDVb7HtzlnBnMBQbl427Jl7X9h751HG
-	 AK8jwWMAJeVTj7Wyfctn4KdT4teb5F3kA1gBc3E0rrD/sGgSuTf7N3meWl4DtfcjIlZtE
-	 TpYkTB4zbK8+jjMQQQ4ymVWYFuwY4YkOfRvgAvmBHomRQmjdRDocUuSQINkur8DYhi6qg
-	 WQzrkGxtJyEEduR/75OfRrwkvQgfz8jQhbDVewO9rkJOAAzvgV8548ibxpqQhq0MV0add
-	 /arqFBM+CEjMDFEqRLVS/zJJL7eyWxDMbM5Pn9s/6KQ+FtJbVW56V2zVEKsIope51lA==
+	t=1794169319;
+	b=du6e+jzoXGYMoP2TbQAWt+AXrda+Vcu7oHkXifbWbPZsiDZHyKbGC5Mc3dTd13fDRl6W
+	 rrDq9kRo8/V9zzieqH0adoZmcAZPjQlBqWoA3/9VYpzmijubyxQ46CmdtsDo1O6Oi0nEO
+	 uWeP4+40J8GBm3J+PUBSor+CnVgb17+ENGeUYfkyUxIJ2bKMtJVgQ4Y148zQt6yvzzEbD
+	 N6U2Onwoxz7h/gc+OdC2JgzGJBBe6QFyRHWn5EkH5Z7EaqhIGKmv79uANz27LZ6cZOVnZ
+	 7Wgs9AxlRDrHWT4p6WihcnukrS3tDO7Df0GoGrIaoXbcORToAQzDcv85f85HbHCpw4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794167084;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=bK/w0JY0qsvel/2C3Ak4Hi+ciU/jEBjPjTp1td+7pv0=;
-	b=IkIY74JOExmfcHebcR6UZjBmHx0BPPRqeEy/YOBNR8Co49F0TEJmLLBWaOuiWFoUAAvZ
-	 UJlwHBYBTnECO7HV4DXPkRwNz48rP/UxXrRPel06t5711DCQA+KCW0keKeQ2/froHkj8j
-	 nL8Eg5FAnWPTQwazlXdPk4Z2PYpAI6OBrEO25I00zGkYCQyD9kfnSeuQ3GGjOffS8TCjq
-	 0H4JmhB+/IsHKVMJm/tMZuo8lnCuv0L4X26B9QHRsHQhjkzrcb8FC2Q6AFtK6s0VzrIkW
-	 bdvkAdZB8pFenW2VzabWOyzPaX1Sr+oHCVA2o9aF50GDq7IxFFHLGMBg2W30oacU1yw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794169319;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=drp5MuIHZpgXaRWUy+nFQgGDIxOMoiE8kLZT6iuwaNw=;
+	b=YKIN9jagrXPFV11m7XfarMUgtwnL8qb5Y0JW84Vjhjj4O8jzVT+VTwqPA3g1PoblnIg9
+	 lSl8+/sF29JDFwhlMPwnGl14e/1ie7s4O7XzDInA2L8CMxnhzVlDUn/lxy9mmVE7w3qXu
+	 XaR1tWDZhQN43Bw4Mn4PfFRCuNvdKpxhw5mMDPabHFAD8sGPgSBNskZWUKeXf2jZneWTQ
+	 rBUCLibAmzr8e2ydHl+zECg2IzayoOhuocDzU43K+zdn5LNnhNRVerXPz2R8UKhktjTHN
+	 +Ce8mVf5dhpeTaLfPHOym2TNg6dwiVoDDVpjvKGC4k/zkeesyngxH9l4hydNUNpLrpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=postmarketos.org;
-	spf=pass smtp.mailfrom=postmarketos.org;
-	dkim=pass header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=YOLYPyDJ;
-	arc=none smtp.remote-ip=91.218.175.209
-Received: from mta0.migadu.com (out-209.mta0.migadu.com [91.218.175.209])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=REpq5aiu;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D6E606A31C
-	for <phone-devel@vger.kernel.org>; Sun,  8 Nov 2026 19:44:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65D6E606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC215606A320;
+	Sun,  8 Nov 2026 20:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=YOLYPyDJ
-X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=+ceEzAMQMvwUP9EY3u46PKK9C3QjKCi+ClAiSsq36c4=;
- c=simple/simple; d=postmarketos.org;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794167081; v=1; x=1794771881;
- b=YOLYPyDJ5TrEuBjbkSQ95fn1ZYo2KwuU1lq7GFgen8TTH6u60yMKaSozr3ldYPZuVk7EOdWI
- TQ98p4/oOSC9ajxW2pIWwgYLw3f/9Ye7fRxFUUpD2v1JKZB7fMhSb44EhsgBz6a36v/EVOCVfK4
- HgxI3aC+1/CFcJTcHjUulwTq6C8MVFoolvSmWjxk7U6PB+EUDC4+z0uKe77372CyKJ2W1zJeLum
- KW03KFc06t8oz17lYqx7InY6CFj35e5HKYumTo9cbUHJYnznwW62kFX6Vqw2TF+9CsX6bvoHzLP
- lJBITxDilGJflgy4jUct6WbL7hZZfnTDOu667KLyDV9ZQ==
-X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id d627279e59766dfb;
-	Sun, 08 Nov 2026 19:44:41 +0000
-X-Mizu-Trace-ID: d627279e59766dfb
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <73c1c139-e0ec-4179-b911-174e4f01a0c7@postmarketos.org>
-Date: Sun, 8 Nov 2026 12:44:38 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=REpq5aiu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252EC1F008A4;
+	Sun,  8 Nov 2026 20:21:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794169318;
+	bh=drp5MuIHZpgXaRWUy+nFQgGDIxOMoiE8kLZT6iuwaNw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=REpq5aiuHy2YQdvlIjNp9HxLW3w++Y1dKgWlpztrCx47nlSSGMbn9rN5GGU0XvF0u
+	 No37nFFbwHETtwIq7djiJgScuTkcWeoZPpt0T41dNhLc3kBzH4Jj65QUqjX7dlwQ+g
+	 UqwwUqPZTK8eTaNIb/Brtqd4ccgq0nlYqd5SeRXHzC9tQrtoFU8oAa8/yqvXWox9gJ
+	 P4b1IbumKpqPbPDI/hgcOOF9Ku0w7kIcj426FoIuGu6E6uHljM52Akujl/wdsAf38T
+	 nGlwaiaVOI/4coFw4wq+HIfDPMyX1Yn4SaJvuwmMt+zup2gO1VOrkZup0OIQ4DG34q
+	 hbTORHUrZ1BMQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Arnaud Ferraris <aferraris@debian.org>,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: sdm670-google-common: set chassis-type property
+Date: Sun,  8 Nov 2026 14:19:16 -0600
+Message-ID: <179416929528.628393.737482504530891704.b4-ty@b4>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261030-pixel3a-handset-v1-1-0ad9b0d17a76@sigxcpu.org>
+References: <20261030-pixel3a-handset-v1-1-0ad9b0d17a76@sigxcpu.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,42 +67,19 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] leds: aw2013: Add AW2027 support
-To: Lee Jones <lee@kernel.org>
-Cc: Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>,
- Alexey Min <alexeymin@minlexx.ru>, Nikita Travkin <nikita@trvn.ru>,
- linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20261012-aw2013-aw20xx-rename-v3-0-cab1fdd050b6@postmarketos.org>
- <20261012-aw2013-aw20xx-rename-v3-2-cab1fdd050b6@postmarketos.org>
- <179198402838.839288.17911568760182808689@kernel.org>
-Content-Language: en-US
-From: Paul Sajna <sajattack@postmarketos.org>
-Autocrypt: addr=sajattack@postmarketos.org; keydata=
- xjMEaVNevhYJKwYBBAHaRw8BAQdAjvGGprvrSn/CmlA1Bpjc4S5zJBNSz/6q0AESlS2JbdjN
- J1BhdWwgU2FqbmEgPHNhamF0dGFja0Bwb3N0bWFya2V0b3Mub3JnPsKZBBMWCgBBFiEEv1E8
- AP7J5F2dJQd4hycszAKyDbsFAmmt6twCGwMFCQlmAYAFCwkIBwICIgIGFQoJCAsCBBYCAwEC
- HgcCF4AACgkQhycszAKyDbv25QD9EdvXYqdH6vGQvB5HrUnMOsd37AZkKKgK87kMOXL/5tcA
- /jM3VLcq9mol+GstmBm1itIVAblXcm+H8g/wKoPXq/4LzjgEaVNevhIKKwYBBAGXVQEFAQEH
- QEgCn8S+S7t/3QvXt4dK4572qd+iTl7h4JX1FEV5XUs6AwEIB8J+BBgWCgAmFiEEv1E8AP7J
- 5F2dJQd4hycszAKyDbsFAmlTXr4CGwwFCQlmAYAACgkQhycszAKyDbueJAD+IMjk8ztbONXz
- H7fieZc5LoR+6mHnddccacmQyPcGAvsA/0+5SkHEgIBuKwkzwrmKgDqcLhVuEs2f1H2GxKUX jqQI
-In-Reply-To: <179198402838.839288.17911568760182808689@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 2026-10-20 3:16 a.m., Lee Jones wrote:
-> Also, the for() loops are identical and are the last pieces of both
-> branches, so why are they duplicated?
 
-The for loops were not meant to be identical, that was a separate 
-mistake that sashiko caught, the one it mentioned about writing a 4-bit 
-value to a 2-bit mask. I'll address that before resend.
+On Fri, 30 Oct 2026 22:27:38 +0100, Guido Günther wrote:
+> The Pixel 3a/3a XL are mobile phones, we should ensure userspace can be
+> aware of that by setting the `chassis-type` property.
 
+Applied, thanks!
+
+[1/1] arm64: dts: sdm670-google-common: set chassis-type property
+      commit: 7018a35af1e64a346e91f928e3e1bda1729bdbe0
+
+Best regards,
 -- 
-Hal: They're going for the kernel!
-Margo: Colonel Who?
+Bjorn Andersson <andersson@kernel.org>
