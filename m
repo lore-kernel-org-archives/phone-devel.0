@@ -1,65 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794169504;
-	b=YeP6neH2QBKAlpSrDuXxoANJUI/2n/qFKaCB2XN6f6NFqoUxopb7MscTxH+AgPgou5DG
-	 jih2yZ9ZVsJfyAu4nd4fOMZOvDVn13vtxvTpkSs+Laehd7siGyKbXcRTjttTToXIkJfal
-	 o2kP0pCia33a9a3/Fw5hJ3mFmiCr6g8nmHEj5oJGyU8PKG9Vj8wvkcaybFk/SI/T8ZmKP
-	 Vl/S2sa1P7l0uudodL3SnO+W61XvRi0Uz/zKXzYtPGqr1xOQi54oGblrMw8Cmqjj0skuG
-	 2N+hKaPBA6LIMEIPX2j/g5esMD6s+KrKvxaIrBKQepGBN11Kh3/NsDjj/MQdDPSzdGg==
+	t=1794169518;
+	b=U0C5RRj9xKRFuIFG8Csn/F3w+en38C1Pgx5lDcUZfz5/JiLNvTmaR1kGmksdfPcbbQAq
+	 lBb+HH+v1aMC6zj1E1eqjH9Tg7OXKyj2S54IDBLHXUlchcOzM88f7LBOQ9OqivCgPZ69T
+	 SFMIOXWPC5R8O/WHx70TW6lzpl9f4HEQaly5+GrTVnOARIu762Hpc2JGQm0frYXrpsdnM
+	 dV8w/R7BneaskuAMT7L1zBylw04f4M02VWdZ8zriUzJW3vxROI+fuOUZA4SOID3U/UFeI
+	 kWNjXGXT6GybKKeUUNCQ0b+53S+sZctrBDLmO4aNLWaToFLx6mEiUMLyJ36ktuBOMgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794169504;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794169518;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=fBDoa8c79e/xFCczEDSjXYKOrR/DyHcADjVxK/XT/98=;
-	b=JGBejh00SEXhOVlfCj0lLDhwzKUqOVV6ELZALtbxxH1eVcmMObDoQgMRcY4kxeZZKs6K
-	 6Ko2TjcMBFsrv0oizGrCLKUuk9x8G1BjqMBlFOF2fLmbn7Wdqa1zJ9SDemBYrCW4Q9PuS
-	 ztbxbQNyW5ocrRHUsAKmNTaADmfT/fKNmDdQWnCUTXBYQY2x5PpeWNzlFTYuqW735q2Tn
-	 bwz+0M0zlDYrOFj2P2keVGDwRuGfECAK/hIKQBt6Y+2BgRGUOgmFR1nMYplR5I5EeYu4q
-	 S49lu8S76PnipDsBnepAR91aOsmosdFHYsHCTQNa60oX/51N5+rB3ftyN3Ut698vC4A==
+	bh=KUkExc4669Xo5M0pq5MFv2MBmaFModmA2vimX3IaYCk=;
+	b=UySrLiFCBRlZ1tgMqAv8TwjtGRs3+CTtddcYQ3n5cur/qBViAuoE6wLchsuC+6Puquzn
+	 eukMITZGPrZD0RWycrAjSW8S1gbh709dh1SJO3MFxfBYvqlZ2zJwZKnITkJTx8fK9gSaU
+	 e2DEqqWaP8RFrH1whym8SWNLVXX6Ej97HKCPsAsViMUnzux1gKkFDl7pZZgjduZF7xfG0
+	 h1xNcTTtTLGHlJzecYu+SSCmigIJrV/+0Mt7CF5u2j7Wbif8STitYCdh5Gc1PLJEvmtuA
+	 R3JlDTCzJDP6s3iHyzXDcS/hzlaKMrF4lYfQNKz8vK9hfWMw8beTvQ6Ev8TJ7UIawfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HowTKSs9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ectRRz70;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946B2606A9FC;
-	Sun,  8 Nov 2026 20:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C56F6084459;
+	Sun,  8 Nov 2026 20:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HowTKSs9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3159A1F00900;
-	Sun,  8 Nov 2026 20:25:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ectRRz70
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D051F008A2;
+	Sun,  8 Nov 2026 20:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794169504;
-	bh=fBDoa8c79e/xFCczEDSjXYKOrR/DyHcADjVxK/XT/98=;
+	s=k20260515; t=1794169518;
+	bh=KUkExc4669Xo5M0pq5MFv2MBmaFModmA2vimX3IaYCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HowTKSs94GjB8ZCNa1h3ocarUueWIrzDoIb0c2NwbFSdAO6lAwpXD2NRceteoWxER
-	 crhGuO0GqVO9XVsBFXzcMtx92U3tfH1Bl2z+rVJda8t3wxKPPPUGBqopjs7CUT8eyJ
-	 GuDlsPjk/Faxut097KfG+TpC39UWBMjz5D1H3ZKhInMMgfMiNCl4q6uZR7QD826RCA
-	 1Nr93pAOY/nHDKe/fqH8lqH5H8i1/7U8RzN9uWOiu5E4Fj1+1BdpAYUhvOczMw8gfA
-	 Bi4pf7yjVUs6feUGdSy+TwJtg7R8lRnG/BycW4ml2SzS7kxRNG8Mk/5TW0YNnbTGuD
-	 Hbm7lQ0HpMw1A==
+	b=ectRRz70jeilpdeFOOPtObn7aRRQbSFNzr86oHfbEcMIQ/ykPy8+O8dj4BHzzdT6o
+	 kr+6gtz1yrjabPCYkKImC2/NmVMYDHF/4jckWr33HlvkLwKUpDr6sVP9DJNVJEsx9k
+	 wkeFx6W+NDrLnl6u1NlebeVvb8JVw82jwLf136q1ccnKBVUpXuE4o7/coI7fn0jtpZ
+	 B7w3f6Oe37QNKI+4fQEjS2w2ukGrQjynbg78hZm6EXhYzPPMo9WJWl3fABUCRCk7he
+	 qZPEk4e5UnGfs1o2KJRR8+TFjVtqZS3ux/SHARsff5FPXuyLZsC4mnlnvZXfbOgOrx
+	 UiDMY+nxNJ2fQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Val Packett <val@packett.cool>
-Cc: Mark Brown <broonie@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
+To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Erikas Bitovtas <xerikasxx@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Hansson <newbyte@postmarketos.org>,
 	~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/5] Enable soundcard on Motorola Edge 30
-Date: Sun,  8 Nov 2026 14:21:27 -0600
-Message-ID: <179416929399.628393.2387253236708275253.b4-ty@b4>
+	David Heidelberg <david@ixit.cz>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Vitalii Skorkin <nikroksm@mail.ru>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH RESEND v3 0/3] arm64: dts: qcom: sm7125-samsung: add initial device tree for SM7125 Samsung platform
+Date: Sun,  8 Nov 2026 14:21:37 -0600
+Message-ID: <179416929241.628393.5215102040104571354.b4-ty@b4>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261016073157.611956-1-val@packett.cool>
-References: <20261016073157.611956-1-val@packett.cool>
+In-Reply-To: <20260910-sm7125-samsung-v3-0-c467bea0fb9c@gmail.com>
+References: <20260910-sm7125-samsung-v3-0-c467bea0fb9c@gmail.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -73,21 +81,31 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 16 Oct 2026 04:31:48 -0300, Val Packett wrote:
-> This series enables sound support on motorola-dubai, at least the
-> speakers.. The WCD that handles microphones and analog USB-C sound
-> is left out because it would first need:
-> https://lore.kernel.org/all/20260522-kodiak-elite-macros-v1-1-487661ac1270@fairphone.com/
-> 
-> The senary MI2S patches were previously part of:
-> https://lore.kernel.org/all/20260506204142.659778-1-val@packett.cool/
+On Thu, 10 Sep 2026 15:27:20 +0300, Erikas Bitovtas wrote:
+> Samsung Galaxy A52/A72 are smartphones released in 2021 on SM7125
+> (atoll) platform. This patch series introduces support for SM7125
+> Samsung devices with the following components enabled:
+> - Framebuffer
+> - GPIO keys
+> - Hall sensor
+> - Vibrator
+> - Regulators
+> - Reset input
+> - Real-time clock
+> - SD card
+> - UFS
+> - USB
+> Along with that, SM7125 was affected by a hang when launching SHM
+> bridge. A similar issue was reported on a similar chipset:
+> https://lore.kernel.org/all/20250721-sc7180-shm-hang-v1-1-99ad9ffeb5b4@trvn.ru/
+> Add SM7125 to the qcom_tzmem_blacklist to avoid hangs when booting.
 > 
 > [...]
 
 Applied, thanks!
 
-[5/5] arm64: dts: qcom: motorola-dubai: Add sound card with aw88261 speakers
-      commit: ba44607caa70c16a6c36d1616b669b853ffd518e
+[3/3] arm64: dts: qcom: sm7125-samsung: add initial device tree
+      commit: e3738a846e67c27bb0ca0e0c5f0bff73e0a65d49
 
 Best regards,
 -- 
