@@ -1,55 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.118
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794173591;
-	b=3Uva0ZHumuhgcyhuq132cG9CpI6JyGeELEurYKBTuRSl6OXg29Or3uuecQZqPoItyzZ1
-	 sUOFYl6lgPmhutji5yArW4SCAirgXDqjuVBgB3TAqIGxrB2PS6CXgwWTBCPlgKLG32+ad
-	 yJ22YTwTS/LttC/QpbMprubBIZctWMy9X3H1UFvTIoiIOO8MubI1cqy7dRjwZkB0ZOMVV
-	 yKpfWGaX0s2MBgvxFMQUDs+duAZ4fmUoll+RYUf/1aKbCw9sVDLOtj85DYd0ueWy8vHK1
-	 wwpS03mH66d+IocCf0YI7BaT/JHhgpstlRtN+ME6P299D0QEQiorfDkFzLQDQ0Q4yVQ==
+	t=1794174580;
+	b=W2iCXfeR1BCd5iW2wEZ9RCwNtERMcEOAOrTlzIKlTjjdP+2mzuJaD/CKVEE0WPajF37P
+	 QHeL3sZaRlhNWD3b89mgX/ad7bi3VF+dKZEgX6uRyylJvQ5vT3y4eNZHJMV097ZOLr2kU
+	 yr/up4Ht3PmoEPNEva/kfw8xxxize6/3/JvA7qXaQfhlCED0Ab4YHrs6imFVukMRJuw4+
+	 jmLI7p+U3Li8dlCP28G6wYKZnkMiqAWFeemhneDVjKK/27jwE7dqKEiFFcq94MtoM07Ck
+	 PkX+GcZqh8qFFCGKRFfpcueABs8j/fs+R03yTiB+UM7JKy0M63XTIcBzqpGZUjOJ0fQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794173591;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=mld1YjQVRW7XQTMott+990ZWzRSiS3g1hcDI5GmZvEs=;
-	b=RLTfKqIYRqpYmjo94cMnJawMC2P9EJkcTH+bCcpCGFH9QzExDLoK7SVU6cCcO0BF7YyD
-	 KykxMocHEG7Pr+DUSg3+xFmS88SIDPh/T5Iouj4wMKe6GdYgMQWhpRgpqbTPa9M+MWF23
-	 dmqwW/tWZD5jpTPb/wpEdgSUgxW14Mqt2hr8eTmobu+sbLFJn/vU/6mv5NQOn546OPEPI
-	 068ZANYj+I2PVRnInvANt6Tf0P/7pXCJPzqZv/UbNbg/b1pbEv8YiL80m16p8yR7nfSpt
-	 uL4SGCV1c66NCvq0lQ7LB0buea0QxumaFzm8Ft5G2h0kkDPkdr3ythpgsnk3sMQS7Pw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794174580;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=3gRAP1YxlQCWGPap37hqUthvPeiuImlF2tdnQbsDgtg=;
+	b=ZFMd+HNHTjNnXDYQb/SuqrYqGLk1K5EMe/iKT931gJAFz+bmyZtwxKAqunNldp5DOjAr
+	 yXKlzF+I3cd9zojQiprNb1rv8VmfZdjUKqJgSjE/Gk5y/zGLDauo8QJv+cIDJTcxm0psg
+	 Tc9NYUTtnIDr2J0Dr0FHCM0D3+oltf7ZG76Sc2pzgEAc/+UUs8WNQtOe2SHAXxpeXJChO
+	 3JnnsEpMy6wM8pcs+Cg/8F1muy1Tz8Exl8xlQxuCSDCC2wKTfikKIzLbA/4gUScob5jXf
+	 57tpPAUsWG9nIcRelTPGemn6YEutxyE8+VUNgqWTdML75MFXNaq1DpOLh87IqTlCe1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mainlining.org;
-	spf=pass smtp.mailfrom=mainlining.org;
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=rsa-sha256 header.s=202507r header.b=ewY2GHnQ;
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=ed25519-sha256 header.s=202507e header.b=O2ZuP0Vm;
-	arc=none smtp.remote-ip=5.75.144.95
-Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=postmarketos.org;
+	spf=pass smtp.mailfrom=postmarketos.org;
+	dkim=pass header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=DPmEstMt;
+	arc=none smtp.remote-ip=91.218.175.118
+Received: from mta0.migadu.com (out-118.mta0.migadu.com [91.218.175.118])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62EA606A31C;
-	Sun,  8 Nov 2026 21:33:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D62EA606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB20F606A334
+	for <phone-devel@vger.kernel.org>; Sun,  8 Nov 2026 21:49:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB20F606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mainlining.org header.i=@mainlining.org header.a=rsa-sha256 header.s=202507r header.b=ewY2GHnQ;
-	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=ed25519-sha256 header.s=202507e header.b=O2ZuP0Vm
-DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1794173578; bh=mld1YjQVRW7XQTMott+990Z
-	WzRSiS3g1hcDI5GmZvEs=; b=ewY2GHnQ/pmFHOwOVOu3RQ+UT4GGCl9LSvnX7r6y6RjbYnG1Kb
-	3lUc88gD42HzocT/TH7KTBy7HvT5urPZKrksCYz+ezN8cu12wMN3eX8Yt6FQ3x4TrBIrjTlty74
-	rTWUutVa58JbukKJ8W46reWp/MqZceQ+cK8OXmnfclgEeX8wAJqb5XKR1JmwPBUU+7RUrqPWvm0
-	7m81mNQKgt8+w53ZApnPqHZ1OlkU0843w6AWW4ZwkPiPmoKNvK8UgNBSjK5DyBicJpuNU7C3me7
-	AAlL9LuzQtBg+UWIWdDGOhT4pjPZE/VkODP08yWwH6YZfV/8zupFiIi3lacikWb8ArQ==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Subject:Date:From; t=1794173578; bh=mld1YjQVRW7XQTMott+990Z
-	WzRSiS3g1hcDI5GmZvEs=; b=O2ZuP0VmVFDWbNwvY1yDWjbb/aiRSnhIza9WfiVOOeVPxGrv45
-	R0X8DLxWpNUZ04OdvQgn1Agd/uUjVYKtrzBA==;
-From: Dang Huynh <dang.huynh@mainlining.org>
-Date: Mon, 09 Nov 2026 04:32:50 +0700
-Subject: [PATCH] drm/panel: boe-bf060y8m-aj0: Correct display pixel clock
+	dkim=pass (2048-bit key, unprotected) header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=DPmEstMt
+X-Envelope-To: phone-devel@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=w/6qEc2cwOI6T/xUHNJh3OifoyGO3FRpW1FATx28UoM=;
+ c=simple/simple; d=postmarketos.org;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794174577; v=1; x=1794779377;
+ b=DPmEstMtjRJP75XGK0jU3H99b/kwySRpXknVFtHp0iwYU1/ABZ8uFcX514b/8cPt3sbvcmjr
+ 9KXWN7+ImblWVjXeAocUzJDgXApCjvsQVna4S3QT+VgyEk4J9pHMOeK4bBjEAmx5Xb4Sz25HWzu
+ TszyeNrVFw2tf3w9MIgnpzaIK2y69AvywMhXQ1u04p1hZYfTxFrKywoehlggBMWLBR6llbwbyM2
+ PuvSofRBvazxzZObKx1Eio1AH+kYw0tVt9grKv2Dma1FhYyIGE1OJujNOnGAVV7tRiTqGgmW9Xc
+ okbkwOWz2YIIvwn76oNOB3inT2J+ZJiRMBh/CINjaOz3Q==
+X-Envelope-To: phone-devel@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 7783f211d67b9856;
+	Sun, 08 Nov 2026 21:49:37 +0000
+X-Mizu-Trace-ID: 7783f211d67b9856
+X-Migadu-Flow: FLOW_OUT
+From: Paul Sajna <sajattack@postmarketos.org>
+Date: Sun, 08 Nov 2026 14:49:12 -0700
+Subject: [PATCH v4 1/4] dt-bindings: leds: aw2013: Add awinic,aw2027
+ compatible
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -61,66 +64,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-pro1x-display-pixelclock-v1-1-c81453fab5e4@mainlining.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQrCMBCF4auUWTswycIaryIu2mSio6EJmSqV0
- rs3xeXH4/0rKFdhhWu3QuWvqOSpwZw68M9hejBKaAZL9mwMOSw1mwWDaEnDD4ssnHzK/o2XkSi
- Sc72NAdq9VI5tPdK3+9/6GV/s56MH27YDZUoId3wAAAA=
-X-Change-ID: 20261109-pro1x-display-pixelclock-8b00f09972fd
-To: Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <jesszhan0024@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sam Ravnborg <sam@ravnborg.org>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, Dang Huynh <dang.huynh@mainlining.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794173575; l=1490;
- i=dang.huynh@mainlining.org; s=20250917; h=from:subject:message-id;
- bh=Z1BQM/pf1WR+1Kl4QTU3Y+a6rdxjZnhPHpwNe7Jhyhw=;
- b=UK5ym6da1N3ikhvb16kUg2wQh779tDMoZuYealnE4vJzo9cep5u99nj6kD0nmPkqIkZfQ6S9A
- lvhg64ghIC3AVxgBlSfQbweDUVeaJIGGBrnN8mGyUMu4lr1GnAO31Lr
-X-Developer-Key: i=dang.huynh@mainlining.org; a=ed25519;
- pk=RyzH4CL4YU/ItXYUurA51EVBidfx4lIy8/E4EKRJCUk=
+Message-Id: <20261108-aw2013-aw20xx-rename-v4-1-826529beeb52@postmarketos.org>
+References: <20261108-aw2013-aw20xx-rename-v4-0-826529beeb52@postmarketos.org>
+In-Reply-To: <20261108-aw2013-aw20xx-rename-v4-0-826529beeb52@postmarketos.org>
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>, 
+ Alexey Min <alexeymin@minlexx.ru>, David Heidelberg <david@ixit.cz>, 
+ Griffin Kroah-Hartman <griffin@kroah.com>
+Cc: Nikita Travkin <nikita@trvn.ru>, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Paul Sajna <sajattack@postmarketos.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794174570; l=1313;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=w/6qEc2cwOI6T/xUHNJh3OifoyGO3FRpW1FATx28UoM=;
+ b=vzfsl081FbFIiyzZnvCW2wCOy36hSI8+MO79cCOflVhL6CE5/pRgzXh4IO3i1Y+5/fQzRJZNi
+ QJ7aOlLaHCJCDAcNdRM+kj/0an2Ikp5AFWwAbhSEQqb7PcSt/S+wyTS
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 
-The driver has been using the wrong pixel clock ever since it's
-submission.
+The aw2027 is largely the same as the aw2013, with the
+exception of the way the max current is written to registers.
+This exception makes it different enough to not work without
+driver modifications, but similar enough to fall under the
+umbrella of the same driver.
 
-The panel is 60Hz, but the mainline driver ran at 165268 Hz
-which is 61Hz and the following formula can confirm this:
-(1080 + 36 + 24 + 96) * (2160 + 16 + 1 + 15) * 61 / 1000
-
-This causes the panel to show heavy signs of ghost touches, making
-the display unusable for anything practical.
-
-After the pixel clock is corrected, the display no longer show any
-sign of ghost touches.
-
-Fixes: a19125a28112 ("drm/panel: Add BOE BF060Y8M-AJ0 5.99" AMOLED panel driver")
-Signed-off-by: Dang Huynh <dang.huynh@mainlining.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
- drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/leds/leds-aw2013.yaml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c b/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
-index 84c21c62a43e..b1f428e0808d 100644
---- a/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
-+++ b/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
-@@ -168,7 +168,7 @@ static int boe_bf060y8m_aj0_unprepare(struct drm_panel *panel)
- }
+diff --git a/Documentation/devicetree/bindings/leds/leds-aw2013.yaml b/Documentation/devicetree/bindings/leds/leds-aw2013.yaml
+index 26238446f2bd..1ad165cfe34a 100644
+--- a/Documentation/devicetree/bindings/leds/leds-aw2013.yaml
++++ b/Documentation/devicetree/bindings/leds/leds-aw2013.yaml
+@@ -4,7 +4,7 @@
+ $id: http://devicetree.org/schemas/leds/leds-aw2013.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
  
- static const struct drm_display_mode boe_bf060y8m_aj0_mode = {
--	.clock = 165268,
-+	.clock = (1080 + 36 + 24 + 96) * (2160 + 16 + 1 + 15) * 60 / 1000,
- 	.hdisplay = 1080,
- 	.hsync_start = 1080 + 36,
- 	.hsync_end = 1080 + 36 + 24,
+-title: AWINIC AW2013 3-channel LED Driver
++title: AWINIC AW2013/AW2027 3-channel LED Driver
+ 
+ maintainers:
+   - Nikita Travkin <nikitos.tr@gmail.com>
+@@ -15,7 +15,9 @@ description: |
+ 
+ properties:
+   compatible:
+-    const: awinic,aw2013
++    enum:
++      - awinic,aw2013
++      - awinic,aw2027
+ 
+   reg:
+     maxItems: 1
 
----
-base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b
-change-id: 20261109-pro1x-display-pixelclock-8b00f09972fd
+-- 
+2.56.0
 
-Best regards,
---  
-Dang Huynh <dang.huynh@mainlining.org>
