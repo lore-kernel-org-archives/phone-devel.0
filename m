@@ -1,113 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=35.89.44.35
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793922885;
-	b=fuIffDf87T0+Iex152Z7QL5xEgxf65NCbk37segItYUQ3FAVfD0W718bEUClxd9weLYT
-	 aZQD5wopxchKWI9sBTkNNJsWm/1aW1STbGITGyDlke8cLfTAe1LCUVVGeuYsZ1aWIbnLe
-	 GZqp1dTEF0E4xEYjG1svgY7OlHgslFXX8IPCd0CxJwG/Jku6HAuv5IzysLIzpEqxtyIVm
-	 t4+Zk8CuhAPgqf6smspCkGe5BIubAfVJEaahf48yhvCY2RdjEZnoxPB2ic/jMIaLg2J27
-	 vZnOOAKELCQ3Vwz6hZ+ULw1+QA6yC4T7LTK3x2B4GleDin3dmuus7CMRsu4FbpFoFNg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793922885;
-	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:
-	 X-Source-L:X-Exim-ID:X-Source:X-Source-Args:X-Source-Dir:
-	 X-Source-Sender:X-Source-Auth:X-Email-Count:X-Org:X-Source-Cap:
-	 X-Local-Domain:X-CMAE-Envelope;
-	bh=gVqx0nYfuSEJ0GdcgxyreyG7706GoUCJZ8KOhEimfQ8=;
-	b=aUYKxyOdtRcoZThCK6drsojVqbsdsqPbJ88lDtkF/7tjSKfGowvSJIdvTLn0D0RQQaIJ
-	 TpYEkDD40Ga7LXD3yGLmLB8n3nc8FwvF/FHx9bwuUWiGPnXh2b2bNeuJcu9Dd5HSfb4j1
-	 CCHlQ7vKRzJ+GEjfEj1hU5pkuyW6Sm80QFYmQA3lJV9o5Y791iDZp7KzurXR3FmG5mJoU
-	 to5dIwzNV1cKHu3aAvySCFzbsxS4bEuICgNJhClN16vd/GVrNsHtGJYpf5/bl74d7sDMG
-	 mmL4aZKNzGXo/BlHwxUaPtcUFOLqgsS7WQ8PO2nr3eJnMT71XHCjmomMdBDiMmWoliA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=roeck-us.net;
-	spf=fail smtp.mailfrom=roeck-us.net;
-	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=PZgyvCP+;
-	arc=none smtp.remote-ip=35.89.44.35
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794141154;
+	b=MQrlUhr0TR3QmaPlzrKpF10CEinxQ9rHngIXZkhpj1ZOylQt1utqesjdLfQdehpT0y4P
+	 0JVe3uvCef0q0BCPAxCKLIpGBRfr4hwEN6FFfrS3grUQdAyvlkHAuhyf0OQAf1b0L4WIM
+	 HrtbRSn4vX2SPk5oNHNcpJMhmOLaTrlTNxjoP6SsiTTw8U7DlBuUIdCWH638PYQ9/LJf8
+	 ctkOtLemUBhbvy/Cpbwbr+f1wkoU5fkmk+mNUopirVj9OX/akp4R414hwKqFh7ONPRmBj
+	 +RCVIed6AYlnr5LMi5XqB9/E6GDSxl3sgSyvKQMKlJHoXxRM1a5s8BOypXs99kvUq3w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794141154;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=xOoQpZg3X2a+CkR5aV/9WieWfrkjfNlxLxvKZGfWUyI=;
+	b=Czc458LyH7BqgEO06MHcucbLrD69uhdd7yJK2GD6tSgVRCh1oQo96aHFtQER0SCIKf8P
+	 HkRiHgXHKEop4pBEHjoefoMoQxKmQQM9heIKMC4pox6awsZgy5436EKqFzRk4LXztRBAX
+	 2XBAc4p1ceQDPWkZbSWu8Ym8o2NThgeaKQljySOCvbrit4A4ikIDJWpmazWxfj00wj2Zr
+	 xC22hzNAP6sz+TTZsLmuhtfK9KLCinqk43P/WqNzSzbZIVcQC9SmrjhEJz1K0S+yMo9hz
+	 ldj/ZUp2oa0DEoK5sBmvycCVSQCVJw5lnkmsuMk6hsKIaHnWEVNcGUmIDDuE1Mk05tw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nN3cCjZM;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD63606A31B
-	for <phone-devel@vger.kernel.org>; Thu,  5 Nov 2026 23:54:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CD63606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BC6606A326;
+	Sun,  8 Nov 2026 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=PZgyvCP+
-Received: from eig-obgw-5003b.ext.cloudfilter.net ([10.0.29.155])
-	by cmsmtp with ESMTPS
-	id P3OjxafIKRiNxP7I4xw8td; Thu, 05 Nov 2026 23:54:45 +0000
-Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
-	by cmsmtp with ESMTPS
-	id P7I4xyytybtpUP7I4xII7k; Thu, 05 Nov 2026 23:54:44 +0000
-X-Authority-Analysis: v=2.4 cv=dIqmmPZb c=1 sm=1 tr=0 ts=6aed1744
- a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=M0FbrtG7MMAA:10 a=OuZLqq7tAAAA:8
- a=EUspDBNiAAAA:8 a=pYUB3rPNxVkG2UVf4jEA:9 a=CjuIK1q_8ugA:10
- a=AKGiAy9iJ-JzxKVHQNES:22 a=KPbNTLLc3YvdawN95zVk:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gVqx0nYfuSEJ0GdcgxyreyG7706GoUCJZ8KOhEimfQ8=; b=PZgyvCP+eIup2LALOsc1El6qhX
-	BpiSGOeVoHC2LKTSnFsH2qjCv++Q57E0cKLuYoRslbciG/VerYtXhrcuLu1iQUDlnCkWjaWtbDrrx
-	RCgrwwIlXJaHXe7c/G/u3uP2rz3Xx7V7sH+/rzip2tA/90KtrTMgb2+8oF5wQHF8TDcMFbmaaaLd7
-	JZsTVXOKJ9j2MpzTZU3R8RXdjeRZ1t7tEnvvh8cFihXHNVBUmVxxLkmzUsFkM2I9ijxyWf8HoN/AX
-	H1EfrwSIpaqSRJ3fSTLcklPmkgRjlPgCM5N5R9J+ALX+ConkfP2eURYPl5qimFEBtAKnTcwZdPc5R
-	9AwVujhg==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:60104 helo=server.roeck-us.net)
-	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <linux@roeck-us.net>)
-	id 1xP7Hz-000000019Yr-1Hb2;
-	Fri, 06 Nov 2026 05:24:39 +0530
-Date: Thu, 5 Nov 2026 15:54:37 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Muzaffer Kadir <muzafferkadir@mainlining.org>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Krishna Manikandan <quic_mkrishn@quicinc.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-	linux-remoteproc@vger.kernel.org, linux-input@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH v8 03/11] dt-bindings: watchdog: qcom-wdt: Document
- MSM8952 watchdog
-Message-ID: <f6bee82d-3e64-4e93-90f0-9470a166626f@roeck-us.net>
-References: <20261105-msm8952-initial-support-v8-0-311ae8e8f14b@mainlining.org>
- <20261105-msm8952-initial-support-v8-3-311ae8e8f14b@mainlining.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nN3cCjZM
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794141153;
+	b=TFkj5b/nGo6xNY1e7zxyQ4VEtSWUZzHNVm4pjVETAwOPRH8tghOehi+/SLu6LjOOUdBn
+	 nCUcyiMlZfuhx6Fuzj1AtndVd+As0uSYSsZSkVnbW9L3sfwYRSlFCYgZByDGKqRA0Xi77
+	 BDsj/kgPjbVA+lK2OYpwISnghuogD64Ew8jlh45ZjLJjMl7Jpns/im+tSByuVt8WwhN9k
+	 kFxcABofVXLKiIZkhe7jed1Q1rqx8KS2iCuewg4qWdKuMTYVqwHH5Bpsjj6B3HBNPd1Pj
+	 x3uXq86IN5YDy2/yDiAbzW4YqmSPxmBp1f5i8VM1IhpTiTDugHakQONndtNo6lren/w==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794141153;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=xOoQpZg3X2a+CkR5aV/9WieWfrkjfNlxLxvKZGfWUyI=;
+	b=S0LHlYXBemvIqvtXhhDSO6h8JXyb+PCm2bL922Gt0mrljIURzELFOkoZDcihcCSDlEIh
+	 ZTw57El5TFwiRvoMLKSpktl0szlENL5ZWlF4uBZqx86PamQN042xrakSQ225o83k6KAnx
+	 nna0CAbX6uzyd+CBt/EanW0Zhk/mUjg7gKFD2LRwOF4Vf8WOgykaaueF3ogEueMYyxq5q
+	 /HQw+0AdmhwE/6FQG819r3DsLn3aF/BdvZET/oKe+WFqG4R2Qo6dfV0hYcQJmr7bSlcrC
+	 M+ig4osCVBuiGmpCexlugJ5Ye2WzqQKJIMj6fVRJjuSpSUcGS4mMTZWORnrfmXntQsw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id BFC041F0089F;
+	Sun,  8 Nov 2026 12:32:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794141153;
+	bh=xOoQpZg3X2a+CkR5aV/9WieWfrkjfNlxLxvKZGfWUyI=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=nN3cCjZMSPRw6cvAn4OxC4s7acBIJNb9ZBbxaH8zJB78NR2yAtVRLIS+HshcwhT2/
+	 mz8+s2Hp1WGYUvEZBfKoG4xd+VCWHt43peGxjI82Fo5GQnBl8HSXi7W3Tpj8oWT7tM
+	 u4m2xAvN4BPPD7V/xodRBzNq4Kj5/50kJSThqtxhfgnPlMNusZTrPw6nvZKANyoD8l
+	 8XRGIVLTKd1oWWkQ42JhRr4GmhwFwlHwKCD6K2lbgLMN1cP3LBo7leLs582aNkWHy8
+	 j6ryyXqpGMEsXNSSif6ZepPjAj0ktqa8+gAHBNvZexssAUVWaf+sp48xf4KKAEoJ2M
+	 knEwyiL+8xM0A==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 2087847F65;
+	Sun,  8 Nov 2026 12:32:32 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v3 00/10] Pixel 3 XL display panel support
+Date: Sun, 08 Nov 2026 12:32:21 +0000
+Message-Id: <20261108-crosshatch-panel-v3-0-87dd4ec4f7cc@ixit.cz>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -117,39 +83,99 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-msm8952-initial-support-v8-3-311ae8e8f14b@mainlining.org>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1xP7Hz-000000019Yr-1Hb2
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (server.roeck-us.net) [108.223.40.66]:60104
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 12
-X-Org: HG=direseller_whb_net_legacy;ORG=directi;
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfOzwU4WACSXBiYg81poNMSS7yKdJBhijrPWXUTVivKyMoG7P2Qwtrr/BUlnt9QJS0WlUFq4yIN3tT1231B1EI5HB5CpL6BrYA/ZIaFr6tMQnn2J1NuFj
- YyhEynN+g7MTT9HGqyqXnh2j5sOMwJLvepqCN7yVNUasSuqVXqoiD9DDQqHsgSvWNJBXdYXVaL2v4igZdWsJ1wR3f8tZUlBUn/JYX/wOMK8dKu4M8GVQMbV/
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NQQ7CIBQFr2JYiwG0tLjyHsYFhY9gTNsAkmrTu
+ wvtQhNdTvJm3oQCeAcBHTcT8pBccH2XYb/dIGVldwXsdGbECOOkIRQr34dgZVQWD7KDOyZcQSO
+ 5MG1tUNYGD8aNS/J8WTk82huoWDplYV2IvX8un4mW3ZoXjPzmE8UEa+AgKsq0FPzkRhd36oVKP
+ LFv/fBHZ1knja5U3ZqaGfXR53l+Az9P2bP/AAAA
+X-Change-ID: 20260801-crosshatch-panel-06ce8a69fb7f
+To: Dzmitry Sankouski <dsankouski@gmail.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Petr Vorel <petr.vorel@gmail.com>, dri-devel@lists.freedesktop.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2412; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=tSNDj9ymd4uYRUtBQHQkxmD4lJDASY/5ynNPCLRIiEc=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq8GvdnBVMxF6dVYBg04KasocW7b688c6Q1Z7Ac
+ SqHVoGejyeJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCavBr3QAKCRBgAj/E00kg
+ cuw+D/0Sbmtnsb/VzdAqegSnnaK53qakB/RaFB0UcpvX6DlP3yFMUkNM8iEQUkgjFhIjE7ZMYXs
+ URqQI2C5vxRsQS3AvXLigIZF2txNuLrwA1w97NN5JQTg6gznbkg6irKg9vmQjd+Hjo52wOLjpeo
+ lkosvMUEqAEJUe2csK5QrucpYLMx0kTzD96ECNEG6IvBXZ2luzKxqR2Hjdb5zuS9PfxXeN6QvFp
+ 0ff66Djt0FjwasesIIaqeM9zC6Dn5moZQI5ivzEVSEcWwo30+J+ss0rLdOilx94bfyOonHiIcMs
+ 782nx0mQ0Kfbe74rdeGTPsngs8HsDRg9w1HjCW6WPkge7JZLcxRLxvsTKoWRqMGKg/etWzKME0c
+ KiCm8Ju2kPdTp+EFHKjHxNiFXL/CZOvQYyro66xznR0+geztQf4W3A9Vlj5pHYIEAYcKSurjg6t
+ wLNs7Y+haJh7GkQtycjZ+O8RVu+xoiRwOKimf0zcE6h7NidCGReyDOoVMAZqYob5XmYQGpk+caD
+ XUOVqlYfvhkWXjNjzwX8T1Lf1adnOUabQMh51uIwM6h7PSzWHqMU0btSjgLP9ZVJV7Lab84DdeJ
+ wlhch6eSb0R6Lk7Jd54goxFaLmnfbxEKUljY0H6ijhERGJPGIApsQnDfDNKBgvX3Tea78RoudoB
+ irE/8n65evHOMgg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-On Thu, Nov 05, 2026 at 01:54:07PM +0300, Muzaffer Kadir wrote:
-> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
-> 
-> Document the watchdog found on MSM8952.
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
+Introduce Samsung AMB630QY01 (Google Pixel 3 XL) panel.
 
-Applied.
+Includes refactoring and improvements to the S6E3HA8 DDIC which is also
+used by Samsung S9 (Korea version).
 
-Thanks,
-Guenter
+Patches 9 and 11 switch to the new compatibles, so they must not reach
+the qcom tree before the driver patches land.
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Changes in v3:
+- Entire allOf goes after required: block. (Krzysztof)
+- Expalin dt-bindings changes more explicitly. (Krzysztof)
+- Dropped "Really assert reset on the failure" as requested by (Krzysztof)
+- Not addressed: "No, this is wrong. You just broke all the users of
+  this DTS.", due to non-existent usage outside of Linux and DTB for
+  this device being shipped always together with the kernel.
+- Link to v2: https://patch.msgid.link/20260924-crosshatch-panel-v2-0-08d5c7bf72fc@ixit.cz
+
+Changes in v2:
+- Rebase on top of next-20260923.
+- Cosmetic fix s/Cosmtetic/Cosmetic/ fix in the commit msg. (Neil)
+- Link to v1: https://patch.msgid.link/20260920-crosshatch-panel-v1-0-de6e9512da96@ixit.cz
+
+---
+David Heidelberg (10):
+      dt-bindings: display: panel: s6e3ha8: Adjust to reflect the DDIC and panel used
+      dt-bindings: display: panel: samsung,s6e3ha8: Add AMB630QY01 panel
+      drm/panel: s6e3ha8: Introduce AMB577PX01 panel compatible
+      drm/panel: s6e3ha8: Prepare for supporting multiple panels
+      drm/panel: s6e3ha8: Correct the polarity logic within
+      drm/panel: s6e3ha8: Assert reset GPIO in unprepare
+      drm/panel: s6e3ha8: add Samsung AMB630QY01 (Google Pixel 3 XL) panel
+      arm64: dts: qcom: sdm845-samsung-starqltechn: Update panel compatible
+      arm64: dts: qcom: sdm845-google: Move panel pins into common
+      arm64: dts: qcom: sdm845-google-crosshatch: Add display panel
+
+ .../bindings/display/panel/samsung,s6e3ha8.yaml    |  56 +++-
+ .../arm64/boot/dts/qcom/sdm845-google-blueline.dts |  18 --
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi |  16 ++
+ .../boot/dts/qcom/sdm845-google-crosshatch.dts     |  60 +++-
+ .../boot/dts/qcom/sdm845-samsung-starqltechn.dts   |   4 +-
+ drivers/gpu/drm/panel/panel-samsung-s6e3ha8.c      | 304 +++++++++++++++++----
+ 6 files changed, 372 insertions(+), 86 deletions(-)
+---
+base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b
+change-id: 20260801-crosshatch-panel-06ce8a69fb7f
+
+Best regards,
+--  
+David Heidelberg <david@ixit.cz>
+
+
