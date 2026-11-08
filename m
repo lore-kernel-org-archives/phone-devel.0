@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794171939;
-	b=Xlv7stAoOgPGS9e7OdysSdt3pgw/Zqqaw3TBlEhbsGc45KY48SKJg6wLoxYLwvWCVPZH
-	 2wPgp2GKlijHRv9z8sSDKqVWujNgEqh8D9YUUcikcTK7QyDeBb06VR3M2FTWZ0/g4+/74
-	 sEy7+DSkDJO2v7uRVtKr8C0Xl9f+WxAS7mFGKFYgQgFD7pG/JAfKFiK679Gd7KGkvrNvi
-	 Av1umLNfktB62I0ljUQAPOFHa+Z2TZj2g8OnjgD8IVAmmBTsnv++YgXXzzEqpfhsiD5TS
-	 PYINHKLGw43ubSlzAr/6gUH6UCkm5EGU2A6EAaNtvvN2XAaaZuHLiMJ2hWA6hJt1ugg==
+	t=1794172224;
+	b=vc/WzAt8e8Fcemu9QZkQHVO+RpYfvlxrZcXKtylC13sLDY4TqnT9qO2ic47zgjQi2+Bu
+	 7o2ztaPcxPvlATIEmfeGprlEA5MQRn1Vq0ErqWqteJmqSxFJ5J/q78JICFfgJa4cp5Mfn
+	 z7UoTueTIrmiEYY5tB/NES0uUeEYpJ/PW8UDOkC8iGTUusLjUgFTSnKHOgMwzassaOQEP
+	 2j3Vx5mjke/uMReUEsgwuJIQ+KouEwkxr19mUmtffjSO/gqPoV6Hp714YWLhuawfdlGwl
+	 DKiO+uuSBnB4GNuQmhgLzQJQDbRWR33gp4z46OhfxpfrbcTU4kM56MMBwmHIOyRNySA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794171939;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794172224;
 	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
 	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=vDJG3XFtzW3EbC9px9U8oJF3OC/hsQyQL+/Lbgor/Qk=;
-	b=xepoIuF+jNcbQ4Z5vjx+XFfWMMruVqKmojVWVBGyaRQ1YOsD+KamysRroFhMSiPSpuRA
-	 29LTaQLXiEZtFth0ytnJ3S4vgR4pxrJeeXc+DNMbvF0t7nkAQo0yMk6/AW0vWUjHpNlFq
-	 /0oCcaIa3TKIQhW7d6asAN46eA/w8of1X31gs1lioCJMSeEpX0snvy/H5fFNjUO2mnXMe
-	 bkRP+Tm4EQtkzUMH6btodgNKHs4ODEr7EqtMONJGI0VOuDp6KspJ344ndUdaoxTKCLj4B
-	 4V1i68byiFRG5Dp+mYCJcCm7VeY5HGNaozUeodLdTx9YLL3kMQVvbqjbwgLCoygsH5g==
+	bh=EjsqBLuF1sXdrDz3JLLwnQ4GN2c9mE8wj2r3EBY/VX0=;
+	b=GqryPuEPfZ+QyVz8EoFZON9rZnSpSepCmpG/x7ZlZhhTXG0cPX3I0z7KeJoTC7qc7A05
+	 U35eCx70WqyrUyeAsAcq8rFbMNDYm0q41V5ue4cAJZ/9mstOMvcP4jCXCPBd/I5zTmhnw
+	 2h/0/1I4J9EaQ8/Qgnh8BTkQcocnRjsEQGMx5EjHJFeZvTZ1hJwJHb6Qqat4EDp1UNDID
+	 4NqYu7zjWHqud8010jMTVixlr66LyZ0Xjr/okLMseRCimHCBXlnC9FZ+le/ErzZEgvYGJ
+	 qKJVbWoVDJFZmJxH95NRPgEJfZk2CL6PPunA4nRP1SC1OWtTlvYQQ9XZh+6seuOcqWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=ixit.cz;
 	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=CBaw8g71;
+	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=h1IFtuvS;
 	arc=none smtp.remote-ip=84.42.129.46
 Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9258606A31C;
-	Sun,  8 Nov 2026 21:05:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9258606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8710E606A322;
+	Sun,  8 Nov 2026 21:10:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8710E606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=CBaw8g71
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=h1IFtuvS
 Received: from [IPV6:2a00:23c8:f560:e601:e685:a756:6ef6:d03b] (unknown [IPv6:2a00:23c8:f560:e601:e685:a756:6ef6:d03b])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 4A9335340CA7;
-	Sun, 08 Nov 2026 22:05:36 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id C08AF5340178;
+	Sun, 08 Nov 2026 22:10:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1794171936;
+	t=1794172221;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=vDJG3XFtzW3EbC9px9U8oJF3OC/hsQyQL+/Lbgor/Qk=;
-	b=CBaw8g71gZkz0X4dQ2NEYZnb7VAOscGGH4mHWEMU6LqV9i4BgS6vmnAnQP4ajfuYYFK0ea
-	O5RYVve1cwyZnmoL/sgRSOkPqObhQipvsTIxOZ1L9i6Ykyd/vjxsiN1O9lC1Hd72FOJMfj
-	+iqc22i9gzYtkSFjMjBV58hAq6OVxFo=
-Message-ID: <48420a1e-3611-4543-9d3a-7add3049b7ac@ixit.cz>
-Date: Sun, 8 Nov 2026 21:05:35 +0000
+	bh=EjsqBLuF1sXdrDz3JLLwnQ4GN2c9mE8wj2r3EBY/VX0=;
+	b=h1IFtuvS1Hi4U5TjeWLUr2r7evJITovvIAaRS4lZen/12UOJ0o6UxfwKQxZ3EySkx6dUQO
+	PJlbCjlJvr2NJIYOOOfSiN0y9mXitdKOJGaYvC1gCF6epMIg0FZSF/s2bj2xa4fNWxe7v/
+	jw1RpDBNVfswX6cR2AoWbj7BFBYAEUM=
+Message-ID: <7a0fba29-8577-4d0f-8f23-85745c196b5f@ixit.cz>
+Date: Sun, 8 Nov 2026 21:10:20 +0000
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -61,18 +61,19 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v4 2/3] arm64: dts: qcom: Add
- sm8250-oneplus-common.dtsi
-To: Frieder Hannenheim <git@fhannenheim.net>,
+Subject: Re: [PATCH] arm64: dts: qcom: sdm845-lg: Fix dark corner in backlight
+To: Paul Sajna <sajattack@postmarketos.org>,
  Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Robert Oscilowski <drgitx@gmail.com>,
- =?UTF-8?Q?Jean-Fran=C3=A7ois_Bobier?= <jf.bobier@gmail.com>,
- phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261105-kebab_dts-v4-0-c6bbe6ded92e@fhannenheim.net>
- <20261105-kebab_dts-v4-2-c6bbe6ded92e@fhannenheim.net>
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Amir Dahan <system64fumo@tuta.io>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, stable@vger.kernel.org
+References: <20261108-fix-judyln-backlight-v1-1-af4b946f559f@postmarketos.org>
 Content-Language: en-US, cs-CZ
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -118,68 +119,38 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20261105-kebab_dts-v4-2-c6bbe6ded92e@fhannenheim.net>
+In-Reply-To: <20261108-fix-judyln-backlight-v1-1-af4b946f559f@postmarketos.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 05/11/2026 20:20, Frieder Hannenheim wrote:
-> This file contains common properties shared by all OnePlus devices using
-> the Qualcomm sm8250 chipset.
+On 08/11/2026 21:03, Paul Sajna wrote:
+> From: Amir Dahan <system64fumo@tuta.io>
 > 
-> Co-developed-by: Robert Oscilowski <drgitx@gmail.com>
-> Signed-off-by: Robert Oscilowski <drgitx@gmail.com>
-> Signed-off-by: Frieder Hannenheim <git@fhannenheim.net>
+> Restore qcom,num-strings to the default of 4.
+> 
+> Downstream had qcom,led-strings-list = [00 01 02] set, so for upstream
+> we assumed qcom,num-strings was 3. [1]
+> 
+> However downstream also overrides qcom,num-strings to 4 in the driver [2].
+> 
+> Therefore, the correct value is 4, and that value is already the
+> default, so we don't need to set it in sdm845-lg-common at all.
+> 
+> [1]: https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/lge/sdm845-judy/sdm845-judyln_lao_com/sdm845-judyln_lao_com-panel.dtsi#L29
+> [2]: https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/drivers/leds/leds-qpnp-wled.c#L691
+
+I would likely keep the links under --- as the links are going to live forever, 
+but not a showstopper for me :)
+
+> 
+> Fixes: c6c66aa3ef33 ("arm64: dts: qcom: sdm845-lg-judyln: Add display panel")
+> 
+> Signed-off-by: Amir Dahan <system64fumo@tuta.io>
+> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 > ---
->   .../arm64/boot/dts/qcom/sm8250-oneplus-common.dtsi | 607 +++++++++++++++++++++
->   1 file changed, 607 insertions(+)
+>   arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 1 -
+>   1 file changed, 1 deletion(-)
 > 
+...hard-to-read downstream code, good finding:
 
-[...]
-
-> +
-> +	gpio_keys: gpio-keys {
-> +		compatible = "gpio-keys";
-> +		label = "Volume keys";
-> +
-> +		pinctrl-0 = <&vol_down_l &vol_up_n>;
-> +		pinctrl-names = "default";
-> +
-> +		key-vol-down {
-> +			label = "Volume Down";
-> +			linux,code = <KEY_VOLUMEDOWN>;
-
-Hello Frieder,
-
-patch looks good, but I noticed - which one? this key-vol-down or later at bottom,
-
-> +			gpios = <&pm8150_gpios 7 GPIO_ACTIVE_LOW>;
-> +			debounce-interval = <15>;
-> +			linux,can-disable;
-> +			wakeup-source;
-> +		};
-> +
-> +		key-vol-up {
-> +			label = "Volume Up";
-> +			gpios = <&pm8150_gpios 6 GPIO_ACTIVE_LOW>;
-> +			linux,code = <KEY_VOLUMEUP>;
-> +			debounce-interval = <15>;
-> +			linux,can-disable;
-> +			wakeup-source;
-> +		};
-> +	};
-> +
-
-[...]
-
-> +&pon_pwrkey {
-> +	status = "okay";
-> +};
-> +
-> +&pon_resin {
-> +	linux,code = <KEY_VOLUMEDOWN>;
-
-or this one?
-
-David
-
-[...]
+Reviewed-by: David Heidelberg <david@ixit.cz>
