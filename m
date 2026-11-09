@@ -1,78 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.166
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794262570;
-	b=VpbXvh2RkAw7SP02ZCvLwssXGBBJZf3gID+N1zLjUztscYq2nKJQbaNGcJ/t53jU/DcT
-	 sSnPbYmi5+iVBuxmq01DVONLZBuFviZDv36LKPKb8KOorWKB1Cw4TEFQn8ZOA25YCZjSM
-	 /QoHY/vIlnceazeThY7uVNbRnecuVhJPkdmODJF4YVkIKm4yothWJU5I9b+7xDmf8U0/b
-	 I3pKIo0gPLJfAhJMbBPCBjn1GnTj4MgBVk9z30kIxBrAZ1RxkjVLMLrxM/NCg+EvqOPTe
-	 AEFC4zt7DzdmH72sTvPETkd6+97bxDFZZoSIKQWSBukWFsIuU5UpAfcghH23iA6SZdA==
+	t=1794263635;
+	b=E0ahb3o14Tt5mKsrobLnamRheiy8QjCtBNhF1bFf0M/jfaTDHLMA+rzhci0eRUbmlnLn
+	 lAXkzZryj5qXoUBqY3ef51KTVQvX0yzN/fxsCVkQjzCFIdpT5TSdcDCNTHFKS1alkZazZ
+	 6M+EArmNU1heUob9SRGPwNrBYlJ5hYeP5Zd39JuCEwTglgJTkUiBksic8q4xOJCJuUQlK
+	 J1ZBEbK4Dv+z8PPJyxpGZj7DkA96xiQgfYXTwKkaeekL8KG55gjQrWvPzrjYeDczOXAhz
+	 zAg8C8oAlvjXaHgwXQc9gVXMkpfqfIHu5ycNXrgZZZBgzMXwFmttryQTNSf/L4z2ffw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794262570;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794263635;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=4FemD5xhOYnoxUKsmEWJQcftEMPDrfhkiKUBcodzP0A=;
-	b=N9LNtdQ5RPNO5JSmgnfWX5G9fJguJwhs0sXVzAe6NsaKTED1DTmN3Dwp/TB+azZPilLx
-	 Er4PESm4AAc5uFENHFQJYU5d7KnzIwvgAo/RubmN6/yFc2fFPr0NbZGQS/lIflCz2ZYff
-	 Q7v987jmFxLltsORKYQFVQ4cGnKXX3DzM6uGQiFzfXGEuy2vTGn2oyw074ruVBZP5pUb4
-	 X1ufvFIe1OEXpJdImPeUH3q4v/0qsXui8mtp7VeDZ7EN8NSwO6rZTem38rtNdPAaphdHD
-	 tFpOt2WM0gkzgwwoFAeAdDp6mkJ7kHyNE+Hk4fKxdBrFkN1qAK1ZKasYPs0jVz2onIA==
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=juGSgCG90hPdE9/iBCfeU0O/czp1PvRM5jFo+xGilAI=;
+	b=dnJgfGLADVWeep9YmeEMwKuiWtD8fu6A+khKVSOpBm/rqkWVMz42NTv9StwMPEE8N0WN
+	 wTko+LkLw/J7Ulv1BDj65JfRPMQnGZesDta6EeDCBBAd7+jFjbEfdBTKrnGQ1Pk8Bdr29
+	 qWWT93WYJgRDNsyvj1Bm5myc/aItNvTerRJJ5ki5swaHIju4fvjxtlncNc3s8Ydzk1OgH
+	 Fe77PosAqg0aC+pWjOxL1KgJjM7Ql7TUVT4OOWJ9ULrbPFOyjuLq5zD/aXPiJanbCVTlZ
+	 2XHMCRv5ubCSw/lc6xOCEvLj0HQk9rDSh7riTbV3FjPqIkmBg17G+2+VY54S9Boqu3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=packett.cool;
 	spf=pass smtp.mailfrom=packett.cool;
-	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=M7yUFPbY;
-	arc=none smtp.remote-ip=95.215.58.50
-Received: from mta1.migadu.com (out-50.mta1.migadu.com [95.215.58.50])
+	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=kIq8CGMJ;
+	arc=none smtp.remote-ip=95.215.58.166
+Received: from mta1.migadu.com (out-166.mta1.migadu.com [95.215.58.166])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB5D606A336
-	for <phone-devel@vger.kernel.org>; Mon,  9 Nov 2026 22:16:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DB5D606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86704606A336
+	for <phone-devel@vger.kernel.org>; Mon,  9 Nov 2026 22:33:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86704606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=M7yUFPbY
+	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=kIq8CGMJ
 X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=bOWnTS1Ifi2XFoCDR3H2nfoH1oKDAc2ATIMj00qbqxU=;
+DKIM-Signature: a=rsa-sha256; bh=Pk+laV3dhTJwk3ZH99anCvnpBHgw0DllGaWgkIfgUSI=;
  c=simple/simple; d=packett.cool;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794262567; v=1; x=1794867367;
- b=M7yUFPbYbI4tJu+KAhWjCxC6vVrGHz33HpR7g4f4rxsPPqjidm+ZStA7H38/O2fEiEpN0UVU
- HNJWTbYsZ4FV65gAXo/WixFhG4tRfIsR7liiypo4mIz+w3KUEs53Lvg/wpcJbb8YEii3WodKsj0
- C2+n6HTfK2xpdC9E+XCIzGm7R023WUcc8oyRQqVaL9yOo7tWEK1BBSrQvo1bkdd6wd32dql32L/
- 6o2mZgLSJhN/oFJkX+dj9nClR+xLuJuQX4WDwklVZ/cAR5QAY3ZFyq+VlfM48CMdbn/fcZvQQin
- +39sGvofwdRC7vFaoPWVr8FvApQFxMe4UI6eE8OGzp+3g==
+ t=1794263632; v=1; x=1794868432;
+ b=kIq8CGMJ8Ryzbro5ihd1ky31LpWN/HDF9mkeE+J42nWU1mRr7yZ1wCtY0MNfVeNVDagJQX27
+ pTwAgmGpmClcYXXAIJfd0dT1YNIyRlxbIKG+PA/R2Bcfx7TZWF22Hb4TFl1KHx4xcWWJcFEmoqW
+ KnCC9NzmlUaV6GEGRQ48GBv3YKycARKTQMTTUT8W0OWfUkvVpEDhYF9rqbyMO+BdV+nISXWS1ZO
+ ejjMcp+Q6eyFdQrsVDzXfawNHRoTKfn4TsVAuyzx9MoIFpJuCZGcD3eSWuSebtp+5gIyUdJbxCE
+ o5lOe5UqxcqB3n1CmuHYeW5j+Mw94Dk3gF6QC21/dig1A==
 X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id e58252eef6db5d3f;
-	Mon, 09 Nov 2026 22:16:07 +0000
-X-Mizu-Trace-ID: e58252eef6db5d3f
+Received: by smtp.migadu.com with ESMTPS id a5961c1509ba55d7;
+	Mon, 09 Nov 2026 22:33:52 +0000
+X-Mizu-Trace-ID: a5961c1509ba55d7
 X-Migadu-Flow: FLOW_OUT
-From: Val Packett <val@packett.cool>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Val Packett <val@packett.cool>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Michael McAllister <me@michaelmcallister.org>,
-	Kees Cook <kees@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] arm64: dts: qcom: sm6115: Add Motorola Moto G9 Power (cebu)
-Date: Mon,  9 Nov 2026 19:14:35 -0300
-Message-ID: <20261109221453.658316-7-val@packett.cool>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261109221453.658316-1-val@packett.cool>
-References: <20261109221453.658316-1-val@packett.cool>
+Message-ID: <1aca2519-878c-4aa2-b869-7416e7c3e981@packett.cool>
+Date: Mon, 9 Nov 2026 19:33:46 -0300
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -82,106 +60,96 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/6] arm64: dts: qcom: Add sm6115-motorola-common
+To: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Kees Cook <kees@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
+ Michael McAllister <me@michaelmcallister.org>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ linux-kernel@vger.kernel.org
+References: <20261109221453.658316-1-val@packett.cool>
+ <20261109221453.658316-5-val@packett.cool>
+Content-Language: en-US
+From: Val Packett <val@packett.cool>
+In-Reply-To: <20261109221453.658316-5-val@packett.cool>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add a device tree for the Moto G9 Power with the Tianma display panel
-based on the Novatek NT36525B DDIC. The panel driver will be added
-and enabled here in separate commits.
 
-Signed-off-by: Val Packett <val@packett.cool>
----
- arch/arm64/boot/dts/qcom/Makefile             |  1 +
- .../dts/qcom/sm6115-motorola-cebu-tianma.dts  | 18 ++++++++
- .../boot/dts/qcom/sm6115-motorola-cebu.dtsi   | 43 +++++++++++++++++++
- 3 files changed, 62 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi
-
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 6365f0ed0406..84ba824ed715 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -390,6 +390,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm4250-oneplus-billie2.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm4450-qrd.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-fxtec-pro1x.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-xiaomi-lemon.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-motorola-cebu-tianma.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-motorola-guamp-holitech.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm6115p-lenovo-j606f.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
-diff --git a/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts b/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts
-new file mode 100644
-index 000000000000..31ca51570ea2
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (c) 2026, Val Packett <val@packett.cool>
-+ */
-+
-+/dts-v1/;
-+
-+#include "sm6115-motorola-cebu.dtsi"
-+
-+/ {
-+	model = "Motorola Moto G9 Power (Tianma)";
-+	compatible = "motorola,cebu-tianma", "motorola,cebu", "qcom,sm6115";
-+};
-+
-+&dispcc {
-+	/* Preserve the bootloader display until the native panel is supported */
-+	status = "disabled";
-+};
-diff --git a/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi b/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi
-new file mode 100644
-index 000000000000..6f5263a67319
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi
-@@ -0,0 +1,43 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * Copyright (c) 2026, Val Packett <val@packett.cool>
-+ */
-+
-+#include "sm6115.dtsi"
-+#include "sm6115-motorola-common.dtsi"
-+
-+&framebuffer0 {
-+	height = <1640>;
-+};
-+
-+&gpu_zap_shader {
-+	firmware-name = "qcom/sm6115/Motorola/cebu/a610_zap.mbn";
-+};
-+
-+&i2c1 {
-+	/* awinic,aw99703 backlight @ 36 */
-+};
-+
-+&remoteproc_adsp {
-+	firmware-name = "qcom/sm6115/Motorola/cebu/adsp.mbn";
-+	status = "okay";
-+};
-+
-+&remoteproc_cdsp {
-+	firmware-name = "qcom/sm6115/Motorola/cebu/cdsp.mbn";
-+	status = "okay";
-+};
-+
-+&remoteproc_mpss {
-+	firmware-name = "qcom/sm6115/Motorola/cebu/modem.mbn";
-+	status = "okay";
-+};
-+
-+&venus {
-+	firmware-name = "qcom/sm6115/Motorola/cebu/venus.mbn";
-+	status = "okay";
-+};
-+
-+&wifi {
-+	qcom,calibration-variant = "Motorola_cebu";
-+};
--- 
-2.56.0
-
+On 11/9/26 7:14 PM, Val Packett wrote:
+> Add the shared dtsi for sm6115/sm4250-based Motorola smartphones,
+> with support for:
+>
+> * Simple framebuffer from bootloader
+> * Power, volume, and assistant buttons (PMI632)
+> * Charging LED, haptics/vibrator (PMI632)
+> * USB Type-C with dual-role USB 2.0 (PMI632)
+> * eMMC onboard storage and microSD card slot
+> * Wi-Fi, Bluetooth (WCN3990)
+>
+> Signed-off-by: Val Packett <val@packett.cool>
+> ---
+>
+> yes on both phones I've tested, only msm-id is required, not board-id.
+>
+> ---
+>   .../boot/dts/qcom/sm6115-motorola-common.dtsi | 541 ++++++++++++++++++
+>   1 file changed, 541 insertions(+)
+>   create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi
+>
+> diff --git a/arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi b/arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi
+> new file mode 100644
+> index 000000000000..6a5110319bc3
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi
+> @@ -0,0 +1,541 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+> +/*
+> + * Copyright (c) 2026, Val Packett <val@packett.cool>
+> + */
+> +
+> +#include <dt-bindings/arm/qcom,ids.h>
+> +#include <dt-bindings/leds/common.h>
+> +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> +#include <dt-bindings/usb/pd.h>
+> +#include "pm6125.dtsi"
+> +#include "pmi632.dtsi"
+> +
+> +/ {
+> +	chassis-type = "handset";
+> +
+> +	/* required for bootloader to select correct board */
+> +	qcom,msm-id = <QCOM_ID_SM6115 0x10000>;
+> +
+> +	aliases {
+> +		bluetooth0 = &bluetooth;
+> +		hsuart0 = &uart3;
+> +		mmc0 = &sdhc_1;
+> +		mmc1 = &sdhc_2;
+> +		serial0 = &uart4;
+> +		wifi0 = &wifi;
+> +	};
+> +
+> +	chosen {
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +
+> +		framebuffer0: framebuffer@5c000000 {
+> +			compatible = "simple-framebuffer";
+> +			memory-region = <&cont_splash_memory>;
+> +			width = <720>;
+> +			height = <1600>;
+> +			stride = <(720 * 4)>;
+> +			format = "a8r8g8b8";
+> +
+> +			clocks = <&gcc GCC_DISP_AHB_CLK>,
+> +				 <&gcc GCC_DISP_HF_AXI_CLK>;
+> +			vddio-supply = <&vreg_l9a>;
+s/vreg_l9a/pm6125_l9a/ of course, last-second copy-paste fail, sorry
+> [..]
