@@ -1,38 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.245.251.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794232697;
-	b=1qwUnDqb8bPqBmrDYFGVknrs4lTAkLDnOGHbwZiZDV3JOJg1EHTC0N14DygM8WwmexDK
-	 ZIAkR+qM0REhVNz1y9JkTLVC+4EqD/7nb6BAWZwziW3jAwIUB1arA9ImKIx0QJNwjnw1+
-	 DkgOcwEyb0jEu1RutyU2OE0ADl1pJVpdR+2pqUzNzZtaheLADvyqx3sGIefsXyjsiUUxV
-	 5m07YUju4J3YtgJMExabrKX+ePmH1rU27eBzJcCA7qlsQn6pstObfEff1hSzjvoUL7e2q
-	 nuTLysJePXr5z3weCQ/ReUKmlCjPxgz7O5yT8UjqYZJqolvQUhtbroaH7vglO6VYJYA==
+	t=1794236026;
+	b=fkscNMZFn8UA8HFSO4T52kRuMNdx6ljt+LWBIWDEPGVWz/qNCfvC1Q9G89Uyj0gXf1Ox
+	 WxEtKSA6fZxY/Y3QnNpxe9lgP4m3GTHN26wtM9sD+a7LMoqsdpN29Ki5jVU774hIRH3PD
+	 mn9SnGLEbxQW3C99R28HpdFGYPFIM9S0aWrtFKCqv8tR5XLHceKjPWkYDZIGFRqFsM601
+	 4b3ofa//wmhITIH6m6cgXPvz/4wS1sUS9QYcWkdk8gII9W/9dEFtnuAyXvD1UUJl2FxLO
+	 Za+asid+Lz7JqaSyaB7KD/XqgYTZY6lNuWwsgw8H8MJvT0csw0qjB5p2BqeRLTctyZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794232697;
-	h=DMARC-Filter:Mime-Version:DKIM-Signature:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Subject:Cc:From:To:References:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794236026;
+	h=DMARC-Filter:Content-Type:DKIM-Signature:Date:Message-Id:Subject:Cc:
+	 From:To:Mime-Version:Content-Transfer-Encoding:References:
 	 In-Reply-To;
-	bh=U5ti8OSYeIjt1Uuf3l/kM87zGucl8LSPS7ufqkvvcMw=;
-	b=VJvd/VVek6I648Z+uXzPY4OPZywRHomJU12IC0qRNJlOFLry7aDmmXSo611cZ/XIHhNM
-	 X0YLANv8ZT+4UGpSyft8oIpFyOGbUBd0UEamgxU/zehRhCZ7Fd4CbxXoZQiXTC7ikM1hj
-	 +ZKQMVxNUa8P1nxh6WHBHNhV19l0Y1WsTIuTvyg5Knff8SxtXUJaBGRCu6nrQDIOzpdUz
-	 ku8cxtZ2ysVkbBH+4bGPwK1El2HojyV5eUSqWu7xV2/xHBGLG2TtiG93Ek9uBl08Qjigt
-	 heHzNQxzX+X7mOzm76IpUz3HMp2vkojWlOr2GXLxnNE7ddXrz3hMHjZ48KQ1TRRTYKw==
+	bh=ceacrMlp6mw/lN+zsSUJu5X8+9PuN/FPhfrLE5/MHh4=;
+	b=hVJYuGvJQIYOsQNuJgCSXIKaDbHM2P70eCT1B1Lv275dWbWAiXdYJPDOEVzSbqBfUQ6r
+	 r4Qn3CSPkp0cCNwF0JyTUubFivbJZEwKcsCGJBaPWMuq4zkxMqrBq9ypaK6sZdqTw8IOH
+	 NSvzgET5JoUIqV8FhiZUDoShGwUbUKl/mSfULAkIbmFwkdWDpxogI7Xpa+I7cJv5UL2o4
+	 EIVcZtWpCOd4WL3kfiTs47Bc8SgcS+FifmQPtMzX4chPmKM3oaF/TZQbwQ00UqD0QSs2a
+	 i+bhB0jJCln6fPN3pm0N+HO3IbbCytzC4sVZuDAttlh4ZmJ0iuSX5AaaJpBd4b4yGwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=fhannenheim.net;
 	spf=pass smtp.mailfrom=fhannenheim.net;
-	dkim=pass header.d=fhannenheim.net header.i=@fhannenheim.net header.a=rsa-sha256 header.s=mail header.b=3xoju7gf;
+	dkim=pass header.d=fhannenheim.net header.i=@fhannenheim.net header.a=rsa-sha256 header.s=mail header.b=unVqbcq6;
 	arc=none smtp.remote-ip=188.245.251.181
 Received: from mail.fhannenheim.net (mail.fhannenheim.net [188.245.251.181])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABA5606A322;
-	Mon,  9 Nov 2026 13:58:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0ABA5606A322
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA013606A334;
+	Mon,  9 Nov 2026 14:53:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA013606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fhannenheim.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=fhannenheim.net header.i=@fhannenheim.net header.a=rsa-sha256 header.s=mail header.b=3xoju7gf
+	dkim=pass (1024-bit key) header.d=fhannenheim.net header.i=@fhannenheim.net header.a=rsa-sha256 header.s=mail header.b=unVqbcq6
+Content-Type: text/plain; charset=UTF-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhannenheim.net;
+	s=mail; t=1794236023;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ceacrMlp6mw/lN+zsSUJu5X8+9PuN/FPhfrLE5/MHh4=;
+	b=unVqbcq6rZN9RtkaS3VzwjS/EfmvS/Pod7VHNz/aTJfuSvsjGWhbCoApLoyXRxBWaCuODf
+	qkaBA52g/qCRWWrpLX1+hGV9VHWWn+VOEyj1UNbVy6/PhYKz10ZmtvQDkl16TeHWWSVQHh
+	iHHg1RxYAfvsJvvmzNIJ7zy6pdadcbU=
+Date: Mon, 09 Nov 2026 15:53:42 +0100
+Message-Id: <DMQRL5NXWCTG.3VYYE9QSVOK2U@fhannenheim.net>
+Subject: Re: [PATCH RESEND v4 3/3] arm64: dts: qcom: oneplus-kebab: new
+ device
+Cc: "Robert Oscilowski" <drgitx@gmail.com>,
+ =?utf-8?q?Jean-Fran=C3=A7ois_Bobier?= <jf.bobier@gmail.com>,
+ <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+From: "Frieder Hannenheim" <mail@fhannenheim.net>
+To: "Konrad Dybcio" <konrad.dybcio@oss.qualcomm.com>, "Frieder Hannenheim"
+ <git@fhannenheim.net>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -42,90 +67,67 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhannenheim.net;
-	s=mail; t=1794232690;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U5ti8OSYeIjt1Uuf3l/kM87zGucl8LSPS7ufqkvvcMw=;
-	b=3xoju7gflLEhLR18i4AuoA4Vm1b6p+o3t8Kzz74HK6Kwknnuwr3YUoKWXu3OgO1ZnFtWjU
-	t+1K7bSO47LP4bZizVmXPl1uNR5JJNwpLPyzITCFvvZP0QXxNgz40X3vGA/S8hXZr7L0/d
-	j2M3fV6WnFRXMTPypk30HE3n95xGg8U=
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Nov 2026 14:58:09 +0100
-Message-Id: <DMQQEMNZAC9R.2QNFULU5X2PAT@fhannenheim.net>
-Subject: Re: [PATCH RESEND v4 1/3] dt-bindings: arm: qcom: Document OnePlus
- 8T
-Cc: "Robert Oscilowski" <drgitx@gmail.com>,
- =?utf-8?q?Jean-Fran=C3=A7ois_Bobier?= <jf.bobier@gmail.com>,
- <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-From: "Frieder Hannenheim" <mail@fhannenheim.net>
-To: "David Heidelberg" <david@ixit.cz>, "Frieder Hannenheim"
- <mail@fhannenheim.net>, "Frieder Hannenheim" <git@fhannenheim.net>, "Bjorn
- Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>
 References: <20261105-kebab_dts-v4-0-c6bbe6ded92e@fhannenheim.net>
- <20261105-kebab_dts-v4-1-c6bbe6ded92e@fhannenheim.net>
- <70454ca2-3540-4cff-a051-758625be3278@ixit.cz>
- <040883dd-47a2-4401-9eeb-45478cbd05a0@fhannenheim.net>
- <67c44ce0-8dcf-48f1-abf3-f1dd81175a2f@ixit.cz>
-In-Reply-To: <67c44ce0-8dcf-48f1-abf3-f1dd81175a2f@ixit.cz>
+ <20261105-kebab_dts-v4-3-c6bbe6ded92e@fhannenheim.net>
+ <c25371d5-1693-4ab6-9b4a-7b17a38a4e09@oss.qualcomm.com>
+In-Reply-To: <c25371d5-1693-4ab6-9b4a-7b17a38a4e09@oss.qualcomm.com>
 
-On Sun Nov 8, 2026 at 10:03 PM CET, David Heidelberg wrote:
-> On 08/11/2026 20:58, Frieder Hannenheim wrote:
->> On 08.11.26 21:52, David Heidelberg wrote:
->>> On 05/11/2026 20:20, Frieder Hannenheim wrote:
->>>> Add compatible for OnePlus 8T
->>>>
->>>> Signed-off-by: Frieder Hannenheim <git@fhannenheim.net>
->>>> ---
->>>> =C2=A0 Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
->>>> =C2=A0 1 file changed, 1 insertion(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/=20
->>>> Documentation/devicetree/bindings/arm/qcom.yaml
->>>> index 50cc18a6ec5e..c21ef16e9ac8 100644
->>>> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
->>>> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
->>>> @@ -1067,6 +1067,7 @@ properties:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - items:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - e=
-num:
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 - oneplus,kebab
->>>
->>> How about oneplus,8t? We can use the non-so-much-confusing product name=
-.
->>> Looking at existing device-trees it seems customary to use the code nam=
-e=20
->> of the product for phones. Examples include:
->> - xiaomi,lavender
->> - google,sargo
->> - oneplus,cheeseburger
+On Mon Nov 9, 2026 at 12:08 PM CET, Konrad Dybcio wrote:
+> On 11/5/26 9:20 PM, Frieder Hannenheim wrote:
+>> Add initial device-tree for the OnePlus 8T. Downstream reference is [1].
+>>=20
+>> [1] https://github.com/LineageOS/android_kernel_oneplus_sm8250/blob/line=
+age-23.2/arch/arm64/boot/dts/vendor/oplus/kona-kebab-overlay.dts
+>>=20
+>> Co-developed-by: Robert Oscilowski <drgitx@gmail.com>
+>> Signed-off-by: Robert Oscilowski <drgitx@gmail.com>
+>> Signed-off-by: Frieder Hannenheim <git@fhannenheim.net>
+>> ---
 >
-> Yup, we had discussion with Krzysztof [1], that it could make more sense =
-made=20
-> actual production name as a codename. My guess is Android codenames are u=
-sed=20
-> before the product is released and the marketing name isn't known. Since =
-we know=20
-> marketing names, which people use to identify the phones, we can use them=
- to=20
-> make more clear which device is which.
+> [...]
 >
-> David
+>> +&i2c2 {
+>> +	status =3D "okay";
+>> +
+>> +	pm8008: pmic@8 {
+>> +		compatible =3D "qcom,pm8008";
 >
-> [1] https://lore.kernel.org/all/0fd3e0a5-33f7-4bc6-9146-dcaf035c3ef5@kern=
-el.org/
+> No PM8008 on the other phone?
 
-I think in the linked discussion it made sense to use the marketing name si=
-nce
-there where multiple devices with the same codename. This is not the case h=
-ere
-so I wouldn't stray from the precedent.
+There's 4 phones in total: 8 (instantnoodle), 8 Pro (instantnoodlep), 8T (k=
+ebab)
+and 9R (lemonades). The OnePlus 8 doesn't have a PM8008. Should I define
+this in -common? It would need to be disabled when a dts for the OnePlus 8 =
+is
+submitted.
+
+>
+>> +		reg =3D <0x8>;
+>> +
+>> +		interrupt-parent =3D <&tlmm>;
+>> +		interrupts =3D <112 IRQ_TYPE_EDGE_RISING>;
+>
+> interrupts-extended =3D <&tlmm 112 IRQ..>
+
+May I ask why? According to the docs interrupts-extended is only useful wit=
+h
+multiple interrupt parents which is not the case here. Or just for brevity?
+
+>
+> [...]
+>
+>> +&vreg_f {
+>> +	status =3D "disabled";
+>> +};
+>
+> I think it may be cleaner to move the definition to the other
+> phone's DT (are there just 2, or more?)
+>
+> Konrad
+
+The f block is used on the 8 and 8 Pro I believe. So I think it's best to k=
+eep
+it this way.
 
 Frieder
