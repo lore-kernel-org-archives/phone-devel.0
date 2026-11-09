@@ -1,56 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794175708;
-	b=ZmrWtXJOt8CAF3UHkMyiLVSt6AVN8dzdr7+vrhJt6t3gzg8n6ffy99gtAGNiAk2yT2kz
-	 z4f9yiWq69zttIsgQ7OoxgEpeJmwGNjMqxtqkws2XyKqIWG3mPsAqRr4cN2haETL1GuxX
-	 iRK9RYff0YDo0jyQ7zDWHj5AefMJDzLx1IkEfkOCIZ2hvI/tvTG5PwyEmpFhEomMjEplK
-	 HsQALwnmla2rn8Dfy4o5/Ysps/1OkczG5Qbh1fuEgenhojq9louUDj/RPJsNZ7ZiYw0hv
-	 EorEr5431PSNTkdZV9ss2qtaK1NXNMYb54iWnH1FuRdsvqwk/yk6UTXL7j56clmP4Rg==
+	t=1794187379;
+	b=LywSMW0NuFsvXdpneM+7Tf8Afn0aWi9mcyRbmkIXD3jo/XsmSdodd+N4JP0Lwnny4ygv
+	 +k13lTLSMuqOrf8ejS4JhTG+z1nJ1y6kk44Q+KDdnEdSB4WCoedqN+EAXqZb1NZ0RBpjZ
+	 76VfI7ldrHEXC39EwPSWEZZo+gC0/DRT/FNzEPp19mV5EzS+68hosgaywdCJK0s8qYQox
+	 azw226ScgGExQzQb0pamnoMZGBSl1ti4Nh9OSU06AWA1WZ3lvlP2br0v+Ic3KKZi5B52N
+	 0ADXwU6u0nGhanCGsBXjiv5kDMfFkPjeUzFSsE6dwf/3QmVRJeD/DLu/j1WbaUB4r1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794175708;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=mP+RLv7YA3xoEcSdhiubfekWgYbf7a4Mqt1EnFS2l2E=;
-	b=evqd5544nneJZLTrslQUBmMqXsKO8Q3Q2jjKo4zDV8Kg17Hn5FatTOJ8F5TCYBHhPmsZ
-	 AB/RpwH9VyGmpg/OS0kupebPJNGbXBRGYHVY4oNWq944J6SpnPqT8Rb6ZVUllCRczOId4
-	 /JBCjJF5lk9hmTtW4/yl2fiA7ok/G/yCsLdvj8UtEjaLxuyjMcd/Bi4AEa5OxE5XrESWx
-	 zCpaYO0l9ZuFP6ItXcrZraYUHJgASVHY8MROjTwyk9k6/9qgq0/2Qcf3kNK0NcJSQBQV+
-	 LTLWsnNkvQF3/nlI+oUtnwK13X8kPvWPTKt4ZzXLhnlvcmHaI7nD2UNxXOkyN4JxlTA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794187379;
+	h=Received:Received:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=Qb706ZL5O4KWbud0y2CpZF3/LcpSoCg7jFWxoHu4Cgc=;
+	b=dbhVhyo8qtKM3n5oY0YigaahiSmcM6UiyZ6nOk6bwzXfHubVRsdsJLIbWACIaekhmucm
+	 urPcRRci852EOlhFEw6yfdOXOUOUds3q82Lqd5SyNG22iC3spABjomuThGWmVI9UKOQys
+	 xHjOcoDxU5IoQXvV24oGFbwsymMVBxvPkNtIrUXljwKD0W553uANMrlBVEnZVwBMFTh8C
+	 NbkDAyfcq9htJLbWIFqFEnQymWJdDML2Df8M+w8t9oJIUJjz8b2PvQTLKAA/U3QaVx3rG
+	 1zYbww8x+wqfrj0a9EpYg0gcwlPD05cIsld/yViN+QY/AQUoaOTEOC6gypKviHYcCVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=postmarketos.org;
-	spf=pass smtp.mailfrom=postmarketos.org;
-	dkim=pass header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=I59MaAEe;
-	arc=none smtp.remote-ip=95.215.58.133
-Received: from mta1.migadu.com (out-133.mta1.migadu.com [95.215.58.133])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90320606A331
-	for <phone-devel@vger.kernel.org>; Sun,  8 Nov 2026 22:08:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90320606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=I59MaAEe
-X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=E9GlFD/nkAV+QrkBwclW4eEowvk8rBIRknJho/hf9L8=;
- c=simple/simple; d=postmarketos.org;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794175700; v=1; x=1794780500;
- b=I59MaAEeCdaKCfMuUTHPbIyVzbfz3Pm73y6uowmDLnatoZBgMnAoNKXERlrLKeNuoF6PAiaa
- gOWLTe5to8441RYieziKGyelF0YQZom3ZvDGCv+pkIdn8Nb15XvmMENYaWnWYTyesATF97ejHwH
- iXXLkBh/ErBvRteDdtryUUWVITO3GowgFIKGpEN7DtgdW10I5ZeY8+HwDFt3cV5vX4ol2kZ8iZ/
- /4gCPoSX3mKUghd2jKKcwZgViMqDFf37cg3amH63iwaTbP0/XL9EElS6bbVqrFuJTvhHkxDhzQW
- WSCvT1EVtMvY1Mm7Ur/iqO2PvZQ10BO741gMI0kbQTgXA==
-X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 7b8502a391023e8f;
-	Sun, 08 Nov 2026 22:08:20 +0000
-X-Mizu-Trace-ID: 7b8502a391023e8f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ea9edcdb-cecb-4fe8-97d5-1dead1ea8fd1@postmarketos.org>
-Date: Sun, 8 Nov 2026 15:08:16 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1019C606D82E;
+	Mon,  9 Nov 2026 01:22:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF261F00902;
+	Mon,  9 Nov 2026 01:22:58 +0000 (UTC)
+Received: by venus (Postfix, from userid 1000)
+	id DAAEC181B0F; Mon, 09 Nov 2026 02:22:59 +0100 (CET)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Casey Connolly <casey.connolly@linaro.org>, 
+ Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Fabricio Akio <fabricioakio@gmail.com>
+Cc: Robin Snyders <robin@snyders.xyz>, David Heidelberg <david@ixit.cz>, 
+ phone-devel@vger.kernel.org, Richard Acayan <mailingradian@gmail.com>, 
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261003-qcom-smbx-chg-state-change-v1-0-fffaef446932@gmail.com>
+References: <20261003-qcom-smbx-chg-state-change-v1-0-fffaef446932@gmail.com>
+Subject: Re: (subset) [PATCH 0/4] power: supply: qcom_smbx: report charger
+ state changes
+Message-Id: <179418737988.1255445.8261851488253335768.b4-ty@b4>
+Date: Mon, 09 Nov 2026 02:22:59 +0100
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,41 +55,31 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/4] leds: aw2013: Add AW2027 support
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>,
- Alexey Min <alexeymin@minlexx.ru>, David Heidelberg <david@ixit.cz>,
- Griffin Kroah-Hartman <griffin@kroah.com>
-Cc: Nikita Travkin <nikita@trvn.ru>, linux-leds@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-References: <20261108-aw2013-aw20xx-rename-v4-0-826529beeb52@postmarketos.org>
-Content-Language: en-US
-From: Paul Sajna <sajattack@postmarketos.org>
-Autocrypt: addr=sajattack@postmarketos.org; keydata=
- xjMEaVNevhYJKwYBBAHaRw8BAQdAjvGGprvrSn/CmlA1Bpjc4S5zJBNSz/6q0AESlS2JbdjN
- J1BhdWwgU2FqbmEgPHNhamF0dGFja0Bwb3N0bWFya2V0b3Mub3JnPsKZBBMWCgBBFiEEv1E8
- AP7J5F2dJQd4hycszAKyDbsFAmmt6twCGwMFCQlmAYAFCwkIBwICIgIGFQoJCAsCBBYCAwEC
- HgcCF4AACgkQhycszAKyDbv25QD9EdvXYqdH6vGQvB5HrUnMOsd37AZkKKgK87kMOXL/5tcA
- /jM3VLcq9mol+GstmBm1itIVAblXcm+H8g/wKoPXq/4LzjgEaVNevhIKKwYBBAGXVQEFAQEH
- QEgCn8S+S7t/3QvXt4dK4572qd+iTl7h4JX1FEV5XUs6AwEIB8J+BBgWCgAmFiEEv1E8AP7J
- 5F2dJQd4hycszAKyDbsFAmlTXr4CGwwFCQlmAYAACgkQhycszAKyDbueJAD+IMjk8ztbONXz
- H7fieZc5LoR+6mHnddccacmQyPcGAvsA/0+5SkHEgIBuKwkzwrmKgDqcLhVuEs2f1H2GxKUX jqQI
-In-Reply-To: <20261108-aw2013-aw20xx-rename-v4-0-826529beeb52@postmarketos.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
 
-On 2026-11-08 2:49 p.m., Paul Sajna wrote:
-> I'll do my best to address all of Sashiko's comments, but it might take
-> me some time to circle back, don't bother reviewing until I've done
-> this.
 
-Hello Lee, I believe I have addressed all the robot's comments, and this 
-is now ready for a proper review.
+On Sat, 03 Oct 2026 16:45:20 -0300, Fabricio Akio wrote:
+> qcom_smbx does not handle the charger's chg-state-change interrupt, so
+> a charge completing is not notified and consumers can keep a stale
+> status. Allow the interrupt in the binding, handle it in the driver,
+> and describe it for PM660 and PMI8998.
+> 
+> Tested on a Motorola Moto X4 (PM660) with the sdm660-mainline 7.2.3
+> tree: each charging-state change is notified and the battery status
+> follows. The PMI8998 patch is untested on hardware.
+> 
+> [...]
 
+Applied, thanks!
+
+[1/4] dt-bindings: power: supply: qcom,pmi8998-charger: add chg-state-change
+      commit: 4e5927d83004c2ee0b3567f649eb63c5e444bde9
+[2/4] power: supply: qcom_smbx: report charger state changes
+      commit: 275c40e43b0d3671d79fa143e664eb4fc0bed96f
+
+Best regards,
 -- 
-Hal: They're going for the kernel!
-Margo: Colonel Who?
+Sebastian Reichel <sebastian.reichel@collabora.com>
+
