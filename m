@@ -1,50 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794187379;
-	b=LywSMW0NuFsvXdpneM+7Tf8Afn0aWi9mcyRbmkIXD3jo/XsmSdodd+N4JP0Lwnny4ygv
-	 +k13lTLSMuqOrf8ejS4JhTG+z1nJ1y6kk44Q+KDdnEdSB4WCoedqN+EAXqZb1NZ0RBpjZ
-	 76VfI7ldrHEXC39EwPSWEZZo+gC0/DRT/FNzEPp19mV5EzS+68hosgaywdCJK0s8qYQox
-	 azw226ScgGExQzQb0pamnoMZGBSl1ti4Nh9OSU06AWA1WZ3lvlP2br0v+Ic3KKZi5B52N
-	 0ADXwU6u0nGhanCGsBXjiv5kDMfFkPjeUzFSsE6dwf/3QmVRJeD/DLu/j1WbaUB4r1A==
+	b=UO3ja11nSSOumPLdqjdbUDS6ZozpMhN7QCxlMnmBl5HEAjv864gVpZwt/dvGIqES2dXx
+	 qTf4r9kLJlQOHyQrJ7f2zsWcANRaDQ3VWRnLG5b4xZ5F00Ka+BrHKljv4zrclaHid+VYB
+	 4XLZJ0rZgbxx9A9OdS7oLefjO6AwasZ5kds6SFKSa9OwlXXkqt1HZctFa4oFCuxxUb/zo
+	 djnAZAZiLJOhLgfK+W680vtgQ2Wmwxt7v55VV9xl9QI+pMP1ViF2wvZr35Dfsvs8j0PpG
+	 eXtZzFdqBt9Wk+c7JT7eTay/Z+D7kM3xV4sqh/9TnpcNjlM29dHoAZDwk+yVvmAMzPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794187379;
 	h=Received:Received:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 X-Mailer;
-	bh=Qb706ZL5O4KWbud0y2CpZF3/LcpSoCg7jFWxoHu4Cgc=;
-	b=dbhVhyo8qtKM3n5oY0YigaahiSmcM6UiyZ6nOk6bwzXfHubVRsdsJLIbWACIaekhmucm
-	 urPcRRci852EOlhFEw6yfdOXOUOUds3q82Lqd5SyNG22iC3spABjomuThGWmVI9UKOQys
-	 xHjOcoDxU5IoQXvV24oGFbwsymMVBxvPkNtIrUXljwKD0W553uANMrlBVEnZVwBMFTh8C
-	 NbkDAyfcq9htJLbWIFqFEnQymWJdDML2Df8M+w8t9oJIUJjz8b2PvQTLKAA/U3QaVx3rG
-	 1zYbww8x+wqfrj0a9EpYg0gcwlPD05cIsld/yViN+QY/AQUoaOTEOC6gypKviHYcCVw==
+	bh=57TiHluZF0TraOBXBCRHy4j9KLpKtaSSnS+xIB/HzZc=;
+	b=CKytCftfSILjAeDJw2f4f0GrcUPLLBtY99PwBfCOTGwVhbRS/ofeoQ4cUtnyfa3ChMHS
+	 ow7Y+5GCZ5Qg1+313uc4FoZrji27loz0xxNOti1X/5mnWv8ePg3ACvtW6qotU3ImobhEU
+	 qK1ofg9vgvbWkrWXpe+n5nzaRc3FN1kfwggd91OMbaNPGmK09K6DjDZlCltFjcCME8Fef
+	 4Wj44S/CVKjWrkvxHoIkjyfisjSVBBHNfA75qnDzREuaTusbbeOwVq0NTNmhZeAoLMSoY
+	 fr7BWS98E3bR1X7dE7dHkZBpdfASUthq06KYTpW0fmlhICCo3XQMRTNoqWwP0S0r42Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1019C606D82E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD3A606D834;
 	Mon,  9 Nov 2026 01:22:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF261F00902;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2681F00904;
 	Mon,  9 Nov 2026 01:22:58 +0000 (UTC)
 Received: by venus (Postfix, from userid 1000)
-	id DAAEC181B0F; Mon, 09 Nov 2026 02:22:59 +0100 (CET)
+	id F00981828E8; Mon, 09 Nov 2026 02:22:59 +0100 (CET)
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
 To: Casey Connolly <casey.connolly@linaro.org>, 
- Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Fabricio Akio <fabricioakio@gmail.com>
+ Sebastian Reichel <sre@kernel.org>, Fabricio Akio <fabricioakio@gmail.com>
 Cc: Robin Snyders <robin@snyders.xyz>, David Heidelberg <david@ixit.cz>, 
- phone-devel@vger.kernel.org, Richard Acayan <mailingradian@gmail.com>, 
- linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261003-qcom-smbx-chg-state-change-v1-0-fffaef446932@gmail.com>
-References: <20261003-qcom-smbx-chg-state-change-v1-0-fffaef446932@gmail.com>
-Subject: Re: (subset) [PATCH 0/4] power: supply: qcom_smbx: report charger
- state changes
-Message-Id: <179418737988.1255445.8261851488253335768.b4-ty@b4>
+ phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261008-qcom-smbx-psy-race-v1-1-cb49fe7b4336@gmail.com>
+References: <20261008-qcom-smbx-psy-race-v1-1-cb49fe7b4336@gmail.com>
+Subject: Re: [PATCH] power: supply: qcom_smbx: read the charging status
+ without the power supply
+Message-Id: <179418737996.1255445.2065619025083533810.b4-ty@b4>
 Date: Mon, 09 Nov 2026 02:22:59 +0100
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -60,24 +55,22 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
 
 
-On Sat, 03 Oct 2026 16:45:20 -0300, Fabricio Akio wrote:
-> qcom_smbx does not handle the charger's chg-state-change interrupt, so
-> a charge completing is not notified and consumers can keep a stale
-> status. Allow the interrupt in the binding, handle it in the driver,
-> and describe it for PM660 and PMI8998.
-> 
-> Tested on a Motorola Moto X4 (PM660) with the sdm660-mainline 7.2.3
-> tree: each charging-state change is notified and the battery status
-> follows. The PMI8998 patch is untested on hardware.
+On Thu, 08 Oct 2026 17:56:18 -0300, Fabricio Akio wrote:
+> smb_get_iio_chan() reads the charging status through
+> power_supply_get_property(chip->chg_psy), but chip->chg_psy is assigned
+> only when devm_power_supply_register() returns, and the power supply
+> core already calls get_property() from inside the registration, for its
+> uevents. If another driver has taken a reference to the supply by then,
+> as a fuel gauge naming the charger in power-supplies does, the core lets
+> the call through, and reading CURRENT_NOW or VOLTAGE_NOW dereferences
+> the NULL chg_psy.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/4] dt-bindings: power: supply: qcom,pmi8998-charger: add chg-state-change
-      commit: 4e5927d83004c2ee0b3567f649eb63c5e444bde9
-[2/4] power: supply: qcom_smbx: report charger state changes
-      commit: 275c40e43b0d3671d79fa143e664eb4fc0bed96f
+[1/1] power: supply: qcom_smbx: read the charging status without the power supply
+      commit: a291a224a0f42bafd7a3e013751f897662c3affc
 
 Best regards,
 -- 
