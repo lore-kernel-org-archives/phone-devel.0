@@ -1,64 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.111
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.13
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794262523;
-	b=UebRnd4k7ZGITDONmFHtRIoYKr6gf8KMkoWkhOgIpVWPD550q+cqcqoyE6BzEFkblBOa
-	 luMdW2g5OrFegD7WMsU0DdWYlgs3tiNLe/UR5SVQpcYpKTGR1yW+Wrf2CEFTKCejPVDGI
-	 KcoO9Ovt2oYo8WkuR+8r9n0KNod47XXtmb6LRYrLuBR0PMRFlYB5Bg7TrV68qBKx/1V9O
-	 T3cg0C81q2GKTpWoDP9VZJ+rYh64YJ7F9b0wwEsikuwjPL56AyIQiNy85HBOquUEQiqQe
-	 rQKB7g+iL/Koj25pQJ3SS63WHx2R1m3Q6Ev9RUwXqzGpnNh7vT+d4/Wn3oGM3He7Nug==
+	t=1794262530;
+	b=FBW/N8SeIKurp2yet0bv1s7hmmGcma3ZRqNU4O9nvirUCP2AhcN8dSrcFWB/UOxF/+zb
+	 nal3hv5vK7zjYsq0BhdH0KEuaIHqdK+EuOiB6fPw0DVxvqxdpUOkuxz5R4dhV27Sodtve
+	 /ELaFKeLL36GXIq5oPu/SK6HpcYwVTTIPAfe/kXP+Zx2zUSlvp2p5UghNfUYygsAKwHY7
+	 xKGUdN/31MPqrfz8dTdHUcwfbLbv4Syi+/UzQqiwcHkM+UCoqtDnnpbD0BKFuKzO1uo6w
+	 GRzKCd9WaNCpxchfUh6MtE9f5kPwhybnOjnSXdPJnMeRwFX6J1stKQrOo8RDLQ6dReA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794262523;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794262530;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=r4ARuiayoGmnb3gobGgT6ycbMUSvczq2GaGID26XOPc=;
-	b=0ibIbifoSsUz1sdV2rV24XKOCkjTVJIKQF2WdQVCIdaXfsENaWmiI49sOGnBUDiBPo8q
-	 4rNh2YmZmV+JvfwS4yISn7WSFt1LlvPm5tKvnKxITfkI3qdnC7zRxwHfBJIBtaBAUcoI1
-	 zy/k8OP2Buv1tNKiIeqKhc1YI85FM2iz/ZRT3kS52GNvW4SYEwEtHOk0S9f2t13aE2Dkc
-	 7adpKgBZ8S1MV5lzl0MGVHNg4D6rOZ9q2tiwNLRgs6xr1dFZqEa7Tfbj5l6lNV5E5Oxsm
-	 X+ZtYzHnYl+cb2Y4BDT0ALen7tReMlqQNKVxVb+6IYGA95RnBZCB1e93jhcHGrsPemQ==
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=4lKRGPKRjEBS3HRBukS+pW+bipLW37WZwjli8JaaFQ8=;
+	b=eA1+CCszrxyi+mzT+Rqjdg+za+fMlN/5ZSEk56ltZ6f+0eeF2GPsvjnKFGWwzqWiiplw
+	 N66i9OnfMEctXyOzwVCUKZRUO3nwnunc0sJN5fxw+pevohlWTwZIlvyjnxuP6jKb+fnVx
+	 +eOFORwctqEcX61lMXzdlq/9Hpevc1AHURYJdh1OSYBi4RZHiQsG3zslAaEw0T0owDIKE
+	 iDCl5siyXAaNVTtctpW5d7QNqA/z8rl1ixk8+h+Z8iT27Tl9mqFiTmTsOKKy2PqPlpvB1
+	 u9BcBJxsVkoASPbyg4ubVZCw4NrTUxCOthYNGm9EcwCb7fF51oXcLy5ckyMBLfsBFfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=packett.cool;
 	spf=pass smtp.mailfrom=packett.cool;
-	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=ZSljuwdH;
-	arc=none smtp.remote-ip=91.218.175.111
-Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
+	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=dmS3X8f4;
+	arc=none smtp.remote-ip=95.215.58.13
+Received: from mta1.migadu.com (out-13.mta1.migadu.com [95.215.58.13])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E89606A336
-	for <phone-devel@vger.kernel.org>; Mon,  9 Nov 2026 22:15:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3E89606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6861606A321
+	for <phone-devel@vger.kernel.org>; Mon,  9 Nov 2026 22:15:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6861606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=ZSljuwdH
+	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=dmS3X8f4
 X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Q8GRugxCN0NxT2mKf+lhcXEmhEoypzxpW7nD5nFeee8=;
+DKIM-Signature: a=rsa-sha256; bh=5rXea88LMQSd6M3OaqGX1Vmyk7bSpvO4oRK6rdtigS4=;
  c=simple/simple; d=packett.cool;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794262519; v=1; x=1794867319;
- b=ZSljuwdHdZ2QQkNrbGO019qqxfRoUdP22jVio1D3C+4gNbKVyH5DRZfSNtxEMVEgAG10rZEi
- vMNd/ypwN7k46sOWQbUU4vd6eXAGhRfVTzdf6b5oskiqu29UzwLNdpvwu2jNfDta5iFNfeykhj5
- sppleSrDUvh5S8RKy0Zn0ofZyQRoupHCEnfeytU988SeHm+G81aAIxvSXsr3Wc2+aI2i6ASpE3O
- TKPdeZHRHngWoVkfrrfPsoLJXOm6Ezet/q3VeMGa1ZRKdwlBVP0SLjY2fOQZh9fDDTlm0zBVtdn
- mDbhRqR+/tqPQLypfSsb+bmSbdUDJB5af+fwivlYzae2A==
+ t=1794262528; v=1; x=1794867328;
+ b=dmS3X8f4MbVLBfOsbMc8SZ4iw9NtzyqDUJz2rHi0DIgT4wvX+UUnepZ+G/Ztck4O17Yzu2+G
+ r7njJcp78HvSME8K3UMcnt+W5yovlYif+LFB72RoMgqIdBwEWdl+RCdueJXLbCr6lHHAw+umhqR
+ tTss/689E1l+2DX6fh7xehCgOVAwPjoTnclwXBTd7EoWpIhU1fwUbxTE4ftK43yHyBq2KwQpBDf
+ rxqcDaCsxoDiWLkRMv/ITJOTP2N/5TX4UjxJQvOCi9JF7do837OpO1RCEqHKwQ21Uv2P7bcnGqw
+ 3PWRPSV6w2ZF99Tu52oxuso1pIL4ljfQ0rZn5fqtQWGxQ==
 X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 5ae3d32ff97ae3f5;
-	Mon, 09 Nov 2026 22:15:17 +0000
-X-Mizu-Trace-ID: 5ae3d32ff97ae3f5
+Received: by smtp.migadu.com with ESMTPS id 4e9c1d3d8c71a54a;
+	Mon, 09 Nov 2026 22:15:25 +0000
+X-Mizu-Trace-ID: 4e9c1d3d8c71a54a
 X-Migadu-Flow: FLOW_OUT
 From: Val Packett <val@packett.cool>
-To: 
-Cc: Val Packett <val@packett.cool>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Michael McAllister <me@michaelmcallister.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+To: Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>,
 	Abel Vesa <abelvesa@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Val Packett <val@packett.cool>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Michael McAllister <me@michaelmcallister.org>,
 	Kees Cook <kees@kernel.org>,
 	Tony Luck <tony.luck@intel.com>,
 	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
@@ -67,10 +67,12 @@ Cc: Val Packett <val@packett.cool>,
 	phone-devel@vger.kernel.org,
 	~postmarketos/upstreaming@lists.sr.ht,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/6] arm64: dts: qcom: Add Moto G9 Play (guamp) / Power (cebu)
-Date: Mon,  9 Nov 2026 19:14:29 -0300
-Message-ID: <20261109221453.658316-1-val@packett.cool>
+Subject: [PATCH 1/6] dt-bindings: arm: qcom: Add Motorola Moto G9 Play
+Date: Mon,  9 Nov 2026 19:14:30 -0300
+Message-ID: <20261109221453.658316-2-val@packett.cool>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261109221453.658316-1-val@packett.cool>
+References: <20261109221453.658316-1-val@packett.cool>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -82,55 +84,32 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+Add compatibles for the Moto G9 Play smartphone, codename "guamp".
+There are several display panel variants, start with the Holitech one
+which will be the first one to get an upstream device tree.
 
-this series introduces a common dtsi for the Qualcomm SM6115/SM4250
-("bengal/kamorta" platform) Motorola devices, basically the ones
-listed at: https://github.com/moto-sm6115/kernel_devicetree
+Signed-off-by: Val Packett <val@packett.cool>
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-and two concrete .dts files for the two phones I've tested,
-the G9 Play (guamp) with the Holitech/Himax display panel (which I've
-previously upstreamed support for [1]) and the G9 Power (cebu) with
-the Tianma/Novatek panel (will send the driver once this lands,
-also waiting for the AW99703 series [2] for backlight adjustment).
-
-+cc Michael wrt the G10 (capri) series [3], sorry to bother you
-about a series that already has R-b and all :) but your device
-is very much one of the "clones" on the same platform so please
-consider rebasing it on top of the common dtsi. I've deliberately
-left the SoC dtsi include out of the common one to allow for
-sm4250 as well as sm6115.
-
-[1]: https://lore.kernel.org/all/177451576040.103892.16399746050578598756.b4-ty@linaro.org/
-[2]: https://lore.kernel.org/all/20261016162912.64581-1-lukapanio@gmail.com/
-[3]: https://lore.kernel.org/all/cover.1792840208.git.me@michaelmcallister.org/
-
-Thanks,
-~val
-
-Val Packett (6):
-  dt-bindings: arm: qcom: Add Motorola Moto G9 Play
-  dt-bindings: arm: qcom: Add Motorola Moto G9 Power
-  arm64: dts: qcom: pmi632: Add LCDB regulator node
-  arm64: dts: qcom: Add sm6115-motorola-common
-  arm64: dts: qcom: sm6115: Add Motorola Moto G9 Play (guamp)
-  arm64: dts: qcom: sm6115: Add Motorola Moto G9 Power (cebu)
-
- .../devicetree/bindings/arm/qcom.yaml         |  12 +
- arch/arm64/boot/dts/qcom/Makefile             |   2 +
- arch/arm64/boot/dts/qcom/pmi632.dtsi          |  14 +
- .../dts/qcom/sm6115-motorola-cebu-tianma.dts  |  18 +
- .../boot/dts/qcom/sm6115-motorola-cebu.dtsi   |  43 ++
- .../boot/dts/qcom/sm6115-motorola-common.dtsi | 541 ++++++++++++++++++
- .../qcom/sm6115-motorola-guamp-holitech.dts   |  36 ++
- .../boot/dts/qcom/sm6115-motorola-guamp.dtsi  | 127 ++++
- 8 files changed, 793 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-guamp-holitech.dts
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-guamp.dtsi
-
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 74f46697a363..37443849d0bb 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -1073,6 +1073,12 @@ properties:
+               - xiaomi,lemon
+           - const: qcom,sm6115
+ 
++      - items:
++          - enum:
++              - motorola,guamp-holitech
++          - const: motorola,guamp
++          - const: qcom,sm6115
++
+       - items:
+           - enum:
+               - lenovo,j606f
 -- 
 2.56.0
 
