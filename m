@@ -1,61 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794239797;
-	b=JhuGRcIJMlSduaCix2TCyOcqzpyMrbJcV+S2UDCnh0MxK9nKAjTcepvwPJ0Btw2hOEU3
-	 6XiTlAX71VLoD/h2NP9ReqKw4fU6q2RTqKr1HIu0UB8JHC8kWQ/h3ZTdOWtnbF4Al9Kwp
-	 nQAKqnCIuL4F2+2qjlt2uBoL7xoUQqfDv5czl1JQWuvfQCN312QuYdYajoWj9zZFQyjV7
-	 whdDX38PcNWy7+TqZlEUcJONQHTlHQyUWhmN4Ycg5tc5EPW/7vxy5dR5ux8U0AD/jUel/
-	 mlEYauypwlC3VlaWFZRt3+WbZYCCwuRCqTdw87jk2HHLFL7qMr7JVGKHhHm4uzFADQg==
+	t=1794262523;
+	b=UebRnd4k7ZGITDONmFHtRIoYKr6gf8KMkoWkhOgIpVWPD550q+cqcqoyE6BzEFkblBOa
+	 luMdW2g5OrFegD7WMsU0DdWYlgs3tiNLe/UR5SVQpcYpKTGR1yW+Wrf2CEFTKCejPVDGI
+	 KcoO9Ovt2oYo8WkuR+8r9n0KNod47XXtmb6LRYrLuBR0PMRFlYB5Bg7TrV68qBKx/1V9O
+	 T3cg0C81q2GKTpWoDP9VZJ+rYh64YJ7F9b0wwEsikuwjPL56AyIQiNy85HBOquUEQiqQe
+	 rQKB7g+iL/Koj25pQJ3SS63WHx2R1m3Q6Ev9RUwXqzGpnNh7vT+d4/Wn3oGM3He7Nug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794239797;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=LDCJlYvo3vx3tgjCW58/ygfsQ/e8c8gyHXqxxnH8sw0=;
-	b=kjRh+qmYSZYwOVXRbz1XiHHBHqM5jqRGrdQSKexU9/GcYoGy5QhUKpLvbFoejPU0oKh1
-	 gw4kjISRkxe18J32TUngGMEE6RzFbrpRr6K6YERdqbub6RlvP2auGVGMesaLTrEdAQgfl
-	 xlNr3wKRsCXEYHMptGeTnV4+IdBola+w1W2l5qh3tUFfD4VLxguUQXauMOxFmOrwKUgPU
-	 F2S1JAOTMVxJ2fwsosJgWGxRC6bHz/a0p0z4Odaod4g51aFIewBx0m3EXzEtgcjkIyceV
-	 ZmlAnMVJoKiqXpNDAtdG68/Pa6ogVdAiE82NBKQTpziLFTwUCYQYKI7vl/XzriwATAA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794262523;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=r4ARuiayoGmnb3gobGgT6ycbMUSvczq2GaGID26XOPc=;
+	b=0ibIbifoSsUz1sdV2rV24XKOCkjTVJIKQF2WdQVCIdaXfsENaWmiI49sOGnBUDiBPo8q
+	 4rNh2YmZmV+JvfwS4yISn7WSFt1LlvPm5tKvnKxITfkI3qdnC7zRxwHfBJIBtaBAUcoI1
+	 zy/k8OP2Buv1tNKiIeqKhc1YI85FM2iz/ZRT3kS52GNvW4SYEwEtHOk0S9f2t13aE2Dkc
+	 7adpKgBZ8S1MV5lzl0MGVHNg4D6rOZ9q2tiwNLRgs6xr1dFZqEa7Tfbj5l6lNV5E5Oxsm
+	 X+ZtYzHnYl+cb2Y4BDT0ALen7tReMlqQNKVxVb+6IYGA95RnBZCB1e93jhcHGrsPemQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c2g5VFot;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=packett.cool;
+	spf=pass smtp.mailfrom=packett.cool;
+	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=ZSljuwdH;
+	arc=none smtp.remote-ip=91.218.175.111
+Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F80606A332;
-	Mon,  9 Nov 2026 15:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E89606A336
+	for <phone-devel@vger.kernel.org>; Mon,  9 Nov 2026 22:15:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3E89606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c2g5VFot
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E761F0089F;
-	Mon,  9 Nov 2026 15:56:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794239797;
-	bh=LDCJlYvo3vx3tgjCW58/ygfsQ/e8c8gyHXqxxnH8sw0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c2g5VFotjOrPFeuDvt34poEE7tFh32Vv87ULGd5VN8O4oVCl/ga+6no88HJmKJLv6
-	 7fSPBFp+0Z2OyJXAB4t+9czxvkN2rrMorsp8xudAlJOIAz/iTndP1pfXlTWBgp3ROv
-	 hI0FKahkqj5Yk1atUMKKkc4rv/LvJGx8Dz8CsKqGN7l0XPEFBswe79RL3MXu/s1BXa
-	 V16KV5ijiF565TjW5Rml8crmJJ4QG7cQAS1elbwjS+A0ifb6go3cS7w5NO+JYk3iWk
-	 EvsJc/+OfI2M1ClxXqz0mtJL6JO1XYo9KWYknxi6UXYGVv09B0+zi0zA9xldawPqDM
-	 YfsP3j+qe2L/A==
-Date: Mon, 9 Nov 2026 15:56:31 +0000
-From: Lee Jones <lee@kernel.org>
-To: Paul Sajna <sajattack@postmarketos.org>
-Cc: Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=ZSljuwdH
+X-Envelope-To: phone-devel@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Q8GRugxCN0NxT2mKf+lhcXEmhEoypzxpW7nD5nFeee8=;
+ c=simple/simple; d=packett.cool;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794262519; v=1; x=1794867319;
+ b=ZSljuwdHdZ2QQkNrbGO019qqxfRoUdP22jVio1D3C+4gNbKVyH5DRZfSNtxEMVEgAG10rZEi
+ vMNd/ypwN7k46sOWQbUU4vd6eXAGhRfVTzdf6b5oskiqu29UzwLNdpvwu2jNfDta5iFNfeykhj5
+ sppleSrDUvh5S8RKy0Zn0ofZyQRoupHCEnfeytU988SeHm+G81aAIxvSXsr3Wc2+aI2i6ASpE3O
+ TKPdeZHRHngWoVkfrrfPsoLJXOm6Ezet/q3VeMGa1ZRKdwlBVP0SLjY2fOQZh9fDDTlm0zBVtdn
+ mDbhRqR+/tqPQLypfSsb+bmSbdUDJB5af+fwivlYzae2A==
+X-Envelope-To: phone-devel@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5ae3d32ff97ae3f5;
+	Mon, 09 Nov 2026 22:15:17 +0000
+X-Mizu-Trace-ID: 5ae3d32ff97ae3f5
+X-Migadu-Flow: FLOW_OUT
+From: Val Packett <val@packett.cool>
+To: 
+Cc: Val Packett <val@packett.cool>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Michael McAllister <me@michaelmcallister.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Nikita Travkin <nikitos.tr@gmail.com>,
-	Alexey Min <alexeymin@minlexx.ru>, Nikita Travkin <nikita@trvn.ru>,
-	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v3 2/6] leds: aw2013: Add AW2027 support
-Message-ID: <20261109155631.GA69935@joneslee-macbookpro.roam.internal>
-References: <20261012-aw2013-aw20xx-rename-v3-0-cab1fdd050b6@postmarketos.org>
- <20261012-aw2013-aw20xx-rename-v3-2-cab1fdd050b6@postmarketos.org>
- <179198402838.839288.17911568760182808689@kernel.org>
- <5b965360-7121-41ab-94f6-d23b3eace32f@postmarketos.org>
+	Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/6] arm64: dts: qcom: Add Moto G9 Play (guamp) / Power (cebu)
+Date: Mon,  9 Nov 2026 19:14:29 -0300
+Message-ID: <20261109221453.658316-1-val@packett.cool>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -65,28 +80,57 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5b965360-7121-41ab-94f6-d23b3eace32f@postmarketos.org>
+Content-Transfer-Encoding: 8bit
 
-On Sun, 08 Nov 2026, Paul Sajna wrote:
+Hi,
 
-> On 2026-10-20 3:16 a.m., Lee Jones wrote:
-> > This is hard to read, I think we can do better.
-> > 
-> > Also, does it need to be a separate helper function when it only has a
-> > single call site?
-> 
-> The function is marked inline, so there shouldn't be any performance
-> penalty, and I gave it it's own helper function specifically because it's
-> hard to read, and giving it a name helps make clearer what it's doing. Do
-> you have any suggestions to make it better?
+this series introduces a common dtsi for the Qualcomm SM6115/SM4250
+("bengal/kamorta" platform) Motorola devices, basically the ones
+listed at: https://github.com/moto-sm6115/kernel_devicetree
 
-Yes.
+and two concrete .dts files for the two phones I've tested,
+the G9 Play (guamp) with the Holitech/Himax display panel (which I've
+previously upstreamed support for [1]) and the G9 Power (cebu) with
+the Tianma/Novatek panel (will send the driver once this lands,
+also waiting for the AW99703 series [2] for backlight adjustment).
 
-- Break it up
-- Add more self-describing variables
-- Comments if the first two aren't enough
++cc Michael wrt the G10 (capri) series [3], sorry to bother you
+about a series that already has R-b and all :) but your device
+is very much one of the "clones" on the same platform so please
+consider rebasing it on top of the common dtsi. I've deliberately
+left the SoC dtsi include out of the common one to allow for
+sm4250 as well as sm6115.
+
+[1]: https://lore.kernel.org/all/177451576040.103892.16399746050578598756.b4-ty@linaro.org/
+[2]: https://lore.kernel.org/all/20261016162912.64581-1-lukapanio@gmail.com/
+[3]: https://lore.kernel.org/all/cover.1792840208.git.me@michaelmcallister.org/
+
+Thanks,
+~val
+
+Val Packett (6):
+  dt-bindings: arm: qcom: Add Motorola Moto G9 Play
+  dt-bindings: arm: qcom: Add Motorola Moto G9 Power
+  arm64: dts: qcom: pmi632: Add LCDB regulator node
+  arm64: dts: qcom: Add sm6115-motorola-common
+  arm64: dts: qcom: sm6115: Add Motorola Moto G9 Play (guamp)
+  arm64: dts: qcom: sm6115: Add Motorola Moto G9 Power (cebu)
+
+ .../devicetree/bindings/arm/qcom.yaml         |  12 +
+ arch/arm64/boot/dts/qcom/Makefile             |   2 +
+ arch/arm64/boot/dts/qcom/pmi632.dtsi          |  14 +
+ .../dts/qcom/sm6115-motorola-cebu-tianma.dts  |  18 +
+ .../boot/dts/qcom/sm6115-motorola-cebu.dtsi   |  43 ++
+ .../boot/dts/qcom/sm6115-motorola-common.dtsi | 541 ++++++++++++++++++
+ .../qcom/sm6115-motorola-guamp-holitech.dts   |  36 ++
+ .../boot/dts/qcom/sm6115-motorola-guamp.dtsi  | 127 ++++
+ 8 files changed, 793 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-guamp-holitech.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-guamp.dtsi
 
 -- 
-Lee Jones
+2.56.0
+
