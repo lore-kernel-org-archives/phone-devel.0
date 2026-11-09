@@ -1,46 +1,38 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.245.251.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794187379;
-	b=UO3ja11nSSOumPLdqjdbUDS6ZozpMhN7QCxlMnmBl5HEAjv864gVpZwt/dvGIqES2dXx
-	 qTf4r9kLJlQOHyQrJ7f2zsWcANRaDQ3VWRnLG5b4xZ5F00Ka+BrHKljv4zrclaHid+VYB
-	 4XLZJ0rZgbxx9A9OdS7oLefjO6AwasZ5kds6SFKSa9OwlXXkqt1HZctFa4oFCuxxUb/zo
-	 djnAZAZiLJOhLgfK+W680vtgQ2Wmwxt7v55VV9xl9QI+pMP1ViF2wvZr35Dfsvs8j0PpG
-	 eXtZzFdqBt9Wk+c7JT7eTay/Z+D7kM3xV4sqh/9TnpcNjlM29dHoAZDwk+yVvmAMzPQ==
+	t=1794220600;
+	b=QfMLRzz7PQUdUd3DYBIqqXXy5FBP3mKSWUNDWa1m4YVH3ol4fffbKCjv2+gHuDPAuzQX
+	 VAm2cMlvQop2LDxpqytC7dW9doAtKpyECXwmdnqepJKfIZnq/Ckv7Hv5PSBw1u982aZr4
+	 RNtNbXwVv7thiM4gQ6c7jRNCI/sXRG6rWElRS6uWJHOQzkmeTIoWN+q/A326L+WhYpzI+
+	 h1FDBxmK2615NVmdPrTAjIoH2YZqq+79NJEdqb9UWjqOU6aR8hpHwg/0ZQy0+TTqAR0tj
+	 MisMgHyAxVuemrngoT3c4quh49bEFwkZHPlcrNA+gSqj+ptt3qnIXoM0Ix8vgLCNxSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794187379;
-	h=Received:Received:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer;
-	bh=57TiHluZF0TraOBXBCRHy4j9KLpKtaSSnS+xIB/HzZc=;
-	b=CKytCftfSILjAeDJw2f4f0GrcUPLLBtY99PwBfCOTGwVhbRS/ofeoQ4cUtnyfa3ChMHS
-	 ow7Y+5GCZ5Qg1+313uc4FoZrji27loz0xxNOti1X/5mnWv8ePg3ACvtW6qotU3ImobhEU
-	 qK1ofg9vgvbWkrWXpe+n5nzaRc3FN1kfwggd91OMbaNPGmK09K6DjDZlCltFjcCME8Fef
-	 4Wj44S/CVKjWrkvxHoIkjyfisjSVBBHNfA75qnDzREuaTusbbeOwVq0NTNmhZeAoLMSoY
-	 fr7BWS98E3bR1X7dE7dHkZBpdfASUthq06KYTpW0fmlhICCo3XQMRTNoqWwP0S0r42Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794220600;
+	h=DMARC-Filter:Mime-Version:DKIM-Signature:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:From:To:References:
+	 In-Reply-To;
+	bh=ovprduxLgum2CY0XHb/PVUWcwSUV6g1yux7UTHcX5AM=;
+	b=KFmNbkQu/NFe38rmv3rbyJMq/0mtAjkTB6wHbPYAxRrqjK9T1/YACzyYAgFaiq+b8gaq
+	 +DvE1T1PGeh9ukB3J8umGyxrpCwYryVqxrg/ZUH8RmoRXpkvwgZ7LgbzlxbdbPcw6myWA
+	 q7kgjhetoirfsxaEpzvNoHfT12XPTPyjGdIz7SACGZjLAFC6jvlnqum9pv4mCn8A6Jrov
+	 BTOibZ/rNvIYBGm8SJ8IufOy9wB/SqiJtNe0Xp96oVULR1AAtP4ta9CDcpHxbdO9CdmdW
+	 LTCCS1BwF9AU0iuSAiAJWelk98wJdDsl3TMKPeXcsVboR1KmyrzJK2T1rsXuoN640Qg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=fhannenheim.net;
+	spf=pass smtp.mailfrom=fhannenheim.net;
+	dkim=pass header.d=fhannenheim.net header.i=@fhannenheim.net header.a=rsa-sha256 header.s=mail header.b=0zVLGqBh;
+	arc=none smtp.remote-ip=188.245.251.181
+Received: from mail.fhannenheim.net (mail.fhannenheim.net [188.245.251.181])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD3A606D834;
-	Mon,  9 Nov 2026 01:22:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2681F00904;
-	Mon,  9 Nov 2026 01:22:58 +0000 (UTC)
-Received: by venus (Postfix, from userid 1000)
-	id F00981828E8; Mon, 09 Nov 2026 02:22:59 +0100 (CET)
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Casey Connolly <casey.connolly@linaro.org>, 
- Sebastian Reichel <sre@kernel.org>, Fabricio Akio <fabricioakio@gmail.com>
-Cc: Robin Snyders <robin@snyders.xyz>, David Heidelberg <david@ixit.cz>, 
- phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261008-qcom-smbx-psy-race-v1-1-cb49fe7b4336@gmail.com>
-References: <20261008-qcom-smbx-psy-race-v1-1-cb49fe7b4336@gmail.com>
-Subject: Re: [PATCH] power: supply: qcom_smbx: read the charging status
- without the power supply
-Message-Id: <179418737996.1255445.2065619025083533810.b4-ty@b4>
-Date: Mon, 09 Nov 2026 02:22:59 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BE0606A31C;
+	Mon,  9 Nov 2026 10:36:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75BE0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fhannenheim.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fhannenheim.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=fhannenheim.net header.i=@fhannenheim.net header.a=rsa-sha256 header.s=mail header.b=0zVLGqBh
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -49,30 +41,110 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fhannenheim.net;
+	s=mail; t=1794220596;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ovprduxLgum2CY0XHb/PVUWcwSUV6g1yux7UTHcX5AM=;
+	b=0zVLGqBhpJnPasZaYQ6zfHjg9JqU0jEm2CuMDhqHhWPVnr9eDZ6MTrN2FmnmxJOeaTORCf
+	q69MMMPQPO6LOSt0x8akGl0X35JnKTc31p8Paca+xcBYVJw5Fp5KEvY5pNA6+imgb46ZNg
+	EBaUU2E3O0vmY8n3HSdmzDixOQldvZE=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 11:36:35 +0100
+Message-Id: <DMQM4AN8JPSW.388R1H1XOM5JF@fhannenheim.net>
+Subject: Re: [PATCH RESEND v4 2/3] arm64: dts: qcom: Add
+ sm8250-oneplus-common.dtsi
+Cc: "Robert Oscilowski" <drgitx@gmail.com>,
+ =?utf-8?q?Jean-Fran=C3=A7ois_Bobier?= <jf.bobier@gmail.com>,
+ <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+From: "Frieder Hannenheim" <mail@fhannenheim.net>
+To: "David Heidelberg" <david@ixit.cz>, "Frieder Hannenheim"
+ <git@fhannenheim.net>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konradybcio@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>
+References: <20261105-kebab_dts-v4-0-c6bbe6ded92e@fhannenheim.net>
+ <20261105-kebab_dts-v4-2-c6bbe6ded92e@fhannenheim.net>
+ <48420a1e-3611-4543-9d3a-7add3049b7ac@ixit.cz>
+In-Reply-To: <48420a1e-3611-4543-9d3a-7add3049b7ac@ixit.cz>
 
+On Sun Nov 8, 2026 at 10:05 PM CET, David Heidelberg wrote:
+> On 05/11/2026 20:20, Frieder Hannenheim wrote:
+>> This file contains common properties shared by all OnePlus devices using
+>> the Qualcomm sm8250 chipset.
+>>=20
+>> Co-developed-by: Robert Oscilowski <drgitx@gmail.com>
+>> Signed-off-by: Robert Oscilowski <drgitx@gmail.com>
+>> Signed-off-by: Frieder Hannenheim <git@fhannenheim.net>
+>> ---
+>>   .../arm64/boot/dts/qcom/sm8250-oneplus-common.dtsi | 607 +++++++++++++=
+++++++++
+>>   1 file changed, 607 insertions(+)
+>>=20
+>
+> [...]
+>
+>> +
+>> +	gpio_keys: gpio-keys {
+>> +		compatible =3D "gpio-keys";
+>> +		label =3D "Volume keys";
+>> +
+>> +		pinctrl-0 =3D <&vol_down_l &vol_up_n>;
+>> +		pinctrl-names =3D "default";
+>> +
+>> +		key-vol-down {
+>> +			label =3D "Volume Down";
+>> +			linux,code =3D <KEY_VOLUMEDOWN>;
+>
+> Hello Frieder,
+>
+> patch looks good, but I noticed - which one? this key-vol-down or later a=
+t bottom,
+>
 
-On Thu, 08 Oct 2026 17:56:18 -0300, Fabricio Akio wrote:
-> smb_get_iio_chan() reads the charging status through
-> power_supply_get_property(chip->chg_psy), but chip->chg_psy is assigned
-> only when devm_power_supply_register() returns, and the power supply
-> core already calls get_property() from inside the registration, for its
-> uevents. If another driver has taken a reference to the supply by then,
-> as a fuel gauge naming the charger in power-supplies does, the core lets
-> the call through, and reading CURRENT_NOW or VOLTAGE_NOW dereferences
-> the NULL chg_psy.
-> 
+Hmm well the pon_resin doesn't seem to emit input events. I don't know if i=
+t's
+used for anything else but the volume down button still works if I drop it.
+
+>> +			gpios =3D <&pm8150_gpios 7 GPIO_ACTIVE_LOW>;
+>> +			debounce-interval =3D <15>;
+>> +			linux,can-disable;
+>> +			wakeup-source;
+>> +		};
+>> +
+>> +		key-vol-up {
+>> +			label =3D "Volume Up";
+>> +			gpios =3D <&pm8150_gpios 6 GPIO_ACTIVE_LOW>;
+>> +			linux,code =3D <KEY_VOLUMEUP>;
+>> +			debounce-interval =3D <15>;
+>> +			linux,can-disable;
+>> +			wakeup-source;
+>> +		};
+>> +	};
+>> +
+>
+> [...]
+>
+>> +&pon_pwrkey {
+>> +	status =3D "okay";
+>> +};
+>> +
+>> +&pon_resin {
+>> +	linux,code =3D <KEY_VOLUMEDOWN>;
+>
+> or this one?
+>
+> David
+>
 > [...]
 
-Applied, thanks!
+Thanks for mentioning this. I had already tried disabling the gpio key and =
+just
+using the resin. I will drop the resin in the next version.
 
-[1/1] power: supply: qcom_smbx: read the charging status without the power supply
-      commit: a291a224a0f42bafd7a3e013751f897662c3affc
-
-Best regards,
--- 
-Sebastian Reichel <sebastian.reichel@collabora.com>
-
+Frieder
