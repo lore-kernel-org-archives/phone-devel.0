@@ -1,53 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794262563;
-	b=fJ3XxxzvhOTm54qJEribQfSjcuQoYoDKpsU8CYIxqn6hu4fKvia0M0SfsyZboFbi9CEg
-	 C/NbEgs+1a7bgtjLLFVjWmyQr0x8+rhaW0rBsi4YPDv+DVMMr3ytZz6unVzC7+viVVrtp
-	 m2oMtPVWHj2sQWx/s9GNGxmbHiu33s1s83i7b26SL5NwK3QD759RFLq1HWbX8rpujN3ts
-	 R4WRC7xByKt7iuO8JDqZc77V4Uedr+82tBAwuU/DGet8Eom9xH/DYyvSs7n6Vnvz0rrSG
-	 CyE4wUE+tqeWgfdobFpHfl8DUUqmNzWzy0sEAFjjJEw7g6XEH20kKyvMsPV8LohgSAg==
+	t=1794262570;
+	b=VpbXvh2RkAw7SP02ZCvLwssXGBBJZf3gID+N1zLjUztscYq2nKJQbaNGcJ/t53jU/DcT
+	 sSnPbYmi5+iVBuxmq01DVONLZBuFviZDv36LKPKb8KOorWKB1Cw4TEFQn8ZOA25YCZjSM
+	 /QoHY/vIlnceazeThY7uVNbRnecuVhJPkdmODJF4YVkIKm4yothWJU5I9b+7xDmf8U0/b
+	 I3pKIo0gPLJfAhJMbBPCBjn1GnTj4MgBVk9z30kIxBrAZ1RxkjVLMLrxM/NCg+EvqOPTe
+	 AEFC4zt7DzdmH72sTvPETkd6+97bxDFZZoSIKQWSBukWFsIuU5UpAfcghH23iA6SZdA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794262563;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794262570;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=fQORXvgvG4aCbdP7l51ZXh7a55jz29dKJoEdTRVzxws=;
-	b=dc5Vsce4EBBUeCi1huIhOdl1AI8uJKgAfyQBkJHznj6GEkeXHr46FeCCDxHS+ge+s5GU
-	 0NkhxleYbTwPzwdCAgWPyIKoIv/prW3TXBkKWhabq3U6C4UIDOptTpTcexyZFFxLvWz4h
-	 3/y9lFIp2gT9MIMvMNrB2dBNGkueBGcj7Kvxu+NE3DTN5jWiQA0Zq0vsOC7gQZJ6uoE4V
-	 70OMphjrMgdKKDD36MnPvvAgFiGfOAVf4ZP5KbXuKtA3FRQcUp6qUOYJ7sV4nxBUT1PAO
-	 Qj7CS1r4HgU+4llgPioW27X1t+AGQDmCDdpWQacIfRX/+QHpGL7sIrS92WoXrddUaWQ==
+	bh=4FemD5xhOYnoxUKsmEWJQcftEMPDrfhkiKUBcodzP0A=;
+	b=N9LNtdQ5RPNO5JSmgnfWX5G9fJguJwhs0sXVzAe6NsaKTED1DTmN3Dwp/TB+azZPilLx
+	 Er4PESm4AAc5uFENHFQJYU5d7KnzIwvgAo/RubmN6/yFc2fFPr0NbZGQS/lIflCz2ZYff
+	 Q7v987jmFxLltsORKYQFVQ4cGnKXX3DzM6uGQiFzfXGEuy2vTGn2oyw074ruVBZP5pUb4
+	 X1ufvFIe1OEXpJdImPeUH3q4v/0qsXui8mtp7VeDZ7EN8NSwO6rZTem38rtNdPAaphdHD
+	 tFpOt2WM0gkzgwwoFAeAdDp6mkJ7kHyNE+Hk4fKxdBrFkN1qAK1ZKasYPs0jVz2onIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=packett.cool;
 	spf=pass smtp.mailfrom=packett.cool;
-	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=tZYvvlWa;
-	arc=none smtp.remote-ip=95.215.58.44
-Received: from mta1.migadu.com (out-44.mta1.migadu.com [95.215.58.44])
+	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=M7yUFPbY;
+	arc=none smtp.remote-ip=95.215.58.50
+Received: from mta1.migadu.com (out-50.mta1.migadu.com [95.215.58.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13791606A321
-	for <phone-devel@vger.kernel.org>; Mon,  9 Nov 2026 22:16:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13791606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB5D606A336
+	for <phone-devel@vger.kernel.org>; Mon,  9 Nov 2026 22:16:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DB5D606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=tZYvvlWa
+	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=M7yUFPbY
 X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=n25vX4zWRxlR8Mbf8CuplgD2Mzpe9LK+fA/gl9ql/KQ=;
+DKIM-Signature: a=rsa-sha256; bh=bOWnTS1Ifi2XFoCDR3H2nfoH1oKDAc2ATIMj00qbqxU=;
  c=simple/simple; d=packett.cool;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794262561; v=1; x=1794867361;
- b=tZYvvlWawWGJMN6nQ/3m8h7Bk8VfHOtO6yXTX8YsRSrkYdPVpQwa1LFmKbYKKRZtxBPKz4pS
- miJcteaPNyu8Io5gNcdKEs+Alt1iKJdQMvUyUT6zqn4n5qUN51EG1LVRgMWjE/KRaYtyCjUX9jF
- q/E4+p7+8GJUBXjhxUHbtpRxE74fuicji7nsU1uDeVAULO11gIMov7+Kaq+637ArrM9z1UvnQLB
- LbvVhud6+dG2oIBfzKUWKVNJlinqcwzT7SrBmdPP6IHF6kfmHR9/qHFFB4YBETwewcgN93/QbCi
- Q4+WqxNuKVNccIDXtDlrBqhtKj5PI5iC/Op7VLcSplBjQ==
+ t=1794262567; v=1; x=1794867367;
+ b=M7yUFPbYbI4tJu+KAhWjCxC6vVrGHz33HpR7g4f4rxsPPqjidm+ZStA7H38/O2fEiEpN0UVU
+ HNJWTbYsZ4FV65gAXo/WixFhG4tRfIsR7liiypo4mIz+w3KUEs53Lvg/wpcJbb8YEii3WodKsj0
+ C2+n6HTfK2xpdC9E+XCIzGm7R023WUcc8oyRQqVaL9yOo7tWEK1BBSrQvo1bkdd6wd32dql32L/
+ 6o2mZgLSJhN/oFJkX+dj9nClR+xLuJuQX4WDwklVZ/cAR5QAY3ZFyq+VlfM48CMdbn/fcZvQQin
+ +39sGvofwdRC7vFaoPWVr8FvApQFxMe4UI6eE8OGzp+3g==
 X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ec4ace8070c67486;
-	Mon, 09 Nov 2026 22:16:01 +0000
-X-Mizu-Trace-ID: ec4ace8070c67486
+Received: by smtp.migadu.com with ESMTPS id e58252eef6db5d3f;
+	Mon, 09 Nov 2026 22:16:07 +0000
+X-Mizu-Trace-ID: e58252eef6db5d3f
 X-Migadu-Flow: FLOW_OUT
 From: Val Packett <val@packett.cool>
 To: Bjorn Andersson <andersson@kernel.org>,
@@ -67,9 +67,9 @@ Cc: Val Packett <val@packett.cool>,
 	phone-devel@vger.kernel.org,
 	~postmarketos/upstreaming@lists.sr.ht,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/6] arm64: dts: qcom: sm6115: Add Motorola Moto G9 Play (guamp)
-Date: Mon,  9 Nov 2026 19:14:34 -0300
-Message-ID: <20261109221453.658316-6-val@packett.cool>
+Subject: [PATCH 6/6] arm64: dts: qcom: sm6115: Add Motorola Moto G9 Power (cebu)
+Date: Mon,  9 Nov 2026 19:14:35 -0300
+Message-ID: <20261109221453.658316-7-val@packett.cool>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261109221453.658316-1-val@packett.cool>
 References: <20261109221453.658316-1-val@packett.cool>
@@ -84,42 +84,37 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a device tree for the Moto G9 Play with the Holitech display panel
-based on the Himax HX83102 DDIC.
+Add a device tree for the Moto G9 Power with the Tianma display panel
+based on the Novatek NT36525B DDIC. The panel driver will be added
+and enabled here in separate commits.
 
 Signed-off-by: Val Packett <val@packett.cool>
 ---
-
-pm8008 is not consumed by anyone yet (camera drivers missing welp)
-but just having it described helps with power consumption due to
-shutting down the regs
-
----
- arch/arm64/boot/dts/qcom/Makefile             |   1 +
- .../qcom/sm6115-motorola-guamp-holitech.dts   |  36 +++++
- .../boot/dts/qcom/sm6115-motorola-guamp.dtsi  | 127 ++++++++++++++++++
- 3 files changed, 164 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-guamp-holitech.dts
- create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-guamp.dtsi
+ arch/arm64/boot/dts/qcom/Makefile             |  1 +
+ .../dts/qcom/sm6115-motorola-cebu-tianma.dts  | 18 ++++++++
+ .../boot/dts/qcom/sm6115-motorola-cebu.dtsi   | 43 +++++++++++++++++++
+ 3 files changed, 62 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi
 
 diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index dcaf74dc876b..6365f0ed0406 100644
+index 6365f0ed0406..84ba824ed715 100644
 --- a/arch/arm64/boot/dts/qcom/Makefile
 +++ b/arch/arm64/boot/dts/qcom/Makefile
 @@ -390,6 +390,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm4250-oneplus-billie2.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= sm4450-qrd.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-fxtec-pro1x.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-xiaomi-lemon.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-motorola-guamp-holitech.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-motorola-cebu-tianma.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm6115-motorola-guamp-holitech.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= sm6115p-lenovo-j606f.dtb
  dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-xiaomi-ginkgo.dtb
-diff --git a/arch/arm64/boot/dts/qcom/sm6115-motorola-guamp-holitech.dts b/arch/arm64/boot/dts/qcom/sm6115-motorola-guamp-holitech.dts
+diff --git a/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts b/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts
 new file mode 100644
-index 000000000000..f8e1f9de7e99
+index 000000000000..31ca51570ea2
 --- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sm6115-motorola-guamp-holitech.dts
-@@ -0,0 +1,36 @@
++++ b/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu-tianma.dts
+@@ -0,0 +1,18 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (c) 2026, Val Packett <val@packett.cool>
@@ -127,41 +122,23 @@ index 000000000000..f8e1f9de7e99
 +
 +/dts-v1/;
 +
-+#include "sm6115-motorola-guamp.dtsi"
++#include "sm6115-motorola-cebu.dtsi"
 +
 +/ {
-+	model = "Motorola Moto G9 Play (Holitech)";
-+	compatible = "motorola,guamp-holitech", "motorola,guamp", "qcom,sm6115";
++	model = "Motorola Moto G9 Power (Tianma)";
++	compatible = "motorola,cebu-tianma", "motorola,cebu", "qcom,sm6115";
 +};
 +
-+&panel {
-+	compatible = "holitech,htf065h045", "himax,hx83102";
-+
-+	enable-gpios = <&tlmm 82 GPIO_ACTIVE_LOW>;
-+	pp1800-supply = <&pm6125_l9a>;
-+
-+	status = "okay";
++&dispcc {
++	/* Preserve the bootloader display until the native panel is supported */
++	status = "disabled";
 +};
-+
-+&pmi632_lcdb {
-+	status = "okay";
-+};
-+
-+&pmi632_lcdb_ldo {
-+	regulator-min-microvolt = <5500000>;
-+	regulator-max-microvolt = <5500000>;
-+};
-+
-+&pmi632_lcdb_ncp {
-+	regulator-min-microvolt = <5500000>;
-+	regulator-max-microvolt = <5500000>;
-+};
-diff --git a/arch/arm64/boot/dts/qcom/sm6115-motorola-guamp.dtsi b/arch/arm64/boot/dts/qcom/sm6115-motorola-guamp.dtsi
+diff --git a/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi b/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi
 new file mode 100644
-index 000000000000..7eba684867fb
+index 000000000000..6f5263a67319
 --- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sm6115-motorola-guamp.dtsi
-@@ -0,0 +1,127 @@
++++ b/arch/arm64/boot/dts/qcom/sm6115-motorola-cebu.dtsi
+@@ -0,0 +1,43 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (c) 2026, Val Packett <val@packett.cool>
@@ -170,124 +147,40 @@ index 000000000000..7eba684867fb
 +#include "sm6115.dtsi"
 +#include "sm6115-motorola-common.dtsi"
 +
++&framebuffer0 {
++	height = <1640>;
++};
++
 +&gpu_zap_shader {
-+	firmware-name = "qcom/sm6115/Motorola/guamp/a610_zap.mbn";
++	firmware-name = "qcom/sm6115/Motorola/cebu/a610_zap.mbn";
 +};
 +
 +&i2c1 {
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	pm8008: pmic@8 {
-+		compatible = "qcom,pm8008";
-+		reg = <0x8>;
-+
-+		interrupts-extended = <&tlmm 25 IRQ_TYPE_EDGE_RISING>;
-+		reset-gpios = <&tlmm 26 GPIO_ACTIVE_LOW>;
-+
-+		vdd-l1-l2-supply = <&pm6125_s6a>;
-+		vdd-l3-l4-supply = <&vph_pwr>;
-+		vdd-l5-supply = <&vph_pwr>;
-+		vdd-l6-supply = <&vph_pwr>;
-+		vdd-l7-supply = <&vph_pwr>;
-+
-+		pinctrl-0 = <&pm8008_int_default>, <&pm8008_reset_n_default>;
-+		pinctrl-names = "default";
-+
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		gpio-ranges = <&pm8008 0 0 2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		#thermal-sensor-cells = <0>;
-+
-+		regulators {
-+			vreg_l1p: ldo1 {
-+				regulator-name = "vreg_l1p";
-+				regulator-min-microvolt = <1000000>;
-+				regulator-max-microvolt = <1200000>;
-+			};
-+
-+			vreg_l2p: ldo2 {
-+				regulator-name = "vreg_l2p";
-+				regulator-min-microvolt = <950000>;
-+				regulator-max-microvolt = <1056000>;
-+			};
-+
-+			vreg_l3p: ldo3 {
-+				regulator-name = "vreg_l3p";
-+				regulator-min-microvolt = <2800000>;
-+				regulator-max-microvolt = <2800000>;
-+			};
-+
-+			vreg_l4p: ldo4 {
-+				regulator-name = "vreg_l4p";
-+				regulator-min-microvolt = <2800000>;
-+				regulator-max-microvolt = <2800000>;
-+			};
-+
-+			vreg_l5p: ldo5 {
-+				regulator-name = "vreg_l5p";
-+				regulator-min-microvolt = <2800000>;
-+				regulator-max-microvolt = <2800000>;
-+			};
-+
-+			vreg_l6p: ldo6 {
-+				regulator-name = "vreg_l6p";
-+				regulator-min-microvolt = <2800000>;
-+				regulator-max-microvolt = <2800000>;
-+			};
-+
-+			vreg_l7p: ldo7 {
-+				regulator-name = "vreg_l7p";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+			};
-+		};
-+	};
++	/* awinic,aw99703 backlight @ 36 */
 +};
 +
 +&remoteproc_adsp {
-+	firmware-name = "qcom/sm6115/Motorola/guamp/adsp.mbn";
++	firmware-name = "qcom/sm6115/Motorola/cebu/adsp.mbn";
 +	status = "okay";
 +};
 +
 +&remoteproc_cdsp {
-+	firmware-name = "qcom/sm6115/Motorola/guamp/cdsp.mbn";
++	firmware-name = "qcom/sm6115/Motorola/cebu/cdsp.mbn";
 +	status = "okay";
 +};
 +
 +&remoteproc_mpss {
-+	firmware-name = "qcom/sm6115/Motorola/guamp/modem.mbn";
++	firmware-name = "qcom/sm6115/Motorola/cebu/modem.mbn";
 +	status = "okay";
 +};
 +
-+&tlmm {
-+	pm8008_int_default: pm8008-int-default-state {
-+		pins = "gpio25";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		input-enable;
-+	};
-+
-+	pm8008_reset_n_default: pm8008-reset-n-default-state {
-+		pins = "gpio26";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+};
-+
 +&venus {
-+	firmware-name = "qcom/sm6115/Motorola/guamp/venus.mbn";
++	firmware-name = "qcom/sm6115/Motorola/cebu/venus.mbn";
 +	status = "okay";
 +};
 +
 +&wifi {
-+	qcom,calibration-variant = "Motorola_guamp";
++	qcom,calibration-variant = "Motorola_cebu";
 +};
 -- 
 2.56.0
