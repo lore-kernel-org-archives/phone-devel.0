@@ -1,56 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.166
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794263635;
-	b=E0ahb3o14Tt5mKsrobLnamRheiy8QjCtBNhF1bFf0M/jfaTDHLMA+rzhci0eRUbmlnLn
-	 lAXkzZryj5qXoUBqY3ef51KTVQvX0yzN/fxsCVkQjzCFIdpT5TSdcDCNTHFKS1alkZazZ
-	 6M+EArmNU1heUob9SRGPwNrBYlJ5hYeP5Zd39JuCEwTglgJTkUiBksic8q4xOJCJuUQlK
-	 J1ZBEbK4Dv+z8PPJyxpGZj7DkA96xiQgfYXTwKkaeekL8KG55gjQrWvPzrjYeDczOXAhz
-	 zAg8C8oAlvjXaHgwXQc9gVXMkpfqfIHu5ycNXrgZZZBgzMXwFmttryQTNSf/L4z2ffw==
+	t=1794283933;
+	b=YulGxmWYFjR9Q0nv/ye2Tj9/WC3e9NTM1w+89TYAYjFOBTkQzJyktD4kCZUYNTnC9qHM
+	 /5ET2nFLg8u5lghh6n4YK/bS1Quu7hN9IQSHb7jUhZ2VlXDDdx9hl9OQc+xROgStqbXiN
+	 8Ns5krHgbhNcxLj74+Me7EUyFLUA5822FBKSnkWfug0OCGhdQmpjzwYeAutRsXPTes2Hd
+	 PJCYfMnYJXNJBHb8aTRlLKYbsreJ9L+k2T+YYdfeDE9hhPKUDDWCpgZDZNRFr9riF7C7O
+	 zcbiRb8EX2EJmvmJ8MmWDq7DuT5E3U9Pae3efXHZj115IbSKxWqIHxWLFTqNdylaUDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794263635;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=juGSgCG90hPdE9/iBCfeU0O/czp1PvRM5jFo+xGilAI=;
-	b=dnJgfGLADVWeep9YmeEMwKuiWtD8fu6A+khKVSOpBm/rqkWVMz42NTv9StwMPEE8N0WN
-	 wTko+LkLw/J7Ulv1BDj65JfRPMQnGZesDta6EeDCBBAd7+jFjbEfdBTKrnGQ1Pk8Bdr29
-	 qWWT93WYJgRDNsyvj1Bm5myc/aItNvTerRJJ5ki5swaHIju4fvjxtlncNc3s8Ydzk1OgH
-	 Fe77PosAqg0aC+pWjOxL1KgJjM7Ql7TUVT4OOWJ9ULrbPFOyjuLq5zD/aXPiJanbCVTlZ
-	 2XHMCRv5ubCSw/lc6xOCEvLj0HQk9rDSh7riTbV3FjPqIkmBg17G+2+VY54S9Boqu3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794283933;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=xM/qy0LDmGAX2gldlTS/zKbKhse2bwRxfBsg2sK9AYs=;
+	b=eDZHmz8l+XP9VyF8P3NHui6TTWBOj2STK/DbFsQoQc+o1fOmdY08ebVFcbxgghKgTTtO
+	 /gvmPP3tG0XkAhEkXz1s2XF6clKVARO5OhLPMILfjdI39vY7nJiPDcjfv1XAviyOMLT60
+	 Bq/09y/0bh1LF/hNZnKdA2JWd9deujqxSixK3AqwwcZCIT1lSl3uk6PPKZf6ZWQK2bSv8
+	 u9wzUF3uVaZvpxF44fhUZM9q12oFSwNRM6fN4PcFHBaI7VyFC183NKrIjPpsQRZFSKNRo
+	 laaY06VZCAhmGKpF7Z5iCGa9SPsp31+P5Ua/gxq2h8Ith1roZuf9Y0JN7akThTwKyBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=packett.cool;
-	spf=pass smtp.mailfrom=packett.cool;
-	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=kIq8CGMJ;
-	arc=none smtp.remote-ip=95.215.58.166
-Received: from mta1.migadu.com (out-166.mta1.migadu.com [95.215.58.166])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BhM521TZ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86704606A336
-	for <phone-devel@vger.kernel.org>; Mon,  9 Nov 2026 22:33:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86704606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A907606A33F;
+	Tue, 10 Nov 2026 04:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=kIq8CGMJ
-X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Pk+laV3dhTJwk3ZH99anCvnpBHgw0DllGaWgkIfgUSI=;
- c=simple/simple; d=packett.cool;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794263632; v=1; x=1794868432;
- b=kIq8CGMJ8Ryzbro5ihd1ky31LpWN/HDF9mkeE+J42nWU1mRr7yZ1wCtY0MNfVeNVDagJQX27
- pTwAgmGpmClcYXXAIJfd0dT1YNIyRlxbIKG+PA/R2Bcfx7TZWF22Hb4TFl1KHx4xcWWJcFEmoqW
- KnCC9NzmlUaV6GEGRQ48GBv3YKycARKTQMTTUT8W0OWfUkvVpEDhYF9rqbyMO+BdV+nISXWS1ZO
- ejjMcp+Q6eyFdQrsVDzXfawNHRoTKfn4TsVAuyzx9MoIFpJuCZGcD3eSWuSebtp+5gIyUdJbxCE
- o5lOe5UqxcqB3n1CmuHYeW5j+Mw94Dk3gF6QC21/dig1A==
-X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a5961c1509ba55d7;
-	Mon, 09 Nov 2026 22:33:52 +0000
-X-Mizu-Trace-ID: a5961c1509ba55d7
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <1aca2519-878c-4aa2-b869-7416e7c3e981@packett.cool>
-Date: Mon, 9 Nov 2026 19:33:46 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BhM521TZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1A01F0089F;
+	Tue, 10 Nov 2026 04:12:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794283932;
+	bh=xM/qy0LDmGAX2gldlTS/zKbKhse2bwRxfBsg2sK9AYs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BhM521TZv3m4O2TAooWY912f0uaCJrfkgK4cXlg6AbKE3eLmvdFpbmynhiXL1QqKy
+	 A1AIDCJkZE8gE8ngKX6CENCqjUENkyKHfO5mwy9J7tibQcMhO5ateddHrvkweujjkS
+	 OB7nb3YnYQ0B3Kh+EFTva8bTLmap+S9WBIwxPIqPLU+EzmWNUz9QiPjTNdfUhDk120
+	 jVHajcTu8rJIB3EZ9PSSVps1uaIa8ennFiwdPC+DwO5nnHMYUHf9k3KlkTfUcZBcFp
+	 RoeHCHzB+Be4JDekknEwOBZ62IN6unukUNYk7Z5yQcy5nS372JN2QSe1XIMOSpfNAw
+	 J+QzQVz+6Ve5A==
+Date: Mon, 9 Nov 2026 22:12:07 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: david@ixit.cz
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Petr Hodina <petr.hodina@protonmail.com>, 
+	linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Abel Vesa <abel.vesa@oss.qualcomm.com>
+Subject: Re: [PATCH v8 5/5] arm64: dts: qcom: sdm845-google: Add STM FTS
+ touchscreen support
+Message-ID: <avKYaYOdaeSn2YoN@zenbook>
+References: <20260925-stmfts5-v8-0-0fcf49e2c85f@ixit.cz>
+ <20260925-stmfts5-v8-5-0fcf49e2c85f@ixit.cz>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,96 +66,102 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] arm64: dts: qcom: Add sm6115-motorola-common
-To: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
- Michael McAllister <me@michaelmcallister.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- linux-kernel@vger.kernel.org
-References: <20261109221453.658316-1-val@packett.cool>
- <20261109221453.658316-5-val@packett.cool>
-Content-Language: en-US
-From: Val Packett <val@packett.cool>
-In-Reply-To: <20261109221453.658316-5-val@packett.cool>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260925-stmfts5-v8-5-0fcf49e2c85f@ixit.cz>
 
+On Fri, Sep 25, 2026 at 11:22:23PM +0200, David Heidelberg via B4 Relay wrote:
+> From: Petr Hodina <petr.hodina@protonmail.com>
+> 
+> Basic touchscreen connected to second i2c bus.
+> 
+> Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+> Co-developed-by: David Heidelberg <david@ixit.cz>
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts | 19 ++++++++++++++++++-
+>  arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi  |  2 +-
+>  2 files changed, 19 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
+> index fa89be500fb85..51c835dca43f1 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
+> @@ -21,17 +21,34 @@ &framebuffer0 {
+>  	stride = <(1080 * 4)>;
+>  };
+>  
+>  &i2c2 {
+>  	clock-frequency = <1000000>;
+>  
+>  	status = "okay";
+>  
+> -	/* ST,FTS @ 49 */
+> +	touchscreen@49 {
+> +		compatible = "st,stmfts5";
+> +		reg = <0x49>;
+> +
+> +		pinctrl-0 = <&touchscreen_irq_n>, <&touchscreen_reset>;
+> +		pinctrl-names = "default";
+> +
+> +		interrupts-extended = <&tlmm 125 IRQ_TYPE_LEVEL_LOW>;
+> +
+> +		mode-switch-gpios = <&tlmm 136 GPIO_ACTIVE_HIGH>;
 
-On 11/9/26 7:14 PM, Val Packett wrote:
-> Add the shared dtsi for sm6115/sm4250-based Motorola smartphones,
-> with support for:
->
-> * Simple framebuffer from bootloader
-> * Power, volume, and assistant buttons (PMI632)
-> * Charging LED, haptics/vibrator (PMI632)
-> * USB Type-C with dual-role USB 2.0 (PMI632)
-> * eMMC onboard storage and microSD card slot
-> * Wi-Fi, Bluetooth (WCN3990)
->
-> Signed-off-by: Val Packett <val@packett.cool>
-> ---
->
-> yes on both phones I've tested, only msm-id is required, not board-id.
->
-> ---
->   .../boot/dts/qcom/sm6115-motorola-common.dtsi | 541 ++++++++++++++++++
->   1 file changed, 541 insertions(+)
->   create mode 100644 arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi
->
-> diff --git a/arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi b/arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi
-> new file mode 100644
-> index 000000000000..6a5110319bc3
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sm6115-motorola-common.dtsi
-> @@ -0,0 +1,541 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> +/*
-> + * Copyright (c) 2026, Val Packett <val@packett.cool>
-> + */
+It's not clear to me how this worked or when it started failing, but due
+to a conflict with the reboot-mode binding dt-validate crashes when we
+reach this property.
+
+I opened a PR to handle it here:
+https://github.com/devicetree-org/dt-schema/pull/212
+
+Regards,
+Bjorn
+
+> +		reset-gpios = <&tlmm 99 GPIO_ACTIVE_LOW>;
 > +
-> +#include <dt-bindings/arm/qcom,ids.h>
-> +#include <dt-bindings/leds/common.h>
-> +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> +#include <dt-bindings/usb/pd.h>
-> +#include "pm6125.dtsi"
-> +#include "pmi632.dtsi"
+> +		avdd-supply = <&vreg_l19a_3p3>;
+> +		vdd-supply = <&vreg_l14a_1p8>;
 > +
-> +/ {
-> +	chassis-type = "handset";
-> +
-> +	/* required for bootloader to select correct board */
-> +	qcom,msm-id = <QCOM_ID_SM6115 0x10000>;
-> +
-> +	aliases {
-> +		bluetooth0 = &bluetooth;
-> +		hsuart0 = &uart3;
-> +		mmc0 = &sdhc_1;
-> +		mmc1 = &sdhc_2;
-> +		serial0 = &uart4;
-> +		wifi0 = &wifi;
+> +		touchscreen-size-x = <1080>;
+> +		touchscreen-size-y = <2160>;
 > +	};
-> +
-> +	chosen {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		framebuffer0: framebuffer@5c000000 {
-> +			compatible = "simple-framebuffer";
-> +			memory-region = <&cont_splash_memory>;
-> +			width = <720>;
-> +			height = <1600>;
-> +			stride = <(720 * 4)>;
-> +			format = "a8r8g8b8";
-> +
-> +			clocks = <&gcc GCC_DISP_AHB_CLK>,
-> +				 <&gcc GCC_DISP_HF_AXI_CLK>;
-> +			vddio-supply = <&vreg_l9a>;
-s/vreg_l9a/pm6125_l9a/ of course, last-second copy-paste fail, sorry
-> [..]
+>  };
+>  
+>  &mdss_dsi0 {
+>  	vdda-supply = <&vdda_mipi_dsi0_1p2>;
+>  
+>  	status = "okay";
+>  
+>  	panel@0 {
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+> index f1379857e2742..6ae1973aa8ac7 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
+> @@ -504,17 +504,17 @@ firmware-pins {
+>  
+>  	touchscreen_reset: ts-reset-state {
+>  		pins = "gpio99";
+>  		function = "gpio";
+>  		drive-strength = <8>;
+>  		bias-pull-up;
+>  	};
+>  
+> -	touchscreen_pins: ts-pins-gpio-state {
+> +	touchscreen_irq_n: ts-irq-n-gpio-state {
+>  		pins = "gpio125";
+>  		function = "gpio";
+>  		drive-strength = <2>;
+>  		bias-disable;
+>  	};
+>  
+>  	touchscreen_i2c_pins: qup-i2c2-gpio-state {
+>  		pins = "gpio27", "gpio28";
+> 
+> -- 
+> 2.55.0
+> 
+> 
