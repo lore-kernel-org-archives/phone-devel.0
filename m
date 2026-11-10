@@ -1,68 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794285315;
-	b=t63ffoLba4lc88zzc4XFOEZlyLvA4S9jH5t4nJ2zWzrLRTqvoELbri5XlOCbxPygTisF
-	 PtJ7IYL3HjjVSITEztYQYYB5NKnfKVoXaY4hPLpqT5fDEuc+/5dQcctscpjitjPrdbi8s
-	 GPZt7MvD/W6/KfizUHMcnxa/cK/H9CMcyvJBA+B9FYRQI2NR1NzGsrYUglSyWiNK58m6q
-	 xDEyTa9DPGeGw8FIHoJUatyu6KKAGxayxFLOVSVuMEiKhJOB5wG7O1aWZBlvWuFZ3uWMB
-	 NMbb3ol0dZh1p9DxZe3T/aO1dyudALs7MZJ1z6xfXD0Wuh65wiSzHD15htQh+0ZWEiQ==
+	b=DR9KCJb/xzSoEsFLBUk6BaNldDCAriz28R+ebDr5O2d1i8yFcfMXXVro87tYWbULQoKS
+	 u3pWW9TGX3oqkCnPcIP+xxHW5lWtpxm/x9g5igBtg04R/lOm6L+McZFHqjQ7WbVZ7nNCS
+	 oNsHTihXJGybyELZS6azGcxMafQGWTlVr+jiNHEAro7qOOf7xTAXUCCnCmRcrATc9rfAv
+	 E3lA/kGi2i/1zypyUEbn9Fj+G3yrG8QOaSBGSjLqcTIa1oaFmzmerlOglp84zRqYFhOBY
+	 SKmDgyX2CBhrWGacuKSsgyfINxzuJxQOxAPVM6D2kzYJIWhnxvfXFw6FFr32/61mXLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794285315;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=SGZZGFlmvKGj+2t9SWhAh9SxU2TjgpS7fELs9nTPyv0=;
-	b=0MtfG4dG7ikINbtx049plqqtjfYREZXYUYkxzJhEmE/aYjP0JC1bqlbPWKCKDmS4/j8C
-	 BRVRZH07CPkmzExj5OtFMMG93R+oagEmFsx8jUHWSpU4jkgyOSYzrU1XMutvGNtW8hJ/k
-	 qo+LkqbYjPDgfLrW6X7X181ebAO5EmyjKP5d0nWcDWbukDZULBlfK3wV0JFy13Gj11FNm
-	 K+Ms9gC0BpX7YQgrF1uko1c92GLtIRQQnKLj2bqvjZl2VlMcMNW0r6K0EAUoFAg0mV3Al
-	 xtGPKhzY+m0fNL5bNBNha/51LmJi4MhjvvrNXELzBnEgLN90SvuEUYZ83mvrD+Z1S3Q==
+	bh=Y+y+dw/7F9ePtYFx0DkrH6qgsrA6IQQMbAKMyMiMpck=;
+	b=4XfDLfhqdzaoH6rZTgqc5/ZW+odsecuGpldIPW7iSnlZ4QvbZ6g/L5+iOIVYNPzuDs4q
+	 MR+may369tNXoNgFiY2UdWsoTJsl2bSV+iqNXt0zcKzPNcpNE7WjoKNQwDwhRgxS0qsyf
+	 huAdnDZ7ma/OTEaYsCrIzGxNH4RF7t3iR43kDF8JUmH9ZN3MCO0mXWntoezPL7mf9A5FP
+	 PWoUABCf8LEzAG64J+voq7IkSy6NEIIiG431/XxkXDYimNX08HZS7EhcWHhlx5k0jMlP2
+	 n0huG5T7zCX6brYxb5IfQdN6c9CH3tgybWgSVByOqosEEkwAXJGk3edKzIsSyryO9oA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P7FjtYCM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QAjRDM1Z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16A560A2604;
-	Tue, 10 Nov 2026 04:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937B260A2616;
+	Tue, 10 Nov 2026 04:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P7FjtYCM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBB31F008BC;
-	Tue, 10 Nov 2026 04:35:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QAjRDM1Z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3191F008A5;
+	Tue, 10 Nov 2026 04:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794285314;
-	bh=SGZZGFlmvKGj+2t9SWhAh9SxU2TjgpS7fELs9nTPyv0=;
+	s=k20260515; t=1794285315;
+	bh=Y+y+dw/7F9ePtYFx0DkrH6qgsrA6IQQMbAKMyMiMpck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P7FjtYCMqaZvNpWJJUYZEAnvfhhg0VsitvxgAovDmfyCFVn1KiJkPJ8aQJOZ4sPHT
-	 Tp4TYg3KvSD2UTrj90Px4UPCR/cgvVvWJsDdWCheyZxeLORG7Oo1OafR2J1C2JEO+M
-	 n+gDL3MHShs9v3Q6oW1Jpo8XBU7u37xzUEP472R+DCVHWCU515bTQyqmIHOTOVpBwo
-	 wmZ+1+K2IQoe3anShYGx3tA9D1tZHn71CxhpHY581IfjeURQZoMv6NzDpGBz/GSMR8
-	 ZRbTkr0Ui5WZal0Yh13V47YZiBqB1vw2j8TXH3RezVphZyxxVDtRybzh+ELIM8w+lL
-	 vngS3swKfKF8w==
+	b=QAjRDM1ZQ2uWIew7HTdjExTJeN/CQ5VzvY2lLry0aYesvqxZN4eGLnI2ymJ47oigj
+	 uGxSlGoMC+sTxCG0iZynv9ln2vK+KjGPrPcWlItocyqzPt6FJGFLBM/Hf3GBh9G4Ng
+	 KxSTblbJsnTIk97+AYmHSzgxkTebV2Lxo1dVF5sIOwNYdU7RwoLjYmowzUsA8KXwlP
+	 nQ6V7CN1z7t2YIgBkiPrn/wvYf9g2dwoO6C0maVNxVPYxRdLol9+N8x/C4rvQvm8n8
+	 olaincQ2UPhkVscKMh+YauAiVUgkeT4+dm9Drp3qW5ZLA10NRUudu+rRkxRevTQJA9
+	 1N76Z/QSgjj1A==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Amir Dahan <system64fumo@tuta.io>,
 	Paul Sajna <sajattack@postmarketos.org>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+Cc: David Heidelberg <david@ixit.cz>,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	stable@vger.kernel.org,
-	David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-lg: Fix dark corner in backlight
-Date: Mon,  9 Nov 2026 22:34:55 -0600
-Message-ID: <179428529326.1061455.2796035043921377487.b4-ty@b4>
+	~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2] arm64: dts: qcom: sdm845-lg: Enable NFC
+Date: Mon,  9 Nov 2026 22:34:56 -0600
+Message-ID: <179428529344.1061455.14898677998626512432.b4-ty@b4>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261108-fix-judyln-backlight-v1-1-af4b946f559f@postmarketos.org>
-References: <20261108-fix-judyln-backlight-v1-1-af4b946f559f@postmarketos.org>
+In-Reply-To: <20260906-sdm845-lg-judy-nfc-v2-1-63aeb7b1a5f6@postmarketos.org>
+References: <20260906-sdm845-lg-judy-nfc-v2-1-63aeb7b1a5f6@postmarketos.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -76,20 +71,16 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Sun, 08 Nov 2026 14:03:44 -0700, Paul Sajna wrote:
-> Restore qcom,num-strings to the default of 4.
+On Sun, 06 Sep 2026 14:11:08 -0700, Paul Sajna wrote:
+> Add the i2c and tlmm nodes to support the NXP PN547 NFC chip
 > 
-> Downstream had qcom,led-strings-list = [00 01 02] set, so for upstream
-> we assumed qcom,num-strings was 3. [1]
-> 
-> However downstream also overrides qcom,num-strings to 4 in the driver [2].
-> 
-> [...]
+> Downstream dtsi for reference:
+> https://github.com/LineageOS/android_kernel_lge_sdm845/blob/lineage-22.2/arch/arm64/boot/dts/lge/sdm845-judy/sdm845-judyln_lao_com/sdm845-judyln_lao_com-nfc.dtsi
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: sdm845-lg: Fix dark corner in backlight
-      commit: 9a6ea15d1629b124f481f892eab41e3ba0bd1c41
+[1/1] arm64: dts: qcom: sdm845-lg: Enable NFC
+      commit: b115248511aedffd43b82e1cae196c6836fcfe83
 
 Best regards,
 -- 
