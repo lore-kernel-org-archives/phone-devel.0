@@ -1,93 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.17.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794420043;
-	b=VH//7ppg8ST56JVjhV1NvcQH+6fxXcuiCHsSba1ENr3RU3BMCO7X8kV7vOjnODR5PnMy
-	 Nw9zOkTcAZkEz0XEbgQlSRjytLjbtWTCVE+tyysspOtHv19PC7iyJrUm/hQ3itwt8D9/j
-	 GAK859kDcbe2EVmP1q+s24Zp5nXp0P3WZH/bAuEj6fQinsb5/Bq/VqGK1P4bvxGno35DU
-	 oQZT5R7QsE7H13Le9bwwx264f639Br1v1jlXlZ2bqOHQKPSmbBies3DvYAHj9t/xXF1zW
-	 pe3lZBpZmkScV+5cUk2pbMP6mI/7SdxVZb+QOF7/8zYIbLvZZnYxFjHzt/tuWOZSy8w==
+	t=1794420970;
+	b=KCSHCTLlQyoHd9pY94uDp37awu3xiKSiJE9FjezAslZi9vOc8p37uRW/rB1YDFwft2iB
+	 U57QvhoX1DR2slTrCZOg6zxObLvQChi6nh26lk6RUQuIRe5mmVisNhghcyAwFDUjguzYX
+	 OatFPkHWdjox17hn1Q3a/9uYk4eu9tdjf6uEPxvc4gSQiSpAQRBNyFF3Zo8aQM4JjU0Ds
+	 8ZAP8SIK4Nqa2u5HTOMutG7GtfapeVi1JgtFOD13c7U2omez+zH/f5gCHxcuWpJtzBwBa
+	 wqQaxfkKwrMf4BSiAPNKOQRnFKbfMIZvMgHFfScDg+AxF+526B1DNF9ehqpnbpUiU7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794420043;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=gXZUEJAo9ogNRdsof/4yd/DRB/vaqcwMDVHHocdwiu4=;
-	b=NqZ1HxmGxcZZRjL8EGc3p3HZg4JOCtuDE397/hN1RtJjBfo/LI+cHIl/of4pEdGcHRrS
-	 /Fx40bDk98pxem8EGouHmGvRpIQZNU5d44enB/Q4B8raQt0JYo+XKtEOIiky3bbOeUrSy
-	 R4Pu5CLc3F7MzDASAmsvzc/hOx7wJWmAtLVEyzeQhGmmvFsDpNFymzoWhd30c+pBgcsx9
-	 D2TRf7efAIflM81sWXA0a9zG2lVL2nyyEeHlpjlyW4ktz/hohI8OIgUSlOIWti3QH8L+A
-	 cPI0J7fJX59BrFU/2LfW58qLsyAKSGzrtfcMydMFG1ZXv3wPRjYXiLLwxjPl02/6L/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794420970;
+	h=DMARC-Filter:DKIM2-Signature:Message-Instance:DKIM-Signature:
+	 X-UI-Sender-Class:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:X-Provags-ID:
+	 X-Spam-Flag:UI-OutboundReport;
+	bh=PpB+IlzC2I0salUqY3bQLVy+rNJiGEYJgXOcoIKLYco=;
+	b=oKFLfOKusY+1XPKcEN2gY4rRMbeTlOtHdbmfT98xUT2QZYLgByx17kTWH1X1wAAMRmRV
+	 FdsMhpBSC6gkHAbSXxYec6aa65/5AqUSk9JxDSgvISqmrR5k4x5rL0ZX48/FGnZbNRIh/
+	 M7xY9Od6I6JtHAin3fOrwJ3+3n3gR6rFG1RdoJik12IDDwk/rlfj4t/24RB6uP5Ijrw3f
+	 iURT1bB0qVLHa6+U5bCXQXc3Ch2N49cmHNHuLfnjMMZrTylHiq7+PoSPe03kOCCatZxXo
+	 j6UK41hvkVrGrnGF6Iz12GdIhN6fJtd7Kg+3a+aXvM1iLP57EgDz9+14KaR9YItXE9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cLhevcER;
-	arc=none smtp.remote-ip=209.85.210.169
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmx.net;
+	spf=pass smtp.mailfrom=gmx.net;
+	dkim=pass header.d=gmx.net header.i=henri.ommer@gmx.net header.a=rsa-sha256 header.s=s31663417 header.b=IAA5jtKd;
+	arc=none smtp.remote-ip=212.227.17.20
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C861F606B755
-	for <phone-devel@vger.kernel.org>; Wed, 11 Nov 2026 18:00:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C861F606B755
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E55606C160
+	for <phone-devel@vger.kernel.org>; Wed, 11 Nov 2026 18:16:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4E55606C160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cLhevcER
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8b3577deeb0so1726645b3a.3
-        for <phone-devel@vger.kernel.org>; Wed, 11 Nov 2026 10:00:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794420042; x=1795024842; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gXZUEJAo9ogNRdsof/4yd/DRB/vaqcwMDVHHocdwiu4=;
-        b=cLhevcER5F0cC1w/qvx8koU/5KEhFGypHAezF5O9BGPPNqIeXMakQ46AM3CgshFBIv
-         Giqd0YQJGavVCxRE9Q9DKotrEQFnTzzTJvItuYlhjXZBq+xM5+WNEwhlTdovfwLXA5EC
-         mM+hyPnIzlg3Gw79i5YO55EkUhlI6WrGVXTbq7M5o9i/Jx8tNf42NUwD/TcktzxLSwo/
-         7me3Op8YcBEwnMQSEHF2BhTC+V+s9/fFQ6Ds/Cg5VDkufc/QRv2WOQEQUafqfwvPrM92
-         1uizui1kOGViIYLowAmaZXoxuLAfOFV6yIDMb6B9GO6N1lRu2Bf/NfS0KH7epcbfdYoF
-         8pDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794420042; x=1795024842;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gXZUEJAo9ogNRdsof/4yd/DRB/vaqcwMDVHHocdwiu4=;
-        b=XzVM1YplJMVr+waZUWMaK3BnBCXYPbJ6OS1qpdz/pVqEJpP8JlkoUJdaLFJPv0EmKz
-         bP9tEhjKwdy4Rk+ZMA80y85M59qGtgEykacaY+7yEsSo3BhXunfjwqIh+oWEuFChXGku
-         onRlrdXqVeWXk1QxCK44uJ61ViL4wCUYv6PyhqdxjrnBVuCBBlLykhp+y7k4wcjAD8u2
-         lgoi+5+geyqvj7B+no7dVt60kC6YKt4IJXwOfk7n+mrRdQEoPt2EF76pVYHSyjEBUOWU
-         aO0ZFvGBupTmPqdiiBQ6ixfQY5bhh268CuzTdrcfmWIt+KRpuspiMdWd/qBzL4iQUpTO
-         e1/g==
-X-Forwarded-Encrypted: i=1; AL+hErGQnpk9DSpqA7ZMeh2Ud/Rrw3WJS3yRpmdAT6Nj2PlLUijiUcFJ9JZS6Y4EHuWnsQJSRNApFU2m/BbC2A==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+jvnXFOc6hZkUZL+tcBGDrWk0FOd1vm706H2/3rbpZvbPRiXYk
-	hBNCFefxAnd2vAd+i2XNuuVSOhmHhZGIwuVZCbBP+4BbcsV5Wc1C7Tt+
-X-Gm-Gg: AYBFou3YaRo0qDxRBE6G3+n/sBpi/KB3+OC1Ur5CBx7Yqemdt6QuCjv4pkR8ry0bh6V
-	x4LAHK9KATT57AcGBfMUvrqoeAvx1dN3RVJYJYtEt2Am7+UfeKiX7zq+SMFd/QkTjtKa3ilusSW
-	g68yAKgX+baC9r8fki2C4XRYTNPmdsPVJBvQVtCJ67TiVzSeBGtVePmK2/QI62/V8ATuTlb9D3y
-	FSRIbgDlzccYmFD/f5CssHkWActpkKjdA6iMMcz5YgR1vZtYftmFVSOAXKdXGUSi5N6jOLyEy7H
-	E6CvCuAUfCgJuUMPg3xzI/qrjQjKpPnCnqBkPNS/Fu8Yf3/0jfhqIHtqZOxYnOBxzVd8SmHVArg
-	AnODWxgBV7B/urueRR7pe4BdXQAfrggiF7TJrzf52CVRKJDVO+SJjs2n59+gzmRrSIE0KhoJiXe
-	Grvt+ah7Z8X+wlISgPskpNmbxW/hWQ16bcYN8HXefLExVGFbH6ldZTDJULDZPRWRp39Y7sRay2e
-	O571EqMcJf5yo5tRXL6vjLXkeDe4bWJBwstKBq+ipwODVMljFWR4ezPi6Umf82nOYiakjz76b1P
-	oSl0sSETlax5V2SIoYXZnRbkabhE+uMSrXmzdBUUCnzGs/rcde79RAma20KKhQGnaNoZ9/Kete+
-	t3Yczvpm4tmitzgsu
-X-Received: by 2002:a05:6a00:4193:b0:89f:9ea6:1ddb with SMTP id d2e1a72fcca58-8bc1c0b732cmr2911078b3a.23.1794420041911;
-        Wed, 11 Nov 2026 10:00:41 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:311a:ad7a:93f8:96c8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaae3da61sm2331243b3a.35.2026.11.11.10.00.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2026 10:00:38 -0800 (PST)
-Date: Wed, 11 Nov 2026 10:00:35 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Henri Ommer <henri.ommer@gmx.net>
-Cc: job@noorman.info, phone-devel@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] input: himax_hx83112b: Add hx83102d support
-Message-ID: <avStFjE4coB0C0q3@google.com>
-References: <20261111163354.36751-1-henri.ommer@gmx.net>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=henri.ommer@gmx.net header.a=rsa-sha256 header.s=s31663417 header.b=IAA5jtKd
+DKIM2-Signature:  i=1; m=1; t=1794420967;
+ mf=PGhlbnJpLm9tbWVyQGdteC5uZXQ+;
+ rt=PHBob25lLWRldmVsQHZnZXIua2VybmVsLm9yZz4=;
+ d=gmx.net;
+ s=s31663417:rsa-sha256:sbAtGocJ/e18KEFxXYi3hrXw9200
+   1S0PwgziG7Bvm0uLIBwtNJMwPrKd8aIdIV/r6T9XJWDjXTbaPvGKdGQXmc3kPWywxAvCq9+pMBu
+   B5X/CmEwCak1I6sRZ5AHXZTJOjaLV3yN/XkETJCQW6SQt+TSVvQ/HrR4cwjtQKxrwUWs+I6NkMb
+   K2JMK87CB+tBZjsQgJB7i95rcBd5oXCQex8KmgrEnXSkIbUw8xWBvFwQWpMbLU6MfKJ66yQ8iTU
+   w9sgT/VqJVORHY5tBe4TUkDfRwxhvVxRPHkYNc7860AvfYrs5NajUbWsyNB0qjmkVUWsZcdnssY
+   aX2kgqcFRuaNPw==;
+Message-Instance:  m=1;
+ h=sha256:
+   W2ViEYTnD9oPOtTcK+oD8IuAqQUwCRJr3lZ+6nTBVds=:
+   npzu2hJ9spIEn7F6bumq/OyyIATt5Wh6U/XYUz+70q4=,
+  sha512:
+   qvGHZVMcwfU3os2+E3oUd3al1Vin++2uR5Qr4tlR498YmljyORXZuAxD56wuJMsK/bCYdmQDH0Ki/NUUiFsRbg==:
+   swniK1MMwD+ahbIkeILxIKe92zXyKdCCkGhzANwqLQyQxOs6MozxVpeUOrqw4o2L09MqsMaRhToIL7LTLzWWMA==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1794420961; x=1795025761; i=henri.ommer@gmx.net;
+	bh=PpB+IlzC2I0salUqY3bQLVy+rNJiGEYJgXOcoIKLYco=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=IAA5jtKdBu4pKJ4pvOwyEd8E6Pe89//UqlmH3xQKipB0r/J/pF50olaDPHly0Hcm
+	 EEeefjx6qP+AiLvR2N4rhS261Zqy7wxTFYZtsZysB4vQaWjcIQhAHnNSlLJ655qqW
+	 Syz7HJLkGh1/mRmaEN+XXDUeWR2VPWoordpowsWBd8Mv+yL7ladXREk5Unp6w3Exe
+	 Akmk8HeA6nwdXp1m4xNQGJNMd8QDR8RpfcBj3tbuAOaeh21hadbl0JAw2qdXzQzTC
+	 nh+HMKeStxLvauX200+cKzT2WB25clwevsWdn1x3+Uh5z3zZGbJtLc2BFM+NiiCGM
+	 2ybU/C98pQjcPCNFqw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MkHQX-1wlWNk0dw1-00erHV; Wed, 11
+ Nov 2026 19:16:01 +0100
+From: Henri Ommer <henri.ommer@gmx.net>
+To: job@noorman.info,
+	dmitry.torokhov@gmail.com
+Cc: phone-devel@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Henri Ommer <henri.ommer@gmx.net>
+Subject: [PATCH RESEND 0/2] Add himax hx83102d touchscreen support
+Date: Wed, 11 Nov 2026 19:15:50 +0100
+Message-ID: <20261111181550.2400-1-henri.ommer@gmx.net>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -97,60 +88,130 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111163354.36751-1-henri.ommer@gmx.net>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:AXw8G96c8+Ze0W1lCQ4x+QxFP2UfsrmmajT/RkdKopvmYReSH2w
+ N61m09+oEghpE76RQ//xArBIUmwhg+SMIC6t3A71P1hqzokUZGlfo8Eq5gUmVe2qi6ABigz
+ rJTmnK7N8RMH2fnMwmq9cUAffYbpSJzZdtVAOOVk8C4PYONNEtnQZ8aUNAcpUqy1zBHuuWu
+ urYO5qZ/nKKl/TCDZ5oDQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+QYp5i1oni4=;DGmJHGJEcd1Nq9FGXTVXGgZP2kq
+ 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
+ n749PFu0pZVHR+vJeUicxf7DqQ+SM4oKlJ0w==
 
-On Wed, Nov 11, 2026 at 05:33:54PM +0100, Henri Ommer wrote:
-> The core functionality of the hx83102d is software-compatible with the hx83112b. As with the hx83112b, firmware flashing is unimplemented.
-> This commit also adds support for touchscreen chips which do not have a reset GPIO, like the hx83102d in the Samsung Galaxy A20e.
-> 
-> Tested on: Samsung Galaxy A20e (SM-A202F)
-> 
-> Signed-off-by: Henri Ommer <henri.ommer@gmx.net>
-> ---
->  drivers/input/touchscreen/himax_hx83112b.c | 21 ++++++++++++++++++++-
->  1 file changed, 20 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/input/touchscreen/himax_hx83112b.c b/drivers/input/touchscreen/himax_hx83112b.c
-> index 345ece27fe74..04c9c6aba396 100644
-> --- a/drivers/input/touchscreen/himax_hx83112b.c
-> +++ b/drivers/input/touchscreen/himax_hx83112b.c
-> @@ -7,6 +7,9 @@
->   * HX83100A support
->   * Copyright (C) 2024 Felix Kaechele <felix@kaechele.ca>
->   *
-> + * HX83102D support
-> + * Copyright (C) 2026 Henri Ommer <henri.ommer@gmx.net>
-> + *
->   * This code is based on "Himax Android Driver Sample Code for QCT platform":
->   *
->   * Copyright (C) 2017 Himax Corporation.
-> @@ -132,6 +135,14 @@ static int himax_bus_read(struct himax_ts_data *ts, u32 address, void *dst,
->  
->  static void himax_reset(struct himax_ts_data *ts)
->  {
-> +	/*
-> +	 * Some versions of himax touchscreen chips do not contain a reset
-> +	 * GPIO. The downstream driver only resets these chips for firmware
-> +	 * updates (which aren't implemented in this driver)
-> +	 */
-> +	if (!ts->gpiod_rst)
-> +		return;
-> +
->  	gpiod_set_value_cansleep(ts->gpiod_rst, 1);
->  
->  	/* Delay copied from downstream driver */
-> @@ -349,7 +360,7 @@ static int himax_probe(struct i2c_client *client)
->  		return error;
->  	}
->  
-> -	ts->gpiod_rst = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-> +	ts->gpiod_rst = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+Adds bindings and driver modifications to support the himax hx83102d
+touchscreen used for example in the Samsung Galaxy A20e and Motorola moto
+e7 plus.
 
-This should be a separate patch please.
+Tested on: Samsung Galaxy A20e
 
-Thanks.
+Signed-off-by: Henri Ommer <henri.ommer@gmx.net>
 
--- 
-Dmitry
+Henri Ommer (2):
+  input: himax_hx83112b: Add hx83102d support
+  dt-bindings: touchscreen: trivial-touch: Add hx83102d
+
+ .../input/touchscreen/trivial-touch.yaml      |  4 ++--
+ drivers/input/touchscreen/himax_hx83112b.c    | 21 ++++++++++++++++++-
+ 2 files changed, 22 insertions(+), 3 deletions(-)
+
+=2D-=20
+Sorry for the resend, I had issues with my email provider and some emails =
+were sent with missing addresses to the mailing lists
+Best regards,
+=2D-
+Henri Ommer <henri.ommer@gmx.net>
+
