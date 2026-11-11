@@ -1,79 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794418885;
-	b=iPdomhWTyLIdnQBZOj2pRYHf7qKNxId+PhzE0nFhU4oyD2RlJH/OhQWHtVDa1vD1nn8p
-	 MB83IrYyD5Dpb7s149kjTh4ek948u+XYGtoyq/YqIVfb0o3yajDfz4OvNts8mM4V/xAVb
-	 RqFsOt7Ge2bGzOPerwuJERwh19lHXZDgoP/0dBjeA/envMjU4Y+jJ7ozQ1dAKm/G/TkkD
-	 r6QhjlPWK0pd4GK+3VMvkLAJ3hTZdoirT36vO86CnaProKfM4YGghyI07Bd11psV6A2HR
-	 fCboSMVX7pS66KmCnUk04ZgubFzYh556oSWI7WKHuPtyxf7hioA3KZqiOZRJ1vUn58g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794418885;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=dQ87uRIk1/rKJPSQMlWIws72ZtxUVkBH9zQufej+U6w=;
-	b=UcSBqVRUuv3KFOLvDXa+Vjn3W19BaK29C/4l7G3JubU0hXNGLr2JCza/xvMUCOFwSPbR
-	 a5sHAyppaKN0gstNTe4Tr44hIRWiTlJ3xM44Ej8nvD5tHMzO09ZpuZAmHk0bYSfXWIsRv
-	 G9r8nL2T8b6RJlCha82F+U8whIx8oPc9N+0h//jg9qT7OSoRYc9EF3gZf4exDoPqRgAT9
-	 rofo5mVC9mk3vB8rJXsd64uvyjoCRnwW7ih69ZlL6HtN8Nl/ZcUawc9Uc69QeV7WPKNTI
-	 5QmwmRzOXRjiEtFwr/NXig0zyZzB/EMvUdC/ub4mdnEa/0yikyQTySds6HBIRzMbhsQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nQT8fiwt;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732A0606A887;
-	Wed, 11 Nov 2026 17:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nQT8fiwt
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794418885;
-	b=WYiRCYFpqBsgb+8LnD86ymqddOykw0gRV/LTgvnEJz+H7W/WaEutAI4+wbAyFpI5C5CC
-	 oU4lEUg08i92yKrNR9WaISQmUyq08bFYQVSH5k7ZPZi9k1jtKoEiiJoe1Wr+YEdQPId58
-	 yaY2gINKWtZ5ngiUsmnzhBCMXId0VAE58+++k48kXwL93L2V8CL9fRN6NlqOTLmSyRFld
-	 bQohR1v4EEt5CtLwyD+yl4xmG8RQbSBpGhPxOv9zwlxEs1Jg0Q8jITpK4U1BCKnVTGUcT
-	 hOrHfSOuoKp6B74fq+BsZC3V+vZXbtg4RT+HSC/72ATFeEmhHNfx/bSlHBBcw4k6TBg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794418885;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=dQ87uRIk1/rKJPSQMlWIws72ZtxUVkBH9zQufej+U6w=;
-	b=qc1ro2Y9WUoizfUs4UmfV5O46hGpC7xKYk0TjqDirIgZM1QLEFb0NWuDN4n6YqJ/0lDk
-	 jZH5OW4h5Q+1z+boFYLX6V+PIsfiY/z4X5zNMBhd4Bf08gPnfUX/JI1TM7ghxhJEqN7jZ
-	 5CT0/3ScjJvYQ2d1h3a4Z/Yi1T518ya+l1hUB669guyz9LPXyv6E6WQ/sKbrgWDvZsl3k
-	 vn2uehOy1uxxwSy64aRMJhsBKLKfTqp4332oGisdYZhN1HRM4VlgorLRgyYX2xl0Bsz5D
-	 2qAk3J7rNINwgRnD2iqVdhPF80j/QBjzVnaDtrEFA1XY9YI3qHAqbYAF89GIsTz3YLQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.169
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794420043;
+	b=VH//7ppg8ST56JVjhV1NvcQH+6fxXcuiCHsSba1ENr3RU3BMCO7X8kV7vOjnODR5PnMy
+	 Nw9zOkTcAZkEz0XEbgQlSRjytLjbtWTCVE+tyysspOtHv19PC7iyJrUm/hQ3itwt8D9/j
+	 GAK859kDcbe2EVmP1q+s24Zp5nXp0P3WZH/bAuEj6fQinsb5/Bq/VqGK1P4bvxGno35DU
+	 oQZT5R7QsE7H13Le9bwwx264f639Br1v1jlXlZ2bqOHQKPSmbBies3DvYAHj9t/xXF1zW
+	 pe3lZBpZmkScV+5cUk2pbMP6mI/7SdxVZb+QOF7/8zYIbLvZZnYxFjHzt/tuWOZSy8w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794420043;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=gXZUEJAo9ogNRdsof/4yd/DRB/vaqcwMDVHHocdwiu4=;
+	b=NqZ1HxmGxcZZRjL8EGc3p3HZg4JOCtuDE397/hN1RtJjBfo/LI+cHIl/of4pEdGcHRrS
+	 /Fx40bDk98pxem8EGouHmGvRpIQZNU5d44enB/Q4B8raQt0JYo+XKtEOIiky3bbOeUrSy
+	 R4Pu5CLc3F7MzDASAmsvzc/hOx7wJWmAtLVEyzeQhGmmvFsDpNFymzoWhd30c+pBgcsx9
+	 D2TRf7efAIflM81sWXA0a9zG2lVL2nyyEeHlpjlyW4ktz/hohI8OIgUSlOIWti3QH8L+A
+	 cPI0J7fJX59BrFU/2LfW58qLsyAKSGzrtfcMydMFG1ZXv3wPRjYXiLLwxjPl02/6L/w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cLhevcER;
+	arc=none smtp.remote-ip=209.85.210.169
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 4F9801F00A0A;
-	Wed, 11 Nov 2026 17:41:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794418885;
-	bh=dQ87uRIk1/rKJPSQMlWIws72ZtxUVkBH9zQufej+U6w=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=nQT8fiwtsTGBiH1pDobJ8O8GXRxD7bTD7incznFpWScq6kpa4FCEldwWKqF05CIR4
-	 v3FnY5f4gbgojgNrTq70H28EQXeMAEAHmaTCOCKVyrEn+kL/cvwGvJ7fPBuHGYzjtS
-	 LltQdrWqJxBQEWKvJHjFmrgSaf87FaD9HqpJqPb1ZrP77C5G45AKJDuNVjD2dkk5iQ
-	 I3dL0VPZD65H2ll+1HArIjdIPkZ62GmyUxkCyRuzmuHWA+Wh493V2jgmx/T/QAz7WZ
-	 WuWZfwkYdDUd42Y4YWIIczqZyoUnr3IHJLh7E/KZ/uCUIfG24+Y5gsK3FIdx6HY9A2
-	 1H9sRA0ZDp1FQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id C532B4905D;
-	Wed, 11 Nov 2026 17:41:22 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 11 Nov 2026 18:41:20 +0100
-Subject: [PATCH v7 1/2] arm64: dts: qcom: sdm845-google: Add basic audio
- support
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C861F606B755
+	for <phone-devel@vger.kernel.org>; Wed, 11 Nov 2026 18:00:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C861F606B755
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cLhevcER
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8b3577deeb0so1726645b3a.3
+        for <phone-devel@vger.kernel.org>; Wed, 11 Nov 2026 10:00:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794420042; x=1795024842; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gXZUEJAo9ogNRdsof/4yd/DRB/vaqcwMDVHHocdwiu4=;
+        b=cLhevcER5F0cC1w/qvx8koU/5KEhFGypHAezF5O9BGPPNqIeXMakQ46AM3CgshFBIv
+         Giqd0YQJGavVCxRE9Q9DKotrEQFnTzzTJvItuYlhjXZBq+xM5+WNEwhlTdovfwLXA5EC
+         mM+hyPnIzlg3Gw79i5YO55EkUhlI6WrGVXTbq7M5o9i/Jx8tNf42NUwD/TcktzxLSwo/
+         7me3Op8YcBEwnMQSEHF2BhTC+V+s9/fFQ6Ds/Cg5VDkufc/QRv2WOQEQUafqfwvPrM92
+         1uizui1kOGViIYLowAmaZXoxuLAfOFV6yIDMb6B9GO6N1lRu2Bf/NfS0KH7epcbfdYoF
+         8pDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794420042; x=1795024842;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gXZUEJAo9ogNRdsof/4yd/DRB/vaqcwMDVHHocdwiu4=;
+        b=XzVM1YplJMVr+waZUWMaK3BnBCXYPbJ6OS1qpdz/pVqEJpP8JlkoUJdaLFJPv0EmKz
+         bP9tEhjKwdy4Rk+ZMA80y85M59qGtgEykacaY+7yEsSo3BhXunfjwqIh+oWEuFChXGku
+         onRlrdXqVeWXk1QxCK44uJ61ViL4wCUYv6PyhqdxjrnBVuCBBlLykhp+y7k4wcjAD8u2
+         lgoi+5+geyqvj7B+no7dVt60kC6YKt4IJXwOfk7n+mrRdQEoPt2EF76pVYHSyjEBUOWU
+         aO0ZFvGBupTmPqdiiBQ6ixfQY5bhh268CuzTdrcfmWIt+KRpuspiMdWd/qBzL4iQUpTO
+         e1/g==
+X-Forwarded-Encrypted: i=1; AL+hErGQnpk9DSpqA7ZMeh2Ud/Rrw3WJS3yRpmdAT6Nj2PlLUijiUcFJ9JZS6Y4EHuWnsQJSRNApFU2m/BbC2A==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+jvnXFOc6hZkUZL+tcBGDrWk0FOd1vm706H2/3rbpZvbPRiXYk
+	hBNCFefxAnd2vAd+i2XNuuVSOhmHhZGIwuVZCbBP+4BbcsV5Wc1C7Tt+
+X-Gm-Gg: AYBFou3YaRo0qDxRBE6G3+n/sBpi/KB3+OC1Ur5CBx7Yqemdt6QuCjv4pkR8ry0bh6V
+	x4LAHK9KATT57AcGBfMUvrqoeAvx1dN3RVJYJYtEt2Am7+UfeKiX7zq+SMFd/QkTjtKa3ilusSW
+	g68yAKgX+baC9r8fki2C4XRYTNPmdsPVJBvQVtCJ67TiVzSeBGtVePmK2/QI62/V8ATuTlb9D3y
+	FSRIbgDlzccYmFD/f5CssHkWActpkKjdA6iMMcz5YgR1vZtYftmFVSOAXKdXGUSi5N6jOLyEy7H
+	E6CvCuAUfCgJuUMPg3xzI/qrjQjKpPnCnqBkPNS/Fu8Yf3/0jfhqIHtqZOxYnOBxzVd8SmHVArg
+	AnODWxgBV7B/urueRR7pe4BdXQAfrggiF7TJrzf52CVRKJDVO+SJjs2n59+gzmRrSIE0KhoJiXe
+	Grvt+ah7Z8X+wlISgPskpNmbxW/hWQ16bcYN8HXefLExVGFbH6ldZTDJULDZPRWRp39Y7sRay2e
+	O571EqMcJf5yo5tRXL6vjLXkeDe4bWJBwstKBq+ipwODVMljFWR4ezPi6Umf82nOYiakjz76b1P
+	oSl0sSETlax5V2SIoYXZnRbkabhE+uMSrXmzdBUUCnzGs/rcde79RAma20KKhQGnaNoZ9/Kete+
+	t3Yczvpm4tmitzgsu
+X-Received: by 2002:a05:6a00:4193:b0:89f:9ea6:1ddb with SMTP id d2e1a72fcca58-8bc1c0b732cmr2911078b3a.23.1794420041911;
+        Wed, 11 Nov 2026 10:00:41 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:311a:ad7a:93f8:96c8])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaae3da61sm2331243b3a.35.2026.11.11.10.00.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 10:00:38 -0800 (PST)
+Date: Wed, 11 Nov 2026 10:00:35 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Henri Ommer <henri.ommer@gmx.net>
+Cc: job@noorman.info, phone-devel@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] input: himax_hx83112b: Add hx83102d support
+Message-ID: <avStFjE4coB0C0q3@google.com>
+References: <20261111163354.36751-1-henri.ommer@gmx.net>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,285 +97,60 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261111-pixel3-audio-v7-1-ecf28efc5c33@ixit.cz>
-References: <20261111-pixel3-audio-v7-0-ecf28efc5c33@ixit.cz>
-In-Reply-To: <20261111-pixel3-audio-v7-0-ecf28efc5c33@ixit.cz>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- David Rhodes <drhodes@opensource.cirrus.com>, 
- Conor Dooley <conor+dt@kernel.org>, Abel Vesa <abelvesa@kernel.org>
-Cc: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, 
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, patches@opensource.cirrus.com, 
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5486; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=8yJsQhHjtcmcBZe8XGO9gMKEXECDvVEp3rYDy21u1PE=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq9KjB6+zLSXn/3gI7/glgPF7Yk31FizyR9z5Mw
- 0gC93SF3FyJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCavSowQAKCRBgAj/E00kg
- cgdxD/4guzJZjqsfByb71MP32uOd1eQHHzpsmiLzFzsnQmAv1qqCEdgEEbSsQS1no7+L+B1gx73
- EqQpt6hWjYJFZKdk3kMV+NbMwRbq1i1xJl5+9FWqyfikVk51ishcij2CiU5w1IZzhAz8ISi7QA5
- 4UaJBT++1RQnIWzJXV+7a2RYuTeSCfzFOO88MhjFvwnVncHxBo3BtQot3GGtvUkqi+SU1QN8/Qd
- Zhf5z2XNXXF0ApIJrc7Rjgz8SxFwJXoY0wJ7DKqKor666O0ejDo37O8yrgZrVkbb5UxXrzwouD6
- srQSTMo56ZgMYIoNwWPmUCgMRd+gTwZR+n5K2gSLEakBpGjxicOnVrxhrjLYYpEqgqJSqhD1E8w
- JaFxyVvTO/zcS2hthS6W/BZWB4CdQks0qbOd3V1TKP2dlpe6PPjAUWF+LAn/cP0jvsItZURQxif
- nj473eVd0gNjT3UPedHlrEPgZiOsD0WBeykr8AF1jPgWzyWxx6oFJcHekbF580naeRmqiNncGAM
- oIoO5Uzn3ncZfCNXiBMMU7UGqyGMU5j/UCzh6ITYAEV8U1kB0D5/2ejrb6k6gGe7PqUMskO3H0g
- /ZlKjLF+/Fx65nR24iqcRUhXHK/Z7PIitMYYnj+sWwxg/vB8U+tEkaOPd6Pcv/YoaBVj5d/0LQk
- XmwwMZ6uQWcxJ/w==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111163354.36751-1-henri.ommer@gmx.net>
 
-From: David Heidelberg <david@ixit.cz>
+On Wed, Nov 11, 2026 at 05:33:54PM +0100, Henri Ommer wrote:
+> The core functionality of the hx83102d is software-compatible with the hx83112b. As with the hx83112b, firmware flashing is unimplemented.
+> This commit also adds support for touchscreen chips which do not have a reset GPIO, like the hx83102d in the Samsung Galaxy A20e.
+> 
+> Tested on: Samsung Galaxy A20e (SM-A202F)
+> 
+> Signed-off-by: Henri Ommer <henri.ommer@gmx.net>
+> ---
+>  drivers/input/touchscreen/himax_hx83112b.c | 21 ++++++++++++++++++++-
+>  1 file changed, 20 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/input/touchscreen/himax_hx83112b.c b/drivers/input/touchscreen/himax_hx83112b.c
+> index 345ece27fe74..04c9c6aba396 100644
+> --- a/drivers/input/touchscreen/himax_hx83112b.c
+> +++ b/drivers/input/touchscreen/himax_hx83112b.c
+> @@ -7,6 +7,9 @@
+>   * HX83100A support
+>   * Copyright (C) 2024 Felix Kaechele <felix@kaechele.ca>
+>   *
+> + * HX83102D support
+> + * Copyright (C) 2026 Henri Ommer <henri.ommer@gmx.net>
+> + *
+>   * This code is based on "Himax Android Driver Sample Code for QCT platform":
+>   *
+>   * Copyright (C) 2017 Himax Corporation.
+> @@ -132,6 +135,14 @@ static int himax_bus_read(struct himax_ts_data *ts, u32 address, void *dst,
+>  
+>  static void himax_reset(struct himax_ts_data *ts)
+>  {
+> +	/*
+> +	 * Some versions of himax touchscreen chips do not contain a reset
+> +	 * GPIO. The downstream driver only resets these chips for firmware
+> +	 * updates (which aren't implemented in this driver)
+> +	 */
+> +	if (!ts->gpiod_rst)
+> +		return;
+> +
+>  	gpiod_set_value_cansleep(ts->gpiod_rst, 1);
+>  
+>  	/* Delay copied from downstream driver */
+> @@ -349,7 +360,7 @@ static int himax_probe(struct i2c_client *client)
+>  		return error;
+>  	}
+>  
+> -	ts->gpiod_rst = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+> +	ts->gpiod_rst = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
 
-Introduce support for sound card and wire two CS35L36 audio codecs for
-top and bottom speakers.
+This should be a separate patch please.
 
-Inspired by commit from Joel Selvaraj.
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 132 ++++++++++++++++++++-
- 1 file changed, 130 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-index 3c9656b88b696..fa327ff156b86 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-@@ -2,16 +2,18 @@
- 
- /dts-v1/;
- 
- #include <dt-bindings/arm/qcom,ids.h>
- #include <dt-bindings/dma/qcom-gpi.h>
- #include <dt-bindings/input/linux-event-codes.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-+#include <dt-bindings/sound/qcom,q6afe.h>
-+#include <dt-bindings/sound/qcom,q6asm.h>
- 
- #include "sdm845.dtsi"
- #include "pm8998.dtsi"
- #include "pmi8998.dtsi"
- 
- /delete-node/ &mpss_region;
- /delete-node/ &venus_mem;
- /delete-node/ &cdsp_mem;
-@@ -406,19 +408,61 @@ nfc@28 {
- 		firmware-gpios = <&tlmm 79 GPIO_ACTIVE_HIGH>;
- 
- 		pinctrl-0 = <&nfc_default>;
- 		pinctrl-names = "default";
- 	};
- };
- 
- &i2c12 {
--	/* Bottom spkr (right) CS35L36 @ 40 */
-+	status = "okay";
-+
-+	cs35l36_bottom: audio-codec@40 {
-+		compatible = "cirrus,cs35l36";
-+		reg = <0x40>;
-+		reset-gpios = <&tlmm 112 GPIO_ACTIVE_HIGH>;
-+		#sound-dai-cells = <0>;
-+		sound-name-prefix = "Right"; /* Bottom */
-+		VA-supply = <&vreg_s4a_1p8>;
-+		interrupts-extended = <&tlmm 115 IRQ_TYPE_LEVEL_LOW>;
-+
-+		pinctrl-0 = <&cs35l36_bottom_default_state>;
-+		pinctrl-names = "default";
-+
-+		cirrus,boost-ind-nanohenry = <1000>;
-+		cirrus,boost-ctl-select = <1>;
-+		cirrus,boost-ctl-millivolt = <10000>;
-+		cirrus,boost-peak-milliamp = <3700>;
-+		cirrus,temp-warn-threshold = <1>;
-+		cirrus,multi-amp-mode;
-+		cirrus,irq-drive-select = <0>;
-+		cirrus,irq-gpio-select = <0>;
-+	};
-+
-+	cs35l36_top: audio-codec@41 {
-+		compatible = "cirrus,cs35l36";
-+		reg = <0x41>;
-+		reset-gpios = <&tlmm 75 GPIO_ACTIVE_HIGH>;
-+		#sound-dai-cells = <0>;
-+		sound-name-prefix = "Left"; /* Top */
-+		VA-supply = <&vreg_s4a_1p8>;
-+		interrupts-extended = <&tlmm 40 IRQ_TYPE_LEVEL_LOW>;
- 
--	/* Top spkr (left) CS35L36 @ 41 */
-+		pinctrl-0 = <&cs35l36_top_default_state>;
-+		pinctrl-names = "default";
-+
-+		cirrus,boost-ind-nanohenry = <1000>;
-+		cirrus,boost-ctl-select = <0x01>;
-+		cirrus,boost-ctl-millivolt = <10000>;
-+		cirrus,boost-peak-milliamp = <3700>;
-+		cirrus,temp-warn-threshold = <1>;
-+		cirrus,multi-amp-mode;
-+		cirrus,irq-drive-select = <0>;
-+		cirrus,irq-gpio-select = <0>;
-+	};
- };
- 
- &ipa {
- 	firmware-name = "qcom/sdm845/Google/blueline/ipa_fws.mbn";
- 	memory-region = <&ipa_fw_mem>;
- 
- 	status = "okay";
- };
-@@ -451,16 +495,35 @@ &pm8998_resin {
- };
- 
- &pmi8998_charger {
- 	monitored-battery = <&battery>;
- 
- 	status = "okay";
- };
- 
-+&q6afedai {
-+	dai@72 {
-+		reg = <QUATERNARY_TDM_RX_0>;
-+
-+		qcom,tdm-sync-mode = <0>;
-+		qcom,tdm-sync-src = <1>;
-+		qcom,tdm-data-out = <0>;
-+		qcom,tdm-invert-sync = <0>;
-+		qcom,tdm-data-delay = <1>;
-+		qcom,tdm-data-align = <0>;
-+	};
-+};
-+
-+&q6asmdai {
-+	dai@0 {
-+		reg = <MSM_FRONTEND_DAI_MULTIMEDIA1>;
-+	};
-+};
-+
- &qupv3_id_0 {
- 	status = "okay";
- };
- 
- &qupv3_id_1 {
- 	status = "okay";
- };
- 
-@@ -474,16 +537,49 @@ &qup_uart9_rx {
- 	bias-pull-up;
- };
- 
- &qup_uart9_tx {
- 	drive-strength = <2>;
- 	bias-disable;
- };
- 
-+&sound {
-+	compatible = "qcom,sdm845-sndcard";
-+	model = "Pixel 3";
-+	pinctrl-0 = <&quat_mi2s_active>, <&quat_mi2s_sd0_active>,
-+		    <&quat_mi2s_sd1_active>;
-+	pinctrl-names = "default";
-+
-+	/* mm[0-9]-dai-link nodes must be positioned first regardless of sorting */
-+	mm1-dai-link {
-+		link-name = "MultiMedia1";
-+
-+		cpu {
-+			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
-+		};
-+	};
-+
-+	cs35l36-dai-link {
-+		link-name = "Speaker Playback";
-+
-+		codec {
-+			sound-dai = <&cs35l36_bottom>, <&cs35l36_top>;
-+		};
-+
-+		cpu {
-+			sound-dai = <&q6afedai QUATERNARY_TDM_RX_0>;
-+		};
-+
-+		platform {
-+			sound-dai = <&q6routing>;
-+		};
-+	};
-+};
-+
- &tlmm {
- 	gpio-reserved-ranges = < 0 4>, /* SPI (Intel MNH Pixel Visual Core) */
- 			       <81 4>; /* SPI (most likely Fingerprint Cards FPC1075) */
- 
- 	panel_default: panel-default-state {
- 		reset-pins {
- 			pins = "gpio6";
- 			function = "gpio";
-@@ -531,16 +627,48 @@ touchscreen_reset: ts-reset-state {
- 	};
- 
- 	touchscreen_pins: ts-pins-gpio-state {
- 		pins = "gpio125";
- 		function = "gpio";
- 		drive-strength = <2>;
- 		bias-disable;
- 	};
-+
-+	cs35l36_bottom_default_state: cs35l36-bottom-default-state {
-+		reset-pins {
-+			pins = "gpio112";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+
-+		irq-pins {
-+			pins = "gpio115";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-up;
-+		};
-+	};
-+
-+	cs35l36_top_default_state: cs35l36-top-default-state {
-+		irq-pins {
-+			pins = "gpio40";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-up;
-+		};
-+
-+		reset-pins {
-+			pins = "gpio75";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+	};
- };
- 
- &uart6 {
- 	pinctrl-0 = <&qup_uart6_4pin>;
- 
- 	status = "okay";
- 
- 	bluetooth {
+Thanks.
 
 -- 
-2.55.0
-
-
+Dmitry
