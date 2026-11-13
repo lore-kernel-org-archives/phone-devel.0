@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794596869;
-	b=IdmNGRItSfK7sTYvGTNBQeAo6oX4vgmeZbcCNGku7s9FPUumxxik5t9KtmMTNzxcZrPS
-	 +uZPdCZHDIyLEsDEaA/GVmXbVhWKGIFYDPdVTK5wkCYw+1L/3rZqjMyz0OD7iuurCuLLq
-	 lUUkmaT8bgxz8pNHd869ke+NbYKyTm6/GEeEbg5fYcDRDWt6WvjUuGRnAdqBD5lkgaXlV
-	 Uf3BhalLeLuw5BXb6AjuXlwwJhtKA/bBnci8nePHWNO596Dsq4yxDkUfttWUsL7KnDX8l
-	 rVUs+DULlyKyKKObViGXQGTcJZSP3ufP50H7rUUUS1OBXse36rfMEcvYATZ2C58wyXQ==
+	t=1794596872;
+	b=FncHBVOOcy2pgZhdPQKP29sBK+ExOowvshkABXrZ92vlvNWbt6yYcpZ4ZQl3KI0HIZ8M
+	 mAd1Cp5f7V1I6VKbTJwxGlHdyY62G+qz4xmhbaTut70+n/YDVD207uyQaIOqxUfolDBT+
+	 3BgQCdUOXzlagnF02Ra7QT1ep86h/ajppTDMnnWu+YtGNjB7RhUBd2q/HaN+jen/bdhyo
+	 lE+4JB80XYQfk8cgIlFyY8rPjc23WaqgAfQg4uJYl8yfBYtRyDeE2Iml17CNh3TtH5kbR
+	 HvFy/4SXYb0ASZbOTLo7QpThOszHUgbKJFsjhz28odwLzaFN02qeZxwVFK03nLVYPmw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794596869;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794596872;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=EtVDEEY+1Q2B+PJRdO/nFO/tm1fJ8wXwnQSpYA2WKh8=;
-	b=pLUBtJYBDVohBJCCnffOOyTghdEcG6n0Nw89O2DO69bQC9SKy+RI7V4+B2DvH/9ea/fZ
-	 AuNYL+RQ62/chVIr1roO5gqsGDZfPggMXSikQRo7CDtCYj6l6evcRXPn+U+mC6btmwPv7
-	 A3mz70TlW66jQiVajylK4Xc5/WH0jJ4tXPuHwQEsC5J3Jz8dBrP3hPlJGQHBGwb8nDDOk
-	 OPyfOnChx6RpcOJ8F9tStr3rAJEbvDsqqdE/pEnXXM2twHBvV8/iKAkQckfGpUozXUpbP
-	 AVlfHROG3JHhxWy024yYodFVuNyYBnszwtRUbyEZFSc5EJeuyTzQf8JNNS3AVcJMvhA==
+	bh=498bVPav8qEVV2GYaYtJAWa131hP7OjDlibTUA65Q0o=;
+	b=ZrA+QaLQIaPFfVzcdTDi2VlkUYSH/Vdmj5YEr3D2GK4N1fP4lRafX1PCju5QaSOhuK/0
+	 rxJP9+6do6aEwd5XCV5jdbuo5kLE7euARueycLkeE/R1O7kgrLbE1MWtGNb2o4lBtBRXc
+	 VTlVIPEAbsBVog7EOPa7jiR31/PsBOusy/KoACa8x8r+b3DHQzIh1RWXwVKvPvKE+xOOx
+	 hPV2GIjyAOVeAvQ+cqMprIi6jnxvk0KDzA/2xWi04DjDDnHP47vtCK4P3lGywz9fQoxDX
+	 Tb5QYKt7USuB0Ejs/BkpTpw6HN0/FbEWioTfsrsaYA3eVrKMd0UlrtAEgui4SLM68Vw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rE2u3Ig9;
-	arc=none smtp.remote-ip=209.85.218.53
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HePccj35;
+	arc=none smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1A7606A8BC
-	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 19:07:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C1A7606A8BC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C786560A2615
+	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 19:07:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C786560A2615
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rE2u3Ig9
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c506a231b88so233039466b.3
-        for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 11:07:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HePccj35
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6ae305e3bd9so3208018a12.0
+        for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 11:07:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794596868; x=1795201668; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794596870; x=1795201670; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EtVDEEY+1Q2B+PJRdO/nFO/tm1fJ8wXwnQSpYA2WKh8=;
-        b=rE2u3Ig9QQmvYdO4meupm38R07509KcJIbOAEE8bkGwjMEOVzVv0JJLzRE37Peidsb
-         smpNCeOpTI7ROICLLY5L90EV6xSGREQ/ui4lN8ruSeUYnNG4G3X9tiX6tmBDjD4S+rmA
-         EJ+gM48JWQjmSoetmjwKebkBu1/6kW1rn3mdQb8JgRGM1t922TkimGEZMcSERFZuIPXi
-         452eL4fN1PQASGBc2YGLxX4d6X09AtHZIOSnl2GtlrSWA8UO0+oSOyfyLdzIXzzzqMTS
-         vEBgWlzFFtez3312Bw35huiUspC7CzTPnn3dJJdqQugkUMAD1AMnk+Aob0x4KYw0XNBZ
-         gFUA==
+        bh=498bVPav8qEVV2GYaYtJAWa131hP7OjDlibTUA65Q0o=;
+        b=HePccj35FvhTjvXwtdVBJgEGNVeh2KrOUDPZqigubVdBbr/KLsuRN5y64YNXHBWId4
+         m5z0PK1xgJg2mvVjc5PNTWLFyq96goUIFhvhIPhZLDaMHVwkfH1EPNEemnp6vzvRPKLg
+         Yuy1HRPofIJAEzZc6kSFJD1IKjUzSort9TdQEdO9ff62aiFdDCjMk7tpoNy2qzHJ8s96
+         YMdgBD2K4ZYcf0zITt9tCnTJE3UbVZJCXEo3J7dmh0cYnycfUhsDbPWzieA+Tru3tD+O
+         CE6bH2un439G7EPfZMZmwydwevOgw046xvR0kNIjHzWfD+tp7t1hWAKcpujb0Shia4NI
+         mV9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794596868; x=1795201668;
+        d=1e100.net; s=20260707; t=1794596870; x=1795201670;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EtVDEEY+1Q2B+PJRdO/nFO/tm1fJ8wXwnQSpYA2WKh8=;
-        b=hoGnuzYvhCqu4P+QPhvnkpAfmL1qmeV1V6dO94UJXlcnriGg1VXTvruCW4xWpJh3id
-         mrIXvSgmL5uR9Y/IPseKLi7ExwTRNmXl2BNid0NVieahnzt88TkgGMdVPSxbkKG2IpPZ
-         5Xt3IX/cQy8dVSKTT5E8WWxSo4XvKZXzVW3NMU031fz+Q+Hlpdmz86U4kWh0BYfC8z9G
-         Uh9Byfrcu1DXid2DzHBf0InsvBrhUGLafxjEGj6wJq2MOIXuiM92CGznuDGsObGmL4uU
-         egF8Id8M2fCMpriPrfNWulLs1yoCT+WJqJhbekoixoUA1sVeaXy/X0/JIOfkEGg7k78v
-         m/vw==
-X-Forwarded-Encrypted: i=1; AL+hErFBcyTd+uVGzjQpCc9q+57Q/wlAC6qV8URVU2xYx9X3xfxcpjHJvwZhdIaI7GO5pPYxcBAkXHnsuYoi1g==@vger.kernel.org
-X-Gm-Message-State: APuU4Z86rnjlWu7Wh1+Ny/olJYGWporToXeRK7WnU2UeF+XOB7NNnsmb
-	nkEg8LrJmLxRx9XUbN10YVzVl0X1FL7mO3D6KMIfhrBFsddgNRIwHsv8
-X-Gm-Gg: AYBFou30wUvxPJpxJU3IM/d6a9epB86+P68zxDDPpGwXKdLbC8HyGUYhLwDdeXweN6C
-	+PkZZgfa3fSOtCnMz7nTidqFyGAoQbjKFYU6G8PxTOkCFaPWrEtTqGGoBDeAIKWmdAtjeswIDiy
-	DoJRRH5wQMX8KZtAi/+uodf0EeBxwTKduVJKEpnvOu/nQ0bby+dJMYJZL5MtRDdEwdFDzHVj45q
-	/Hek/zxVl7xkZrX+yd7SP4Qv95zUafBtePXzN1VAoKuDlG07kRJ1J4vY79VpNShOUMvy/K0sPFs
-	nzZ0ttLUCo31ixbYJhInufyOdt18d7IbhSuj1I8WFFyq7OZOud6Yr/U5ZAkkSBKCTbHHuEHUHUV
-	S9PQM3VJEyUr19v9umC7twYPOYHKQpiCaTyDLFnLmuxhWSnCf+ukvkhcLZ1TgfEKqjFTefN7H2a
-	29hkD690DjCYYyiOiKwpA6XxOZW3zRJXzfTRkQoZSyPD590XKZ1GgxCWPxZaAKHEJt12RCEmt/Y
-	Jq8rGqv/jvcgLyyCsorQnPNZT8qqJPYWoCM9m8lowx9IW2v+TCzgsmEZDoNF5tjRSMgaQGZapUy
-	M5Hemt0BWv3wzDHUQXChTmm+De2ns2hMv5JHTKldXbJUkGNzgkhT9eR34cuoFFBZ
-X-Received: by 2002:a17:907:2d8a:b0:c40:cee7:3918 with SMTP id a640c23a62f3a-c509683f389mr411823466b.44.1794596867571;
-        Fri, 13 Nov 2026 11:07:47 -0800 (PST)
+        bh=498bVPav8qEVV2GYaYtJAWa131hP7OjDlibTUA65Q0o=;
+        b=qV3Bfhb9MNGwK8ZrGw2ffD5SnTvr+EZn92HO9ZY6AhRv4XNH7aVwe2tXgodseOI0Qv
+         jnu3bCRA+5esus1MZURTU4exsSLPw6ebiIPqTTF03gQ72tkSgcM77330sqWHzvykniFN
+         piyLpb04kOuD3BBd1qEr4ufkybC+Am/GfJn8DD+PTBQudKg43e6ZF0CQ+i127nXbO0Nx
+         w7ew6QqTbtMblSwfOE8zuhE5ZMJn3/k/HFQgp/JPkS32Ulumki4FRWNdcEqHnxas4cOy
+         g0Rb+L54qXlCnIpAcCJyz/vwJXjGm00kpqLd0qkj9M32vdQs+LJKXcBE27RS1Je/qk6U
+         XYVw==
+X-Forwarded-Encrypted: i=1; AL+hErF8TgVe0dG7Q02PeXO4O4RFsNIqupgTT1bMUzgToYHkd/FDLBekum/pjwS2+yT9IRzlMuGPTKndkobaqw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Q+7xQI8xwJnkJFvg/C7OaacBiLhq/s2WLrLb4Eb87tSS5Jsqy
+	HLQO5BTuOwGydYhRQx0jqGdG86v5ZqFABASYJXsXd4eGh9TYKJd1uAVA
+X-Gm-Gg: AYBFou2h6yV7za/Fn2uScHWxNk66/cVo+Qr6YgbAF2wb/xwfiU5N4bGyj9vGu3LRqZk
+	sgrPu+WsCctbwv+VYvwtAf1vBSPQGMZSDBk1NGGhCidbOHEhVhf8DWumeXf+EVT+Ql54yzysav5
+	QWNV2AoEJhzYSxQNwfyYmOlNEpMmKUoq9rdv+KnmlwrlCzq+NRB5ZarpkCCDWfcBQOu2NySpNrm
+	6UYa4+rYBWgcaZT8ixv8j0FJ0XnkJcBr41l5RxBrmYQvQqlV8J3SmSoFtEavwzaUYpk46IJ++k8
+	x4GCVycpgaosD3JfnE2M6eSLy/tZHgGSE6AVd0PRLJ+7TuvFXt6jnsgjeaCbMXLJZtGWdHrPZC6
+	oVAgXnfrx+lGE64CBRZwGznB6qdmKRy33ND/GnUwgOwxGdNBb6roG82lvA1DOcY9ZuN9fpQgKhN
+	diFzGc2DpywMHqUCQcxZNMuQ9MdJM86jTGatjWYgrWAQEU8xZ3OwLC1y+ZRzBqPtYhL6MQKGpND
+	b8RKcBs3lR60g6igIBbnpwoBgH4nJl2X+//uGGPfKH9YCQQn43xpnzadc7clj0OBlAVkplOA3af
+	pLRkqiYxCCXXR3aOmxKXgcJaOaPAYqSmDIYIW7J4d/BqWi7MTnpJY3KSjqa8d7tR
+X-Received: by 2002:a17:907:3f02:b0:c50:5186:6dc2 with SMTP id a640c23a62f3a-c509636b5f5mr389984566b.24.1794596870123;
+        Fri, 13 Nov 2026 11:07:50 -0800 (PST)
 Received: from [192.168.1.100] ([163.245.50.16])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b23b09sm129444166b.26.2026.11.13.11.07.44
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b23b09sm129444166b.26.2026.11.13.11.07.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 11:07:46 -0800 (PST)
+        Fri, 13 Nov 2026 11:07:49 -0800 (PST)
 From: Alexander Letuchiy <asalde.le1@gmail.com>
-Date: Fri, 13 Nov 2026 22:04:58 +0300
-Subject: [PATCH v2 2/9] dt-bindings: serial: mediatek,uart: Add compatible
- for MT6895
+Date: Fri, 13 Nov 2026 22:04:59 +0300
+Subject: [PATCH v2 3/9] dt-bindings: watchdog: mediatek,mtk-wdt: Add
+ compatible for MT6895
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -94,7 +94,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-initial-mt6895-v2-2-4ab0aa9fa391@gmail.com>
+Message-Id: <20261113-initial-mt6895-v2-3-4ab0aa9fa391@gmail.com>
 References: <20261113-initial-mt6895-v2-0-4ab0aa9fa391@gmail.com>
 In-Reply-To: <20261113-initial-mt6895-v2-0-4ab0aa9fa391@gmail.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -116,32 +116,31 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
  linux-serial@vger.kernel.org, linux-watchdog@vger.kernel.org, 
  linux-input@vger.kernel.org, phone-devel@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>, 
  Alexander Letuchiy <asalde.le1@gmail.com>
 X-Mailer: b4 0.15.2
 
-Add a compatible string for the UART of the MediaTek MT6895 (Dimensity
-8000/8100) SoC. It works with the existing driver through the
-mediatek,mt6577-uart fallback.
+Add a compatible string for the watchdog of the MediaTek MT6895
+(Dimensity 8000/8100) SoC. It does not fall back to mediatek,mt6589-wdt,
+which implies the MT6589 TOPRGU reset layout, as the MT6895 one is not
+known yet.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Alexander Letuchiy <asalde.le1@gmail.com>
 ---
- Documentation/devicetree/bindings/serial/mediatek,uart.yaml | 1 +
+ Documentation/devicetree/bindings/watchdog/mediatek,mtk-wdt.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/serial/mediatek,uart.yaml b/Documentation/devicetree/bindings/serial/mediatek,uart.yaml
-index 5bd8a8853ae0..a3969cfdea7e 100644
---- a/Documentation/devicetree/bindings/serial/mediatek,uart.yaml
-+++ b/Documentation/devicetree/bindings/serial/mediatek,uart.yaml
-@@ -35,6 +35,7 @@ properties:
-               - mediatek,mt6795-uart
-               - mediatek,mt6797-uart
-               - mediatek,mt6893-uart
-+              - mediatek,mt6895-uart
-               - mediatek,mt7622-uart
-               - mediatek,mt7623-uart
-               - mediatek,mt7629-uart
+diff --git a/Documentation/devicetree/bindings/watchdog/mediatek,mtk-wdt.yaml b/Documentation/devicetree/bindings/watchdog/mediatek,mtk-wdt.yaml
+index 8e8991ac95ea..d0a73b9c81d6 100644
+--- a/Documentation/devicetree/bindings/watchdog/mediatek,mtk-wdt.yaml
++++ b/Documentation/devicetree/bindings/watchdog/mediatek,mtk-wdt.yaml
+@@ -24,6 +24,7 @@ properties:
+           - mediatek,mt6589-wdt
+           - mediatek,mt6735-wdt
+           - mediatek,mt6795-wdt
++          - mediatek,mt6895-wdt
+           - mediatek,mt7986-wdt
+           - mediatek,mt7988-wdt
+           - mediatek,mt8163-wdt
 
 -- 
 2.56.0
