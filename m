@@ -1,56 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.226
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794566950;
-	b=0/TGHVgLN0yaEdLDMrUdHhEAk4B+leMdnUQqadU5WTVLRpsbAGu+zbf9lr261E41le2m
-	 Tt7II6eCptTZQExSlO/73fNIlp/EKIRG7BLaWNtRl7OKi8TqQyT51TY0mc/lAKPPqBm7u
-	 62yVQZzvtF01D6C5Oa8URNBAEh1RZqBJhtPl2Lf25T9FG6sLZ3DG7lW5WwVZCTlZaY0R5
-	 xNEYB/ZI3kpt/GJ1CNfc7Tp4gDH1fENYAyarlK+K3/AwktQbMLiXx77o5Kf3J31UwYfQt
-	 vFGs+9FWsxqsOzCVsahoH+es0ZYj1iF/Zdz3xvNI3Yij5s5xm3tgRDGe+0QZzeiowWA==
+	t=1794568951;
+	b=beFsDFqXeP58FIFC3wOx9iBfmPYxXekXkg+TcG9dj2NvdgBHMg905Br/55MIkgTxly4F
+	 iRRBFTM9GF1stWe2z9lBtv4mzg8nZlcTo9WTDM5z//joy+XdYtCPdMef2EkntVOyQt1Nm
+	 2N7b5Hyw+VMncK64Fs7nLNNru9uwnmTRhI13itxIvsM2A0Db45T6BtEmB7xgRtUFRQPJS
+	 PWWFOnMlrR7gBUQr+MY52TkRzhOAdFBgMum/Nn0Og4O7L5aB0f2z4r5H1+HH8FRoDuIEu
+	 yi/RDOEUWZ4Sx2mMma7vbf5vXJ2XybWjUW3rUYtvBsjawfQERpIwzpEI8MTctedE9tQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794566950;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=L9d6tPMOZAxjfoonjzvY06kxXI/XywJdcquCBInJ17c=;
-	b=OS+v4oC51zL89Vlqkc98NySTpVWdwItqIRe1fMtQvWKUrR0xobmAruqfIQkunn0DWpBO
-	 yf4Yiot9tGM+BHWtlnNIVMvr7lkJFpUWiriEZm/Op8em70Y+J23YheILfczVRx6N/Mam6
-	 fqbsqd0w9ELupJuTZ3HCyTPnfhTpt+1frIh7O5BJOfiXQHnsuYRXLbn1iYVWLZ4lYLHWd
-	 JTAkf6eyBYwVAhqy/OpaetYCGcwvwFCnNEOfR+37/+2zOH4wwE7PgCx1Y+o3A410UqLYk
-	 pXbj3uosbi6DG908dt3+QuCk6kjff2uSmzcojaa35QrrA+hGe5vk4PoT6Kh7Hqw/h3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794568951;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=yGlIyfBjIJAxL3beSaCSyFhTL6UntSgouor70UsS65I=;
+	b=5PkGihqsQMXe9lJXNuob7j7u508T5F2eC/NpdIkLfq+xJG4Am0hRbD/L6vA9q6MMw7e+
+	 IucH3QdDVYicWv9vqegQfZwkzcSiKBFgRKn52J/z6la0tOk+zYX5Y38Y/n72y3qqP3hS3
+	 zyYBphv/WloZSskIMP+GgMWS8L+TAuLmUqmZkqOldhComKSWX96BfESdmr7YQzApWSC+w
+	 S1ufvmClhCi68ofoixrv86GHLJfx9UCSCP2dHJeXMHirG4qnur9K4Z1yA0/CTC+lzaqvv
+	 byigB4SVBU4UR6OG+77Zldon5tCLSdbdZIpWbRm4a2jzYhaoF4TrU/bVM7WA5ThIatQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=packett.cool;
-	spf=pass smtp.mailfrom=packett.cool;
-	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=N+MqUjTo;
-	arc=none smtp.remote-ip=95.215.58.226
-Received: from mta1.migadu.com (out-226.mta1.migadu.com [95.215.58.226])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mpoiwbAb;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1580606A321
-	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 10:49:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1580606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A887606A323;
+	Fri, 13 Nov 2026 11:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=N+MqUjTo
-X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=JTVI8dsnYYKY9XmmTsofIbVRVxeIG9KyE+kWPKidMJw=;
- c=simple/simple; d=packett.cool;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794566945; v=1; x=1795171745;
- b=N+MqUjToFyi255sl31+u90pvQ3RiTlVM/dwQ/63jjJhQRZj/LNPb8qitKVPuDlqPEbLemB0r
- vbCPFyr0flQwrHffI/GWK0i9rJ2O8LL8cB3gVXn3vOUwzIcrV7xaCbEVaDZOaUMJ0hFYqB7Eh/G
- wEv4A2OfzEPdjleofByLzHC14NNBCQeByTSPOoMZyVoetspMbiNKseACDhTvKrFMTYYe5KydZLW
- hV5Lar5GOYmxrxxMo32AmYf3iw6ZixdfHljM3dxOtWVoD85ESIJZiNryZIaQFSdTmo9LIJlwB4Y
- qZIv2rPyOlziNen2TvwhXRyvol31jV1jj4fOKRkAfi9fg==
-X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 49f6fcf4643467b8;
-	Fri, 13 Nov 2026 10:49:05 +0000
-X-Mizu-Trace-ID: 49f6fcf4643467b8
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <1ac861f9-e6d4-4d16-912b-711fffab3063@packett.cool>
-Date: Fri, 13 Nov 2026 07:48:57 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mpoiwbAb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684701F000C4;
+	Fri, 13 Nov 2026 11:22:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794568951;
+	bh=yGlIyfBjIJAxL3beSaCSyFhTL6UntSgouor70UsS65I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mpoiwbAbdQG4fU1wY/HFh9WYX1+1lLXSVrGTM3ZFqZ8dx+2vg1TOix4X4rkBKErnz
+	 vTj1Tlih3sj4jKQqz+IPqsPvImGDnmhE99QX+GQPJc7QMzo8OaOMwPKHXQwzD5EMF0
+	 NRFYswrERm1Sh/DPQyB90Ag2IZqwBvCZQAvxYD92qMDy29yrk7AUoqNM70UiUJxOdD
+	 P8h1jAeoSeJOrx8yh4FJHKOCURawoPuMZJ3I78CsLVEjZfSbEJnMhXLZBvjvawRdSz
+	 fm2Aml+5vSOvfxOTMMSWc9UXNYUb/rRoQ40jL2r1hvlxllLZCYTMjwfetqIvkPQMSp
+	 aLHrZD5g1WUCQ==
+Date: Fri, 13 Nov 2026 12:22:27 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Val Packett <val@packett.cool>
+Cc: Sebastian Reichel <sre@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Marc Lainez <marc.lainez@gmail.com>, Luca Weiss <luca.weiss@fairphone.com>, 
+	=?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>, Danila Tikhonov <danila@jiaxyga.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Abel Vesa <abelvesa@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+	devicetree@vger.kernel.org, phone-devel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: power: supply: add Qualcomm QGauge fuel
+ gauge
+Message-ID: <20261113-terrestrial-outgoing-camel-fad1a1@quoll>
+References: <20261112170841.2189322-1-val@packett.cool>
+ <20261112170841.2189322-2-val@packett.cool>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,93 +66,122 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] iio: adc: qcom-spmi-adc5: Add ADC5_BAT_THERM_100K_PU
-To: Luca Weiss <luca.weiss@fairphone.com>, Jonathan Cameron
- <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: Marc Lainez <marc.lainez@gmail.com>,
- =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
- Danila Tikhonov <danila@jiaxyga.com>, Sebastian Reichel <sre@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
- linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261112170841.2189322-1-val@packett.cool>
- <20261112170841.2189322-4-val@packett.cool>
- <DMU0219YWEL8.35KQSMY192RH4@fairphone.com>
-Content-Language: en-US
-From: Val Packett <val@packett.cool>
-In-Reply-To: <DMU0219YWEL8.35KQSMY192RH4@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261112170841.2189322-2-val@packett.cool>
+
+On Thu, Nov 12, 2026 at 02:07:27PM -0300, Val Packett wrote:
+> From: Marc Lainez <marc.lainez@gmail.com>
+> 
+> Document the QGauge fuel-gauge block handled by the qcom_qg driver, with
+> compatibles for the PMI632 and PM6150 PMICs.
+> 
+> Signed-off-by: Marc Lainez <marc.lainez@gmail.com>
+> Signed-off-by: Val Packett <val@packett.cool>
+> ---
+>  .../bindings/power/supply/qcom,qg.yaml        | 105 ++++++++++++++++++
+>  MAINTAINERS                                   |   6 +
+>  2 files changed, 111 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/power/supply/qcom,qg.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/power/supply/qcom,qg.yaml b/Documentation/devicetree/bindings/power/supply/qcom,qg.yaml
+> new file mode 100644
+> index 000000000000..79dd18d87879
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/supply/qcom,qg.yaml
+
+Filename should match one of the compatibles.
+
+> @@ -0,0 +1,105 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/power/supply/qcom,qg.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm QGauge Fuel Gauge
+> +
+> +maintainers:
+> +  - Val Packett <val@packett.cool>
+> +
+> +description:
+> +  The QGauge (QG) block found in some Qualcomm PMICs (PM6150, PMI632)
+> +  provides battery fuel gauging through hardware voltage and current
+> +  FIFO sampling, open circuit voltage (OCV) measurement, and coulomb
+> +  counting. The hardware has a multi-state FSM (S1-S7) that automatically
+> +  transitions between active sampling and low-power sleep states.
+> +
+> +allOf:
+> +  - $ref: /schemas/power/supply/power-supply.yaml#
+> +  - $ref: /schemas/nvmem/nvmem-consumer.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - qcom,pm6150-qg
+> +      - qcom,pmi632-qg
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    items:
+> +      - description: Battery missing interrupt
+> +      - description: Battery voltage low interrupt
+> +      - description: Battery voltage empty interrupt
+> +      - description: FIFO data update done interrupt
+> +      - description: Good OCV measured interrupt
+> +      - description: FSM state change interrupt
+> +      - description: QG event interrupt
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: batt-missing
+> +      - const: vbat-low
+> +      - const: vbat-empty
+> +      - const: fifo-done
+> +      - const: good-ocv
+> +      - const: fsm-state-chg
+> +      - const: event
+> +
+> +  io-channels:
+> +    items:
+> +      - description: ADC channel for battery thermistor temperature
+> +
+> +  io-channel-names:
+> +    items:
+> +      - const: batt-therm
+> +
+> +  monitored-battery: true
+
+drop
+
+> +
+> +  nvmem: true
+
+Missing constraints
 
 
-On 11/13/26 7:09 AM, Luca Weiss wrote:
-> Hi Val,
->
-> On Thu Nov 12, 2026 at 6:07 PM CET, Val Packett wrote:
->> Even though it existed in bindings for the longest time,
->> ADC5_BAT_THERM_100K_PU was never assigned in the driver. Do so.
->>
->> Signed-off-by: Val Packett <val@packett.cool>
->> ---
->>   drivers/iio/adc/qcom-spmi-adc5.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
->> index d57ba8526e0c..c27ff89429f5 100644
->> --- a/drivers/iio/adc/qcom-spmi-adc5.c
->> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
->> @@ -542,6 +542,8 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
->>   					SCALE_HW_CALIB_DEFAULT)
->>   	[ADC5_XO_THERM_100K_PU]	= ADC5_CHAN_TEMP("xo_therm", 0,
->>   					SCALE_HW_CALIB_XOTHERM)
->> +	[ADC5_BAT_THERM_100K_PU]	= ADC5_CHAN_TEMP("bat_therm", 0,
->> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
-> While this will work fine for some devices, unfortunately this won't
-> work for quite some other devices that don't use a 30K, 100K or 400K
-> NTC in the battery - or when the NTC beta (B) is differing to the
-> hardcoded lookup table.
->
-> For example on Fairphone 4 (pm7250b fwiw), the battery has a 10kΩ NTC,
-> so using the ADC5_BAT_THERM_30K_PU with the hard-coded lookup tables
-> would result in very wrong temperature values. Even ignoring the whole
-> NTC beta topic.
->
-> You can see my proposed patch series at
-> https://lore.kernel.org/linux-arm-msm/20260220-bat-temp-adc-v2-0-fe34ed4ea851@fairphone.com/
->
-> Unfortunately it's from February and I haven't spent more time on this
-> topic since then, mostly because fuel gauge anyways was downstream, so
-> pushing just this upstream wouldn't make much difference.
->
-> Now it does, so I should get back to it... Let me know your thoughts!
+> +
+> +  power-supplies: true
 
-Looks like your series has had very positive feedback so far, from a 
-quick look I haven't even noticed any pending changes really..
+Drop
 
-It's orthogonal to the qgauge driver itself as the driver just consumes 
-an IIO channel which can be whatever's appropriate for the device, but 
-that's informative in that I probably should not set a default channel 
-and rather leave an explanation in the example in the bindings that it's 
-very battery-specific.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - interrupt-names
+> +  - monitored-battery
+> +
+> +additionalProperties: false
 
-> (Fairphone 3 with SDM632/PMI632 would actually be fine-ish as-is because
-> the battery has a 100kΩ NTC and the beta probably is close enough to
-> what's in adcmap_100k_104ef_104fb_1875_vref)
->
-> Regards
-> Luca
->
->>   	[ADC5_BAT_ID_100K_PU]	= ADC5_CHAN_TEMP("bat_id", 0,
->>   					SCALE_HW_CALIB_DEFAULT)
->>   	[ADC5_AMUX_THM1_100K_PU] = ADC5_CHAN_TEMP("amux_thm1_100k_pu", 0,
+unevaluatedProperties instead
 
+> +
+> +examples:
 
-Thanks,
-~val
+Best regards,
+Krzysztof
 
