@@ -1,114 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794531547;
-	b=btt1i7vqUm4dLLHcB/c2NIIyv3JzKagVdhixuH7MDjTmslHNr6ZNonly8HCyitySOUFG
-	 kCT1AproqrT+yBXtyf9Es3miDJKPGW6dDlJIxgoVWiQ4BgLj2/2IVodeEGvP55YXpf0NO
-	 VJPxHBv5KO3LEakzRsLCE6p6dqbi9Y+9pOE0+2s3XOuDFJES4IB0ShFFrP+tBo9ud//Cz
-	 /rn/YF6z9QuimyRXo4ek3JxbcEVbowfqZmPaEY4RXFA6CVIeYv6s9f9+V2SnHpeaIbTjr
-	 am+c0bPRLAeQr5muZNAwNmAuLA0tI5D6rHFq1v7HvUB6U3Dq93e1W2iZSVH+L7hf7jw==
+	t=1794531768;
+	b=y16pTUm+k9mrZ8fI1YBr8BfQw0rjQbNizDe5S8SznR9IdStfK/Z0j0FxsfryfkhvbfOX
+	 hd8OTCb3KZGzsWl5Pleej9r8ilRQSBI2aaVDBFPwggNvk8FTiAZnunOdx1T15uMHksqfZ
+	 F6aycYf8WwpmKYbZgQIsirc1cvlwN/SSMKUILZ2kk1hdZ7SJW63hCNNOC842Mo90cXphu
+	 0SPIKR7bGoRfd0NzRB9uKvF/Lqv+I+CIlcnQtbaCKUVK0xHcyUbtkVxb7YLTXOLkzj0zM
+	 Lftmp8kzSLo8Fy1aDzHMB33iwcv0paUkOVN5f/DVZBmfuReWknQ4qaDuWY85r8OURqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794531547;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=cnHQLMcLsmKQJDyIGTt0mvQnh81+ZXOZVkzwKRQPLt0=;
-	b=O7IXejJ9rvWb6yrWhu7iD73SXpyiSvURJ++cyFA65p4PiRKqdJZb6ZI0lUMnfBexUF8F
-	 sA5EYjwPg2Gro+Vo2C2+VrheJBKKbKHH4Qk9B9X7bBFFh6mU0Hj2diudc+b+bz5/myH7R
-	 fkRvAHlq21dSjurNsD1Xt3H2BD1TMtHKy9+Dax4k+gDp/i+t8KaU8m3qoyzpgkQd0Dykr
-	 M6CHWaP/ZfIC+fLtyaPJyZ89tRNWXoF93GZ6yMJAJ1le1DhgglKrIMuvoAmDLTSL+Ifb7
-	 I8reQzkTdSxn3gWehrGcNICBdm4XsXHoQv6IHQImphrtG/JlUhTnoA2egMMj5DIvOWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794531768;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=XtdvEuKeodVtDzB/4eB7y3ob7xjJavFKFolqpUylUuw=;
+	b=NoCFMZANJWqMMMBZdWdld/uszKsYCkf7egGf5n8no73KVzUgk73TnZ5gBWZ0cZL+vdPk
+	 O2NpgglZTygl3FzY3DcdaFt4JVPTsFiVOJU21QCzr7Do8rDZpjju7rhm1D4asyUFpCKPG
+	 bOk94m0Nxe1JxFrUBV/UDF6kodsSnVA5yZO0lv4GCb2B/9qTvV6k2NEp4lawloeJ8i2Kw
+	 ljx0YdaDK5EfC1oDIvH7T7uAEQ1IywxFaWuzrnaMsdBwwWeEQwG1xVAi4/GCBjASnll95
+	 jLylEZRFmxJUkK7MXJfuWobcN99Pt6QTUEk6xfsdz22J4t9vRbPoB9jLC1A+wofaYRQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aXwA6C2X;
-	arc=none smtp.remote-ip=74.125.82.50
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GDzEvUBg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C79606A332
-	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 00:59:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71C79606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11677606A321;
+	Fri, 13 Nov 2026 01:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aXwA6C2X
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1a2af4c8d00so38760c88.0
-        for <phone-devel@vger.kernel.org>; Thu, 12 Nov 2026 16:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794531546; x=1795136346; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cnHQLMcLsmKQJDyIGTt0mvQnh81+ZXOZVkzwKRQPLt0=;
-        b=aXwA6C2X78/aErlxdCDVlDcBhkVNyzQp81N3HP+FcVhJ/FM8Ts6K3OTLEdrDTNlTZC
-         PZlGbsKqFdepUhhUwf0PTM4/12NFZOmop3SMoBLlrEo2OKDYLM2AQ+eqSG4n7pA3N1pj
-         r5tFkM5LxFCtgMVGCSfAjr7e5Ubz2hvSMv3cYF2jhO92/gHpAxYLlGhuvE8Oam0NBvBW
-         3d/2C//L92CiXCNnqw6r0R+4t9XZfGZjwz1VoaqfrCxDktj2prFI3iKcjRF+UXFn16ap
-         6K7zLI1kvvv7cxwwJV6+lExKlmTZf4DnCTPEVPaKT1VACLFTNEai51iOa/kMF+qrecyi
-         rbLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794531546; x=1795136346;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cnHQLMcLsmKQJDyIGTt0mvQnh81+ZXOZVkzwKRQPLt0=;
-        b=2OCbYKJEU60d4R5Q4FuG7Pyouymoif7hE1ONuScBL954YJRLYbNJI84m4y5gHZSn0g
-         kABYyt7f7rq7meCKdXMhZWUQNAjazw/5qsLb2jLxOtRJorxHnTDU6kD/TZgYsl2bDG+J
-         k0thHm1d4eCeLp9XUrbmdjPHLYyAitu5mZBrdTY4EOTcNYzgmIk6npwOQRP1RKCMIrgM
-         XTATl3o5ufcBPdQuW5b8sGdHpAWM9YgTV0YQn0LCMdzpObzuLJSnQf02HBC7QcG89Q0d
-         t14LjLpmAMWK9imcs1hONKFLrHXEIk5Lw0iFLGdI9FmVEugvP25GShO/7lPVDyGBVbJr
-         UdiA==
-X-Forwarded-Encrypted: i=1; AL+hErGrRCPLisR5fchddT0Z3CwpGkPZClX8dt8oOjl+DZm9CO9uUcgEfRCcz+++b4Y2J+CosAHxFQ918S4qvw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+E487Xi+fYjsOp9A0STQeSBMLd04KXmKOBXC5/DpIk8lPDQbI3
-	Z7GC9Tcdzv4/i71vC9HtNDLgZNcOwMC1sktao++tDuy3F9Y/VvjxB/Qc
-X-Gm-Gg: AYBFou3m8fJgAF8iRFFhUcEtmgTNsPovSJyqTDmwp/jIzuRg7/yggH4kZckjpR7iZr9
-	PhtqWvg5xi4INmeV3JAyr5ETlF4jnDUvsItqt1FPrGKH/EtIJlhHZS0Fs7owh8Ui/E6H9r9akr4
-	JQR5PiYh+6h5C3FRRaHu+zh2SkGTGIER/XZmx2S8DszOFmmqMw8J2kEUelxvVc14K+71YamxG/X
-	hh7+JpyiQo+ZuMuZLpC6MkfyVH0LNL5K6v55XSLLzOn+AO2NBhRjs3w+8qhZJzjqPgTvHsT4+JI
-	EPDzVsOP26ov8//HFbaV9ugfqI6lKLzCIHvOsXQ7vFczbkfFhicQmJBiJmNtb1yFI1gmn8CdlpL
-	nijkoRL/DHql1jmU7ieVvBDo3GYqBl6bn93Vl5TnJRn8JtcGMc1tRVbJh3BkZhDmPhKMm2HXP4U
-	JQE0QxZq/G38qNU9XK1bmu6SEf/fvJITjjQWW3aZRSgO73RU6Za3J6JhCLpa22pXUXi6VhbuuZC
-	kDtG0NNw5BJMaC95KJdBP7KEoTRyf1/UZ5Tz1gpURQwJyUHAc0VvyeOTKrc22YnEn7YDz1ZiWFv
-	jCaFF+cw3CSglQo6cZs2oXHlOjorGH/AP2WYSc1ODC5boq5jnE85vB2MM4OhN44UQkxna0w=
-X-Received: by 2002:a05:7023:a4b:20b0:149:1feb:6d9d with SMTP id a92af1059eb24-1b5030fb74emr1197809c88.19.1794531546379;
-        Thu, 12 Nov 2026 16:59:06 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:48f1:7a0b:9bfb:4205])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b50316e195sm2760431c88.8.2026.11.12.16.59.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 16:59:05 -0800 (PST)
-Date: Thu, 12 Nov 2026 16:59:00 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: muzafferkadir@mainlining.org
-Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Rajendra Nayak <quic_rjendra@quicinc.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Jassi Brar <jassisinghbrar@gmail.com>, Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	Brian Masney <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Krishna Manikandan <quic_mkrishn@quicinc.com>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
-	linux-remoteproc@vger.kernel.org, linux-input@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH v8 10/11] dt-bindings: input: touchscreen: goodix: Add
- binding for GT970
-Message-ID: <avZgzxJtnMceNQnJ@google.com>
-References: <20261105-msm8952-initial-support-v8-0-311ae8e8f14b@mainlining.org>
- <20261105-msm8952-initial-support-v8-10-311ae8e8f14b@mainlining.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GDzEvUBg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571401F000C4;
+	Fri, 13 Nov 2026 01:02:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794531767;
+	bh=XtdvEuKeodVtDzB/4eB7y3ob7xjJavFKFolqpUylUuw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GDzEvUBgEaXspkMbc8RJurxMEtNcNXNP3ZhLD8NspGvjCK170O6+6/OE906oznxfp
+	 /e1QXDWJWqiNoNDswojpBvF5ZneDETXry7uFiwQjkWBj/tqkQEMx6ePPqqtMQgZQnn
+	 8Bm4cBFQbNSHPwyu7DPqTKj3iAm9LMojB7uDkVah03unCyC7fADNS52ZrnBa8egoQD
+	 HpAoKP7YL3UYgg9d7PK2do2rcYXOgOTlvcXQjRsp5HorisJ8oCVumcnNHOz1dL2Hms
+	 JLU91DZv/ZA/q7higagnsST7WfFrv+SNpGZRqGTtVsmfaeQdgG8in+bzqtY2mZgmtl
+	 abBa6blFIeLVQ==
+Date: Fri, 13 Nov 2026 01:02:38 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Val Packett <val@packett.cool>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Marc Lainez
+ <marc.lainez@gmail.com>, Luca Weiss <luca.weiss@fairphone.com>,
+ =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
+ Danila Tikhonov <danila@jiaxyga.com>, Sebastian Reichel <sre@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/5] iio: adc: qcom-spmi-adc5: Add
+ ADC5_BAT_THERM_100K_PU
+Message-ID: <20261113010238.17b371c8@jic23-hlaptop>
+In-Reply-To: <20261112170841.2189322-4-val@packett.cool>
+References: <20261112170841.2189322-1-val@packett.cool>
+	<20261112170841.2189322-4-val@packett.cool>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -118,20 +70,37 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-msm8952-initial-support-v8-10-311ae8e8f14b@mainlining.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 05, 2026 at 01:54:14PM +0300, Muzaffer Kadir via B4 Relay wrote:
-> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
+On Thu, 12 Nov 2026 14:07:29 -0300
+Val Packett <val@packett.cool> wrote:
+
+> Even though it existed in bindings for the longest time,
+> ADC5_BAT_THERM_100K_PU was never assigned in the driver. Do so.
 > 
-> GT970 works with GT911 driver, document it to be
-> used with GT911 compatible.
+> Signed-off-by: Val Packett <val@packett.cool>
+> ---
+>  drivers/iio/adc/qcom-spmi-adc5.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index d57ba8526e0c..c27ff89429f5 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -542,6 +542,8 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
+>  					SCALE_HW_CALIB_DEFAULT)
+>  	[ADC5_XO_THERM_100K_PU]	= ADC5_CHAN_TEMP("xo_therm", 0,
+>  					SCALE_HW_CALIB_XOTHERM)
+> +	[ADC5_BAT_THERM_100K_PU]	= ADC5_CHAN_TEMP("bat_therm", 0,
+> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
+Whilst alignment isn't exactly consistent, this should probably match
+the one two down that has same number of chars in the _PU] bit.
+So use a space rather than a tab.
 
-Applied, thank you.
+Otherwise seems fine to me.
 
--- 
-Dmitry
+>  	[ADC5_BAT_ID_100K_PU]	= ADC5_CHAN_TEMP("bat_id", 0,
+>  					SCALE_HW_CALIB_DEFAULT)
+>  	[ADC5_AMUX_THM1_100K_PU] = ADC5_CHAN_TEMP("amux_thm1_100k_pu", 0,
+
