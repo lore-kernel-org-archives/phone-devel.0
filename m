@@ -1,103 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794551230;
-	b=vYsgSUoHY3tfLezy1XptAMeswCqpJQIsnljg1FrfwkFU2SOR12b85Sua4ei/j6PW4DsC
-	 th/JV2BAkNibSGz7aid1LOPsPhe83QCcDm8RR9GX8ivXXPOMiFgvJLSs4GFH2fy1GwqTp
-	 te3/yHAeLt0PrSHhYae07luo2Tohh4H3njJBr162DWRyrw/Gl5xc6yz0Vw7SP7XHsU2vD
-	 yNI+HSHl6mNBguITo8oC5nsPnk+j5N+jnzO8w3o6cE/NbXR+fvtu2qgki7mGnAwtCINm6
-	 iA/4uwsGiYrpl6KEqlF7teSYU5K4oDkYJ550FFjydasR2E+3AOAO58y+/A5/Hq5YwpA==
+	t=1794557800;
+	b=Tx2MBmS8TnkmwGMoeJQVubmy1jyosImL+n4rDVckieiJXdo9BZWRcajHG0v1UaqO3k4l
+	 h3u8J/vWdUH8IfZRsw4fmnvz97vdmgmBMDRIqMVikAMPWr47Sv6c7zUrVhnPEu8bPcQ7N
+	 iV2FyKHwrSnf9XZFmvoK1x+f85hF1XSNDxmiRaRPxfD3/hP4AtN03ZcX20AUcL36Ov/Nc
+	 Kz2wO9xnFWQVCGPwYLE9c70/ex0LLauf+/f/n9GBQ8Hos9nSR8Uzxf6oLjlPWyCa65ofU
+	 4TAqwV94OqhSuoJawCJ4TApFEo6mmpCUcv/FZtcBGV1BE319fUb0qH4YakIlItk42+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794551230;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794557800;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=XltNWiKtwG9iBw8+GH1SYk3VMgJFEJVDDOL9ejVnQFk=;
-	b=YHxyj17GEktvbbnnP2bjCtzRj52L44RKHq7kdk3LHa6zZ0jqUtZB3GvzxYpkfnaU0YTQ
-	 Ap0KmPka903i9yPZ7AluCz5q1FlM1Ob/hXEgYOKyL9NIuHRH3jMbnxU9GSzdlshZXmA8C
-	 WZ/rcmfHEnF5+VyDxq5Reg2zxN6RQ7lvG3/ht4gHwXYbijWSLdOSAHzy2eFW94rkVxuHO
-	 q3bayoSgiCr4Yhrdu+EH8E49hxXhUyJA3238SrwiCZYxBiMR78XMoFrX9ybMF0RU0+QM/
-	 jAhfxUHx5PqGcn5cv94n5GPMdnl/g26cmbRAuOwjr4/9Ww7vGKIS6HhuEWCNMWAESUQ==
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=gW1TFXrxe4ATUFniHdL2t1wb8zLbd3jJ3aJxWRfHEww=;
+	b=Anf5osrH72g9gv8+gPj4/FrgZR22TG8g8NExqDnhwUglFlSgJTem1xt5TNkm9xd1Qn/Y
+	 jXb+hfI0VcFBga2HQNpvnyajScnHRZxiSEAdMtIObdim69Q0tTtjsZlHryGyJcSA6QN99
+	 gKBkSs5T1YmVVbt91sxINaqFnRy1Yji3S9skZe8oYDm/HKaHF/WOHWDAmDF6E10fbG4EC
+	 ATt8sGxd0YjBSvseqV1kWUXbLahoYISJpNknY9NHQ8QXwHpNhuS+iW2K3JIU106e0MXER
+	 /o6F3iYVu7NndAjvxqaja/kobOdwrxmx2bw5pjHlYBcbyj1/9uZuYK/FZNzBFVYromQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=baylibre.com;
-	spf=pass smtp.mailfrom=baylibre.com;
-	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=MUvxZhYm;
-	arc=none smtp.remote-ip=209.85.128.46
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	dmarc=pass header.from=fairphone.com;
+	spf=pass smtp.mailfrom=fairphone.com;
+	dkim=pass header.d=fairphone.com header.i=@fairphone.com header.a=rsa-sha256 header.s=fair header.b=OZ0TtoaH;
+	arc=none smtp.remote-ip=209.85.208.51
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D27D606A32A
-	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 06:27:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D27D606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BF9606A338
+	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 08:16:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25BF9606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=MUvxZhYm
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4b79502c27aso3710145e9.1
-        for <phone-devel@vger.kernel.org>; Thu, 12 Nov 2026 22:27:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.a=rsa-sha256 header.s=fair header.b=OZ0TtoaH
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b7221c0f2cso1269935a12.3
+        for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 00:16:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1794551229; x=1795156029; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XltNWiKtwG9iBw8+GH1SYk3VMgJFEJVDDOL9ejVnQFk=;
-        b=MUvxZhYm5+xi+SJfP8nHhsZ1GXHZRgKcmtYpFlDoXTjjRpAAhHrxK/sL0p5zR3UDxZ
-         zoFe6J+qpK86Rz4t3v2DUKvCLnSK0WziR5goLmM6ybJ96s52a7n4l6ssjhqsUYaR+Jm/
-         Xs9hOLXj9PE+uwryRlkvLuERCrqJTf3zLvvS2FCslyTZTd9wswIAMULtnwF8vJn7f2H0
-         3wTzjD8Hp6/wsmtQJ0eNgdgUe4JwuhUhUM8UnvqdKeyZwp2YYRSg+jZBqsj6tEhsE3zD
-         Pz/u5C9YRb5rfcke4Gy7OJXnRI/iCfjiVWknhEe2HE/M51peV4kwHUDOt1TkMoov2shs
-         xFfA==
+        d=fairphone.com; s=fair; t=1794557798; x=1795162598; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gW1TFXrxe4ATUFniHdL2t1wb8zLbd3jJ3aJxWRfHEww=;
+        b=OZ0TtoaHRNUCuyN+OfM7Jk1lrmCuCjwTTasUeeUsisIE93qvKbPIny/mIqEc1gBNKa
+         tjBiklMLMkNAw6diqZ7UsW089xvDqnIlkgLwio6tCE3z8DlTjDJGhIZ/cU143aO5tAW8
+         TlbghxxzGLxLW1js2cmshTxFzzXrLj0zcWHaXhApr+6OWYvYGZexYLpw6AuzIglPmbv+
+         TFZEERW6rx65pCsn6OUNVolIE+o3CycNx7qdO2KQWwnr1AC3T52gsff61uYy9IlscfTo
+         uUDDJJGbr1iDeegh2e6u2jthx/0HXMiN7vaV8GdRXqGJm3y5caEx8I0/5YCgwnYaZ7H4
+         xKFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794551229; x=1795156029;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1794557798; x=1795162598;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XltNWiKtwG9iBw8+GH1SYk3VMgJFEJVDDOL9ejVnQFk=;
-        b=BX6wmugJNV2+CxxjYMts9Qce8e9tVsyspHgsvaV66Ha8SwgWp+MXp2fz1Fe2mZjfaM
-         tsPl9otzh+/BtN0Insz8UaYX1A2EUocpZLlrZ0rA5xXiECj0lIl02iy2Dsg7dgkQv5/D
-         59wU+QPjJU/NtRzUyqA1t11wTev9Ac877su5TC2v/a2gdpTIGJ3gwSj7qT+iYdjqdclF
-         5sIBJ+mchoPm1TrWXEBbY+NkCMnd2M0myMp8PHfxeWPlf4TyuUzYRqt8usa9dw0rc3mw
-         tR/q3Ld49ngDgMmKeeS9Qtw9VPUuglqmuNylt3xGO4tOd8HNWthrzFt6OPWNDjVgjIxH
-         uR2w==
-X-Forwarded-Encrypted: i=1; AL+hErEfKf/A7/ZtvOYQzhKKKx5IUrecDr3/oBkXRdu7m1M0/iGDkIfBXD/ijnfmbE5eVTQ2pGJefh9QJUGOdw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9Nb362Rg2fpyYRHIskCYLkQijS4ByESVkTrslgJvJkx1JNfzix
-	WlOKTJGdB8o7rF/Z30B4BAIpezWosiZ4mZgos0cBhwPO9+5nHTr4riCO+BMja2fLwrI=
-X-Gm-Gg: AYBFou05qLsrWei54Buw5mwhsLbgLtspUHAgNEZ4VJvqYuvE6x6LP8uUxEctEGB19qx
-	O3S50p2jpDsOwHTZSGhssDaesWKaiKuxo0wqW9teW6d0rMAPXqB1Q8AHIYQuTV+2EPPK/TO6JDN
-	1uAM4NNG2c77L3I1MKM8sjRL0k31YAeasGdys8Sho0paGU1aS+2gckGYydxzvibrqaw/S62USfQ
-	TIE4g3XxcdQx2x3th+EEyQkM2NCbil9rBr5H5GVdgaIGvLZucBG+0lmmuZO+vGU3yCjE2R5xlQJ
-	XG2u7cD/9xkCwDITlHee6yQGzf3O4zmo4fxDzSTCwRfWCN+IvUHgATwDUU5r3idFDK2aKDqWDgt
-	8D2NTXJVqzy69dOCtJbtPlUzqvm8rdBr0V3yaDSGQY8JdJbr14vp5V+NTMSVgpCbE+q3t1X79Qy
-	XjFF6HzB5RdqfwnoXLEACNbLWPsVstL4plf9tPiWf67f4cT/NrS8TinVkPFJ92Ofq9f+VfxoQCi
-	dmGrXsAPieCII1A5Ae8Fq3JSj6AAr9SjGhXRioh4O50CXY2BJemqkaeAG3E1Y/Wb2eEyR+dMtOr
-	Hvj7V8J5L895xmEnNclfVHwdH6IyL79xJIyaQd01SJ9AmcIZ1ivuuYKAJ1qb9xhFT2K8Qpqweg=
-	=
-X-Received: by 2002:a05:600c:4ecd:b0:4a1:e6a9:4086 with SMTP id 5b1f17b1804b1-4bb5599a73fmr36037725e9.0.1794551228841;
-        Thu, 12 Nov 2026 22:27:08 -0800 (PST)
-Received: from localhost (ip-091-089-005-024.um28.pools.vodafone-ip.de. [91.89.5.24])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4bb4e29daa5sm133039875e9.12.2026.11.12.22.27.06
+        bh=gW1TFXrxe4ATUFniHdL2t1wb8zLbd3jJ3aJxWRfHEww=;
+        b=dGno7XcXMMlXVbKuBRbehuSspLZscFpBPtgBn64z31abiQahptoMTLQaFsVpIH9HQN
+         7ASjaJHYJPFVTFJk9zQmplP571v7poCTWbIicPVZnGoBB9Tf9CB+ObotyvBDztRX8dqA
+         tBFhakmTGgVcGcc6Ol2asw74nHNZnfDz3hdGDhGtpLO6BGnjKeCYH/WQIZi8Ky4uRrzt
+         HDcXAjz3Q0wJw3uJL7Bdqs2ulkhqh4ExKBn/2bnExrDFmjpguBN3WwV8ouZQ3VXOR7Oy
+         3xxbBz83SC/F0qHlqQWAqOp4dBVh0jmLZJQi4T2wXwwwQVV9h9+EVqeU9m64jesNLWi+
+         G1IQ==
+X-Forwarded-Encrypted: i=1; AL+hErEpEsN6TlmOAo8/kdmm0GblQn5+H14Iol8f+PYGTvU7Kai5UEMXXqvCdLbVgYHYdmWl0iE2ENuxi+x7Sw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/7ZmZ8ZclyiGqaRLXg3CoN607UPxO3eNt2mup2Bpor7T1cqt7+
+	yGvQwZA+yRDEnHlMnhZ9i6zbYDrk7YW4TyHRFVEv+qMg9kyn9CPGD2ypZrnYrRodrnDJ00dkOsG
+	/pSYWfM4=
+X-Gm-Gg: AYBFou2cWaQb5cNv/l6Ul5mocHkut26f2nEx8/zgeIgbI+MRwRjqN12EAXZ1yx9UbDC
+	TWVVtGXxXf+XsceNcdwivnMuPjILc43+OfYFdNGvgMSY0+TvHAlDI+CL+jmZDqgeYi1rQmR88aP
+	bma9h8vYuPaVd2hD6UWOqPEmiIJJO1+j4AeeP5Y6C1/n1VnfsWK72IUSyLu05+F3E4ZPSb9OG5I
+	mKvzOjUBJEF563vQVcvV9EWy4HqYcKO58NBjyKIzmpG88mYpRFV1xGSIrhB8rWRU6jVyTkNBHnH
+	NmANU6o8MCGzBCwofoGBn3vDsKiVewpxF0fD9XOGmyxnkTS7dJmBuG8dy3FUNPsZ/GkDZxZlzVD
+	8e2w7XtUe1OTQVYHvpVXhYTMWf7NcOts958l6a+makezUTcOXBvsQrxnSXBWaL21Qgh03Pzk1h/
+	V5HXgVh4jlm+7/8PSzELTPiTeq6Rqt9oV9vFOv/zOTJeAg5SzLkhGdMPzHZK8c6vupJCJyy9BIn
+	yKiwYjJCcvReRxVFgKRHyCXg2Yc4vV+i5ojIcf4+YpAiHiCPMXzIJxnVphIWfPjQNBJvzKe56OP
+	M0dtUElkSwZ/AVatiOObziFC8al+hS3VmzXtTFBxYLbLMqmnpNWYU0cCA1yQq3sNpTELTgvxsNT
+	v2rVwLX8=
+X-Received: by 2002:a17:907:6d06:b0:c41:26b8:c49c with SMTP id a640c23a62f3a-c50963dc6aemr131877966b.10.1794557798644;
+        Fri, 13 Nov 2026 00:16:38 -0800 (PST)
+Received: from [172.16.240.104] (144-178-202-142.static.ef-service.nl. [144.178.202.142])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b4214fsm65243866b.35.2026.11.13.00.16.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 22:27:07 -0800 (PST)
-Date: Fri, 13 Nov 2026 07:27:06 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Val Packett <val@packett.cool>
-Cc: Sebastian Reichel <sre@kernel.org>, 
-	Marc Lainez <marc.lainez@gmail.com>, Luca Weiss <luca.weiss@fairphone.com>, 
-	=?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>, Danila Tikhonov <danila@jiaxyga.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-pm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/5] power: supply: add Qualcomm QGauge (qcom_qg) fuel
- gauge driver
-Message-ID: <avatRCrAgoPjV7rP@monoceros>
-References: <20261112170841.2189322-1-val@packett.cool>
- <20261112170841.2189322-3-val@packett.cool>
+        Fri, 13 Nov 2026 00:16:38 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 13 Nov 2026 09:16:35 +0100
+Subject: [PATCH 1/4] arm64: defconfig: Enable Qualcomm LCDB regulator
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -107,55 +94,50 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mwyna4jkd5v6s5iv"
-Content-Disposition: inline
-In-Reply-To: <20261112170841.2189322-3-val@packett.cool>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261113-lcdb-enablement-v1-1-1dc40b49ed82@fairphone.com>
+References: <20261113-lcdb-enablement-v1-0-1dc40b49ed82@fairphone.com>
+In-Reply-To: <20261113-lcdb-enablement-v1-0-1dc40b49ed82@fairphone.com>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Val Packett <val@packett.cool>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794557797; l=687;
+ i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
+ bh=Cb0jzf5yf7B35q4+LHh6E0ES6V+yP2TAPYPGLiJwWJY=;
+ b=lLzlMM1LJlgxpG9XLQ5KkHczWQw96AMoeuDzzlMaFbyaG/5se576a7+MKM21WHa+mdbYWI9NR
+ DNnaD8ufsFdAdbbFAk0sCSK/641WYpPGX+6bVv4C6lJUq8Hs3VquxKu
+X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
+ pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
+Enable the Qualcomm LCDB regulator driver as module, as it's used on
+some devices like the Fairphone 3 and Fairphone 4.
 
---mwyna4jkd5v6s5iv
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH 2/5] power: supply: add Qualcomm QGauge (qcom_qg) fuel
- gauge driver
-MIME-Version: 1.0
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Thu, Nov 12, 2026 at 02:07:28PM -0300, Val Packett wrote:
-> +#include <linux/mod_devicetable.h>
-> [...]
-> +#include <linux/platform_device.h>
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 898f4f1d5952..d0869b08a69e 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -910,6 +910,7 @@ CONFIG_REGULATOR_SGM3804=y
+ CONFIG_REGULATOR_TPS65132=m
+ CONFIG_REGULATOR_TPS65219=y
+ CONFIG_REGULATOR_VCTRL=m
++CONFIG_REGULATOR_QCOM_LCDB=m
+ CONFIG_RC_CORE=m
+ CONFIG_RC_DECODERS=y
+ CONFIG_RC_DEVICES=y
 
-Please don't include <linux/mod_devicetable.h>. That introduces a bunch
-of unneeded build dependencies and of_device_id is already provided
-(without these dependencies) by <linux/platform_device.h>.
+-- 
+2.56.1
 
-> [...]
-> +static const struct of_device_id qcom_qg_of_match[] = {
-> +	{ .compatible = "qcom,pm6150-qg" },
-> +	{ .compatible = "qcom,pmi632-qg" },
-> +	{}
-
-Please make this { } (i.e add a space) to match the most common style.
-
-> +};
-> +MODULE_DEVICE_TABLE(of, qcom_qg_of_match);
-
-Best regards
-Uwe
-
---mwyna4jkd5v6s5iv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmr2rbYACgkQj4D7WH0S
-/k7nbgf/b6/rA4kIW1NyMoOtnNVBeGIHHHNfMkct33HHb1h0CiT6Hd1RLEJ6HH+F
-sW4pjg7G0QStID55MbOeFsfsHKUaOEsaLwutZ3fATturnz7k7RZRvLfAjNtR3k18
-hiWFbFdsTjH6SuQ/g7OijXpDO+E2v/5FHg8g/V0U5xwL0w4sWAME2Gxrc9Aed+1Z
-yb1H38UcmdaYkNs0WgAyYt2rGVtGDyt5nQqLm9gBfrCvoxDzCIxgiXJ61C9JMF0t
-UIk/sLbujBcPF2qrtmodX0CUE07kBKD7PV1TOWjB7Gcz+f3E/X3eQGPNNOk8mEQn
-pqgA7hr5DNGO6zRenFbDHgtssAhenA==
-=HgBt
------END PGP SIGNATURE-----
-
---mwyna4jkd5v6s5iv--
