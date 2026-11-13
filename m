@@ -1,59 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.226
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794566588;
-	b=1naenTG6/0h0qgqvis/YTPh7xWvcqyQKd/zoEg2P2XW9Dti9nXOD/MRlK7G0Cy+9BijV
-	 ynLdL5BQN0D+xCMa2vv6Uhik/pPnUN0MCpX/zBPkTG9Wj6vNNt/FV9k5mk8tQDjJLP7IW
-	 gBxZ8CwGudUhGDOaxqc3VRqaK4uaAYG1DJgk+tnZjsab5crhMztlNT4NLm8UC5E5i6cS8
-	 JEYqKwYyOswfh2y2nKqfyrhr4Wb5EvC1S+WxtETYwm7aEPYPCCs/BvLysFrJGcRvxO8nz
-	 onxp0vSsGkUWWJtphC/wYrN0dLCAvmpFACw0xeQFweGffCmTd2AfBAJtBzRJkIutFvQ==
+	t=1794566950;
+	b=0/TGHVgLN0yaEdLDMrUdHhEAk4B+leMdnUQqadU5WTVLRpsbAGu+zbf9lr261E41le2m
+	 Tt7II6eCptTZQExSlO/73fNIlp/EKIRG7BLaWNtRl7OKi8TqQyT51TY0mc/lAKPPqBm7u
+	 62yVQZzvtF01D6C5Oa8URNBAEh1RZqBJhtPl2Lf25T9FG6sLZ3DG7lW5WwVZCTlZaY0R5
+	 xNEYB/ZI3kpt/GJ1CNfc7Tp4gDH1fENYAyarlK+K3/AwktQbMLiXx77o5Kf3J31UwYfQt
+	 vFGs+9FWsxqsOzCVsahoH+es0ZYj1iF/Zdz3xvNI3Yij5s5xm3tgRDGe+0QZzeiowWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794566588;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=dOJ4YdEhB/LjAz+Uew5SnjVvbdRDY4A19cwQljrlPC0=;
-	b=CoS/DTY72sOSjQvw/cUoGD+KTByog1Kz1Z3NXhIDKCzURXhiF6iCx7o8xLF+w/H5uWBP
-	 8UK3oT1CT5syr3kj6IE4wttOGAy9vzSJ0VfX569v8PrXt7xgdcdk2PVSuLkY/zdbX2CZi
-	 uZLpoCaFd53Fhp3qVhBNo6iZHzwh2kaWP61AtEKBFoWl7LMZHwVgCsFSWtlgyzKjBdwDs
-	 g0oLVl1T0Vmb6AtK0tkBxDb+OYRHKXlln/3CLNc7qmHi9FrJ2FhE4FNk7BHZyBY4Ng06q
-	 HjF44fHCLA2EaWMmwIpd7tQgbaSCMOw0j8XGcNn/xFs4jAEve1Vu4zt2lUWWQ6NcK4Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794566950;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=L9d6tPMOZAxjfoonjzvY06kxXI/XywJdcquCBInJ17c=;
+	b=OS+v4oC51zL89Vlqkc98NySTpVWdwItqIRe1fMtQvWKUrR0xobmAruqfIQkunn0DWpBO
+	 yf4Yiot9tGM+BHWtlnNIVMvr7lkJFpUWiriEZm/Op8em70Y+J23YheILfczVRx6N/Mam6
+	 fqbsqd0w9ELupJuTZ3HCyTPnfhTpt+1frIh7O5BJOfiXQHnsuYRXLbn1iYVWLZ4lYLHWd
+	 JTAkf6eyBYwVAhqy/OpaetYCGcwvwFCnNEOfR+37/+2zOH4wwE7PgCx1Y+o3A410UqLYk
+	 pXbj3uosbi6DG908dt3+QuCk6kjff2uSmzcojaa35QrrA+hGe5vk4PoT6Kh7Hqw/h3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="DTFZn/MR";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=packett.cool;
+	spf=pass smtp.mailfrom=packett.cool;
+	dkim=pass header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=N+MqUjTo;
+	arc=none smtp.remote-ip=95.215.58.226
+Received: from mta1.migadu.com (out-226.mta1.migadu.com [95.215.58.226])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C48606A33B;
-	Fri, 13 Nov 2026 10:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1580606A321
+	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 10:49:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1580606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DTFZn/MR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD941F000C4;
-	Fri, 13 Nov 2026 10:43:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794566588;
-	bh=dOJ4YdEhB/LjAz+Uew5SnjVvbdRDY4A19cwQljrlPC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DTFZn/MRumNrYpwcL/0t5cWb4FDPpsRQyYBaBbgFprDvOXoaojNU7Z/H9l6awyRfy
-	 br3VA5AIRX1RbzSqE9Wh+nka3X49BF0BoOg8mxEv5Ol45+RLGaa3ot1MrgeEiK77B7
-	 pJCwUqqKUreFbT1Mk9O2DbVx5yOhuFCHTMLuta8eiB5hscstZlzjGIE21jgH31VUhM
-	 23DejZ0QBor5b6EH31de6wEIBTnqlPG3fd83q/5KZM7FvESciFVconGW+h6PwwGxoq
-	 vT5RvSUX8hDP4O2fuKu/Xd7qcE136pf5ws/l235ljjMi44QIlgwiQbVbdjX3pbJMLu
-	 n84ljOHNkKskA==
-Date: Fri, 13 Nov 2026 11:43:04 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Val Packett <val@packett.cool>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>, Michael McAllister <me@michaelmcallister.org>, 
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/6] dt-bindings: arm: qcom: Add Motorola Moto G9 Power
-Message-ID: <20261113-annoying-curvy-coua-8e89bd@quoll>
-References: <20261109221453.658316-1-val@packett.cool>
- <20261109221453.658316-3-val@packett.cool>
+	dkim=pass (2048-bit key, unprotected) header.d=packett.cool header.i=@packett.cool header.a=rsa-sha256 header.s=key1 header.b=N+MqUjTo
+X-Envelope-To: phone-devel@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=JTVI8dsnYYKY9XmmTsofIbVRVxeIG9KyE+kWPKidMJw=;
+ c=simple/simple; d=packett.cool;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794566945; v=1; x=1795171745;
+ b=N+MqUjToFyi255sl31+u90pvQ3RiTlVM/dwQ/63jjJhQRZj/LNPb8qitKVPuDlqPEbLemB0r
+ vbCPFyr0flQwrHffI/GWK0i9rJ2O8LL8cB3gVXn3vOUwzIcrV7xaCbEVaDZOaUMJ0hFYqB7Eh/G
+ wEv4A2OfzEPdjleofByLzHC14NNBCQeByTSPOoMZyVoetspMbiNKseACDhTvKrFMTYYe5KydZLW
+ hV5Lar5GOYmxrxxMo32AmYf3iw6ZixdfHljM3dxOtWVoD85ESIJZiNryZIaQFSdTmo9LIJlwB4Y
+ qZIv2rPyOlziNen2TvwhXRyvol31jV1jj4fOKRkAfi9fg==
+X-Envelope-To: phone-devel@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 49f6fcf4643467b8;
+	Fri, 13 Nov 2026 10:49:05 +0000
+X-Mizu-Trace-ID: 49f6fcf4643467b8
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <1ac861f9-e6d4-4d16-912b-711fffab3063@packett.cool>
+Date: Fri, 13 Nov 2026 07:48:57 -0300
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -63,22 +60,93 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261109221453.658316-3-val@packett.cool>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] iio: adc: qcom-spmi-adc5: Add ADC5_BAT_THERM_100K_PU
+To: Luca Weiss <luca.weiss@fairphone.com>, Jonathan Cameron
+ <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>
+Cc: Marc Lainez <marc.lainez@gmail.com>,
+ =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
+ Danila Tikhonov <danila@jiaxyga.com>, Sebastian Reichel <sre@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261112170841.2189322-1-val@packett.cool>
+ <20261112170841.2189322-4-val@packett.cool>
+ <DMU0219YWEL8.35KQSMY192RH4@fairphone.com>
+Content-Language: en-US
+From: Val Packett <val@packett.cool>
+In-Reply-To: <DMU0219YWEL8.35KQSMY192RH4@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 09, 2026 at 07:14:31PM -0300, Val Packett wrote:
-> Add compatibles for the Moto G9 Power smartphone, codename "cebu".
-> There are several display panel variants, start with the Tianma one
-> which will be the first one to get an upstream device tree.
-> 
-> Signed-off-by: Val Packett <val@packett.cool>
-> ---
->  Documentation/devicetree/bindings/arm/qcom.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+On 11/13/26 7:09 AM, Luca Weiss wrote:
+> Hi Val,
+>
+> On Thu Nov 12, 2026 at 6:07 PM CET, Val Packett wrote:
+>> Even though it existed in bindings for the longest time,
+>> ADC5_BAT_THERM_100K_PU was never assigned in the driver. Do so.
+>>
+>> Signed-off-by: Val Packett <val@packett.cool>
+>> ---
+>>   drivers/iio/adc/qcom-spmi-adc5.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+>> index d57ba8526e0c..c27ff89429f5 100644
+>> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+>> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+>> @@ -542,6 +542,8 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
+>>   					SCALE_HW_CALIB_DEFAULT)
+>>   	[ADC5_XO_THERM_100K_PU]	= ADC5_CHAN_TEMP("xo_therm", 0,
+>>   					SCALE_HW_CALIB_XOTHERM)
+>> +	[ADC5_BAT_THERM_100K_PU]	= ADC5_CHAN_TEMP("bat_therm", 0,
+>> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
+> While this will work fine for some devices, unfortunately this won't
+> work for quite some other devices that don't use a 30K, 100K or 400K
+> NTC in the battery - or when the NTC beta (B) is differing to the
+> hardcoded lookup table.
+>
+> For example on Fairphone 4 (pm7250b fwiw), the battery has a 10kΩ NTC,
+> so using the ADC5_BAT_THERM_30K_PU with the hard-coded lookup tables
+> would result in very wrong temperature values. Even ignoring the whole
+> NTC beta topic.
+>
+> You can see my proposed patch series at
+> https://lore.kernel.org/linux-arm-msm/20260220-bat-temp-adc-v2-0-fe34ed4ea851@fairphone.com/
+>
+> Unfortunately it's from February and I haven't spent more time on this
+> topic since then, mostly because fuel gauge anyways was downstream, so
+> pushing just this upstream wouldn't make much difference.
+>
+> Now it does, so I should get back to it... Let me know your thoughts!
 
-Best regards,
-Krzysztof
+Looks like your series has had very positive feedback so far, from a 
+quick look I haven't even noticed any pending changes really..
+
+It's orthogonal to the qgauge driver itself as the driver just consumes 
+an IIO channel which can be whatever's appropriate for the device, but 
+that's informative in that I probably should not set a default channel 
+and rather leave an explanation in the example in the bindings that it's 
+very battery-specific.
+
+> (Fairphone 3 with SDM632/PMI632 would actually be fine-ish as-is because
+> the battery has a 100kΩ NTC and the beta probably is close enough to
+> what's in adcmap_100k_104ef_104fb_1875_vref)
+>
+> Regards
+> Luca
+>
+>>   	[ADC5_BAT_ID_100K_PU]	= ADC5_CHAN_TEMP("bat_id", 0,
+>>   					SCALE_HW_CALIB_DEFAULT)
+>>   	[ADC5_AMUX_THM1_100K_PU] = ADC5_CHAN_TEMP("amux_thm1_100k_pu", 0,
+
+
+Thanks,
+~val
 
