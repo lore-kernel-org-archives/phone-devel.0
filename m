@@ -1,79 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794528110;
-	b=M8soTMbrIgcH3RqUvj/0hyiRHI7gMzGKRK+0ZP4p0/jZQ2hGA7Fz4ZfFjyEUacJ3uVkY
-	 RehG3LlvQn0+/pdZ4cXkGpUpzH4mdWYELy82xXnQ84Ey8H0g0T3Ic+d+4YY4K2u8LXdBd
-	 Tig8DSnmatleON1SBfHOfGZZ5rUITjW2R6mYeuxZUKRHTH/YbdGObrNZ1UfNHp7/csCBz
-	 wBJMcPPNada0MUQlktaRCJ68osidylk+M8s9tWdxo1+VUF7zHw0gA22j9G+s5SIypUB9f
-	 dh0K68jRX5vNUyzCmaXxyXVS2TCoYMk9/1DhvCEj/wdXM0HudQ9CBFBsAWoZ2vAf/KQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794528110;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Ct1fbDF1mb7Be3mEluDpAJNIkA18LafUdGDziI8jFKc=;
-	b=JQMSPyGpAKC8thKm8i+hvTKhlA0nG3oKybY3Qi2Vp6RQOlIHJqUQyw5fFBlfelen+Hkt
-	 QiulI8TloC0gesKsyVHEF7oDdup4b3kQ9nQlpkgSm5I7hGb6CqGP1/9Nmh4xihe6lc01P
-	 uRF3Ngz68DmIXYzkDhU34u7KbZQy30welrXCQb2J0hQpHIR54NTQHUMwS9YPdRXRgIg2c
-	 H6J1AG4li3PGxygSPwzL5cofy9GK5LbfUgjG7xcY0C0IKfecds6HFPw3YwL2gFnTFES/t
-	 vX3n1ZO7Ja0svToDmR5TIq1upUe2p+d+17MvvJjds8W3gVS4bFukI5k0SmgykhNIXjw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nOPczxm7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C572606A31C;
-	Fri, 13 Nov 2026 00:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nOPczxm7
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794528109;
-	b=uaSuZbjK+GImvI1uOgKvxbPn+KRFiV79FkLNXIh+V5dkOWo/74XDfLnweUq++unMIfBW
-	 +JDA+f/JfspWqoCJWboK51gq2o9DckNoV1VcFh0cB3oiArXZqRkwMPCGK7jByN29NIL9N
-	 I2SXNODxPEZKNsCiZmL69etm5QTJMbQsxmmqgzSQXq1ZZmIyTYk4wecAIZ/5U6VebXwhN
-	 iULdtOUUVYN43VwkFILAATl+X9k5tTqbBYroBaYtOW/CbQHO5J4RQoMM4yrpbfUNVYe5W
-	 6UR+gCYpexIavtG8lLUMeKm+4LZNE7dN8BN+j0MIU2Q5MKPLQkUJk1Pc8kKJcsd/crA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794528109;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Ct1fbDF1mb7Be3mEluDpAJNIkA18LafUdGDziI8jFKc=;
-	b=VjkwVdwlgRuZJjK3aeE+nn+VorxnLzjaimNJ4fzOA+lWts548zuEiqj9iFl2aUjfNCzH
-	 iGa4vfRvgGUC0Fn/lD7wBtQAezCBFsRvq4o5JeZzGjkpxYos9j9cs8HBJPf6lWOklun1V
-	 Z8wVVMWzLAmELNzokAiMxztF8dVcm4etkVjf42QVI68cf4gDqYs2884OXW3dqJ0ipLAXS
-	 8e2KhM3IV8iZKD3t2si6Y0ifmCNXuA3q/DnbCuAnSjR2uRKLicYtkny5AwMeMyImfcE+o
-	 Rhhh7ttTKjw5oSl7mMR+g/KONvEukFOmEFNlupOe+LYEhtkdoaTpQNYYdti5dDhZyhQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794531547;
+	b=btt1i7vqUm4dLLHcB/c2NIIyv3JzKagVdhixuH7MDjTmslHNr6ZNonly8HCyitySOUFG
+	 kCT1AproqrT+yBXtyf9Es3miDJKPGW6dDlJIxgoVWiQ4BgLj2/2IVodeEGvP55YXpf0NO
+	 VJPxHBv5KO3LEakzRsLCE6p6dqbi9Y+9pOE0+2s3XOuDFJES4IB0ShFFrP+tBo9ud//Cz
+	 /rn/YF6z9QuimyRXo4ek3JxbcEVbowfqZmPaEY4RXFA6CVIeYv6s9f9+V2SnHpeaIbTjr
+	 am+c0bPRLAeQr5muZNAwNmAuLA0tI5D6rHFq1v7HvUB6U3Dq93e1W2iZSVH+L7hf7jw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794531547;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=cnHQLMcLsmKQJDyIGTt0mvQnh81+ZXOZVkzwKRQPLt0=;
+	b=O7IXejJ9rvWb6yrWhu7iD73SXpyiSvURJ++cyFA65p4PiRKqdJZb6ZI0lUMnfBexUF8F
+	 sA5EYjwPg2Gro+Vo2C2+VrheJBKKbKHH4Qk9B9X7bBFFh6mU0Hj2diudc+b+bz5/myH7R
+	 fkRvAHlq21dSjurNsD1Xt3H2BD1TMtHKy9+Dax4k+gDp/i+t8KaU8m3qoyzpgkQd0Dykr
+	 M6CHWaP/ZfIC+fLtyaPJyZ89tRNWXoF93GZ6yMJAJ1le1DhgglKrIMuvoAmDLTSL+Ifb7
+	 I8reQzkTdSxn3gWehrGcNICBdm4XsXHoQv6IHQImphrtG/JlUhTnoA2egMMj5DIvOWA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aXwA6C2X;
+	arc=none smtp.remote-ip=74.125.82.50
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 0D38D1F000C5;
-	Fri, 13 Nov 2026 00:01:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794528109;
-	bh=Ct1fbDF1mb7Be3mEluDpAJNIkA18LafUdGDziI8jFKc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=nOPczxm7l7gBt+ZjtJuxJRNVae9aNC0YKmas0+K+hs8Kmgi2dE/TrdGT21hJNJE+0
-	 O+bPAfNsZmXS7XyyNVIz5oM59ikDdLLk6Bak0X/pk7d5LGbp74g8uoKnRMW1cQQLBD
-	 HtolUcw6wveZtoYP1pO/lAZWQpn1FCjG1FxJB8Ws/YgSovOmrAP0le2tHyWFUD0/pP
-	 yJ1zGmbAyMH9W6n4xXCWKUNZlFf3/WvkjOCAhMDL+0nSNbBQ4BQL2+EDARRYN5oE9/
-	 vb/ZYlf66jvURVAmpDP+5v/W1LuTPAivxBFQvufIsckf2r+5OrLusotRcaNZBPq9Sj
-	 Th8Wj/+Na33fQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 7C8E94751B;
-	Fri, 13 Nov 2026 00:01:48 +0000 (UTC)
-From: Paul Sajna via B4 Relay <devnull+sajattack.postmarketos.org@kernel.org>
-Date: Thu, 12 Nov 2026 17:01:40 -0700
-Subject: [PATCH v6 1/3] dt-bindings: leds: aw2013: Add awinic,aw2027
- compatible
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C79606A332
+	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 00:59:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71C79606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aXwA6C2X
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1a2af4c8d00so38760c88.0
+        for <phone-devel@vger.kernel.org>; Thu, 12 Nov 2026 16:59:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794531546; x=1795136346; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cnHQLMcLsmKQJDyIGTt0mvQnh81+ZXOZVkzwKRQPLt0=;
+        b=aXwA6C2X78/aErlxdCDVlDcBhkVNyzQp81N3HP+FcVhJ/FM8Ts6K3OTLEdrDTNlTZC
+         PZlGbsKqFdepUhhUwf0PTM4/12NFZOmop3SMoBLlrEo2OKDYLM2AQ+eqSG4n7pA3N1pj
+         r5tFkM5LxFCtgMVGCSfAjr7e5Ubz2hvSMv3cYF2jhO92/gHpAxYLlGhuvE8Oam0NBvBW
+         3d/2C//L92CiXCNnqw6r0R+4t9XZfGZjwz1VoaqfrCxDktj2prFI3iKcjRF+UXFn16ap
+         6K7zLI1kvvv7cxwwJV6+lExKlmTZf4DnCTPEVPaKT1VACLFTNEai51iOa/kMF+qrecyi
+         rbLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794531546; x=1795136346;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cnHQLMcLsmKQJDyIGTt0mvQnh81+ZXOZVkzwKRQPLt0=;
+        b=2OCbYKJEU60d4R5Q4FuG7Pyouymoif7hE1ONuScBL954YJRLYbNJI84m4y5gHZSn0g
+         kABYyt7f7rq7meCKdXMhZWUQNAjazw/5qsLb2jLxOtRJorxHnTDU6kD/TZgYsl2bDG+J
+         k0thHm1d4eCeLp9XUrbmdjPHLYyAitu5mZBrdTY4EOTcNYzgmIk6npwOQRP1RKCMIrgM
+         XTATl3o5ufcBPdQuW5b8sGdHpAWM9YgTV0YQn0LCMdzpObzuLJSnQf02HBC7QcG89Q0d
+         t14LjLpmAMWK9imcs1hONKFLrHXEIk5Lw0iFLGdI9FmVEugvP25GShO/7lPVDyGBVbJr
+         UdiA==
+X-Forwarded-Encrypted: i=1; AL+hErGrRCPLisR5fchddT0Z3CwpGkPZClX8dt8oOjl+DZm9CO9uUcgEfRCcz+++b4Y2J+CosAHxFQ918S4qvw==@vger.kernel.org
+X-Gm-Message-State: APuU4Z+E487Xi+fYjsOp9A0STQeSBMLd04KXmKOBXC5/DpIk8lPDQbI3
+	Z7GC9Tcdzv4/i71vC9HtNDLgZNcOwMC1sktao++tDuy3F9Y/VvjxB/Qc
+X-Gm-Gg: AYBFou3m8fJgAF8iRFFhUcEtmgTNsPovSJyqTDmwp/jIzuRg7/yggH4kZckjpR7iZr9
+	PhtqWvg5xi4INmeV3JAyr5ETlF4jnDUvsItqt1FPrGKH/EtIJlhHZS0Fs7owh8Ui/E6H9r9akr4
+	JQR5PiYh+6h5C3FRRaHu+zh2SkGTGIER/XZmx2S8DszOFmmqMw8J2kEUelxvVc14K+71YamxG/X
+	hh7+JpyiQo+ZuMuZLpC6MkfyVH0LNL5K6v55XSLLzOn+AO2NBhRjs3w+8qhZJzjqPgTvHsT4+JI
+	EPDzVsOP26ov8//HFbaV9ugfqI6lKLzCIHvOsXQ7vFczbkfFhicQmJBiJmNtb1yFI1gmn8CdlpL
+	nijkoRL/DHql1jmU7ieVvBDo3GYqBl6bn93Vl5TnJRn8JtcGMc1tRVbJh3BkZhDmPhKMm2HXP4U
+	JQE0QxZq/G38qNU9XK1bmu6SEf/fvJITjjQWW3aZRSgO73RU6Za3J6JhCLpa22pXUXi6VhbuuZC
+	kDtG0NNw5BJMaC95KJdBP7KEoTRyf1/UZ5Tz1gpURQwJyUHAc0VvyeOTKrc22YnEn7YDz1ZiWFv
+	jCaFF+cw3CSglQo6cZs2oXHlOjorGH/AP2WYSc1ODC5boq5jnE85vB2MM4OhN44UQkxna0w=
+X-Received: by 2002:a05:7023:a4b:20b0:149:1feb:6d9d with SMTP id a92af1059eb24-1b5030fb74emr1197809c88.19.1794531546379;
+        Thu, 12 Nov 2026 16:59:06 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:48f1:7a0b:9bfb:4205])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b50316e195sm2760431c88.8.2026.11.12.16.59.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 16:59:05 -0800 (PST)
+Date: Thu, 12 Nov 2026 16:59:00 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: muzafferkadir@mainlining.org
+Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Rajendra Nayak <quic_rjendra@quicinc.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Abel Vesa <abelvesa@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	Brian Masney <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>, 
+	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Krishna Manikandan <quic_mkrishn@quicinc.com>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, David Heidelberg <david@ixit.cz>, phone-devel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
+	linux-remoteproc@vger.kernel.org, linux-input@vger.kernel.org, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v8 10/11] dt-bindings: input: touchscreen: goodix: Add
+ binding for GT970
+Message-ID: <avZgzxJtnMceNQnJ@google.com>
+References: <20261105-msm8952-initial-support-v8-0-311ae8e8f14b@mainlining.org>
+ <20261105-msm8952-initial-support-v8-10-311ae8e8f14b@mainlining.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,74 +118,20 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261112-aw2013-aw20xx-rename-v6-1-251eca340abc@postmarketos.org>
-References: <20261112-aw2013-aw20xx-rename-v6-0-251eca340abc@postmarketos.org>
-In-Reply-To: <20261112-aw2013-aw20xx-rename-v6-0-251eca340abc@postmarketos.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>, 
- Alexey Min <alexeymin@minlexx.ru>, David Heidelberg <david@ixit.cz>, 
- Griffin Kroah-Hartman <griffin@kroah.com>
-Cc: Nikita Travkin <nikita@trvn.ru>, linux-leds@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- Paul Sajna <sajattack@postmarketos.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794528107; l=1313;
- i=sajattack@postmarketos.org; s=20250413; h=from:subject:message-id;
- bh=w/6qEc2cwOI6T/xUHNJh3OifoyGO3FRpW1FATx28UoM=;
- b=PHoLXXJpq6LFiiYGOFQeZQwDpZqO3NVvyXiVC5l2+4nKvpgjk4B6qqfv4z07GmCNmC9Te7E30
- KxZvat078ebBS/rmeO+/BqWW36x6b8oFMeDBeYmRV9EprJ0l5M/xs/t
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
- pk=ZFE/UBqiz9Wr8b+zBL27opOjw5x5ket5JFqks/VQGeM=
-X-Endpoint-Received: by B4 Relay for sajattack@postmarketos.org/20250413
- with auth_id=1505
-X-Original-From: Paul Sajna <sajattack@postmarketos.org>
-Reply-To: sajattack@postmarketos.org
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-msm8952-initial-support-v8-10-311ae8e8f14b@mainlining.org>
 
-From: Paul Sajna <sajattack@postmarketos.org>
+On Thu, Nov 05, 2026 at 01:54:14PM +0300, Muzaffer Kadir via B4 Relay wrote:
+> From: Muzaffer Kadir <muzafferkadir@mainlining.org>
+> 
+> GT970 works with GT911 driver, document it to be
+> used with GT911 compatible.
+> 
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Muzaffer Kadir <muzafferkadir@mainlining.org>
 
-The aw2027 is largely the same as the aw2013, with the
-exception of the way the max current is written to registers.
-This exception makes it different enough to not work without
-driver modifications, but similar enough to fall under the
-umbrella of the same driver.
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
----
- Documentation/devicetree/bindings/leds/leds-aw2013.yaml | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/leds/leds-aw2013.yaml b/Documentation/devicetree/bindings/leds/leds-aw2013.yaml
-index 26238446f2bd..1ad165cfe34a 100644
---- a/Documentation/devicetree/bindings/leds/leds-aw2013.yaml
-+++ b/Documentation/devicetree/bindings/leds/leds-aw2013.yaml
-@@ -4,7 +4,7 @@
- $id: http://devicetree.org/schemas/leds/leds-aw2013.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
- 
--title: AWINIC AW2013 3-channel LED Driver
-+title: AWINIC AW2013/AW2027 3-channel LED Driver
- 
- maintainers:
-   - Nikita Travkin <nikitos.tr@gmail.com>
-@@ -15,7 +15,9 @@ description: |
- 
- properties:
-   compatible:
--    const: awinic,aw2013
-+    enum:
-+      - awinic,aw2013
-+      - awinic,aw2027
- 
-   reg:
-     maxItems: 1
+Applied, thank you.
 
 -- 
-2.56.0
-
-
+Dmitry
