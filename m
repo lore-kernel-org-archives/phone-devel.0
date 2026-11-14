@@ -1,87 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794596889;
-	b=bJW/krjwaikngmsh1qY8h1Q113CD/xXiUueZcqMtIjNBiV77pBasHXMjk5OVl3oa5GPI
-	 Gh/6FSPyljIs50t49kAU7Hr9WOr3gpqxGoE/Klj2z6ShY+sMw/+Cv5U01DS+hBxbjeWhe
-	 VzmZImM2DEoG4dh5p4dUs6jrlHYflcif8eQ/gkvrjl3KvwIcA2yN9mrR+9Vb9uTVTMO3/
-	 krGkFkePclhx02gvQMKCMztMKoiV9q5cnndCsA+GvTF0VZF8hqIvMSPJbu2xRKVheyjGF
-	 zEQM3328QedTyDhYi3T9G/9LHcaRhdkIrokqeWSkv6Bi1b52mt4JeUNOB143KO04E4g==
+	t=1794615365;
+	b=KqbPMcTCVs+ZQl+7W3oARPgmo0i68geb6KMWis+ETDLajwmWxrAgVeRZ9ZyC6FBCMlEi
+	 PLAZCzo+owTbJyAQA2JKlaT256K6YNjzyKU0Xl9XQz43EWqYg3tE85k9ptXT7bbD9uS8e
+	 vmkBiWHgGy/EWmDiCU8NTpvuumhaLNwT2reEzLnjlrjCCEzmmFKNFsOlF09W7sjnqLmU1
+	 3K8B6QXJOoXoGg9xpFOFilJkGhlYkl2UQOZ5+UkUjlzAWju1FU4k8JFRdAFbed2yApwa2
+	 XQbw60Ta7BgLYxviSTKsd24HObF3rNCN607OlGRWMbvQWN+QeeKKPmTXnD+eZjO3H2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794596889;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=gbvwDyU+Acc05Vuh8BWsHE5JqO4e+EP9kLEpKSKS7JE=;
-	b=S0+svdBbLrckRJEBOrEEy+FvS2BPjCkUGBIjJCWbtmjznlijveEIBbbVnk7OrDGDDVbS
-	 Ts5ZCVmdbagLPjaMifRzg+iVrptbWvJdmSorCV2bOPYTVyEdJBoDxxYifscMB8zP73dxr
-	 WBcIG8jHbvdAPfpyorXUa2+5o7ihktJO2Zn6fI1lvljlwfXKZQugw205/c+QSPQATLZAD
-	 iykNRKVDCTACH/Wq04z16hLX36WeuIo2hrc1S4DdTyy46p8q0KyHmfCNlSI5inIL9WGsO
-	 aO0Oh52GDgHaisMMjgTiq68NMMq05QfYxOL/TT9aWd1Nq2IQkGiOPmX8bg9FWwOK64g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794615365;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=H/O+Mo0VVNCwn6G0Coe3gZ4s1DLGig40Bsnf3oJKl+Q=;
+	b=e610Wx4BXxjwYwaWcG85pIaNx4YKEtJ6iEp7jbc+VA422yGa78Ai8euXwhLJriphV36/
+	 ucQM+7dQ65Go7peMpdUiwXPCWhItN1US2OnrQ10uLfrroqccluFHJM/wPTmbplTY9DL2r
+	 Cb6fPkCe2G/gVxxQGYBRFUB7L0GXVe3CF7qPTde339z8NQguzcg7u11VsvsACUTIl1Z67
+	 bU1TTI5MaHTIvTtb/fMEDZl/ByKr1poSGsrpMAy6FhfO14eCXYhEl0G+IzSyJVLzfNB1b
+	 Nzu4uFZjSKlSYOBXHIlmBm2KBJ72e1gFc8XTF2lt70hNrJ4RTQQTK5Ru0gPH0Pq0RYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=G4tedKCr;
-	arc=none smtp.remote-ip=209.85.218.43
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dCDutom7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD0A60A5BC3
-	for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 19:08:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BD0A60A5BC3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFFD606A32D;
+	Sat, 14 Nov 2026 00:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=G4tedKCr
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c4d473cfff6so224247566b.0
-        for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2026 11:08:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794596888; x=1795201688; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gbvwDyU+Acc05Vuh8BWsHE5JqO4e+EP9kLEpKSKS7JE=;
-        b=G4tedKCr9dTUHeL0osYHCYyb5sGhRprlJVyaCfkJKrgkZ5BdLEMGrYCpKPoiw3xGZE
-         x4wRFsryhr1u1jHmsxGRUOKaVgDvUO4AVRmCeUMx9wzbAg0704GjQ6NKSUpUYXOEo4Dr
-         OrO/R/o+d0heYsjmowV2I/rmWTmSUNqQa5XX7lVolvGkT4RCo3jKYaYjkK/TAkYRX/2v
-         877stSoQ+3S9I9peB61iNcUnGWiDacUURczzYPOiv1+pztlIgF1kc9mvqJrOIqRp52TM
-         AMxZWGQvbSW4A+weNKZq7Kj5NR4tGAj0T5HlFjLqtx35nCTxzVYBk+6lbsZ+fYOO5gkA
-         asyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794596888; x=1795201688;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gbvwDyU+Acc05Vuh8BWsHE5JqO4e+EP9kLEpKSKS7JE=;
-        b=gc+i9Cx3nPLjvv8GvvUPU9rp+eXJW37H5tOBsAao42LMyWaTY2cwQvDJQdmQwwjVWI
-         Zokve28faGquQjTkM+ItLApxiPLfoe3uRgV4hfluLm3vHGmr2vLG4p4/3SZITyJyTaq8
-         9GVEi977niCihSYYc0C9kgE2lVrFh8HMMrcZ6sfEWOHH4ZMmu1AsKdutYO0otWBSRVv1
-         ZScu/Nru4LFaQJUVJwk8qnR9BnzvsEsi9HxHXreW2hKVbrfdZjXx4uLCRvWEC+sVAnAq
-         6B0eMZkmBA+d9UqnHF76JRTHwFRC0wqTfcpnrIhNEOrCzWqDbTrPZ029r4TSKqu5i/Ss
-         K8aA==
-X-Forwarded-Encrypted: i=1; AL+hErFsvv9UJnZVfqrBNTHMiXCaTFalVb10BD6LqgUhl8xGtRx6rnS0OpYAev7aJ2jfkx52I9gK4jKUyu2TAA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9LN0bIsJ5FiefPTOKhqHlVrnda9hLnz/HWOxMQ+CEgZffqY7fb
-	Bk2ma/mFpRRj1gCkz6byucHftiuBEznyxJN7zg3qdGdOM1urdjTf0d4Y
-X-Gm-Gg: AYBFou0wpqPqB8wNeUuGqk8Vt73zpyzpPlU+mlQ6QZtJQkRH982+iXuJ64m62DSqwK6
-	EFbjgpPHDUEBRnglvuCNU+UVk16/s3RpuGYIS+DWqHQJQCOn2NidSZof5pzkS9HOa3FA6PZdZIV
-	xP1yJUXuAtEXbP1fqcFbNvUbzR43EVTMkDYTxualP3T/czG0NjZWTBqWjKmOXgg98PaEpuC+7h1
-	BQ5Is/0LDhoBoZ+0737e+Ok95bOg/WYlkmYB1X44Jfnk/1aMD5nhYo8HtN2Puwuzs/neV/jDSvT
-	d04kMgV+Uf+N9d9g6DjHKmdgtdY03JD7EbFPbwUblQS56dc5VaOADs8q3ZD1HMIQ0CYeHWvVIKD
-	xlhaC/Xviihfv4ZLxDPPNEso0PdXPDGJmuuPFckWgEK+GCglIx4glyoxTxCOXfUnjPmhID17Mct
-	DpzGzJSev3KE2lNKQj0I9OrdybPOibdn+FrqGdcH8/X86YRYBaEO1PrdqrJ68IPQcBRW1aZ2Har
-	wltVWTJGImxfop3IPOU1Ih6mRsMb5vYaRXAaaS7ihoL7Ffe62KnBUiOKx0KZCYM1JwojwOdQ1+y
-	dwrEWVBNvSQRftTWHF+kJMvVJ29hyLrjNiLoejW3uzTOqgw69h+24R+p4muCiWpH
-X-Received: by 2002:a17:907:8687:b0:c46:7645:86c with SMTP id a640c23a62f3a-c509641d1eamr287876866b.47.1794596887578;
-        Fri, 13 Nov 2026 11:08:07 -0800 (PST)
-Received: from [192.168.1.100] ([163.245.50.16])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b23b09sm129444166b.26.2026.11.13.11.08.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 11:08:07 -0800 (PST)
-From: Alexander Letuchiy <asalde.le1@gmail.com>
-Date: Fri, 13 Nov 2026 22:05:05 +0300
-Subject: [PATCH v2 9/9] arm64: dts: mediatek: Add Xiaomi Poco X4 GT
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dCDutom7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFD81F000C4;
+	Sat, 14 Nov 2026 00:15:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794615365;
+	bh=H/O+Mo0VVNCwn6G0Coe3gZ4s1DLGig40Bsnf3oJKl+Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dCDutom77k2RDxhVXA+pNPIua+fqPi9LCaPbyP7f926WWu3xjdSU7LdPc3YHSx1Lv
+	 o8gTzM51nncEAIU+63cLubC7f85H7GDLrwRb0Ggsr2WImuG3ACFXWKWpxwFx4QgHGX
+	 baFSXtGFPOvsvJmyflUQ+sn0c/4aTVSogDuuAlJiiNwEg95fyZPCqUSzhoczLOIc5W
+	 sRuFsARvUMds8rkuutA2mw4MWOQrB85qDK73DF76CPO0L+I3mGh81GUW6weUQI9bO9
+	 8BIg8H7P8EHwTsSIvt9RocaHjHzU8rlsD9QKokyBkEq284j8RQKG4Dl0ZA7IT8jVnf
+	 oKG18v0SLnrrw==
+Date: Sat, 14 Nov 2026 00:15:52 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>, Lukasz Luba
+ <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Laxman Dewangan
+ <ldewangan@nvidia.com>, Bjorn Andersson <andersson@kernel.org>, Konrad
+ Dybcio <konradybcio@kernel.org>, Hans de Goede <hansg@kernel.org>, Jens
+ Reidel <adrian@mainlining.org>, Casey Connolly <casey.connolly@linaro.org>,
+ Val Packett <val@packett.cool>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] thermal/drivers/generic-adc: Allow probe without
+ TZ registration
+Message-ID: <20261114001552.3ae8f05e@jic23-hlaptop>
+In-Reply-To: <20261113-bat-temp-adc-v3-3-743979a8fd90@fairphone.com>
+References: <20261113-bat-temp-adc-v3-0-743979a8fd90@fairphone.com>
+	<20261113-bat-temp-adc-v3-3-743979a8fd90@fairphone.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -91,160 +72,82 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-initial-mt6895-v2-9-4ab0aa9fa391@gmail.com>
-References: <20261113-initial-mt6895-v2-0-4ab0aa9fa391@gmail.com>
-In-Reply-To: <20261113-initial-mt6895-v2-0-4ab0aa9fa391@gmail.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Sean Wang <sean.wang@mediatek.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, 
- Wim Van Sebroeck <wim@linux-watchdog.org>, 
- Guenter Roeck <linux@roeck-us.net>, 
- Daniel Lezcano <daniel.lezcano@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, 
- Mattijs Korpershoek <mkorpershoek@kernel.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Kees Cook <kees@kernel.org>, 
- Tony Luck <tony.luck@intel.com>, 
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-serial@vger.kernel.org, linux-watchdog@vger.kernel.org, 
- linux-input@vger.kernel.org, phone-devel@vger.kernel.org, 
- Alexander Letuchiy <asalde.le1@gmail.com>
-X-Mailer: b4 0.15.2
 
-Add a device tree for the Xiaomi xaga board, which is sold as Xiaomi
-Poco X4 GT, Redmi Note 11T Pro/Pro+ and Redmi K50i. It enables a serial
-console on UART0 and the volume down key on the SoC keypad. The power
-and volume up keys are connected to the MT6363 PMIC, which isn't
-supported yet.
+On Fri, 13 Nov 2026 16:56:44 +0100
+Luca Weiss <luca.weiss@fairphone.com> wrote:
 
-The DT only describes the memory that Linux itself uses, which is the
-ramoops region. The bootloader updates the /memory node and adds the
-firmware carveouts to /reserved-memory, so their addresses are not
-hardcoded here. This DT must not be booted with a bootloader that does
-not do this, as Linux would then use memory owned by the firmware.
+> If the devicetree node is not referenced in a zone under /thermal-zones,
+> devm_thermal_of_zone_register() will fail with -ENODEV.
+> 
+> Since the driver is now also registering as an IIO device[0], allow the
+> probe to continue without the thermal zone.
 
-The ramoops zone sizes place the console zone at the offset where the
-bootloader expects to find it.
+Papering over problems, or expected path for some devices?  If it's
+expected path we probably don't want to print a message with the
+word failed in it.
 
-Signed-off-by: Alexander Letuchiy <asalde.le1@gmail.com>
----
- arch/arm64/boot/dts/mediatek/Makefile              |  1 +
- .../arm64/boot/dts/mediatek/mt6895-xiaomi-xaga.dts | 87 ++++++++++++++++++++++
- 2 files changed, 88 insertions(+)
+> 
+> We also can't use gadc_thermal_get_temp() anymore because we haven't
+> necessarily initialized tz_dev.
+> 
+> Link: https://git.kernel.org/torvalds/c/3762f5851ac5 [0]
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  drivers/thermal/thermal-generic-adc.c | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/thermal/thermal-generic-adc.c b/drivers/thermal/thermal-generic-adc.c
+> index c6a7a65aa6a6..40a34e97a515 100644
+> --- a/drivers/thermal/thermal-generic-adc.c
+> +++ b/drivers/thermal/thermal-generic-adc.c
+> @@ -86,14 +86,16 @@ static int gadc_thermal_read_raw(struct iio_dev *indio_dev,
+>  				 int *val, int *val2, long mask)
+>  {
+>  	struct gadc_thermal_info *gtinfo = iio_priv(indio_dev);
+> +	int iio_val;
+>  	int ret;
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_PROCESSED:
+> -		ret = gadc_thermal_get_temp(gtinfo->tz_dev, val);
+> -		if (ret)
+> +		ret = iio_read_channel_processed(gtinfo->channel, &iio_val);
+> +		if (ret < 0)
+>  			return ret;
+>  
+> +		*val = gadc_thermal_adc_to_temp(gtinfo, iio_val);
 
-diff --git a/arch/arm64/boot/dts/mediatek/Makefile b/arch/arm64/boot/dts/mediatek/Makefile
-index a86fb313b1a9..d73489149ab5 100644
---- a/arch/arm64/boot/dts/mediatek/Makefile
-+++ b/arch/arm64/boot/dts/mediatek/Makefile
-@@ -6,6 +6,7 @@ dtb-$(CONFIG_ARCH_MEDIATEK) += mt6795-evb.dtb
- dtb-$(CONFIG_ARCH_MEDIATEK) += mt6795-sony-xperia-m5.dtb
- dtb-$(CONFIG_ARCH_MEDIATEK) += mt6797-evb.dtb
- dtb-$(CONFIG_ARCH_MEDIATEK) += mt6797-x20-dev.dtb
-+dtb-$(CONFIG_ARCH_MEDIATEK) += mt6895-xiaomi-xaga.dtb
- dtb-$(CONFIG_ARCH_MEDIATEK) += mt7622-rfb1.dtb
- dtb-$(CONFIG_ARCH_MEDIATEK) += mt7622-bananapi-bpi-r64.dtb
- dtb-$(CONFIG_ARCH_MEDIATEK) += mt7981b-cudy-wr3000-v1.dtb
-diff --git a/arch/arm64/boot/dts/mediatek/mt6895-xiaomi-xaga.dts b/arch/arm64/boot/dts/mediatek/mt6895-xiaomi-xaga.dts
-new file mode 100644
-index 000000000000..8d529062eea1
---- /dev/null
-+++ b/arch/arm64/boot/dts/mediatek/mt6895-xiaomi-xaga.dts
-@@ -0,0 +1,87 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Copyright (C) 2026 Alexander Letuchiy <asalde.le1@gmail.com>
-+ */
-+
-+/dts-v1/;
-+#include <dt-bindings/input/input.h>
-+
-+#include "mt6895.dtsi"
-+
-+/ {
-+	model = "Xiaomi Poco X4 GT";
-+	compatible = "xiaomi,xaga", "mediatek,mt6895";
-+	chassis-type = "handset";
-+
-+	aliases {
-+		serial0 = &uart0;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:921600n8";
-+	};
-+
-+	memory@40000000 {
-+		device_type = "memory";
-+		/* The size is updated by the bootloader. */
-+		reg = <0x0 0x40000000 0x2 0x0>;
-+	};
-+
-+	reserved-memory {
-+		ranges;
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		/* The firmware carveouts are added by the bootloader. */
-+
-+		ramoops@48090000 {
-+			compatible = "ramoops";
-+			reg = <0 0x48090000 0 0xe0000>;
-+			no-map;
-+			record-size = <0x10000>;
-+			console-size = <0x40000>;
-+			ftrace-size = <0x10000>;
-+			pmsg-size = <0x10000>;
-+		};
-+	};
-+};
-+
-+&keypad {
-+	pinctrl-0 = <&keypad_pins>;
-+	pinctrl-names = "default";
-+	debounce-delay-ms = <32>;
-+	keypad,num-columns = <1>;
-+	keypad,num-rows = <1>;
-+	linux,keymap = <MATRIX_KEY(0, 0, KEY_VOLUMEDOWN)>;
-+
-+	status = "okay";
-+};
-+
-+&pio {
-+	keypad_pins: keypad-pins {
-+		pins-col {
-+			pinmux = <PINMUX_GPIO107__FUNC_KPCOL0>;
-+			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
-+			input-enable;
-+		};
-+	};
-+
-+	uart0_pins: uart0-pins {
-+		pins-rx {
-+			pinmux = <PINMUX_GPIO88__FUNC_URXD0>;
-+			bias-pull-up;
-+			input-enable;
-+		};
-+
-+		pins-tx {
-+			pinmux = <PINMUX_GPIO89__FUNC_UTXD0>;
-+		};
-+	};
-+};
-+
-+&uart0 {
-+	pinctrl-0 = <&uart0_pins>;
-+	pinctrl-names = "default";
-+
-+	status = "okay";
-+};
+Maybe spin a helper that is used both in adc_thermal_get_get_temp()
+and here?  Whilst it won't save much code (may actually be a touch longer)
+it will put the two relevant steps in one place.
 
--- 
-2.56.0
+
+>  		return IIO_VAL_INT;
+>  
+>  	default:
+> @@ -195,14 +197,14 @@ static int gadc_thermal_probe(struct platform_device *pdev)
+>  						    &gadc_thermal_ops);
+>  	if (IS_ERR(gti->tz_dev)) {
+>  		ret = PTR_ERR(gti->tz_dev);
+> -		if (ret != -EPROBE_DEFER)
+> -			dev_err(dev,
+> -				"Thermal zone sensor register failed: %d\n",
+> -				ret);
+> -		return ret;
+> -	}
+> +		if (ret != -ENODEV)
+> +			return ret;
+>  
+> -	devm_thermal_add_hwmon_sysfs(dev, gti->tz_dev);
+> +		dev_info(dev, "Thermal zone sensor register failed: %d\n",
+> +			 ret);
+> +	} else {
+> +		devm_thermal_add_hwmon_sysfs(dev, gti->tz_dev);
+> +	}
+>  
+>  	return gadc_iio_register(&pdev->dev, gti);
+>  }
+> 
 
