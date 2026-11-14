@@ -1,57 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.154
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794696953;
-	b=puohAb4ke5gvJdwB62KdYKOouOGj21N0bvkc+rorV+r1T+FjuPXJD3c5aFu4Hqnjg409
-	 d7bKKMpnls2TRLWz1JPsAHl8VQrBRNp6fta3YqCiKhYiGSN7+mQz6CRmLa8wAZSh+StlS
-	 HlmQqXMQfSeSDkre5ySkg/OahLGjGNWXj8xtJ7HiKNmPno8Bw1oZs7phfxWsy5S8ttb7M
-	 TvmJ8JXQtbfl7dswdU/1+hC8gDB3aaRwPlhiK+6kdZ63cOfRh8Q05L2i409PpOKWDfUIl
-	 TLPnKae3bO13GHLopAm/GJFOaL61SlsWXRZiqSNh1bx+Ir647egQXCRTkftg+Ryc6qg==
+	t=1794696958;
+	b=s4Y3hvHTgavm8oE92pj+7hfFgSkPFrvljoI3yhVihpaVSxWUFCsgq5LGDAnIXzc6IFcb
+	 eYU4ULiXE9v/5yl9CdAzL4tBI1JwnNsChDezTJdRSSYvFP8hbbzU8SyBTRTfW5G0/TeIm
+	 yUAsrG13y8fcpM5UcGRIASeUAIdzxHwu4AgOHf6ypbvuk0YWvIwshnHVR59WoADaexyvY
+	 8HZa5xaUoxbA0vZ57k/4Gm0DtsdZokxgu1An6p6+dytf1jfRVOsgHaduP9J6UebTPaIg8
+	 F9lq+9ZtCuZ05GMSkV1SYB2eB8CZnFYODZFYBE7R3+P6qNIQ6vZctADenW9PU0t9xAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794696953;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794696958;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=PZ4OY3F7/lNYHpVPmua8ltLs6uqJvsbkMDZZeVa3tUI=;
-	b=axyaRsDhiLX4TJg3O36NrhN5+exvCi42E75YRitI1rh6+EXcb5K9LQpSQGmo4mIkG/pg
-	 5E2w1Y8gEXzQJjzMjwuVrTo0EdK9I922oIqorlMLhGV2IHJdPGnn4GMOrKsN6TNHc7Bw7
-	 ho2J+RoWkQhLd+OfGEhgdy/vfcDcVGcKJZ1Jh13NsVeDV5AnzOXNVQJMqgtrK/Wd5sJtW
-	 blbYrezF3vN6QBXVLAMAAOmBl5VIMPN9TQZWFDB87f0/MJ3RRBwggn3wRkIfc/JdvE0Ou
-	 EwDF7M5IB0O9g9A1rU4twwTjyrzfI32v+CV2dO5Im3dNr4AW3a4uPfcCSJiHgg7EMHw==
+	bh=O/GD0QgnnZwMvdktT7NT9OGWuvPKrj5mWOce8WRE98A=;
+	b=Z1h0oysy9oove5ACsL8TT6gFbroMbtJPfz6EcqlCpb653um1vZqqKgNZOwGYgo1ASyoW
+	 rFbXW5ZFN6XTkUadUNci6hJ1DBjugOUzFupA0aqRGKzBRFBL2WgTeELv9nRfky9C6snh/
+	 Tcltb4JvCEm/NnzhGrXN0bxrIGpqkopiDK8jW/9BryXwyX2oCaHMYVMM4jvKzIZOqYFaH
+	 Em8HNsxDJbX/HMq/6r0G3PwtysZYygf0sxm17GfjwsJtMl/Bh3amzKTAtau2/7iC5Tdlr
+	 k1sR4AJW13lesPB+BS+U4qJXgMlzjvzpwoCkXOWw8R30Hx8hn0MQnaI6GaXMxux8Ybg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=postmarketos.org;
 	spf=pass smtp.mailfrom=postmarketos.org;
-	dkim=pass header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=NL5V3myd;
-	arc=none smtp.remote-ip=91.218.175.154
-Received: from mta0.migadu.com (out-154.mta0.migadu.com [91.218.175.154])
+	dkim=pass header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=KqjtwfQP;
+	arc=none smtp.remote-ip=95.215.58.116
+Received: from mta1.migadu.com (out-116.mta1.migadu.com [95.215.58.116])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0257606A885
-	for <phone-devel@vger.kernel.org>; Sat, 14 Nov 2026 22:55:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0257606A885
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA06606A33E
+	for <phone-devel@vger.kernel.org>; Sat, 14 Nov 2026 22:55:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECA06606A33E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=NL5V3myd
+	dkim=pass (2048-bit key, unprotected) header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=KqjtwfQP
 X-Envelope-To: phone-devel@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=gjolFnTBTplhe6l7YtIHJPJERkKRyJ91biRoDk1wj44=;
+DKIM-Signature: a=rsa-sha256; bh=uf3ZtzEWO+m9+O53q0wwm3lcvSxqUa9UE4kohOpFHzM=;
  c=simple/simple; d=postmarketos.org;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794696950; v=1; x=1795301750;
- b=NL5V3mydRqoo6Ck/wRo4NdOwd4yv+PFpV8tVqMqslFbfcuxa0Ro57BqgErW8URkw5RXRQTyO
- rraA4S5c3+36K1mIReLS3hwyHlzGvvuEFsOed7w/6Vw5DJ5dqNX7wGjXXyIRfc9mLR2MIYLqabV
- P/waywQRLVXxKwUNDCTfq6j9BUF+/+bjvzPl6h1meBneLCWCIGMUeBvdOJJeCGUx76LiqkMjAwn
- aT31A6dCuunjVH7za4q9vIgkQtdRTFYYhvA6vuWDrTQ2c+WrQKm+RBH6JljzYNYgosBSy8lXdSX
- T7PB4+jQri4hvrSw0QlspZtHKLKk1MWzPwxcR4uTzfYHw==
+ t=1794696955; v=1; x=1795301755;
+ b=KqjtwfQPmfmOUStAfngYV44ctCJA5wfY9aaoEqfheEoccSBTlrpsSFmt2Y9qY09OmJi/Mj9e
+ Av3M6JWOKKt1QZItRjN+6PWTt378L7FEQXGnwXhsi31kvKsCJbzBaMZ6sp1LD1aD60Or8FBiVbP
+ DcO422xXTa2kxY/T1O+/la5U1bgR75iXooPQT0OZr13BXMQjy45FwmkW+ZG56bdzWcAe/ZP2+a1
+ W+2gUGksDokOKD3cD1DiM6uJGhgQsz52hHXWXLYhVBpbFT/jeRrnneKCjzFvhYb7h4Aelfh0NAH
+ 2KX5sY1Lr24dj/0eFQrARZsepDyMMe7s4oreKxkfDsgNg==
 X-Envelope-To: phone-devel@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id b081fa88f6f0a39c;
-	Sat, 14 Nov 2026 22:55:50 +0000
-X-Mizu-Trace-ID: b081fa88f6f0a39c
+Received: by smtp.migadu.com with ESMTPS id f484dd51aafbe032;
+	Sat, 14 Nov 2026 22:55:55 +0000
+X-Mizu-Trace-ID: f484dd51aafbe032
 X-Migadu-Flow: FLOW_OUT
 From: Paul Sajna <sajattack@postmarketos.org>
-Date: Sat, 14 Nov 2026 15:55:15 -0700
-Subject: [PATCH v7 2/4] leds: aw2013: Use dev_err_probe
+Date: Sat, 14 Nov 2026 15:55:16 -0700
+Subject: [PATCH v7 3/4] drivers: leds: aw2013: Leverage C99 for-loops
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -63,7 +63,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261114-aw2013-aw20xx-rename-v7-2-ea5a3113a479@postmarketos.org>
+Message-Id: <20261114-aw2013-aw20xx-rename-v7-3-ea5a3113a479@postmarketos.org>
 References: <20261114-aw2013-aw20xx-rename-v7-0-ea5a3113a479@postmarketos.org>
 In-Reply-To: <20261114-aw2013-aw20xx-rename-v7-0-ea5a3113a479@postmarketos.org>
 To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
@@ -76,103 +76,54 @@ Cc: Nikita Travkin <nikita@trvn.ru>, linux-leds@vger.kernel.org,
  phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
  Paul Sajna <sajattack@postmarketos.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794696929; l=2927;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794696929; l=1264;
  i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
- bh=gjolFnTBTplhe6l7YtIHJPJERkKRyJ91biRoDk1wj44=;
- b=fRY/aemtxp+Hai7Jr2ONwXr/Xas5kvflmUMkOSlRD5WB4kfXuG9hvv7QaVjtMoAUGgHtAk9Ub
- 67JJpgJidUsDvPxXcnZhGNRePDOwSl88NHoaQBYiPZiLthXOA0uf+X0
+ bh=uf3ZtzEWO+m9+O53q0wwm3lcvSxqUa9UE4kohOpFHzM=;
+ b=hkM0bnEFmFYAinsmqbfdtCuL8zEg/ANwt0Wrz9gBhDZO5qQDrd/A5ryH6QcJ76RdbXWnh1DpS
+ zgFVm+81m5mC/hb4sBUw2ijLHpiSiSTpmIjorLSFRRru0mGO/IlrH/O
 X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
  pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 
-Failure to use dev_err_probe() for regulator requests violates
-LED subsystem guidelines. (At least according to sashiko [1])
-
-The original driver didn't use it, but it's worth cleaning up
-while I'm here.
-
-[1]: https://github.com/sashiko-dev/sashiko/blob/main/third_party/prompts/kernel/subsystem/leds.md?plain=1#L71
-
-Reviewed-by: Griffin Kroah-Hartman <griffin@kroah.com>
-Reviewed-by: David Heidelberg <david@ixit.cz>
+Declare the int within the for-loop declaration rather than as a
+separate local variable. To make the code more readable.
 
 Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 ---
- drivers/leds/leds-aw2013.c | 30 ++++++++++++++----------------
- 1 file changed, 14 insertions(+), 16 deletions(-)
+ drivers/leds/leds-aw2013.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/leds/leds-aw2013.c b/drivers/leds/leds-aw2013.c
-index cf20e94920fd..2937a0f92d92 100644
+index 2937a0f92d92..7fe7e9dae903 100644
 --- a/drivers/leds/leds-aw2013.c
 +++ b/drivers/leds/leds-aw2013.c
-@@ -361,9 +361,8 @@ static int aw2013_probe(struct i2c_client *client)
+@@ -72,7 +72,7 @@ struct aw2013 {
  
- 	chip->regmap = devm_regmap_init_i2c(client, &aw2013_regmap_config);
- 	if (IS_ERR(chip->regmap)) {
--		ret = PTR_ERR(chip->regmap);
--		dev_err(&client->dev, "Failed to allocate register map: %d\n",
--			ret);
-+		ret = dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
-+				    "Failed to allocate register map\n");
- 		goto error;
- 	}
+ static int aw2013_chip_init(struct aw2013 *chip)
+ {
+-	int i, ret;
++	int ret;
  
-@@ -373,45 +372,44 @@ static int aw2013_probe(struct i2c_client *client)
- 				      ARRAY_SIZE(chip->regulators),
- 				      chip->regulators);
- 	if (ret < 0) {
--		if (ret != -EPROBE_DEFER)
--			dev_err(&client->dev,
--				"Failed to request regulators: %d\n", ret);
-+		dev_err_probe(&client->dev, ret,
-+			      "Failed to request regulators\n");
- 		goto error;
- 	}
- 
- 	ret = regulator_bulk_enable(ARRAY_SIZE(chip->regulators),
- 				    chip->regulators);
+ 	ret = regmap_write(chip->regmap, AW2013_GCR, AW2013_GCR_ENABLE);
  	if (ret) {
--		dev_err(&client->dev,
--			"Failed to enable regulators: %d\n", ret);
-+		dev_err_probe(&client->dev, ret,
-+			      "Failed to enable regulators\n");
- 		goto error;
+@@ -81,7 +81,7 @@ static int aw2013_chip_init(struct aw2013 *chip)
+ 		return ret;
  	}
  
- 	ret = regmap_read(chip->regmap, AW2013_RSTR, &chipid);
- 	if (ret) {
--		dev_err(&client->dev, "Failed to read chip ID: %d\n",
--			ret);
-+		dev_err_probe(&client->dev, ret,
-+			      "Failed to read chip ID\n");
- 		goto error_reg;
- 	}
+-	for (i = 0; i < chip->num_leds; i++) {
++	for (int i = 0; i < chip->num_leds; i++) {
+ 		ret = regmap_update_bits(chip->regmap,
+ 					 AW2013_LCFG(chip->leds[i].num),
+ 					 AW2013_LCFG_IMAX_MASK,
+@@ -142,9 +142,7 @@ static int aw2013_chip_enable(struct aw2013 *chip)
  
- 	if (chipid != AW2013_RSTR_CHIP_ID) {
--		dev_err(&client->dev, "Chip reported wrong ID: %x\n",
--			chipid);
--		ret = -ENODEV;
-+		ret = dev_err_probe(&client->dev, -ENODEV,
-+				    "Chip reported wrong ID: %x\n",
-+				     chipid);
- 		goto error_reg;
- 	}
- 
- 	ret = regmap_write(chip->regmap, AW2013_RSTR, AW2013_RSTR_RESET);
- 	if (ret) {
--		dev_err(&client->dev, "Failed to reset chip: %d\n", ret);
-+		dev_err_probe(&client->dev, ret, "Failed to reset chip\n");
- 		goto error_reg;
- 	}
- 
- 	ret = regulator_bulk_disable(ARRAY_SIZE(chip->regulators),
- 				     chip->regulators);
- 	if (ret) {
--		dev_err(&client->dev,
--			"Failed to disable regulators: %d\n", ret);
-+		dev_err_probe(&client->dev, ret,
-+			      "Failed to disable regulators\n");
- 		goto error;
- 	}
+ static bool aw2013_chip_in_use(struct aw2013 *chip)
+ {
+-	int i;
+-
+-	for (i = 0; i < chip->num_leds; i++)
++	for (int i = 0; i < chip->num_leds; i++)
+ 		if (chip->leds[i].cdev.brightness)
+ 			return true;
  
 
 -- 
