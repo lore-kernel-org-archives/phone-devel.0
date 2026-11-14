@@ -1,56 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.141
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794696096;
-	b=ieH/xz68Q815WQ5f3bgFnabAR6+DIfO4RTqrPfQOmepExqBIg+HXcv8Cqkm2SX6P0qT8
-	 lf/KF+3RfZ5wGQ+/QE6WKZD6V98Rx7RB331BWVulhIyVx3TdvW20dSeewtf7ThwSYLSo1
-	 wbVpOpnwsOyEFIfelcFtKnPzY5PWnRVE9zAq6rIOpWiVSt/htkRDZDF5tS4eBZgT0nr/S
-	 UmVfuN7tbXTRi7pGp9nr+nmMXOLVsJ038ZVhbkrRNcYVJlibbkcRucRT0iWIoX75Fh1K+
-	 1PGPnmuUKmcpkA/SgnMH/FeeFQINL3pW6eoyiQuR8JnwGRsFwUPtgonk3Z1T3933UYg==
+	t=1794696941;
+	b=TICFjcC6s3bZv8QkePyF9mdQJ7cbqxbg49uAMNr297lYuPdsqrf3a1lJT9b9lgDQYb0c
+	 yVM6R4HSgGCBCqg6cF5bjQ4XGSFd4eP6WQthL7PSB7s/XnF5bhqMRGnBEHMumUd8wDTAQ
+	 iU32gUTb2lKWHHduZPTQTLoWW27/HbVoJ5gCCv35alIXBwwL+Xpxsw1jnQJ1h4KtvH3OL
+	 TffsizOdPs3/EQjGqd2V8jM2UnS/QrQYzeMhgEhxnag+cAqfop6gCkUlhMLp3FI6hN+1F
+	 tNw6QZa+9KAPaR61TfdHOuzs9tqjd5kU+ywHc5vW4J6s0mI1QjQspafZS+2JLO8UqZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794696096;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=KD8FdQRtVcn2BodazGF3whakHyq6T/A4Sy1Yxho9aDQ=;
-	b=QwxvkSwv2lsySmcQam5BJYXYBKTDmn/s4zb/mAmfw+qlmq/UL2sn6lxdBYAxZspOuRzS
-	 ZAeNA+fMA9zJAnTlt3iTAF43ayilFK1Su662p1nqvWPw1fj+le75Qz5f1R2oTiBd+HNV8
-	 62mVES+FkqoT19Gg4Kuvk0eXD2B8vDBxMfBG+dy3cQ8p9eny7f1kzU58WZp1x9/hICTGT
-	 HcVe6KJjnGtfr5TsUgI7PAUJNcLgko45DcSwsa+ZPS1elBreYpvGtAGwoKdox2xvLuSnX
-	 Qbia50lKa3nkOTfV/fy6YhGgjSsO9RnF05jhN3CgJSnYn4hsk3tcq2dN8QrBdWwVYfg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794696941;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=LiygG2iGiuebZIwuKX8EIYmY8QCLCyZHFTVPiI3pRFA=;
+	b=PRw8nKAVJN3ywIx+XnF6LgUAsAkcgJ6GcXrC90LlK/Eprz5h6jspQpm5E8WRuUOLKrYZ
+	 DT7aI85ABfJFcna+XTYqtX27qBKVaaBmaJAxsbLevYcovjlZ22A9yrg9Cv421ww4oTUCp
+	 ZoZQx/N39u01v/LA4L3QobYFyOaaINIQingnRKQi4dlelld0WF8oQmetpKwfi32MO0I/n
+	 CmPdKcRL608Zrftj8gfR8APyys5G9cYdC8GgiyPQIPWl02GUSOEi7i6/oHHiQSQ7Gz/D7
+	 XZs5PolxrpIaBR/xvN8CBkG4TpJsb80l1LTCjYINsaRrHKq6tulZLhE6HUfC5poBHMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ixit.cz;
-	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=buygUrrb;
-	arc=none smtp.remote-ip=84.42.129.46
-Received: from ixit.cz (ixit.cz [84.42.129.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=postmarketos.org;
+	spf=pass smtp.mailfrom=postmarketos.org;
+	dkim=pass header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=SlJydHef;
+	arc=none smtp.remote-ip=91.218.175.141
+Received: from mta0.migadu.com (out-141.mta0.migadu.com [91.218.175.141])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DE7606A323;
-	Sat, 14 Nov 2026 22:41:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5DE7606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF0A606A32D
+	for <phone-devel@vger.kernel.org>; Sat, 14 Nov 2026 22:55:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BF0A606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=buygUrrb
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 0AFAE53401D6;
-	Sat, 14 Nov 2026 23:41:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1794696093;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KD8FdQRtVcn2BodazGF3whakHyq6T/A4Sy1Yxho9aDQ=;
-	b=buygUrrbgvo2DpGm9vnB0pq01yTJsI8UbSPnNT70ZaDSim7tgYPi2LkuBWGR3NlUXEWhgn
-	L7/x9WpUYeWIJnXczvk9XVtbDj22lgA0MDN51pYJSDqRs5PUBqAdlwHGI5Zj73t0I2ksxK
-	cANBEvMYphiLKxaxo4DHzOz49x5lL7A=
-Message-ID: <dfae62c8-6fd0-40da-bc4c-65d4d6594cd0@ixit.cz>
-Date: Sat, 14 Nov 2026 23:41:32 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=postmarketos.org header.i=@postmarketos.org header.a=rsa-sha256 header.s=key1 header.b=SlJydHef
+X-Envelope-To: phone-devel@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=RlekjlGNec4ex5TfjWTalwwAb7hHUJ4s1zUc8nIQObA=;
+ c=simple/simple; d=postmarketos.org;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794696938; v=1; x=1795301738;
+ b=SlJydHefjPULlMRtfV2Y9OgvEOKC0boltfvUN8SL1jMnL22OT8gBP4ib12qvyH1coAwtEw7u
+ z4FHz2qhkGdtvkvFx9te5stK5gUAR7nmyAY+E3rP45UZy0sDnrlEmPzSClmnRtsOCxr0fJa6aD9
+ CrdeiORhk6rgbHkzwFKNRvmFot7d86XQyVZqHLhoxXpKItJ52eNFMeSc4NffTsVQgb15gUusiM8
+ 0bN3HGqjLsnrKvwpMO2d/tqQoZADrnsSgifxLZ4z4oQZv+4WdMUw6ojtXmc6f9ozrB7MsS/kH4D
+ Fj/tWB6RfRVYdUm0q0HTelK6ehNnYtmPZkLTTYAlfA5gQ==
+X-Envelope-To: phone-devel@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id bf42613200098871;
+	Sat, 14 Nov 2026 22:55:37 +0000
+X-Mizu-Trace-ID: bf42613200098871
+X-Migadu-Flow: FLOW_OUT
+From: Paul Sajna <sajattack@postmarketos.org>
+Subject: [PATCH v7 0/4] leds: aw2013: Add AW2027 support
+Date: Sat, 14 Nov 2026 15:55:13 -0700
+Message-Id: <20261114-aw2013-aw20xx-rename-v7-0-ea5a3113a479@postmarketos.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,124 +62,127 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next 1/6] wifi: ath10k: usb: fix group key
- installation
-To: Felix Kaechele <felix@kaechele.ca>, Tomas Paukrt <tomaspaukrt@email.cz>,
- jjohnson@kernel.org
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- phone-devel <phone-devel@vger.kernel.org>
-References: <20261114090737.64348-1-tomaspaukrt@email.cz>
- <20261114090737.64348-2-tomaspaukrt@email.cz>
- <7e36cb20-7752-4778-b068-56d41819f670@kaechele.ca>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <7e36cb20-7752-4778-b068-56d41819f670@kaechele.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/43RTU7DMBAF4KtEXmfQzDjOT1fcA7GwnUlroTatH
+ UJRlbujBARdYMFqpFl870nvppLEIEntipuKMocUxpPaFU1ZKH+wp71A6NWuUIxcY4cN2DdG0tu
+ 5XiHKyR4F+oG19qZj8rUqC3WOMoTrxj49l4U6hDSN8X1LmWn9/gHOBAi+s00/ENsG6fE8pulo4
+ 4tMY3oY416t7szfFiGajMWAQNiKd/3ATWMylr6ziDOWXntZR0Pfo0FXZ6zqxyJsM1YFBC3Xhjs
+ n4gxnLHNnZXsZQHDsjWjWtkObser/WDUgsCHxVldonf/FWj5HjnJ5DSlMX0svywfWzblLUAIAA
+ A==
+X-Change-ID: 20260907-aw2013-aw20xx-rename-df233c5921c6
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>, 
+ Alexey Min <alexeymin@minlexx.ru>, David Heidelberg <david@ixit.cz>, 
+ Griffin Kroah-Hartman <griffin@kroah.com>
+Cc: Nikita Travkin <nikita@trvn.ru>, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Paul Sajna <sajattack@postmarketos.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794696929; l=3953;
+ i=sajattack@postmarketos.org; s=20250422; h=from:subject:message-id;
+ bh=RlekjlGNec4ex5TfjWTalwwAb7hHUJ4s1zUc8nIQObA=;
+ b=1kZVx1fxp3Ybrg4Y6MEb4jvx48u59wsno7wfj2zGt1Ffs4u6YwjEsnC8h6p4DA1d+LoJUdFs2
+ dWmJHCuRGMDB2f1JqjZ6QWpOPYMts8c4EFqRRd3+JxxPpBBpCvpcG/c
+X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
+ pk=TwacvEOiRJ2P2oAdEqIDrtQTL18QS4FfcHfP/zNsxkQ=
 
-On 14/11/2026 22:49, Felix Kaechele wrote:
-> Hi there,
-> 
-> looks like another take on David's patch here: https://lore.kernel.org/ 
-> ath10k/20260918-ath10k-del-v1-1-53cd7a7d682b@ixit.cz/
-> 
-> Given that this affects a few devices (not just the USB one mentioned here) a 
-> more generic fix would probably be in order. I'm also seeing this on QCA9379 SDIO.
-> 
-> Regards,
-> Felix
-> 
-> On 2026-11-14 04:07, Tomas Paukrt wrote:
->> ath10k_install_key() waits for install_key_done, which is completed by
->> the HTT security indication. The firmware of QCA9377 USB devices sends
->> this indication for pairwise keys only, so the installation of a group
->> key times out after 3 seconds and a station cannot connect to a
->> protected network:
->>
->>    usb 1-1.1: failed to install key for vdev 0 peer c4:93:00:3b:6c:f9: -110
->>    wlan0: failed to set key (2, ff:ff:ff:ff:ff:ff) to hardware (-110)
->>
->> The firmware does send WMI_VDEV_INSTALL_KEY_COMPLETE_EVENTID for every
->> key, so complete the key installation on this event for USB devices.
->> The other buses are not changed.
->>
->> Tested-on: QCA9377 hw1.1 USB 0.0.0.111
->> Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
->> ---
->>   drivers/net/wireless/ath/ath10k/wmi.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ 
->> ath10k/wmi.c
->> index e57588c19c80..7d43a23017aa 100644
->> --- a/drivers/net/wireless/ath/ath10k/wmi.c
->> +++ b/drivers/net/wireless/ath/ath10k/wmi.c
->> @@ -5339,6 +5339,10 @@ void ath10k_wmi_event_vdev_install_key_complete(struct 
->> ath10k *ar,
->>                           struct sk_buff *skb)
->>   {
->>       ath10k_dbg(ar, ATH10K_DBG_WMI, "WMI_VDEV_INSTALL_KEY_COMPLETE_EVENTID\n");
->> +
->> +    /* the USB firmware sends no HTT security indication for group keys */
->> +    if (ar->hif.bus == ATH10K_BUS_USB)
+Refer to PATCH 4 for a full description of the similarities and
+differences between AW2013 and AW2027.
 
-Hello.
+I'm hoping the sashiko reviews about unbalanced regulators that I was
+struggling to fix are covered by
+https://lore.kernel.org/linux-leds/20261021123406.3163547-1-lee@kernel.org/
+and I can drop my failed attempts to fix them.
+Let me know if I misunderstood.
 
-I'm pretty sure it's not related to the USB bus, but related to the device firmware.
+I'll do my best to address all of Sashiko's comments, but it might take
+me some time to circle back, don't bother reviewing until I've done
+this.
 
-Check what firmware you use, add the `.no_pairwise_key_del_ind = true` and 
-report if that solves your issue, I'm happy to send v2 with your usecase covered.
+This PATCH resulted out of discussions pertaining to
+sdm660-mainline/linux, a close-to-mainline fork for Qualcomm Snapdragon 660
+devices, specifically for the BlackBerry KEY2 Keyboard Backlight,
+in the following GitHub PR: https://github.com/sdm660-mainline/linux/pull/218
 
-David
+Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
+---
+Changes in v7:
+- Fix multiple imax setting/regulators per Sashiko
+- Small description updates to AW20XX per Heidelberg
+- Reorder dev_err_probe commit so that introducing new code using
+  dev_err_probe is cleaner
+- Simplify dev_err_probe, prevent unneccessary assignment
+- Revert early return / else suggested by Heidelberg, Travkin and I both
+  prefer else
+- Lower Hex
+- split c99 for-loops to separate commit
+- simplify aw2027_set_local_imax and aw2027_set_global_imax
+- Link to v6: https://patch.msgid.link/20261112-aw2013-aw20xx-rename-v6-0-251eca340abc@postmarketos.org
 
-P.S. Felix, thanks for Ccing me here :)
+Changes in v6:
+- Fix the compile error introduced by my unchecked hasty rebase
+- Some adjustments per David Heidelberg's comments
+- Link to v5: https://patch.msgid.link/20261112-aw2013-aw20xx-rename-v5-0-b2c5e323a90a@postmarketos.org
 
->> +        complete(&ar->install_key_done);
->>   }
->>   void ath10k_wmi_event_inst_rssi_stats(struct ath10k *ar, struct sk_buff *skb)
-> 
+Changes in v5:
+- Drop move of chip->num_leds
+- Make aw2013_microamp_to_imax more readable
+- rebase to next-20261112 for Lee's changes
+- Link to v4: https://lore.kernel.org/linux-leds/20261108-aw2013-aw20xx-rename-v4-0-826529beeb52@postmarketos.org/
+
+Changes in v4:
+- Drop sashiko fixes covered by https://lore.kernel.org/linux-leds/20261021123406.3163547-1-lee@kernel.org/
+- Rename the chip id register value to reflect that it covers more chips
+  (https://www.awinic.com/en/driver/AW2027DNR/640)
+- Address preliminary review comments from Lee Jones
+- Link to v3: https://lore.kernel.org/r/20261012-aw2013-aw20xx-rename-v3-0-cab1fdd050b6@postmarketos.org
+
+Changes in v3:
+- Drop rename
+- Capitalize commit subject
+- Extra tweaks to cleanup patches (preventing more unbalanced regulator
+  stuff)
+- Whitespace fiddling
+- Link to v2: https://lore.kernel.org/r/20261005-aw2013-aw20xx-rename-v2-0-108ecbdf2775@postmarketos.org
+
+Changes in v2:
+- Reduce renames to internal driver scope, to prevent breaking compat
+- Address Sashiko Review Comments
+- Split renames into a separate commit to make the actual changes easier
+to identify
+- Change from RFC to PATCH
+- Link to v1: https://lore.kernel.org/r/20260907-aw2013-aw20xx-rename-v1-0-c9a7df12a701@postmarketos.org
+
+To: Lee Jones <lee@kernel.org>
+To: Pavel Machek <pavel@kernel.org>
+To: Griffin Kroah-Hartman <griffin@kroah.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Nikita Travkin <nikitos.tr@gmail.com>
+Cc: linux-leds@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Paul Sajna (4):
+      dt-bindings: leds: aw2013: Add awinic,aw2027 compatible
+      leds: aw2013: Use dev_err_probe
+      drivers: leds: aw2013: Leverage C99 for-loops
+      leds: aw2013: Add AW2027 support
+
+ .../devicetree/bindings/leds/leds-aw2013.yaml      |   6 +-
+ drivers/leds/leds-aw2013.c                         | 240 ++++++++++++++++-----
+ 2 files changed, 194 insertions(+), 52 deletions(-)
+---
+base-commit: 6d582d78fad9d828e575ca0cdcff8ea47a77220b
+change-id: 20260907-aw2013-aw20xx-rename-df233c5921c6
+
+Best regards,
+-- 
+Paul Sajna <sajattack@postmarketos.org>
 
