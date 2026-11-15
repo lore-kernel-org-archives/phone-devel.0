@@ -1,113 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.141.101.25
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794705773;
-	b=QiJYwYEWvPu8vXsobWcdnxfR1SNmfae8yA08vHESJHmu/qai4pcbNzvb6J9fi+wTdpd+
-	 6XvMfcZd/msOLZSa25SQiIgzrIDMEBkPrGmGn2Z0rfA6k+9AvLc6w2OjoXvAPnB2XU3/l
-	 qrQEYtj1UJj0Zfb3YixFRBKy9j5UFKo8On/WUGBGj4mAG334ovmiwY8NaOWOesvWIpSNr
-	 15Mhj624QZZF0Yxnk7Bbg78vwQ/wlq7ew2BJfRju8PwpZxC+rXfQtBN34pRTorzGMCoDF
-	 UU2TKA3YbclmHCtZOUs/tTcytCWoQRM+ZPAUTjantqMVhsW4GjaVp9/JI5vLnDYHunQ==
+	t=1794720436;
+	b=5RDrabMhTI9nNraPF6GYrz6edNMaFAO9lVTCx5gJX6V0aA07L6TFysRThg7E7NfLyCx7
+	 O+Fr5csdKBBiBz8OnMPcmnDKYuvWQ2MrYQy8rK4FlRpe1g2FPItCoYroq1RC0XusiGQ57
+	 owltTi2xr1GnXXY2XqMAB6KRecLa3dHHanoPwPNiuH6I1eCuzmCbpPgPPdFleBhwZXp4E
+	 e8nhnobYi8Sn53wkzsmr1GaeRFZIRXaf5ki/2UJS+FlFDvD6Lxjm0nOd6AbhT4iTklmrG
+	 pWFiD8GIZl98Uu9KdAkow+QeU5wo7L4iW1AjKMV8FR+n8LiXcFMF/wDzn7SMx4OfTMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794705773;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=dp/67JmcNvmFQHE7Njd0ridip6Zcl0Wn6uMgmcNbwbU=;
-	b=OQwypqL1SzoWnDiwlbBB4exstn4jAcVW4ArhQ3fPdxyuSbGABUr4CGTx3mQy5mFrfDj7
-	 PH+PzaVZDAvyqQy0iKur4nFxazh4DViR9j2mGPZ8o3oo/EHmHpwfLR+gNp+CzZbx8IH/O
-	 pCCVAPL53tPdqUR8ChBi5rCEX7ouVBALUvqOv8w+efRlnRJVSabf+sW044OD4ZuPO80Tv
-	 ugJo13t/nbNTaEa9no83J2TYPoLVDvQgshX4kJ1OjuLPRvbemHOpN0HxR6U6ocXagZpDj
-	 KfB5dxXEZ+B3EhQyvPu5sd/kQ3b7LqF2pqNNxGjEZO7gmg+j9DZVrJfTvzLa/wZLa0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794720436;
+	h=DMARC-Filter:DKIM-Signature:Received:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Pz2I1H+FFLdgKPcJQPNDy28vCVFHrdUmqgl/udqEkpw=;
+	b=3YlOxru8wYG8iWydKOs76HeC6wHzPNgNDqdHwGWbBMR8uKc9cYqN+V63FBSZdss0UoB2
+	 NoNe9JLeZkEDZvSVqQL3NDNAp2UOdARMSCKSrMA0rCbblXY2kak2R07eyg31D//KuIToE
+	 4Yyo5K2sqdd6iNWVXG0Z3qZl6hy+nLKXtxNLH9zZT1Pbe/DN1+PUtkMUoYFzH+bE0cWee
+	 ZbNVyRMuCB3JX8hH+t0DicNUhDba8sQIuVUDHx9ZqJXn6jU03vBePyCVTYQu73YHjnaAy
+	 J+v2gHglHnQidj0+OehcODHcDAR9fiXFfGCZE+uKGph6f1IL0C/A4TQ+FIfozhoO0PA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JXvE48TK;
-	arc=none smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=trvn.ru;
+	spf=pass smtp.mailfrom=trvn.ru;
+	dkim=pass header.d=trvn.ru header.i=@trvn.ru header.a=rsa-sha256 header.s=mail header.b=Ov8GhGDA;
+	arc=none smtp.remote-ip=45.141.101.25
+Received: from box.trvn.ru (box.trvn.ru [45.141.101.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CA6606A331
-	for <phone-devel@vger.kernel.org>; Sun, 15 Nov 2026 01:22:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48CA6606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED59B606A323;
+	Sun, 15 Nov 2026 05:27:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED59B606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=trvn.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trvn.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JXvE48TK
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b577addee9so3899616a12.1
-        for <phone-devel@vger.kernel.org>; Sat, 14 Nov 2026 17:22:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794705771; x=1795310571; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dp/67JmcNvmFQHE7Njd0ridip6Zcl0Wn6uMgmcNbwbU=;
-        b=JXvE48TKiy91S9dvEv9At4IP8YWrv9G85CuWVftuPW0Nm42VDo9KFgSl0Wt6vcS56X
-         H/qmdvNli+F431Mg85skwEVk3uZHmXjh03Qi1nriXU+eIVvL33jxebJhCOEYHkhdTzpe
-         qqZmE/91d+DfQD6wRraqOOfh+6h/j5NhZExktRhovVugD8/uWjdRZ5edtEdRvQKSbyzS
-         f2JkGxlgs18vVYYXWbHFihlv83Ce+ekiPSYHXuNjHYNdv4NqwZegVHcEX7C9VocMT2zZ
-         HChWwWqXQwoRrokeuXsOueXT9eKfEoso4m9TOGVYvUa0b1HSABp4Vy3dHtUYsJRq4o7h
-         Ty0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794705771; x=1795310571;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dp/67JmcNvmFQHE7Njd0ridip6Zcl0Wn6uMgmcNbwbU=;
-        b=u02ARYs7cB7WuuDzEhc07MT/3rcU8Kt7qpfH+wsLoycuk6/CCcM2EDLnW8JDBVV3Py
-         nrXKdMAi8kLVbb2qgxaFL97NXb38cz7WwonMsALXN2H6C5xH9tgo3atsJxJDs+lTAgtk
-         CNT/t+r72XqJrlaNQD7dNcgK7SfT2dI7GzwK5rtZBk+Ef3KKItwB1OGHxeFrM0OrMo5a
-         /dwvE2SqQDFqP7hCzfJobNT6fWOB2hKQSmePx7xKjXSXFVh8TAkJjYHgouQcvwL33WyP
-         fyfiSU9MBS2nLFP0d2ILGVSq/Y4yRo7GqaVzATf0XD5uHaguMjvV6YcKO4rQwq9HRjbx
-         egNg==
-X-Forwarded-Encrypted: i=1; AL+hErEuJFpVWTWwVelkG9WJaLIh/H30P7gFaVHmi7NOQYqTAJ9OWucwt9oWVyqfktCq3iHr4KqL4D3SjW2eFw==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8HQaGG8ra2yBKzUDf62SJotN0I5wXVqWvIFlKQMV5N6BYII5wh
-	LpYKSmbKxJeb3DdJzlgZZ40w+72eMod6ekp7qFn+S8Xf6Y2aVPFz/aA=
-X-Gm-Gg: AYBFou3Bvv/DjGNaEMihp+dYK2X5BeLTls9DpLon/s4QQw+JFdaxwWUuuox+zWlGx8Y
-	sKKgVrugiA8iXO+ht6VCKTp3SNjlmJPxhg85qzGuOrH0ExcPAUJBhdM7SQDT3+q66biw6gK1XvT
-	w7coOcT/E75kq9MCisGmEdKZKIfeyP8sUApMAp2h+iSF9W4vtdjzjh9Itf/+8lYHa9e3qEOmSS2
-	2Sealo79t4GIG/Lh40wI2Ri6IbXFmHyFO6SMLbVQFLN160cxiyg7oj88CWH9ToiEMeH8J1TTz03
-	+cwoinaiPy7XTrMUC9yTNrvbzm4lioBBaKqkLYR8/mtYeYjDHJN6nefcesDKDmZkS7um+BTEb6A
-	ifp4AdvK2Iy+jnBeieRDwbEE8vxpuD1q+LqeiSa9Ec8PsNaeHXhu/6hxKbRXyHmtjmS10XcSRc5
-	SCEltQtzF69Xyi6wVbPF/uyqKoCt82y7RlqgHsfqxPv9nCQ/WBM/vHU7lCni5y9zWhY8aQ0clEm
-	XDUk43FKun8E1PXHsyIB+CzNNIICFEv75vh7WzMqZxHGGrLdHnZ8kV67HR9BhZHY3cMn2AuIbVZ
-	VUESOefA5mOXMRAb9OgjSg7/CSn8wZtDKy/hmdirFwFRwGkfwUnQ2wn3Hj5C+i7qfAe7eFJ5ulV
-	ylOpi4Smvy6SHzZyUhzR7cY94
-X-Received: by 2002:a05:6402:849:b0:6b7:c9d4:6b96 with SMTP id 4fb4d7f45d1cf-6b7c9d47044mr4130497a12.8.1794705771576;
-        Sat, 14 Nov 2026 17:22:51 -0800 (PST)
-Received: from sohrab-omarchy.fritz.box (2a02-a44e-4ae7-1-c0e-6d5a-8ae2-915.fixed6.kpn.net. [2a02:a44e:4ae7:1:c0e:6d5a:8ae2:915])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b7c6a5924bsm2636697a12.18.2026.11.14.17.22.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 17:22:51 -0800 (PST)
-From: Majid Hajiheidari <majidhhdri@gmail.com>
-To: val@packett.cool
-Cc: marc.lainez@gmail.com,
-	luca.weiss@fairphone.com,
-	barnabas.czeman@mainlining.org,
-	danila@jiaxyga.com,
-	sre@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	andersson@kernel.org,
-	konradybcio@kernel.org,
-	abelvesa@kernel.org,
-	jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] Add driver for Qualcomm QGauge (qcom_qg) fuel gauge
-Date: Sun, 15 Nov 2026 02:22:47 +0100
-Message-ID: <20261115012247.621144-1-majidhhdri@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261112170841.2189322-1-val@packett.cool>
-References: <20261112170841.2189322-1-val@packett.cool>
+	dkim=pass (2048-bit key, unprotected) header.d=trvn.ru header.i=@trvn.ru header.a=rsa-sha256 header.s=mail header.b=Ov8GhGDA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trvn.ru; s=mail;
+	t=1794720425; bh=WTXTUdPtV6ViRvE0Ed+yjTNip3GcFyNhmMw9gGT4HGQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ov8GhGDAkfxGwh3WyIBHM6kCQKNgdKSd9HOS8EZJnRPvC3wPbCjwUOqDkPghyXyOH
+	 ZZW20BMjbM9xlXXs9UYTBKmwdKZM91Cxku7ojfaj8+7+irV+dpOxKmWb25at7QTOfx
+	 uUCRvKGZQr3oJ2hqMjdoSHfUNEh9+k5Ufo5xVBNn/OLyOsrA7Ra1DR8E5aqdK4Ggda
+	 SzjlQT7EGwnhxy151QGUxvm2ZfqaSObSDiryG9woE/tsBSLFRAzYXQx2o2fCr7phW1
+	 gsWaIkEfe8hF6PkSt2SJ480q/oPDLAvVmUtkiH8HnJVWHARdayWoN1FPK+h7NGgS/o
+	 sAJrTRLQqU30w==
+Received: from authenticated-user (box.trvn.ru [45.141.101.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by box.trvn.ru (Postfix) with ESMTPSA id B86C41E9D9;
+	Sun, 15 Nov 2026 10:27:05 +0500 (+05)
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -117,48 +57,406 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Date: Sun, 15 Nov 2026 10:27:05 +0500
+From: Nikita Travkin <nikita@trvn.ru>
+To: Paul Sajna <sajattack@postmarketos.org>
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nikita Travkin <nikitos.tr@gmail.com>, Alexey Min
+ <alexeymin@minlexx.ru>, David Heidelberg <david@ixit.cz>, Griffin
+ Kroah-Hartman <griffin@kroah.com>, linux-leds@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v7 4/4] leds: aw2013: Add AW2027 support
+In-Reply-To: <20261114-aw2013-aw20xx-rename-v7-4-ea5a3113a479@postmarketos.org>
+References: <20261114-aw2013-aw20xx-rename-v7-0-ea5a3113a479@postmarketos.org>
+ <20261114-aw2013-aw20xx-rename-v7-4-ea5a3113a479@postmarketos.org>
+Message-ID: <63a6e2eb3f676dbaf2ebfe5d905fbc4e@trvn.ru>
+X-Sender: nikita@trvn.ru
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Val,
+Paul Sajna писал(а) 15.11.2026 03:55:
+> The AW2027 is basically the same as the AW2013.
+> 
+> It differs in:
+> - the max current (30mA rather than 15)
+> - the number of current levels for colour-mixing (16 rather than 4)
+> - the supply voltage max
+> - the charge indicator (unsupported by our driver at this time)
+> 
+> The max current register (imax) also moves from LCFG to GCR2, and the
+> selectable current levels for colour-mixing (LCFG_CUR) take their place.
+> 
+> The current driver implementation provided here sets the global imax to
+> it's maximum, and scales each led to the closest value using the local
+> imax. It's the best result achievable short of adding custom sysfs
+> entries and mucking up the linux interfaces.
+> 
+> Comparison of all AW20XX chips https://www.awinic.com/en/productCompareList?id=47&ids=1022,74,96,75,72,71,928,927,73,76,578
+> AW2027 datasheet: https://doc.awinic.com/doc/202507/77b87097-27bf-48cd-af9b-9b615064c1e1.pdf
+> Vendor driver: https://www.awinic.com/en/driver/AW2027DNR/454
+> 
+> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
 
-On Thu, 12 Nov 2026 14:07:26 -0300, Val Packett wrote:
-> This series adds a driver for the "qgauge" battery fuel gauge
-> present in Qualcomm PMICs like PMI632, PM6150, PM7250B, PM2250.
-> The PMI632 is used in SDM632, SM6115/SM4250, SM6125 based phones.
+See some nits below, but regardless,
 
-I tried v1 on an SM6125 phone, a Xiaomi Mi A3 (sm6125-xiaomi-laurel-sprout,
-PMI632), on top of next-20261113. Board side: the node enabled with
-monitored-battery (simple-battery with the OCV table from the stock
-profile), io-channels = <&pmi632_adc ADC5_BAT_THERM_100K_PU> as
-"batt-therm" and power-supplies = <&pmi632_typec>.
+Reviewed-by: Nikita Travkin <nikita@trvn.ru>
 
-It probes without any kernel log output and reports sane values:
+> ---
+>  drivers/leds/leds-aw2013.c | 206 ++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 175 insertions(+), 31 deletions(-)
+> 
+> diff --git a/drivers/leds/leds-aw2013.c b/drivers/leds/leds-aw2013.c
+> index 7fe7e9dae903..f62f977e2bfe 100644
+> --- a/drivers/leds/leds-aw2013.c
+> +++ b/drivers/leds/leds-aw2013.c
+> @@ -1,5 +1,5 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+> -// Driver for Awinic AW2013 3-channel LED driver
+> +// Driver for Awinic AW20XX 3-channel LED drivers
+>  
+>  #include <linux/i2c.h>
+>  #include <linux/leds.h>
+> @@ -20,13 +20,15 @@
+>  #define AW2013_GCR 0x01
+>  #define AW2013_GCR_ENABLE BIT(0)
+>  
+> +#define AW20XX_GCR2 0x04
+> +
+>  /* LED channel enable register */
+>  #define AW2013_LCTR 0x30
+>  #define AW2013_LCTR_LE(x) BIT((x))
+>  
+>  /* LED channel control registers */
+>  #define AW2013_LCFG(x) (0x31 + (x))
+> -#define AW2013_LCFG_IMAX_MASK (BIT(0) | BIT(1)) // Should be 0-3
+> +#define AW2013_IMAX_MASK (BIT(0) | BIT(1)) // Should be 0-3
+>  #define AW2013_LCFG_MD BIT(4)
+>  #define AW2013_LCFG_FI BIT(5)
+>  #define AW2013_LCFG_FO BIT(6)
+> @@ -51,6 +53,16 @@
+>  
+>  #define AW2013_TIME_STEP 130 /* ms */
+>  
+> +/* AW2027-specific defines */
+> +#define AW2016_23_27_33_CHIPID 0x09 /* vendor shared same chipid between several chips */
+> +#define AW2027_REG_MAX 0x7f /* copied from vendor driver, but only up to 0x3F is documented */
+> +#define AW2027_LOCAL_IMAX_MASK GENMASK(3, 0)
+> +
+> +#define AW2027_GLOBAL_IMAX_15MA 0
+> +#define AW2027_GLOBAL_IMAX_30MA 1
+> +#define AW2027_GLOBAL_IMAX_5MA  2
+> +#define AW2027_GLOBAL_IMAX_10MA 3
+> +
+>  struct aw2013;
+>  
+>  struct aw2013_led {
+> @@ -60,16 +72,88 @@ struct aw2013_led {
+>  	unsigned int imax;
+>  };
+>  
+> +struct aw2013_chipdef {
+> +	u8 chip_id;
+> +	const struct regmap_config *regmap_cfg;
+> +	u32 default_imax;
+> +	bool gcr2_imax;
+> +	unsigned int current_levels;
+> +	unsigned int current_max_ua;
+> +};
+> +
+>  struct aw2013 {
+>  	struct mutex mutex; /* held when writing to registers */
+>  	struct regulator_bulk_data regulators[2];
+>  	struct i2c_client *client;
+>  	struct aw2013_led leds[AW2013_MAX_LEDS];
+>  	struct regmap *regmap;
+> +	const struct aw2013_chipdef *cdef;
+>  	int num_leds;
+>  	bool enabled;
+>  };
+>  
+> +static const struct regmap_config aw2013_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = AW2013_REG_MAX,
+> +};
+> +
+> +static const struct regmap_config aw2027_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = AW2027_REG_MAX,
+> +};
+> +
+> +static const struct aw2013_chipdef aw2013_chipdef = {
+> +	.chip_id = AW2013_RSTR_CHIP_ID,
+> +	.regmap_cfg = &aw2013_regmap_config,
+> +	.default_imax = 1, /* 5mA */
+> +	.gcr2_imax = false,
+> +	.current_levels = 4,
+> +	.current_max_ua = 15000,
+> +};
+> +
+> +static const struct aw2013_chipdef aw2027_chipdef = {
+> +	.chip_id = AW2016_23_27_33_CHIPID,
+> +	.regmap_cfg = &aw2027_regmap_config,
+> +	.default_imax = 3, /* 6mA */
+> +	.gcr2_imax = true,
+> +	.current_levels = 16,
+> +	.current_max_ua = 30000,
+> +};
+> +
+> +/**
+> + * aw2013_microamp_to_imax() - Finds the closest current step to the given microamp
+> + * @microamp: Desired current in microamps
+> + * @cdef: Chip definition
+> + *
+> + * Return: The closest current-step to the given microamp, rounded down
+> + * and limited by the max current step possible for the chip.
+> + */
+> +static inline u32 aw2013_microamp_to_imax(u32 microamp, const struct aw2013_chipdef *cdef)
+> +{
+> +	u32 max_current_step = cdef->current_levels - 1;
+> +	u32 closest_current_step_floor = (microamp * max_current_step) / cdef->current_max_ua;
+> +
+> +	return min_t(u32, closest_current_step_floor, max_current_step);
+> +}
+> +
+> +static int aw2027_set_global_imax(struct aw2013 *chip)
+> +{
+> +	return regmap_update_bits(chip->regmap,
+> +				 AW20XX_GCR2,
+> +				 AW2013_IMAX_MASK,
+> +				 AW2027_GLOBAL_IMAX_30MA);
+> +}
+> +
+> +static int aw2027_set_local_imax(struct aw2013 *chip, struct aw2013_led *led, u32 imax)
+> +{
+> +	return regmap_update_bits(chip->regmap,
+> +				 AW2013_LCFG(led->num),
+> +				 AW2027_LOCAL_IMAX_MASK,
+> +				 imax);
+> +}
+> +
+>  static int aw2013_chip_init(struct aw2013 *chip)
+>  {
+>  	int ret;
+> @@ -81,17 +165,47 @@ static int aw2013_chip_init(struct aw2013 *chip)
+>  		return ret;
+>  	}
+>  
+> -	for (int i = 0; i < chip->num_leds; i++) {
+> -		ret = regmap_update_bits(chip->regmap,
+> -					 AW2013_LCFG(chip->leds[i].num),
+> -					 AW2013_LCFG_IMAX_MASK,
+> -					 chip->leds[i].imax);
+> +	if (chip->cdef->gcr2_imax) {
+> +		/*
+> +		 * AW2027 supports 4-step global imax, and also a 16-step control for limiting
+> +		 * individual current per LED. This doesn't map to the single value the
+> +		 * devicetree provides super well, so set global imax to maximum, and
+> +		 * local imax to whatever gets us closest to the value in the devicetree.
+> +		 */
+> +		ret = aw2027_set_global_imax(chip);
 
-  capacity            66
-  voltage_now         3979548   (vbat_sns from the ADC: 3.98 V)
-  voltage_avg         3979937
-  current_now         -72631
-  temp                297       (SoC TSENS zones: 29-30 C)
-  charge_full         4048000   (design 4030000, so the SDAM read works)
-  health              Good
-  status              Charging
+Following Lee's point (that sashiko has reiterated on this revision too),
+perhaps you could move if/else branch into aw20xx_set_imax()? and then
+get rid of if/else here and down in probe_dt()?
 
-Two things I noticed:
+>  		if (ret) {
+>  			dev_err(&chip->client->dev,
+> -				"Failed to set maximum current for led %d: %d\n",
+> -				chip->leds[i].num, ret);
+> +				"Failed to set maximum global current: %d\n",
+> +				ret);
+>  			return ret;
+>  		}
+> +		/*
+> +		 * This still needs to be here despite also being in aw2013_probe_dt,
+> +		 * for cases where chip is disabled and re-enabled.
+> +		 */
 
-- voltage_ocv returns -ENODATA ("No data available") while capacity is
-  reported at the same time. Is that intended, e.g. the PON OCV being
-  used for capacity but not exposed?
+nit: I'm not sure this comment adds value TBH
 
-- status is derived only from power_supply_am_i_supplied(), so it says
-  Charging whenever USB is connected. On my phone the charger float
-  voltage is limited to 3.96 V with a local patch and the battery sits at
-  3.98 V, so current_now stays at about -70 mA (discharging) while status
-  reads Charging. I would expect the same once a battery is full. Would
-  it make sense to report Not charging / Full based on the current?
+Thanks for taking your time to improve this driver!
+Nikita
 
-Tested-by: Majid Hajiheidari <majidhhdri@gmail.com> # sm6125-xiaomi-laurel-sprout
-
-Happy to test v2 as well.
-
-Thanks,
-Majid
+> +		for (int i = 0; i < chip->num_leds; i++) {
+> +			ret = aw2027_set_local_imax(chip, &chip->leds[i], chip->leds[i].imax);
+> +			if (ret) {
+> +				dev_err(&chip->client->dev,
+> +					"Failed to set maximum current for led %d: %d\n",
+> +					chip->leds[i].num, ret);
+> +				return ret;
+> +			}
+> +		}
+> +	} else {
+> +		/* AW2013 only supports 4-step individual current per LED */
+> +		for (int i = 0; i < chip->num_leds; i++) {
+> +			ret = regmap_update_bits(chip->regmap,
+> +						 AW2013_LCFG(chip->leds[i].num),
+> +						 AW2013_IMAX_MASK,
+> +						 chip->leds[i].imax);
+> +			if (ret) {
+> +				dev_err(&chip->client->dev,
+> +					"Failed to set maximum current for led %d: %d\n",
+> +					chip->leds[i].num, ret);
+> +				return ret;
+> +			}
+> +		}
+>  	}
+>  
+>  	return ret;
+> @@ -291,9 +405,9 @@ static int aw2013_probe_dt(struct aw2013 *chip)
+>  		init_data.fwnode = of_fwnode_handle(child);
+>  
+>  		if (!of_property_read_u32(child, "led-max-microamp", &imax)) {
+> -			led->imax = min_t(u32, imax / 5000, 3);
+> +			led->imax = aw2013_microamp_to_imax(imax, chip->cdef);
+>  		} else {
+> -			led->imax = 1; // 5mA
+> +			led->imax = chip->cdef->default_imax;
+>  			dev_info(&chip->client->dev,
+>  				 "DT property led-max-microamp is missing\n");
+>  		}
+> @@ -303,14 +417,30 @@ static int aw2013_probe_dt(struct aw2013 *chip)
+>  
+>  		mutex_lock(&chip->mutex);
+>  		chip->num_leds = ++i;
+> -		if (chip->enabled) {
+> +		/*
+> +		 * needs to be here and in aw2013_chip_init because chip->num_leds increments
+> +		 * just above here while we're parsing the devicetree, and chip->enabled
+> +		 * ensures chip_init runs as little as possible.
+> +		 * Requires this function to have regulators enabled.
+> +		 */
+> +		if (chip->cdef->gcr2_imax) {
+> +			ret = aw2027_set_local_imax(chip, led, led->imax);
+> +			if (ret) {
+> +				mutex_unlock(&chip->mutex);
+> +				return dev_err_probe(&chip->client->dev, ret,
+> +						     "Failed to set maximum current for led %d\n",
+> +						     led->num);
+> +			}
+> +		} else {
+>  			ret = regmap_update_bits(chip->regmap,
+>  						 AW2013_LCFG(led->num),
+> -						 AW2013_LCFG_IMAX_MASK,
+> +						 AW2013_IMAX_MASK,
+>  						 led->imax);
+>  			if (ret) {
+>  				mutex_unlock(&chip->mutex);
+> -				return ret;
+> +				return dev_err_probe(&chip->client->dev, ret,
+> +						     "Failed to set maximum current for led %d\n",
+> +						     led->num);
+>  			}
+>  		}
+>  		mutex_unlock(&chip->mutex);
+> @@ -332,18 +462,18 @@ static void aw2013_chip_disable_action(void *data)
+>  	aw2013_chip_disable(data);
+>  }
+>  
+> -static const struct regmap_config aw2013_regmap_config = {
+> -	.reg_bits = 8,
+> -	.val_bits = 8,
+> -	.max_register = AW2013_REG_MAX,
+> -};
+>  
+>  static int aw2013_probe(struct i2c_client *client)
+>  {
+>  	struct aw2013 *chip;
+> +	const struct aw2013_chipdef *cdef;
+>  	int ret;
+>  	unsigned int chipid;
+>  
+> +	cdef = device_get_match_data(&client->dev);
+> +	if (!cdef)
+> +		return -ENODEV;
+> +
+>  	chip = devm_kzalloc_obj(&client->dev, *chip);
+>  	if (!chip)
+>  		return -ENOMEM;
+> @@ -355,9 +485,10 @@ static int aw2013_probe(struct i2c_client *client)
+>  	mutex_lock(&chip->mutex);
+>  
+>  	chip->client = client;
+> +	chip->cdef = cdef;
+>  	i2c_set_clientdata(client, chip);
+>  
+> -	chip->regmap = devm_regmap_init_i2c(client, &aw2013_regmap_config);
+> +	chip->regmap = devm_regmap_init_i2c(client, chip->cdef->regmap_cfg);
+>  	if (IS_ERR(chip->regmap)) {
+>  		ret = dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
+>  				    "Failed to allocate register map\n");
+> @@ -390,7 +521,7 @@ static int aw2013_probe(struct i2c_client *client)
+>  		goto error_reg;
+>  	}
+>  
+> -	if (chipid != AW2013_RSTR_CHIP_ID) {
+> +	if (chipid != chip->cdef->chip_id) {
+>  		ret = dev_err_probe(&client->dev, -ENODEV,
+>  				    "Chip reported wrong ID: %x\n",
+>  				     chipid);
+> @@ -403,21 +534,28 @@ static int aw2013_probe(struct i2c_client *client)
+>  		goto error_reg;
+>  	}
+>  
+> +	mutex_unlock(&chip->mutex);
+> +
+> +	ret = devm_add_action(&client->dev, aw2013_chip_disable_action, chip);
+> +	if (ret)
+> +		goto error_reg_no_mutex;
+> +
+> +	ret = aw2013_probe_dt(chip);
+> +	if (ret) {
+> +		dev_err_probe(&client->dev, ret,
+> +			      "Failed to parse devicetree\n");
+> +		goto error_reg_no_mutex;
+> +	}
+> +
+>  	ret = regulator_bulk_disable(ARRAY_SIZE(chip->regulators),
+>  				     chip->regulators);
+>  	if (ret) {
+>  		dev_err_probe(&client->dev, ret,
+>  			      "Failed to disable regulators\n");
+> -		goto error;
+> -	}
+> -
+> -	mutex_unlock(&chip->mutex);
+> -
+> -	ret = devm_add_action(&client->dev, aw2013_chip_disable_action, chip);
+> -	if (ret)
+>  		return ret;
+> +	}
+>  
+> -	return aw2013_probe_dt(chip);
+> +	return 0;
+>  
+>  error_reg:
+>  	regulator_bulk_disable(ARRAY_SIZE(chip->regulators),
+> @@ -426,10 +564,16 @@ static int aw2013_probe(struct i2c_client *client)
+>  error:
+>  	mutex_unlock(&chip->mutex);
+>  	return ret;
+> +
+> +error_reg_no_mutex:
+> +	regulator_bulk_disable(ARRAY_SIZE(chip->regulators),
+> +			       chip->regulators);
+> +	return ret;
+>  }
+>  
+>  static const struct of_device_id aw2013_match_table[] = {
+> -	{ .compatible = "awinic,aw2013", },
+> +	{ .compatible = "awinic,aw2013", .data = &aw2013_chipdef },
+> +	{ .compatible = "awinic,aw2027", .data = &aw2027_chipdef },
+>  	{ /* sentinel */ },
+>  };
+>  
+> @@ -446,5 +590,5 @@ static struct i2c_driver aw2013_driver = {
+>  module_i2c_driver(aw2013_driver);
+>  
+>  MODULE_AUTHOR("Nikita Travkin <nikitos.tr@gmail.com>");
+> -MODULE_DESCRIPTION("AW2013 LED driver");
+> +MODULE_DESCRIPTION("AW20XX LED driver");
+>  MODULE_LICENSE("GPL v2");
