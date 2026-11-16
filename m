@@ -1,95 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794839222;
-	b=hfTRu4X6p36Asdi/gCIKAdXG6zsHq95IuXLvQDN+RIkFvz3eVKBbJ5JWH3WgxBQRy6om
-	 VCi9nPQzsfsb7l+n8kqXm37wQbO7zfLd/kOsDylhALvwXSKGaJR7ShSCPxrLPavwNwfbk
-	 fSDG9IFcRQ/ffYOwr3cdfmvXFVqXY97CkNwVAGHtJy495cGjXwojDgvwbPK3uBOBOxm+h
-	 i5hVNA5+JeL5+LOvQdk4ACmx8qOkw1MyxNkjC/KRQhvJ95db0yjejfUIwFIzwMkqZ+Sye
-	 WTwCF5auUxXyV5Z3jPK0w3BZUqGsal0gZMiXPiPbgrV2WN2BUmfVtPI3HQzC+KdBJ8Q==
+	t=1794843833;
+	b=LqLSmuB3HGvR4gmLsjQUvB98UQW4VDxDM4koVBGLltsyOMWu/t8STwKkrE9P/yiUSIFj
+	 wWFPijpTGRQbazqrLfWToHRAGMqGnPY56ddzyZxKcP/cJH+pjPJa64ww1nEKbGcZkpGSG
+	 Gzoqv6PtlTn8VettaF5ONobMguIYbHAcNWK/k92kCeak3My5wTJhkvz94SSXNb6ibz8Sm
+	 73+QAZJln3wPioRgi9lzlzef6dnEF2R+5j92MbrTgcPGbXPW7uHBGSZPRAkS+ne3+GglD
+	 GCr5KQJtHoaur2LmG5xNFXvA2zkFTUSz1d25X8y8fq1OvhqR2Znx1ETCssapWoIvCmA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794839222;
-	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:
-	 X-Source-L:X-Exim-ID:X-Source:X-Source-Args:X-Source-Dir:
-	 X-Source-Sender:X-Source-Auth:X-Email-Count:X-Org:X-Source-Cap:
-	 X-Local-Domain:X-CMAE-Envelope;
-	bh=REYPW0V0Hw8OeT1V1MVJj6gyXDEMPTMuQhc+KEFGz8g=;
-	b=4edPETud77hf9qnWwn3SY11iJMqTzKFCvZhJg77qpN3t7Yifyok3VLkA6OgcGiu1QqzI
-	 J/IwVDnxevBiyQ5C8SnX2CRgmBq6egraVdIP80SubBUEGbeqoMXUnlyyidSFnxZ3O/fA7
-	 Gh6zbhdfn/tBkeDpWXjxtfsiwKhu8zefNNfeiOZc3ZfMOmfdzncz0heK4PKkjhnI/4Ti5
-	 1q7OW1H1hEM7T98d49yFO19d/R6AiGEod8VX/vbYSDCUYAV3mpgBMPvlz7TO66SDBO3A6
-	 MeF6W8g36POgPnC/l+0ZLLqoFoJdgz7dBwBgjgsD1lU1N9vX3VjBaIUkLN3eyPohC+w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794843833;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=1bL8r5cuvqq5fGscdKSHB0SmDxdHtxTFoTFxEiXAMqo=;
+	b=F2YLh8v0Kmg6/og44UfqYmz/BLPy6ZELVZ3/3gzf7CBWH5pLejuESbjFZp5iYWOr/hz3
+	 BecLNOTg82aFdGpYbkdorSUoD5MNdsk8CRAcJ+1MxH33wJHRDOKjtoJzdUhnHdrcYbyZQ
+	 Ox4mEWZ/xNm3YYCqH1ed+AS+l61bQUzEQpmTKGKcKUxEYR/TX4rPhb+fK6eK2g7gTHu7L
+	 BVnxI8qAurCrfuGk62G7dfSfj93Sux3CEufX+wBUfyoYe6yH4ZOei9u3QOhZ3saRRRBqq
+	 J51PpNfdYWpL9aws/pkEC1IySX0h9VFJuGsEqJQgWeuIXifCMFRxZ0QK4mXbOwdF9Uw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=roeck-us.net;
-	spf=fail smtp.mailfrom=roeck-us.net;
-	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=ti39duon;
-	arc=none smtp.remote-ip=35.89.44.33
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=fairphone.com;
+	spf=pass smtp.mailfrom=fairphone.com;
+	dkim=pass header.d=fairphone.com header.i=@fairphone.com header.a=rsa-sha256 header.s=fair header.b=l5yFnpD8;
+	arc=none smtp.remote-ip=209.85.218.45
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD001606A32C
-	for <phone-devel@vger.kernel.org>; Mon, 16 Nov 2026 14:27:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD001606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A471606A32C
+	for <phone-devel@vger.kernel.org>; Mon, 16 Nov 2026 15:43:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A471606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=ti39duon
-Received: from eig-obgw-5001b.ext.cloudfilter.net ([10.0.29.181])
-	by cmsmtp with ESMTPS
-	id SvNTxwr1bAR1iSxfhxZU7q; Mon, 16 Nov 2026 14:27:01 +0000
-Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
-	by cmsmtp with ESMTPS
-	id Sxfgx7xLhxmi7SxfgxEG79; Mon, 16 Nov 2026 14:27:00 +0000
-X-Authority-Analysis: v=2.4 cv=KuFN2XWN c=1 sm=1 tr=0 ts=6afb12b5
- a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=M0FbrtG7MMAA:10 a=pGLkceISAAAA:8
- a=QcAV74sXaHvaKY3IglgA:9 a=CjuIK1q_8ugA:10 a=KPbNTLLc3YvdawN95zVk:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=REYPW0V0Hw8OeT1V1MVJj6gyXDEMPTMuQhc+KEFGz8g=; b=ti39duonapH/OckZv4V65mFYnf
-	zWs7h8UMwiLZo2J345Xd1MIc1V2i/uT11BD6YIUFmVrEqZCXsO9fQ1jvtAMaO25lWzhppbx2yF+4u
-	ruqcZar0Loo0GHdG2gXsWh00FxIPx//KLYx+ZSiejT9Qi/DGXN7R6mXNzw9gYS4vTQNJ/10Ab/vel
-	6UzeNg8+YQpL9dna+rPlI4tCX/xCL97vCOg7jIrOKSBgj3i/jUU+LqBtA+4YXaBSiWjNtWS11PqA5
-	m+DBvkQP0aGuSlKhPgzQtbh2iK4SnicdvXrN7+1See3aaD7idxTocydr4+J8Q01Dmh/veAdatWoae
-	3zPs4Pug==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:49322 helo=server.roeck-us.net)
-	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <linux@roeck-us.net>)
-	id 1xSxfd-00000003oF6-04lF;
-	Mon, 16 Nov 2026 19:56:57 +0530
-Date: Mon, 16 Nov 2026 06:26:56 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Alexander Letuchiy <asalde.le1@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Mattijs Korpershoek <mkorpershoek@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-serial@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-input@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 4/9] watchdog: mediatek: Add support for MT6895
-Message-ID: <eaaa1e62-ad8c-4cd7-9855-f8efca36cb70@roeck-us.net>
-References: <20261113-initial-mt6895-v2-0-4ab0aa9fa391@gmail.com>
- <20261113-initial-mt6895-v2-4-4ab0aa9fa391@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=fairphone.com header.i=@fairphone.com header.a=rsa-sha256 header.s=fair header.b=l5yFnpD8
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c4697404c2bso487079566b.2
+        for <phone-devel@vger.kernel.org>; Mon, 16 Nov 2026 07:43:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1794843831; x=1795448631; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1bL8r5cuvqq5fGscdKSHB0SmDxdHtxTFoTFxEiXAMqo=;
+        b=l5yFnpD8es3PZ8hErhgAyB6jNHgRJQL2UrqaB+35VDA03JWtWhtFRjub4w8iKrO77e
+         FcXuh9bolv6SYa88Apk3Cj+9S5ZwpsJlBdiFSEej53nktGjQ0LAsYndjgYq4DB2bD0yl
+         Nyiy5scYIfhVrAS4QNSBaNJydK3icLZBN4M0F1B1L6Waj2/CbMjaV0UG6L7lgr8aVaGD
+         pXTH8mr0Uek6+QgkGZxJY+7f0zkWMqOFQHSdN9vHIUiEuWSmJok/yRbEEZJRUESbTGNj
+         3zjw9jYFXIMQVSV2tbewdyiO4fsAHVQXDakxoF3J1EzoW4EzlIXY/FZ/rBxt0ZFpDLkw
+         9Hbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794843831; x=1795448631;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1bL8r5cuvqq5fGscdKSHB0SmDxdHtxTFoTFxEiXAMqo=;
+        b=h8D2p6Wl25A14tEeHRgWOPNlZmtcej+k3M4/KiYMbl2NtWgPdXpbCq2sccjd6YrU0p
+         9yKHSxba9H7rGrQDSKNNE1wGQWiZcd910vT0wyUTVBcmbFqA0UbWot44/0b7MzXQCLtP
+         4R0ETnlV6zUje6QJs0um9ZI+f5BeOkC2ZG5IhEEV0sIiR1cXfDZyc/N/b52AsKDFsW5U
+         J3nJ8nt9QEVSTlpcVG+I/FmfZKh7zeb1VnbkOmqwp8a42uDr/hXEfwBn4ry8v8PWRk0s
+         zE7f1HWUhqLkNMmUG/d7Y6Ews8+yy9ALF9PuILK2pc3oWUZnTq0ertth+8k75g/1YX8p
+         PePw==
+X-Forwarded-Encrypted: i=1; AL+hErGk8JiYiS93+vijZhPiyMmohfB4WCeOinsi+j0Ij5FAZ2Q2eDNkxjlPY/3yOmw8TQpMsKjJEhRkJPjY2Q==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/eyEOZO4zRA49r1udFRderBsnGc+r5fdVdnm59i7r7CdF8fxck
+	hG/wv3VrKFTbztrr7X1zMJcJBkW5c7YMtJSFcf5Vh5h6jx5UKiLXD/mfuB20wqgq36c=
+X-Gm-Gg: AYBFou21/WjNzMnqS9MLa0ji+xYKrAyA3inZ2F5gSroU0a7/KE82TPZx83cPoNXI5+W
+	ovIFSHWseqWCX75qozffo/xNeqDbzJKf5fB3Mzpb1GSS7kpfAmUUszTPdRcWV/dk1lOjW6PydKp
+	BMRj/vby6DDEFGMwaaWUGdhinVEQUoeTKcp1id6C91tRXiCDKeUfgNmo3cca29OMpIRnl8jD/SW
+	NPl7XcbG3YnIByCDHMOnTFlk3Sr3+1teZnGGKDJp/rQvBBEfNVRp77cmC/JATVMqDLfCpac+//R
+	bPQJuRoTM/7qwDxUagx6Tzhczu1eWIn6/Zyyyk+68VlGALXe7/cefyik7TWA7oxztmHM32HubaY
+	/ei/lm7LQNs0nY4PmExu8YWL/VNWcGbRIdVjDiRI+qjD5pILO+BR/3/8vsSHPe5lxcOm5Lz7b4e
+	HQbwEuf7OxY5jmEvscyHXWFYVcNFCxTCYeo3Ab6iQ3kaqGdG6/r9Ri5KyeL6jHDK9nH71NO8qV8
+	b1cjfItQgYmAngvP/t9ku5fad1WRqKSZjTCI9UNJdczQSqVqcskk8CgrXLK9VrOaUrQ/KWJ2jS1
+	SogTQdlLrpMk5VUnbjxfKuyQj3WG6jxR3Spyi9AlqzmM30tVNhwZv8bGn/5Lc5RrCLTQ3klrCg=
+	=
+X-Received: by 2002:a17:907:9305:b0:c2e:4e08:19ab with SMTP id a640c23a62f3a-c50963d50e5mr844840566b.16.1794843830845;
+        Mon, 16 Nov 2026 07:43:50 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c5095b40918sm439294866b.39.2026.11.16.07.43.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2026 07:43:50 -0800 (PST)
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -98,42 +88,89 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113-initial-mt6895-v2-4-4ab0aa9fa391@gmail.com>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1xSxfd-00000003oF6-04lF
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (server.roeck-us.net) [108.223.40.66]:49322
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 51
-X-Org: HG=direseller_whb_net_legacy;ORG=directi;
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfArzHNSEqBT/UuizukSa55u3Kqgn1zrDddn/bOEWyOWakL5oJdDEFevD/p7rB3RkZUSymsc7xsdHyCsSduY5yYmZyp5KGWLpDvilWQtHoO7eg8DsDnly
- IiLYNaGz7tdkGaxPixbnNRFL/QD6u+Y9qaqTskWhdPHEO/U12qvgpo2+sWVgoEoablDoJ2GcmSot4/BOdODX2dhb+Ac9+5qgmEbC7BdIzNPHA/Zzuf8IqJhr
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Nov 2026 16:43:49 +0100
+Message-Id: <DMWR1CJJRHMF.33YRRRDXPMBDW@fairphone.com>
+Cc: "Jonathan Cameron" <jic23@kernel.org>, "David Lechner"
+ <dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ "Andy Shevchenko" <andy@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Zhang Rui" <rui.zhang@intel.com>, "Lukasz Luba"
+ <lukasz.luba@arm.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Laxman Dewangan" <ldewangan@nvidia.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Hans de
+ Goede" <hansg@kernel.org>, "Jens Reidel" <adrian@mainlining.org>, "Casey
+ Connolly" <casey.connolly@linaro.org>, "Val Packett" <val@packett.cool>,
+ "Daniel Lezcano" <daniel.lezcano@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v3 1/5] iio: adc: qcom-spmi-adc5: Add battery thermal
+ channels
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Andy Shevchenko" <andriy.shevchenko@intel.com>, "Luca Weiss"
+ <luca.weiss@fairphone.com>
+X-Mailer: aerc 0.22.0-0-gc2f86b7abde3-dirty
+References: <20261113-bat-temp-adc-v3-0-743979a8fd90@fairphone.com>
+ <20261113-bat-temp-adc-v3-1-743979a8fd90@fairphone.com>
+ <avc5rnvIAEmZbyE1@ashevche-desk.local>
+In-Reply-To: <avc5rnvIAEmZbyE1@ashevche-desk.local>
 
-On Fri, Nov 13, 2026 at 10:05:00PM +0300, Alexander Letuchiy wrote:
-> Add the compatible for the watchdog of the MediaTek MT6895 (Dimensity
-> 8000/8100) SoC. Its watchdog registers are the same as on the other
-> supported SoCs.
-> 
-> The TOPRGU reset layout of MT6895 is not known yet, so the entry has no
-> match data and no reset controller is registered.
-> 
-> Signed-off-by: Alexander Letuchiy <asalde.le1@gmail.com>
+Hi Andy,
 
-Applied.
+On Fri Nov 13, 2026 at 5:24 PM CET, Andy Shevchenko wrote:
+> On Fri, Nov 13, 2026 at 04:56:42PM +0100, Luca Weiss wrote:
+>> Add the BAT_THERM channels with millivolt as output, which can then be
+>> used along with information regarding the NTC in the battery, to get the
+>> actual battery temperature.
+>>=20
+>> A static lookup table in the ADC driver won't work since different
+>> devices have different Ohm and Beta values in their battery NTCs, for
+>> example a NTC can be 10kOhm & B=3D3435K.
+>
+> ...
+>
+>> +static int qcom_vadc_scale_hw_calib_therm_volt(
+>
+> This is broken indentation. Was `clang-format` being used to achieve that=
+?
 
-Thanks,
-Guenter
+This is how the rest of the file is formatted, I didn't deviate from
+that.
+
+>
+>> +				const struct u32_fract *prescale,
+>> +				const struct adc5_data *data,
+>> +				u16 adc_code, int *result_uv)
+>
+> result_uV
+
+As Sashiko pointed out, this is labelled wrong, the result is millivolt.
+
+The rest of the driver consistently uses "mv" for that, should I deviate
+and use result_mV?
+
+>
+>> +{
+>> +	*result_uv =3D qcom_vadc_scale_code_voltage_factor(adc_code,
+>> +				prescale, data, 1000);
+>
+> 1000 is odd, can you use something from units.h or combination of those
+> to show what this multiplier is for?
+
+This is converting microvolt to millivolt.
+
+Shall I use "(MICRO / MILLI)" as used in plenty other drivers? Two
+drivers in the tree also have "#define MILLI_TO_MICRO 1000"
+
+Regards
+Luca
+
+>
+>> +	return 0;
+>> +}
+
+
