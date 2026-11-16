@@ -1,64 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.39.219.105
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794831270;
-	b=ZpxfmODPc1yNdImqqwFkDXUlSZWHycPfA9JYZHWflxVwHZra7oNRSILbrl9gYtCW/WXV
-	 X7Bu5m2eZUC95FI8A2He87zKYPx8k7MOH19meAjPuQnqJmkkikPe2rff4vVPNWNLmE3Ax
-	 oLOEXxAXFepsmmZb093jqeOciI8U1b2g+kbQWNckIrEPs8wg931cnERV0zg2QZvtGD8oe
-	 MtNO6R5l+JlhrYhUkGUb2MATxw3b2ACS9VgvLaJHIin0fKIne+f1PUNUdGz+xgtyLe5GI
-	 8REzzI2uLY8ZbMpaJt05OTE8mzfrOpm6zxgRXckEZov4DAwRVzPrE76ZM75eCbljIBQ==
+	t=1794834937;
+	b=kRm1MSSyITWqxPxW2bnq3SI3qsU6nJnCdGMNbkejgsUEalbHfqQ1smmZNObtt9Odnjk2
+	 Paw3A9f6dMkREjyMhFDQZGo61/TVtoZ7BrpaHJxb6nx5RM5Q+8CnAXI94jl6BLLtqARJF
+	 EosqArrhiAkx1nU5NQbzU32ohLCAuvfmOgBXYZqTtZUKJIASn/HkQhBYdRfOQugkSqSvH
+	 BZdPsokYbbtHp4YLWPqUcqNr3KrdDCH7hCrRiiVTg+lCAavN5q7odKi5uL8qYjBAeNv8B
+	 MQ3NVTmpYti46Jpbtwm2WmY5Buws/cu3GLlJi2easTgCB21q20ua5WBiUarpX4Mas2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794831270;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Xn1i3YnRkDlooHuSD1NNSSzodVAxCfUHp6XrUWpozOA=;
-	b=IyoJsCJCvtocEJuWuPNS6Z+vNWzmAxySmSUi8wRa2PCMQDUVmdV6/QfOM/CaL+xIxLPp
-	 Pe3JLThwEB4K/CU5DZ+algDiTH+cHB/cHoRMrahl7y8LEkZIcFwJJOhTyySIU3+AJAUfu
-	 zxSsbCiSRgDIcOO6dFypuKdh4FBUA1OH3ulKy6HiAffP2t/43Ar2tcPWTwJnHWL2Q2N2f
-	 Ttj1/Taun0JIT0r2rCLLOaVEtv+i1SHh8FDqDohLdWJ9pW8Amk0Y2e0k7AIwU9uJx+3uD
-	 y9Ouo/Dx8/4fj1avNijnWpg3H5U3iHknLBW5IKA4CkMYm4VGw2HNVpUYE3PwwALc4QA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794834937;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=qv0E9umeW5iq8XQGTrmgEL6yTVV22eJdaaUMd3VC/yE=;
+	b=eOhPl+ryIv+AYhDnKw3yosZwq43XVHYXjvpLfsxI5ANceIVSLjEN1+8MQiq/U/DW/6xt
+	 JkVeM2PgBMiS7tePRuzp+sD7fhl0f4Y5CGJp6fHWJ7AIJhgeefWHc4V2gYbQ+95qeISlP
+	 JutRQgtw0J6tvMDZxDx4LzX+c/wYvzhfS9tfdbuMnxDWpNZga43707+kLpU0xGGEKYZvp
+	 s6VZ6Pg+muawnfrxzgfytfALnk0787ELu066Z+LDuUf8RZuvkthbzz/AsAPEuumv7PtyG
+	 rE9utu+Go/XASoS9gytlMrwC5pqN7ljOTLnPmta2tqKNP4owjCNMBunGkv7YdHiJeHg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="KIm50iQ/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=kaechele.ca;
+	spf=pass smtp.mailfrom=kaechele.ca;
+	dkim=pass header.d=kaechele.ca header.i=@kaechele.ca header.a=rsa-sha256 header.s=201907 header.b=AWSy6z8W;
+	arc=none smtp.remote-ip=54.39.219.105
+Received: from mail.kaechele.ca (mail.kaechele.ca [54.39.219.105])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6328A606A31C;
-	Mon, 16 Nov 2026 12:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A27606A32C;
+	Mon, 16 Nov 2026 13:15:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17A27606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaechele.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaechele.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KIm50iQ/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73991F000C6;
-	Mon, 16 Nov 2026 12:14:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794831270;
-	bh=Xn1i3YnRkDlooHuSD1NNSSzodVAxCfUHp6XrUWpozOA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KIm50iQ/adAvkjf6peIijG/2vh984qmxf9dwhTBLew3nTx0Om6CadhLy96Bx+X5IE
-	 wlrS90PvzDhaVba5SucbE2OYb36jax4bZ47GK/qvZz2cssjpevzK+XnVdBg2fPTsHI
-	 iumPd2qooRm0CIzMrmGz/GAFYV7sRe7zeIT13kvKz77iOkgz+H1l/cJOFpLZLJ4oS3
-	 jvMngguK3FD4r8fP0tIngANPJ60GSldBwSg5AOH1BlhBo1b5/E2Guafwmj0tVsxNEJ
-	 HGclFUizCNNxhHJGYzfj8v4yDk0NXvkATJGkl3expuv7buN9kbDnRcuSGEPPipZMkY
-	 1bMT8JxIrGJ1A==
-Date: Mon, 16 Nov 2026 13:14:20 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Alexander Letuchiy <asalde.le1@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Mattijs Korpershoek <mkorpershoek@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, linux-serial@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-input@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 6/9] dt-bindings: input: mediatek,mt6779-keypad: Add
- compatible for MT6895
-Message-ID: <20261116-real-ginger-raptor-0e6eea@quoll>
-References: <20261113-initial-mt6895-v2-0-4ab0aa9fa391@gmail.com>
- <20261113-initial-mt6895-v2-6-4ab0aa9fa391@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=kaechele.ca header.i=@kaechele.ca header.a=rsa-sha256 header.s=201907 header.b=AWSy6z8W
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFB0035D6F5;
+	Mon, 16 Nov 2026 08:15:25 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaechele.ca; s=201907;
+	t=1794834928; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=qv0E9umeW5iq8XQGTrmgEL6yTVV22eJdaaUMd3VC/yE=;
+	b=AWSy6z8W3uvYmeAuapaWKYflN50ECGqbmimuMrILuDvQmoWKqOAOB80/0kVY/H9Ib1Dwkr
+	L+hUgnzzYoTPT5Rl8JC1mUIpY2dq2Iqkw2MSOaC4R/PrmrSExTxWK9pSaE1NDwpbjjt3e/
+	qkpNZQ+m/TNBbLHzCFRCzwclxRSq9Ho=
+Message-ID: <a1f4322b-0564-44cb-a548-ff87d2b19595@kaechele.ca>
+Date: Mon, 16 Nov 2026 08:15:23 -0500
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -68,22 +53,66 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261113-initial-mt6895-v2-6-4ab0aa9fa391@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-next 1/6] wifi: ath10k: usb: fix group key
+ installation
+To: Tomas Paukrt <tomaspaukrt@email.cz>, David Heidelberg <david@ixit.cz>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ phone-devel <phone-devel@vger.kernel.org>, jjohnson@kernel.org
+References: <20261114090737.64348-1-tomaspaukrt@email.cz>
+ <20261114090737.64348-2-tomaspaukrt@email.cz>
+ <7e36cb20-7752-4778-b068-56d41819f670@kaechele.ca>
+ <dfae62c8-6fd0-40da-bc4c-65d4d6594cd0@ixit.cz>
+ <5Nd.ZqDG.68CtbqKyNmY.1g{Phm@seznam.cz>
+Content-Language: en-US
+From: Felix Kaechele <felix@kaechele.ca>
+In-Reply-To: <5Nd.ZqDG.68CtbqKyNmY.1g{Phm@seznam.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Nov 13, 2026 at 10:05:02PM +0300, Alexander Letuchiy wrote:
-> Add a compatible string for the keypad of the MediaTek MT6895 (Dimensity
-> 8000/8100) SoC. Its registers are the same as on MT6779, so it works
-> with the existing driver through the mediatek,mt6779-keypad fallback.
+I can confirm that the fix from this patch (without the bus check) also 
+fixes the group rekeying issue on QCA9379-3 (SDIO, firmware 
+WLAN.NPL.1.6-00163-QCANPLSWPZ-1) without David's patch applied.
+
+Regards,
+Felix
+
+On 2026-11-15 06:43, Tomas Paukrt wrote:
+>> Hello.
+>>
+>> I'm pretty sure it's not related to the USB bus, but related to the device firmware.
+>>
+>> Check what firmware you use, add the `.no_pairwise_key_del_ind = true` and
+>> report if that solves your issue, I'm happy to send v2 with your usecase covered.
+>>
+>> David
+>>
+>> P.S. Felix, thanks for Ccing me here :)
 > 
-> Signed-off-by: Alexander Letuchiy <asalde.le1@gmail.com>
-> ---
->  Documentation/devicetree/bindings/input/mediatek,mt6779-keypad.yaml | 1 +
->  1 file changed, 1 insertion(+)
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-
-Best regards,
-Krzysztof
+> Hi David and Felix,
+> 
+> I tested David's patch with .no_pairwise_key_del_ind = true on QCA9377-7
+> against my patch, 30 minutes of disconnect/reconnect cycles each.
+> 
+> You are right that the firmware sends no HTT security indication for
+> the pairwise key removal, and David's patch fixes that part here too.
+> 
+> But QCA9377-7 has a second problem: the indication for the group key
+> installation comes late, from 47 ms up to 4 s. With David's patch 64
+> of 184 group key installations (35%) still timed out and mac80211
+> deauthenticated.
+> 
+> WMI_VDEV_INSTALL_KEY_COMPLETE_EVENTID arrives within 1 ms for every
+> installation and removal. Completing install_key_done on it gave no
+> timeout in 211 connections.
+> 
+> So David's patch alone does not fix QCA9377-7. I agree the issue is
+> not USB specific. Without the bus check, the wait would be completed
+> on the WMI event for all WMI-TLV targets. Could you check if my patch
+> without the bus check also works on WCN3990 and QCA9379 SDIO?
+> 
+> Thanks
+> 
+> Tomas
 
