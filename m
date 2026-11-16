@@ -1,79 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794844258;
-	b=Jbm38bH21a7XK+PDLjDT7o9JZVWbk/yWV1H1TOL8nNLm4/ZAK1xnUjfRDrYlzmbEk0BA
-	 kRx6rteW4rzTE6m8V2t6uGoI4CBmJPRnx2yMDENpJ3NTgAjtMzO2ShI/YKTfJKRC2g9B8
-	 mN+1/FfhTS0Qry9y3aFYMlDm5Cy0MTXq4/vWvF8plUgZ2KVpICIlsXCM6MljZunFl/TCu
-	 WKRftG1z7uNJv5soZfUIdZU+EfebTI0UlQXw0S2NbUGUixz34mehb6wPgmDnVKJvxY/Cx
-	 QzxP+ElIYpDQUvgh4MFpKykDEz/XYLADCS6Qb39eeSx3KJTR5Yex2wvcztPGNbtpfrA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794844258;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=6ssSK9Tt4+XhArVjaEIM5RbRLyrHDd3C/uRLjdFVntw=;
-	b=roFp0roJJLWfQH1msMmw1kP6iU7HhMMbO/u85CFKyA2RyMAzYY1X9/vIOZr950rZiQAs
-	 MF2LU1PJL4sj1ZKrLBGpMdKQyMPCQI4dapn+ePjGWLQDsW9C8SxFksjYMnZ6nxuVrDSDk
-	 Hp4JU8KQYmT88g0BbSuaZka7caT1iOTux02guBmVbIgcmjlZTzNtliF+n81w8iZAawFqH
-	 98Lrc1IdBIiRU7auy0q+62zaqreGO8jRLp1NbIMVVEyi7OXPJsOdWXDBwZSm9V+PIfxfX
-	 YxYqxcxGsDDeJkydroq3uhUq3kQHbOXynTz7gMJPDgiQlAnWceNDcIaI8i1ZMlnUTdA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="dv56/JHC";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794847866;
+	b=uMl4g/6GPmEgNrtGALQK5+VKMQ+rVg8BD0eD/0W7562tSWfv/db7QsBq5dK8l9IsVcCO
+	 P2jWgDmgN9/VkiBqG9Mt2vE4JagjwBwMIRLczrUAo5A8QGeGnDQMM6PrMkN1GXDm0TOY/
+	 qP3AwZV2riiB64dSzQIFJBWsWtns5ftI0l1eBRnEDG5RwKyKyNpw8GGVRAbgpk+ysB12i
+	 BF+A5M05zccGNk1lJI8L6k2xwyLHgDE+Sq5J/ju5M7TNn2hw75Cla+y+W/vAg65Awc0ky
+	 N89RgI9cHxiXIX3Wzuhrowpp10FI9L88FQKWP942SuIfDq8bVhuv32xnNcE7YdOpoVw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794847866;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=niX0/7kWjmLy1DxMm+YmwH5Ftvq6nAr9bzoEqjR0tSE=;
+	b=1tvD4W3iGJeFyrM6uQAN1vf7zJikJqMIqK1pUhYdppmXPEtIjn/LXSgqaBoQATQJjfmt
+	 7CaQHO/yqw9mUC7czJ1IuiUX+SrfB90+HSVnbto1TEQ6VtTPCmzD4jduoZJ6PCwbb+N8Y
+	 9Hvah13NRYVX6wqkrVO3LvFkLHqjjXOSVK5DwjFcedF5z+33rn6aCHzACr5DT1xyhqRtw
+	 xhGIDzlWylK1V1kMO4iZQmiQL9xMoxJH/I6BEMRSkq1jfB/Y2XGDU4UHKvkdDZjfQoO/t
+	 L0rxR17gfVTRl4AWefJgom3THEHS8kC4EoHRZ0cAmI8H0kbb1Hts/sQb0KkHQsW4u9A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="kwFoi3/9";
+	arc=none smtp.remote-ip=198.175.65.10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E15D606A330;
-	Mon, 16 Nov 2026 15:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C90606A322;
+	Mon, 16 Nov 2026 16:51:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4C90606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dv56/JHC
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794844258;
-	b=N02Yxw7vTZxVa7zYPguXGm1EYi97+TdQh6MJQeCdddqBJLd0UxHPgNdFncw9a8zc/xFi
-	 eu5zzLWJ5oOxhfZgitZ1Qq2Jg7L14eVuxwHHhxEkbmUBOIDyl1gKD8TVc6vVRSHLOJrNt
-	 sozNLmcKL+/bqqwQdQ/mfdde1dWAKxsU+shIVahTIk53QE8zcWsVyi0jBXLtx3fxemK2y
-	 x/iHnz5XSLnM9gR9n+wM7K5xcDjYQoYRhVt22LFsMaXTLK4qHIYzP+zSK3mubSZl68pMp
-	 T0yKIsDz5ltA9bsJEpb4wL5KpD6ehjUvb//ZCIo5pbMEAkpAegoczdXvnrqPD9VRkfg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794844258;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=6ssSK9Tt4+XhArVjaEIM5RbRLyrHDd3C/uRLjdFVntw=;
-	b=ByRKkD8udnKTLf73OS70CK6XBYy/esFHOMFXzK4O/nz1bCEvcm73lLt8ahVieB0v27CA
-	 dYPlGjqFIkDlKnIuOx1p2MqNA36Kr0+6av5X0U/Cqrvnrsy+uFcb0N2Pk6/uvQ0sDTWEW
-	 slqHUUMwDNDg0z36ONfveQl9rLSJeXk8CAv//teVmDzhmeSoVrJ+lhF+QUnr3KlI+dWda
-	 VzI5EoMfCgGz5Wz/NsomZNVyQVNsynrhfsaZVpk++m8iA32Q/79+0HqanqkldEXG4GuZD
-	 2JXL5eSSpRGHbsF+U/sm/7lulRKlxClSduSb/vGb4seIIcn2uZ+svkuh1MjBNVD69Gg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 091EC1F000C9;
-	Mon, 16 Nov 2026 15:50:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794844258;
-	bh=6ssSK9Tt4+XhArVjaEIM5RbRLyrHDd3C/uRLjdFVntw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=dv56/JHCEGIxccDheu8lZjTCr941yzhelUX8GDJyctE0JMJJ/Hn2TEMckUkRtEY20
-	 F7G7Nlh8gZtShAcxUR9Q4Sn7cj06HnMXZZxsFRLMdzeb41LJGbZY6C3vRMGjlGbQsk
-	 446gnf36jkGaSniHozMYsgxFyip2jpnn868x4h/T9V0mJdLgDa9rdqnUJLmgNxIm63
-	 9CHjM+w4bgU/c9psJhCxXhU+NRkJK6ij7HWalY5qXfiNRRCtKCEXPPoEpzNXRYLc//
-	 qlszKF7IEHt8D6FyR8SF+FSqVjo6WdeCO/kBbItvV0otRtxXJBsdLK0j26M+avfzxg
-	 YllQfaCRTEDEg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8D4EC4A4CC;
-	Mon, 16 Nov 2026 15:50:56 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 16 Nov 2026 16:50:43 +0100
-Subject: [PATCH v3 1/3] dt-bindings: remoteproc: qcom,msm8996-mss-pil:
- Document google,require-socinfo
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kwFoi3/9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794847866; x=1826383866;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=toMRuYLNs5jiuk2i/De6hLDe9tSlhsjDdzmsxSWix6E=;
+  b=kwFoi3/9h0RPo4joQTAVXBoc4WBNbkZXU0mTuaoWp8Sl/novtlTTx21B
+   W0C89lMfO5DHU78VqTWRkXBiME+Z6nQHQrVyw6MG7/S1pBJI/0op87UtP
+   pnA8F16dlwiOspovQfpUYBjr0rEwb+E1+7PBfqDFOp1VSQEWSzS+NGzy1
+   SoNkbfw6a9uS+LjvqbxdQo/pgyChayIRml8Jz26Eh4aW2eriCr3znnkvP
+   sBYBCqLoGT1u4RqJODrGCqr21NQcgOiMVH8IvrJhKVe/HoMiAVCDaTK5f
+   yrT7gHb2qg+l4V8sfNXwg7z8XILSq6+7oTIKonVYjRFwJFlqrOkW5hxpM
+   w==;
+X-CSE-ConnectionGUID: 7eF3vCsSSTCV1d7WEaPREw==
+X-CSE-MsgGUID: sZ0HgaggSH6JTAQMXcedMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11968"; a="3500091"
+X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
+   d="scan'208";a="3500091"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 08:51:05 -0800
+X-CSE-ConnectionGUID: wAcIHMRTTfyy8TESlIw1MQ==
+X-CSE-MsgGUID: /5Xe1gOQRLyo46MHLbBr7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
+   d="scan'208";a="9762467"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.90])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 08:50:59 -0800
+Date: Mon, 16 Nov 2026 18:50:57 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Jens Reidel <adrian@mainlining.org>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Val Packett <val@packett.cool>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] iio: adc: qcom-spmi-adc5: Add battery thermal
+ channels
+Message-ID: <avs0cThxYLWyXE-X@ashevche-desk.local>
+References: <20261113-bat-temp-adc-v3-0-743979a8fd90@fairphone.com>
+ <20261113-bat-temp-adc-v3-1-743979a8fd90@fairphone.com>
+ <avc5rnvIAEmZbyE1@ashevche-desk.local>
+ <DMWR1CJJRHMF.33YRRRDXPMBDW@fairphone.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,93 +101,64 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261116-modemsmem-v3-1-24ebc7ed6eb9@ixit.cz>
-References: <20261116-modemsmem-v3-0-24ebc7ed6eb9@ixit.cz>
-In-Reply-To: <20261116-modemsmem-v3-0-24ebc7ed6eb9@ixit.cz>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Sibi Sankar <sibi.sankar@oss.qualcomm.com>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Miro Mraz <mraz.miro@seznam.cz>
-Cc: Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org, 
- linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2146; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=dCs1MzKn71TC5kAKQTc11AV3zsTZPlHuU7+NyOvVTSc=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq+yZfrxNRyDKy8SjJi+RVA+BwJBXF+Ey6BInnV
- LyRqxF37M6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCavsmXwAKCRBgAj/E00kg
- cuFtEACIgsmFbpk7AQG8NTu1bJUZ9BhYkOBOYhqOMUgMjmblG8GfVQ2UElxxD/oGJVD0pzkqLUs
- t/NZWd/+xQe7p4F6LrXTO7b7+8ypiMfeKoUh4RCcOBQ7k4oXkvYY62k/hQ64xJALH8NAQOCSw87
- en21mrrg4CL93CC9gdUUY8ic/pDJlvXCT97OJV9CJytcE1uFsfBC5kqKkD9kYyHcwnOaXuV5q4h
- BxW5pJsemtayIglZazZkwQ7C28LMSdgMSz2ErKBrj6cHl42IHtB8wVd48d/3klBq/5C6E72VOso
- ElVYxVWiz4XNV0wbSyA6b0wPTbb8tqXzBztYENFEftLz3nkvJ5bB8GeJ+3tu9aIKxnN4dvYhdHf
- eha0CvnZdD4YCPU2pp5I1IPKxyBQJsZgeBCkh6fr0e177bloUO5LmXvAOxgyYWxQGAVdF2odQLo
- ytWbP7p4Wz/clCgk6JzytRfghl19AbsXm1rO+zUGO/MHb4ZXfyouOhIpMDNBdRy3Lgh88tr9JLs
- n4RSiZzXf5H1jfW7sz3MxSHV1v0eFkbRrgAjMcrpU2H+6O16yMnTKYrzSVfZ8kCHP0bwI91P046
- ZzAyNod1BH4h0vEtaGpkFBd8GsYHMaDBTZA6gksq494sVvS8FCf+6ffG88VBXEPq3b18uaEvfHO
- 0rmQkbX4nUfxCAw==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DMWR1CJJRHMF.33YRRRDXPMBDW@fairphone.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: David Heidelberg <david@ixit.cz>
+On Mon, Nov 16, 2026 at 04:43:49PM +0100, Luca Weiss wrote:
+> On Fri Nov 13, 2026 at 5:24 PM CET, Andy Shevchenko wrote:
+> > On Fri, Nov 13, 2026 at 04:56:42PM +0100, Luca Weiss wrote:
 
-The modem firmware on Google Pixel boards (Pixel 3 through Pixel 5a)
-expects the application processor to publish the SoC platform type,
-subtype and revision in the first vendor-reserved SMEM item before the
-modem is started. Represent that requirement as a boolean property on
-the MSS remoteproc node so the MSS driver can publish the data before
-booting the modem, instead of carrying a separate node and driver for
-it.
+...
 
-This patch was written with assistance from a large language model.
+> >> +static int qcom_vadc_scale_hw_calib_therm_volt(
+> >
+> > This is broken indentation. Was `clang-format` being used to achieve that?
+> 
+> This is how the rest of the file is formatted, I didn't deviate from
+> that.
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- .../devicetree/bindings/remoteproc/qcom,msm8996-mss-pil.yaml     | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Oh, I see, that's unfortunate.
 
-diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,msm8996-mss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,msm8996-mss-pil.yaml
-index 4a1b439f985e3..ecc6782a92245 100644
---- a/Documentation/devicetree/bindings/remoteproc/qcom,msm8996-mss-pil.yaml
-+++ b/Documentation/devicetree/bindings/remoteproc/qcom,msm8996-mss-pil.yaml
-@@ -91,16 +91,25 @@ properties:
-       - const: mss_restart
-       - const: pdc_reset # only valid for qcom,sdm845-mss-pil
-     minItems: 1
- 
-   qcom,qmp:
-     $ref: /schemas/types.yaml#/definitions/phandle
-     description: Reference to the AOSS side-channel message RAM.
- 
-+  google,require-socinfo:
-+    type: boolean
-+    description:
-+      The modem firmware on Google Pixel boards (Pixel 3 through Pixel 5a)
-+      expects the application processor to publish the SoC platform type,
-+      subtype and revision in the first vendor-reserved SMEM item (item 134)
-+      before the modem is started. When present, the MSS driver fills that
-+      item from the socinfo SMEM data before booting the modem.
-+
-   qcom,smem-states:
-     $ref: /schemas/types.yaml#/definitions/phandle-array
-     description: States used by the AP to signal the Hexagon core
-     items:
-       - description: Stop modem
-         items:
-           - description: Phandle to the Shared Memory Point 2 Point or Shared
-               Memory Manager device handling the communication with a remote
+> >> +				const struct u32_fract *prescale,
+> >> +				const struct adc5_data *data,
+> >> +				u16 adc_code, int *result_uv)
+> >
+> > result_uV
+> 
+> As Sashiko pointed out, this is labelled wrong, the result is millivolt.
+> 
+> The rest of the driver consistently uses "mv" for that, should I deviate
+> and use result_mV?
+
+In that case _mV, yes.
+
+> >
+> >> +{
+> >> +	*result_uv = qcom_vadc_scale_code_voltage_factor(adc_code,
+> >> +				prescale, data, 1000);
+> >
+> > 1000 is odd, can you use something from units.h or combination of those
+> > to show what this multiplier is for?
+> 
+> This is converting microvolt to millivolt.
+> 
+> Shall I use "(MICRO / MILLI)" as used in plenty other drivers?
+
+Yes.
+
+> Two drivers in the tree also have "#define MILLI_TO_MICRO 1000"
+
+They should rather name it explicit with VOLTS inside. So, not a good
+example.
+
+> >> +	return 0;
+> >> +}
 
 -- 
-2.55.0
+With Best Regards,
+Andy Shevchenko
 
 
