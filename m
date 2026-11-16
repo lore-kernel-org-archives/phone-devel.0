@@ -1,49 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.39.219.105
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=44.202.169.37
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794834937;
-	b=kRm1MSSyITWqxPxW2bnq3SI3qsU6nJnCdGMNbkejgsUEalbHfqQ1smmZNObtt9Odnjk2
-	 Paw3A9f6dMkREjyMhFDQZGo61/TVtoZ7BrpaHJxb6nx5RM5Q+8CnAXI94jl6BLLtqARJF
-	 EosqArrhiAkx1nU5NQbzU32ohLCAuvfmOgBXYZqTtZUKJIASn/HkQhBYdRfOQugkSqSvH
-	 BZdPsokYbbtHp4YLWPqUcqNr3KrdDCH7hCrRiiVTg+lCAavN5q7odKi5uL8qYjBAeNv8B
-	 MQ3NVTmpYti46Jpbtwm2WmY5Buws/cu3GLlJi2easTgCB21q20ua5WBiUarpX4Mas2g==
+	t=1794839130;
+	b=m+xtKJXIk07CQYa60hB3cg/lQschrcrKE7Yd7LtNSr2CuWczZcuLgSIriymV7tGY+dRL
+	 GFspjLH1W7IOoTV3CYI0mRZ5wmPPgV4Cx/VWILm8V8uQNWEUsP0R/tf7iEmkqNaRvu7J5
+	 4o4JAHLIsjCnbosSQF190CyydLWS7LyWECtE1J3s3Du8Rux6LO75/SiILoE7mmjnH5ub0
+	 yvH/GndENlTsI7QExl4gZDvHVrMxFDyFl3BTPBTpHY1mmMNW6FPyfV0d1IW/aRfYeqchQ
+	 rXP3F+wB5ZIDf4RQyBJt+tGoFMnrPs8Sl6zf0EtS6YZ2AfOpuf19x9XlrwU1VYz+OXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794834937;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=qv0E9umeW5iq8XQGTrmgEL6yTVV22eJdaaUMd3VC/yE=;
-	b=eOhPl+ryIv+AYhDnKw3yosZwq43XVHYXjvpLfsxI5ANceIVSLjEN1+8MQiq/U/DW/6xt
-	 JkVeM2PgBMiS7tePRuzp+sD7fhl0f4Y5CGJp6fHWJ7AIJhgeefWHc4V2gYbQ+95qeISlP
-	 JutRQgtw0J6tvMDZxDx4LzX+c/wYvzhfS9tfdbuMnxDWpNZga43707+kLpU0xGGEKYZvp
-	 s6VZ6Pg+muawnfrxzgfytfALnk0787ELu066Z+LDuUf8RZuvkthbzz/AsAPEuumv7PtyG
-	 rE9utu+Go/XASoS9gytlMrwC5pqN7ljOTLnPmta2tqKNP4owjCNMBunGkv7YdHiJeHg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794839130;
+	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:
+	 X-Source-L:X-Exim-ID:X-Source:X-Source-Args:X-Source-Dir:
+	 X-Source-Sender:X-Source-Auth:X-Email-Count:X-Org:X-Source-Cap:
+	 X-Local-Domain:X-CMAE-Envelope;
+	bh=bnKc3IJSrt3IePIy9TsoCqbRk4dzHod7cZj0q0eSHH8=;
+	b=Dv6TbjpIt5ZfAM9Qd3lvpb8ErOjk34tocVeOwmJxBYTgLV/RWg0CGPcP2IocJ7B9c+Y1
+	 C7HPejnz4JxScyxvLwexTajWpGqN9rglkoioG114J8JzeFJQT7oGHrq6yTKnicjY+HItF
+	 ml8tdK/tx4Paat1x8sWTkNIY8QNiiHfNOAwTuTFaI5vPGGRczx47YaAdT4BXSC9yHdYm6
+	 zEobzQ+YHNvsibgvLOLzVY9E8qNQUnTPF5SZZIW6fgSGTIiYXdm/ImoSy4jJvEf1dxWaO
+	 y4QEFRLUaM+/m4SJM4ElAaiteIkLXQQo/TIAw6PvLYgFyiDbcBrEzX2goRecsSfg90A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=kaechele.ca;
-	spf=pass smtp.mailfrom=kaechele.ca;
-	dkim=pass header.d=kaechele.ca header.i=@kaechele.ca header.a=rsa-sha256 header.s=201907 header.b=AWSy6z8W;
-	arc=none smtp.remote-ip=54.39.219.105
-Received: from mail.kaechele.ca (mail.kaechele.ca [54.39.219.105])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=none header.from=roeck-us.net;
+	spf=fail smtp.mailfrom=roeck-us.net;
+	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=0sk6mFXH;
+	arc=none smtp.remote-ip=44.202.169.37
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A27606A32C;
-	Mon, 16 Nov 2026 13:15:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17A27606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaechele.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaechele.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3427A606A32F
+	for <phone-devel@vger.kernel.org>; Mon, 16 Nov 2026 14:25:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3427A606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=kaechele.ca header.i=@kaechele.ca header.a=rsa-sha256 header.s=201907 header.b=AWSy6z8W
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFB0035D6F5;
-	Mon, 16 Nov 2026 08:15:25 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaechele.ca; s=201907;
-	t=1794834928; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=qv0E9umeW5iq8XQGTrmgEL6yTVV22eJdaaUMd3VC/yE=;
-	b=AWSy6z8W3uvYmeAuapaWKYflN50ECGqbmimuMrILuDvQmoWKqOAOB80/0kVY/H9Ib1Dwkr
-	L+hUgnzzYoTPT5Rl8JC1mUIpY2dq2Iqkw2MSOaC4R/PrmrSExTxWK9pSaE1NDwpbjjt3e/
-	qkpNZQ+m/TNBbLHzCFRCzwclxRSq9Ho=
-Message-ID: <a1f4322b-0564-44cb-a548-ff87d2b19595@kaechele.ca>
-Date: Mon, 16 Nov 2026 08:15:23 -0500
+	dkim=pass (2048-bit key) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=0sk6mFXH
+Received: from eig-obgw-5002b.ext.cloudfilter.net ([10.0.29.226])
+	by cmsmtp with ESMTPS
+	id SvNUx5hbqJFmFSxeDx9vie; Mon, 16 Nov 2026 14:25:29 +0000
+Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
+	by cmsmtp with ESMTPS
+	id SxeBx4a4Qb2qJSxeCxsd4s; Mon, 16 Nov 2026 14:25:28 +0000
+X-Authority-Analysis: v=2.4 cv=A7tsP7WG c=1 sm=1 tr=0 ts=6afb1259
+ a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=M0FbrtG7MMAA:10 a=pGLkceISAAAA:8
+ a=EUspDBNiAAAA:8 a=gUJwKisUJcuna-pPN7wA:9 a=CjuIK1q_8ugA:10
+ a=KPbNTLLc3YvdawN95zVk:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
+	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
+	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bnKc3IJSrt3IePIy9TsoCqbRk4dzHod7cZj0q0eSHH8=; b=0sk6mFXHdazpnAR1pwYEQWKC6I
+	X1E8ekQhO0z3VayxRm1NfHDKZPYKtSjVyBbOQ6BXgsKnbsaQijZg9Njwvi72ApNtUv8cSMNdGc4Vd
+	QyBkQyIPDzLAZFyuqMD232Y8huOEnhHlwlN1r/1BLq79zhy1fepUalqTHRZt7AQpgRJ/hNNVCJ4/W
+	+wjozLlctGicx/oK/1NIvMu3BrlohLbRxPWhx6Kl99HdJQN9Ph/a5KSW52HJ5bvDy+eWL6YxSlBW3
+	Pv6/DkmHUpcXaGr7B2cKNOjA017mfcKr12cerSqK+iWNmuAk3le8gG/O8AgxGgOr0CZNuR51nIbhz
+	RUC4xEhA==;
+Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:54554 helo=server.roeck-us.net)
+	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <linux@roeck-us.net>)
+	id 1xSxe8-00000003nQw-0sPf;
+	Mon, 16 Nov 2026 19:55:24 +0530
+Date: Mon, 16 Nov 2026 06:25:23 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Alexander Letuchiy <asalde.le1@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Mattijs Korpershoek <mkorpershoek@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-serial@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-input@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 3/9] dt-bindings: watchdog: mediatek,mtk-wdt: Add
+ compatible for MT6895
+Message-ID: <20ace44c-2385-4561-9e69-c6c7bd3a3fb6@roeck-us.net>
+References: <20261113-initial-mt6895-v2-0-4ab0aa9fa391@gmail.com>
+ <20261113-initial-mt6895-v2-3-4ab0aa9fa391@gmail.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -53,66 +101,40 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ath-next 1/6] wifi: ath10k: usb: fix group key
- installation
-To: Tomas Paukrt <tomaspaukrt@email.cz>, David Heidelberg <david@ixit.cz>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- phone-devel <phone-devel@vger.kernel.org>, jjohnson@kernel.org
-References: <20261114090737.64348-1-tomaspaukrt@email.cz>
- <20261114090737.64348-2-tomaspaukrt@email.cz>
- <7e36cb20-7752-4778-b068-56d41819f670@kaechele.ca>
- <dfae62c8-6fd0-40da-bc4c-65d4d6594cd0@ixit.cz>
- <5Nd.ZqDG.68CtbqKyNmY.1g{Phm@seznam.cz>
-Content-Language: en-US
-From: Felix Kaechele <felix@kaechele.ca>
-In-Reply-To: <5Nd.ZqDG.68CtbqKyNmY.1g{Phm@seznam.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113-initial-mt6895-v2-3-4ab0aa9fa391@gmail.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - roeck-us.net
+X-BWhitelist: no
+X-Source-IP: 108.223.40.66
+X-Source-L: No
+X-Exim-ID: 1xSxe8-00000003nQw-0sPf
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (server.roeck-us.net) [108.223.40.66]:54554
+X-Source-Auth: guenter@roeck-us.net
+X-Email-Count: 25
+X-Org: HG=direseller_whb_net_legacy;ORG=directi;
+X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfNef9LCgWgc2Oqe1u0TUbp1u801K0L/LsNbW7+b25O1XF0JMmDcVxSeObUuiV+YLmIZVi6xVd0HSDoteDKme8VJZN48uflea5NVv5ZRBM8RtCJy4Mn8f
+ zv0rNfmoGpBatlVsndcPItAUufgrpXkMcqYf32OfO3GDTJILhR1dWWmJpPSylsJfXAu0OQGCxUqWLzoWGVXtU8Ky/yhytNnR/0xzIW0rVeS36pbU/6OzUHlq
 
-I can confirm that the fix from this patch (without the bus check) also 
-fixes the group rekeying issue on QCA9379-3 (SDIO, firmware 
-WLAN.NPL.1.6-00163-QCANPLSWPZ-1) without David's patch applied.
+On Fri, Nov 13, 2026 at 10:04:59PM +0300, Alexander Letuchiy wrote:
+> Add a compatible string for the watchdog of the MediaTek MT6895
+> (Dimensity 8000/8100) SoC. It does not fall back to mediatek,mt6589-wdt,
+> which implies the MT6589 TOPRGU reset layout, as the MT6895 one is not
+> known yet.
+> 
+> Signed-off-by: Alexander Letuchiy <asalde.le1@gmail.com>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Regards,
-Felix
+Applied.
 
-On 2026-11-15 06:43, Tomas Paukrt wrote:
->> Hello.
->>
->> I'm pretty sure it's not related to the USB bus, but related to the device firmware.
->>
->> Check what firmware you use, add the `.no_pairwise_key_del_ind = true` and
->> report if that solves your issue, I'm happy to send v2 with your usecase covered.
->>
->> David
->>
->> P.S. Felix, thanks for Ccing me here :)
-> 
-> Hi David and Felix,
-> 
-> I tested David's patch with .no_pairwise_key_del_ind = true on QCA9377-7
-> against my patch, 30 minutes of disconnect/reconnect cycles each.
-> 
-> You are right that the firmware sends no HTT security indication for
-> the pairwise key removal, and David's patch fixes that part here too.
-> 
-> But QCA9377-7 has a second problem: the indication for the group key
-> installation comes late, from 47 ms up to 4 s. With David's patch 64
-> of 184 group key installations (35%) still timed out and mac80211
-> deauthenticated.
-> 
-> WMI_VDEV_INSTALL_KEY_COMPLETE_EVENTID arrives within 1 ms for every
-> installation and removal. Completing install_key_done on it gave no
-> timeout in 211 connections.
-> 
-> So David's patch alone does not fix QCA9377-7. I agree the issue is
-> not USB specific. Without the bus check, the wait would be completed
-> on the WMI event for all WMI-TLV targets. Could you check if my patch
-> without the bus check also works on WCN3990 and QCA9379 SDIO?
-> 
-> Thanks
-> 
-> Tomas
-
+Thanks,
+Guenter
