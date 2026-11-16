@@ -1,97 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=142.132.183.134
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794847866;
-	b=uMl4g/6GPmEgNrtGALQK5+VKMQ+rVg8BD0eD/0W7562tSWfv/db7QsBq5dK8l9IsVcCO
-	 P2jWgDmgN9/VkiBqG9Mt2vE4JagjwBwMIRLczrUAo5A8QGeGnDQMM6PrMkN1GXDm0TOY/
-	 qP3AwZV2riiB64dSzQIFJBWsWtns5ftI0l1eBRnEDG5RwKyKyNpw8GGVRAbgpk+ysB12i
-	 BF+A5M05zccGNk1lJI8L6k2xwyLHgDE+Sq5J/ju5M7TNn2hw75Cla+y+W/vAg65Awc0ky
-	 N89RgI9cHxiXIX3Wzuhrowpp10FI9L88FQKWP942SuIfDq8bVhuv32xnNcE7YdOpoVw==
+	t=1794869435;
+	b=fO//W5EQt5CfvAMG5p8Ivky97DDKpeuyZTuScpntEVi/SKRCLUmkM/qRmkAvwN4qeuZD
+	 EhYhVmz4HGq8FFhJ8uK/nzQeTy4DapV0f8QVueD/lbepJXmQ5a+hjcGGzl7//7g1y4MuS
+	 XLnFj06i8/BTYmCuoW8GEEFTJU5baeI9+q40SeT0stbVdPaCgT59sUt7UOnkT6HQ5GIJi
+	 JpVbbpJLq1qqyiAmRcJqKl9WgsbmE7eh8TaeWSSnjZ2jvG+AsVXCya46CYYs8//lPB4wO
+	 2xHlqhWmQzzns8SQhPbAVe/Ec4ai0+A6O93QxKnexIzBjM3seImtNA6PEU6ZgHJ243A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794847866;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=niX0/7kWjmLy1DxMm+YmwH5Ftvq6nAr9bzoEqjR0tSE=;
-	b=1tvD4W3iGJeFyrM6uQAN1vf7zJikJqMIqK1pUhYdppmXPEtIjn/LXSgqaBoQATQJjfmt
-	 7CaQHO/yqw9mUC7czJ1IuiUX+SrfB90+HSVnbto1TEQ6VtTPCmzD4jduoZJ6PCwbb+N8Y
-	 9Hvah13NRYVX6wqkrVO3LvFkLHqjjXOSVK5DwjFcedF5z+33rn6aCHzACr5DT1xyhqRtw
-	 xhGIDzlWylK1V1kMO4iZQmiQL9xMoxJH/I6BEMRSkq1jfB/Y2XGDU4UHKvkdDZjfQoO/t
-	 L0rxR17gfVTRl4AWefJgom3THEHS8kC4EoHRZ0cAmI8H0kbb1Hts/sQb0KkHQsW4u9A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794869435;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:From:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=FRTZ0UZ+O5UMbm2peSSpDUxiOixTmh4Ad8SIaAVLsT8=;
+	b=Krj2QblP+57w+9GoYtO84R6A/89Q3xVIs8Rg9EWpzFneyl4y7/xxVBKyJ0mXjPmEV5sj
+	 ZzAQdbjOzmPsSIwI2DrDS7meNXNLAuM7n4dXUNaL4YZUKPtpv2q5g5Pf/rJS0Z5tqVBTX
+	 YZOAF8Whnv5SVXa5x4O9sBhOeXdCu69UfX38yMnWDTD5v1sn1yD1y6puW6kpGTA4aocyl
+	 tG3wf95I60DUBI05CG7sl4w4QdsBz3ZCqBfw9VlZPF/kLZqPyKc1MbvvZ+sW6hMSXXHHW
+	 UtkpdJIuznJD8Ii2/cn7gYlETwYUdRTSS2vmSrYZf6sMiw410ABHg/j0p/slEhtc6iQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="kwFoi3/9";
-	arc=none smtp.remote-ip=198.175.65.10
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=erebion.eu;
+	spf=pass smtp.mailfrom=erebion.eu;
+	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=ed25519-sha256 header.s=202508e header.b="Sm77vU/r";
+	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=rsa-sha256 header.s=202508r header.b="NoaC/YnX";
+	arc=none smtp.remote-ip=142.132.183.134
+Received: from erebion.eu (erebion.eu [142.132.183.134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C90606A322;
-	Mon, 16 Nov 2026 16:51:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4C90606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4958606A31C;
+	Mon, 16 Nov 2026 22:50:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4958606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=erebion.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=erebion.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kwFoi3/9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794847866; x=1826383866;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=toMRuYLNs5jiuk2i/De6hLDe9tSlhsjDdzmsxSWix6E=;
-  b=kwFoi3/9h0RPo4joQTAVXBoc4WBNbkZXU0mTuaoWp8Sl/novtlTTx21B
-   W0C89lMfO5DHU78VqTWRkXBiME+Z6nQHQrVyw6MG7/S1pBJI/0op87UtP
-   pnA8F16dlwiOspovQfpUYBjr0rEwb+E1+7PBfqDFOp1VSQEWSzS+NGzy1
-   SoNkbfw6a9uS+LjvqbxdQo/pgyChayIRml8Jz26Eh4aW2eriCr3znnkvP
-   sBYBCqLoGT1u4RqJODrGCqr21NQcgOiMVH8IvrJhKVe/HoMiAVCDaTK5f
-   yrT7gHb2qg+l4V8sfNXwg7z8XILSq6+7oTIKonVYjRFwJFlqrOkW5hxpM
-   w==;
-X-CSE-ConnectionGUID: 7eF3vCsSSTCV1d7WEaPREw==
-X-CSE-MsgGUID: sZ0HgaggSH6JTAQMXcedMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11968"; a="3500091"
-X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
-   d="scan'208";a="3500091"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 08:51:05 -0800
-X-CSE-ConnectionGUID: wAcIHMRTTfyy8TESlIw1MQ==
-X-CSE-MsgGUID: /5Xe1gOQRLyo46MHLbBr7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
-   d="scan'208";a="9762467"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.90])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 08:50:59 -0800
-Date: Mon, 16 Nov 2026 18:50:57 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Jens Reidel <adrian@mainlining.org>,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Val Packett <val@packett.cool>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] iio: adc: qcom-spmi-adc5: Add battery thermal
- channels
-Message-ID: <avs0cThxYLWyXE-X@ashevche-desk.local>
-References: <20261113-bat-temp-adc-v3-0-743979a8fd90@fairphone.com>
- <20261113-bat-temp-adc-v3-1-743979a8fd90@fairphone.com>
- <avc5rnvIAEmZbyE1@ashevche-desk.local>
- <DMWR1CJJRHMF.33YRRRDXPMBDW@fairphone.com>
+	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=ed25519-sha256 header.s=202508e header.b=Sm77vU/r;
+	dkim=pass (2048-bit key, unprotected) header.d=erebion.eu header.i=@erebion.eu header.a=rsa-sha256 header.s=202508r header.b=NoaC/YnX
+DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=erebion.eu; c=relaxed/relaxed; r=y;
+	h=To:Message-Id:Date:Subject:From; t=1794869432; bh=FRTZ0UZ+O5UMbm2peSSpDUx
+	iOixTmh4Ad8SIaAVLsT8=; b=Sm77vU/r7NfX+5HnVXq1nuqVkjmtScptK3wHFoEULPZxXDB0Cc
+	n6RVdeMggm29fJWwtFCPz70nN8goey/qhaBA==;
+DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=erebion.eu; c=relaxed/relaxed; r=y;
+	h=To:Message-Id:Date:Subject:From; t=1794869432; bh=FRTZ0UZ+O5UMbm2peSSpDUx
+	iOixTmh4Ad8SIaAVLsT8=; b=NoaC/YnX38nou3GqsnFmEyfLDFVgDaZ8p4gkesAUrSctYCi7a4
+	cDn0WmO1qnSKYJNOELvtlcEC4AKFHv32ZA9znHVuEbaeHFIvCURWmxWQNMeSSokOEWPaIYE8k4U
+	CmLi6cQdKUGZfx/L28icGGIsB3MsE7M9zaUlArehzdrMHvKqBhB/SWmIVvTvEaUI2IPVqKONY8u
+	8UxwCc7A0m71j/XOjqS4Qf3BLZs83iLABmuqc6wvMJZmCOfyJTCL2WFvL/cJIGGv129HKV4FwZv
+	1Lq8i+r19TvUnhHjM+ZhYCaucZJ8RQzk74b7VRfLUYMGMsNHtttVLfQI45rnGTtoZfw==;
+From: erebion <erebion@erebion.eu>
+Subject: [PATCH v5 00/12] Enable more nodes for the Xperia 10 III
+Date: Mon, 16 Nov 2026 23:50:30 +0100
+Message-Id: <20261116-pdx213-upstream-3-v5-0-7318a19806eb@erebion.eu>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -101,64 +60,113 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DMWR1CJJRHMF.33YRRRDXPMBDW@fairphone.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XP3U7DMAwF4FeZck2m2Gn6syveA3FRJx4LUteSt
+ NXQ1HfH6xACrRKXVo4/n1xV5hQ5q8PuqhLPMcf+LIN72il/as9vrGOQWaHB0tTY6CFcEKyehjw
+ mbjttdTBUm2NVNORIyd6Q+Bgvq/nyep/zRO/sxxv0nUj8Mcmx8R5T1GbWvu+6OB52c7W3OnlQt
+ +1TzGOfPteCM6zhtUuD5UaXGbTRIK8eanIewrNcIvnTnqeVm/FfAoWgogRky+Rs+UDYHwLA4BZ
+ hhfDBW+KmDOiqB6L4RcjuBlEIUZAB70xbI/g/xLIsX2e5Rbi6AQAA
+X-Change-ID: 20260829-pdx213-upstream-3-d0b80f749b5b
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ phone-devel@vger.kernel.org, erebion <erebion@erebion.eu>, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794869432; l=4197;
+ i=erebion@erebion.eu; s=20260607; h=from:subject:message-id;
+ bh=B6kkZUwaP6FohDG2oMa6B64oG+I7IHAtHRL6P3bj/+E=;
+ b=WlJVwIV1K2qaE4D/gTcTEsiShpIVngO8dbB221L0mtm2FAyaXH+5OLZhYs25r1UuoMO2wlZ0T
+ OoxHBlLfH7DBn+3RR0miXE8Jzxo9L4uNNIrfr2LV1qYcmbwJds88RrS
+X-Developer-Key: i=erebion@erebion.eu; a=ed25519;
+ pk=rOCVlR8khmBtCFe4ZlDcbCbIcORxdaNzPDkoIiHM7xc=
 
-On Mon, Nov 16, 2026 at 04:43:49PM +0100, Luca Weiss wrote:
-> On Fri Nov 13, 2026 at 5:24 PM CET, Andy Shevchenko wrote:
-> > On Fri, Nov 13, 2026 at 04:56:42PM +0100, Luca Weiss wrote:
+Enable some more nodes for the Xperia 10 III.
 
-...
+Signed-off-by: erebion <erebion@erebion.eu>
+---
+Changes in v5:
+- sort some nodes alphabetically
+- fix firmware paths to use codename "lena" instead of "pdx213" for consistency with other device trees
+- PM6150L thermals: fix commit message after removing RFC_CAM_THERM in v4
+- Link to v4: https://patch.msgid.link/20261113-pdx213-upstream-3-v4-0-4b01c50a821c@erebion.eu
 
-> >> +static int qcom_vadc_scale_hw_calib_therm_volt(
-> >
-> > This is broken indentation. Was `clang-format` being used to achieve that?
-> 
-> This is how the rest of the file is formatted, I didn't deviate from
-> that.
+Changes in v4:
+- &pm6150l_flash: fix extra zero for led-max-microamp value accidentally added in v3 (this was setting the max value 10x to high), remove Lua's Reviewed-by
+- rename touch-en-regulator patch: fix rebase mishap and remove a regulator that's not part of this patch series, remove Konrad's Reviewed-by
+- IPA: remove redundant properties that are now set in sm6350-lena board DTS, remove Luca's Reviewed-by
+- fix pm7250b thermals after a rebase mishap
+- pm8350: disable PON, as pm6350 already has it enabled, remove Konrad's Reviewed-by
+- rear_cam_sensor: fix gpio to use correct one
+- remove includes that aren't actually used
+- re-order alphabetically: &pm6150l_adc before &pm6150l_gpios
+- remove a superfluous tab at the closing brace of rear-cam-flash-therm@2
+- enable remaining i2c busses: fix rebase mishap
+- fix firmware paths to use upper-case "Sony" instead of lower-case "sony" for consistency with other DTs, reset Luca's Reviewed-by
+- remove rear_cam_sensor, as it does not work and I haven't found the issue, will submit later when I get it actually working
+- Link to v3: https://patch.msgid.link/20261102-pdx213-upstream-3-v3-0-cdc3be96d257@erebion.eu
 
-Oh, I see, that's unfortunate.
+Changes in v3:
+- re-order some properties, generic properties first, then qcom,*
+- &pm6150l_flash: fix led-max-microamp value
+- rename touch-en-regulator to regulator-touch-en (to keep any future fixed-regulator sorted together as well)
+- Bluetooth: remove incorrect property that does not exist
+- Bluetooth, &qup_uart1_cts: do not overwrite a bias-disable with bias-bus-hold as it is not necessary
+- &pm7250b_vbus: fix regulator-max-microamp value
+- Remove comment from reserved-memory as suggested by Konrad Dybcio
+- Squashed the patch enabling IPA into the one enabling ADSP, CDSP & MPSS, as suggested by Luca Weiss (therefore not adding the Reviewed-by from Konrad Dybcio)
+- Configure thermals for PMK8350, PM7250B, PM650L as used in pdx213
+- Enable remaining i2c busses
+- Link to v2: https://patch.msgid.link/20260926-pdx213-upstream-3-v2-0-b4612e3eb536@erebion.eu
 
-> >> +				const struct u32_fract *prescale,
-> >> +				const struct adc5_data *data,
-> >> +				u16 adc_code, int *result_uv)
-> >
-> > result_uV
-> 
-> As Sashiko pointed out, this is labelled wrong, the result is millivolt.
-> 
-> The rest of the driver consistently uses "mv" for that, should I deviate
-> and use result_mV?
+Changes in v2:
+- Remove panel_reset_pin that shouldn't be part of this patch series
+- Remove incorrect reg from mpss
+- Fix conflicting bias pinctrl, as pinctrl nodes from sm6350.dtsi already contain a bias-* property
+- Fix incorrect unit name in &pmk8350_vadc
+- Link to v1: https://patch.msgid.link/20260926-pdx213-upstream-3-v1-0-1609c18b5c1d@erebion.eu
 
-In that case _mV, yes.
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-> >
-> >> +{
-> >> +	*result_uv = qcom_vadc_scale_code_voltage_factor(adc_code,
-> >> +				prescale, data, 1000);
-> >
-> > 1000 is odd, can you use something from units.h or combination of those
-> > to show what this multiplier is for?
-> 
-> This is converting microvolt to millivolt.
-> 
-> Shall I use "(MICRO / MILLI)" as used in plenty other drivers?
+---
+erebion (12):
+      arm64: dts: qcom: sm6350-lena: Add flash LED
+      arm64: dts: qcom: sm6350-lena: rename touch-en-regulator
+      arm64: dts: qcom: sm6350-lena: Add qcom,rmtfs-mem node
+      arm64: dts: qcom: sm6350-lena: Enable ADSP, CDSP, IPA & MPSS
+      arm64: dts: qcom: sm6350-lena: Enable Bluetooth
+      arm64: dts: qcom: sm6350-lena: Enable wifi
+      arm64: dts: qcom: sm6350-lena: Enable PM7250B
+      arm64: dts: qcom: sm6350-lena: Enable PMK8350
+      arm64: dts: qcom: sm6350-lena: Add PM7250B thermals
+      arm64: dts: qcom: sm6350-lena: Add PMK8350 thermals
+      arm64: dts: qcom: sm6350-lena: Add PM6150L thermals
+      arm64: dts: qcom: sm6350-lena: enable remaining i2c busses
 
-Yes.
+ .../dts/qcom/sm6350-sony-xperia-lena-pdx213.dts    | 457 ++++++++++++++++++++-
+ 1 file changed, 456 insertions(+), 1 deletion(-)
+---
+base-commit: e5e04726cdd043e309677071ab1b65a4b18f422b
+change-id: 20260829-pdx213-upstream-3-d0b80f749b5b
 
-> Two drivers in the tree also have "#define MILLI_TO_MICRO 1000"
-
-They should rather name it explicit with VOLTS inside. So, not a good
-example.
-
-> >> +	return 0;
-> >> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+--  
+erebion <erebion@erebion.eu>
 
