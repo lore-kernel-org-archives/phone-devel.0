@@ -1,73 +1,71 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794877521;
-	b=eHqTjXB0xvtIOqztW2tpvSTawfk+/fQEcKgdpF16zIVqIFVCd8uo2fGYuxzUSNVgXjc2
-	 EZKIkAVz0KTf4H+s7vZrGX3BV7oNjKrrkx51xCeqojp1qqopss79Xqp5MIwrSSNHU5gvx
-	 3YfagbA+Asw0reqF+i0DQ9H1f5XH0t9tPJBQ68yS7ExxROyBh5LcdjEwCgWxwkF1RhISC
-	 70a8I1g91qmXkVdNZ+Ay7Ohn8F8R6HOfZLXjjPgitY71fdDlASBzywqdk8gFVH2//MmeC
-	 uq4GewhwuvqDIqjO5lziR0oTYq7UmN65XK6ZzGq0KBoAVAm5PzkFGrB/vfroXx4YH8A==
+	t=1794885115;
+	b=F10sQG+/Q3GJDb8lQNkj39x/p6mmLFcm57neeMhObKq7mmW3n8JXTOLjo8oZaln3cZ53
+	 T3rqzVF7Ok+k60zlpbPQZjSXWP/+Bt43PKA1E88KPffxjBjuWHtIcWpwlM6lfeCE40ldI
+	 6mk8MmEdBIiyMAFVdJQoMHys1kcArMNL+oUMdlwYEBJV7FIRa9rgYlK+SUSWK9ySp3WoH
+	 vJOqEGZK+WxO9HMbkSrfxAlbWlOzA0KqoTq/FQ7jRJv4+BPTQO/ExmXgG9yVUXy/f6NFA
+	 WsV8IDQioStprjEE13G0ZMoU/FMSC12c6TiROZo2AcU7ozzOgsyxzQ4p+Pwb1U/+M+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794877521;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794885115;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=TFVgaovpCdXFCchb47lWtFAHAaVIAA+TVCN/Y84x+Zs=;
-	b=YPQprQF8ZtYGe+kaz94YygGg7acR9SrmuCto1HOUXW0U0wwnzqIFG2NgPe91sleQjQuR
-	 a4FZ00o/vgZYYoBa0+6NwZa37KdwQa+LrXjBulH0C7PNewCOI9Yv1zTI55G8wlFOGPBTp
-	 o0QdDfneKg1RNO9qRS4wlcR1syk5jqXhVa+rqxVy4u1XuSMb6OLku0QmfuKJ50We1vglA
-	 +3dWX5Kx81moa1XtSGBkMH+E2NyXgeiyrcJRBytXAropI4TTszB89v6Ymsksnqzbt6Q8z
-	 LGwm9VGc7SYOR03+JYYo7lyXpYb6tYxNfJxTvoBqBSorOZusZA52yNw0ViFEr0zvYIw==
+	bh=rAo21lH5YkrWf1H9lGvy6n3laU/lKZk+uFIHu6Dox1g=;
+	b=YbgvJlgPjzUGPUwvvy64452dW3fGBDtrhHah7JwEjBjzv+dULg2C9wiE7/uelOP1baJr
+	 CQHOhD/ETCjljHOnrVD0TTd81/HIWF7XbwvfjRYJiEx3QErOmhCZ5Ul1kDkID8m91vC/g
+	 aSgWk16jPmKF0YYlGdhJz8uo4lMQsuY9/IiP4dCc3FCTG3mpokJKDTvyoDUZXyF/4IY/H
+	 lEc7e8omDGxQ7dMfJvpaglENVWuU/5vwXre/uCD8+gg84JrpnC7Ypll7tg2SfVzOWQYvt
+	 gdYmOx/sYnjziOmSQxf2LI2FjmRlGQvxCNvgOxxdXNfEfhjeqNzi7bUwz4fFswhOTSQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="n2fw/OIp";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GMI16+oo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87C2606A88B;
-	Tue, 17 Nov 2026 01:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B88606A31C;
+	Tue, 17 Nov 2026 03:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n2fw/OIp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D931F000D4;
-	Tue, 17 Nov 2026 01:05:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GMI16+oo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250CE1F000C5;
+	Tue, 17 Nov 2026 03:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794877521;
-	bh=TFVgaovpCdXFCchb47lWtFAHAaVIAA+TVCN/Y84x+Zs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n2fw/OIp+7K0K/0LTKt3hgFIyaYyNVus6Wx40R3oGdx8Pf5FCjjTgV961RfiJ6nCh
-	 9F46RmiMp7Sl9TTSB1xtv91d3vIbCBBQWIFch37Uf/SDXZ6ML/VLWNJuwcrJo2v6fX
-	 RdAcKZWOVFYW/NccbvWZ68wp0mLPTiOkSUTldgMmkfymidzHc/DS005zyA6DwbHUAr
-	 R6nKyJqM8+zjObqKMcRlLkwOKDu583bjMGe/FfsvD5QnGPTrV+BMcGOHQQCiNXdYES
-	 L/XLenuwketM1zrwJyn13JC5mnu17L8A1XLNSx9FiMS5eWSCliUtt1J7acUKWDuCxA
-	 gbaJTEEQFRb1Q==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH v4 0/4] Add Novatek NT37705 panel driver for Fairphone (Gen. 6)
-Date: Mon, 16 Nov 2026 19:04:50 -0600
-Message-ID: <179487749299.432567.493550995991347090.b4-ty@b4>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261009-fp6-panel-v4-0-7c3819664778@fairphone.com>
-References: <20261009-fp6-panel-v4-0-7c3819664778@fairphone.com>
+	s=k20260515; t=1794885115;
+	bh=rAo21lH5YkrWf1H9lGvy6n3laU/lKZk+uFIHu6Dox1g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GMI16+oojz8C1YIHwc9EClS7kM1duCpaGdLZaKC5ItQpRUHUo98IPmOFJU4E9Zh1D
+	 9hCNvx4OGYYNFAohF5P7+GAicUluZlkOX4rKx72hFy1lYNS1BD3UkvCueZaDvN+844
+	 SPgUaGATijP3J0IqOBQpC4JxDb52hP3cTVQFkPN9KsgQAEo4eh/i7C7PIuDaMNYtuX
+	 ytJf7lb4FPQhw+mDBT4y5pAUwzilzPBM0XkUN/q4PtmDFwGV+uTBHf5x9GVG3lrOpP
+	 X7O7b6STFwaRk4uwdtqWyq56Td9IBCxCObdRDuUvjNiDMGiBe/y7oHnLLImP4HPVtz
+	 Vbl0S0PXiiNEA==
+Date: Tue, 17 Nov 2026 03:11:47 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: "Luca Weiss" <luca.weiss@fairphone.com>
+Cc: "David Lechner" <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Zhang Rui" <rui.zhang@intel.com>, "Lukasz
+ Luba" <lukasz.luba@arm.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Laxman Dewangan" <ldewangan@nvidia.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konradybcio@kernel.org>, "Hans de
+ Goede" <hansg@kernel.org>, "Jens Reidel" <adrian@mainlining.org>, "Casey
+ Connolly" <casey.connolly@linaro.org>, "Val Packett" <val@packett.cool>,
+ "Daniel Lezcano" <daniel.lezcano@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v3 3/5] thermal/drivers/generic-adc: Allow probe without
+ TZ registration
+Message-ID: <20261117031147.40f2ef65@jic23-hlaptop>
+In-Reply-To: <DMWH7VNNWDQG.1BM1P88WUJZT9@fairphone.com>
+References: <20261113-bat-temp-adc-v3-0-743979a8fd90@fairphone.com>
+	<20261113-bat-temp-adc-v3-3-743979a8fd90@fairphone.com>
+	<20261114001552.3ae8f05e@jic23-hlaptop>
+	<DMWH7VNNWDQG.1BM1P88WUJZT9@fairphone.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -77,19 +75,33 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 16 Nov 2026 09:02:10 +0100
+"Luca Weiss" <luca.weiss@fairphone.com> wrote:
 
-On Fri, 09 Oct 2026 13:24:59 +0200, Luca Weiss wrote:
-> Add bindings and a panel driver for the NT37705, and then enable display
-> on the Fairphone (Gen. 6).
+> Hi Jonathan,
+> 
+> On Sat Nov 14, 2026 at 1:15 AM CET, Jonathan Cameron wrote:
+> > On Fri, 13 Nov 2026 16:56:44 +0100
+> > Luca Weiss <luca.weiss@fairphone.com> wrote:
+> >  
+> >> If the devicetree node is not referenced in a zone under /thermal-zones,
+> >> devm_thermal_of_zone_register() will fail with -ENODEV.
+> >> 
+> >> Since the driver is now also registering as an IIO device[0], allow the
+> >> probe to continue without the thermal zone.  
+> >
+> > Papering over problems, or expected path for some devices?  If it's
+> > expected path we probably don't want to print a message with the
+> > word failed in it.  
+> 
+> Expected path for some devices. Should I make this into dev_dbg then or
+> remove the print completely?
+> 
 
-Applied, thanks!
+Either is fine.
 
-[3/4] arm64: defconfig: Enable Novatek NT37705 panel
-      commit: 1ff72de9902a955b8446bba2c56942028c1425ea
+> 
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
