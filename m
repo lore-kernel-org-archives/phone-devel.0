@@ -1,53 +1,53 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=142.132.183.134
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794939213;
-	b=XOQ3ODRvT3ZjnGGg3UDo9h6FjRp+xmiprK4KAEyNyRnHFHMwEpe0oNAB5Bde7abim3D9
-	 IXuIkNJQCApMlePo848l29Vy1EGx1pDHmFZNePfYB7HQgGOf1dShW3A+BoSbx2WPIaTu5
-	 t0kdL/wXNIjgCybKugqPYPQANxOOZOARxTr8+DIy30cbO5EVPWPS1T5utsRZhiEK2WULa
-	 e90ThDsdtN7fpInSjR5jO7m5TN1tVVIb8ee/bTLybR8heEpGQsotKd0g14QeuhwALESPS
-	 /sG8DXXQL+0+zd6xGuu1dVPVKYp7cmNWk9AMM5ZEVBSGaggt27dMIlL91DuOE9uS/oA==
+	t=1794939415;
+	b=ApZqgnWysJj/RxEQU+wTEjqtGlx3JnsqwNmGPnj5nVJ3Qbr9PVatm7o1hezBdM/cJrGv
+	 azKRGaBFPEkW8yFejqZETLn75aaaTjtcurFBFSulS29T2571y/Zsw4DVIZlfoYt3T+75b
+	 XEUQ9kr7B9sLYvS5ZUjfevD4Np1YdKl3hJ1GpWDoVZb1GIgyxWEbXbhyp/unsapWPXHYY
+	 kK5q79z8bQliOUQeDiJqLW/tn5j9jR3I8lFHimVFHla2OBGRKjl1WLAAo8ib7w/mrL/Sp
+	 XiPQsE+BGnywGoFzRDJrzgj/4WS6KwIC0AYyvcOeKIz99HT0Nk+18v1mPkMeRciS8/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794939213;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794939415;
 	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
 	 From:Autocrypt:In-Reply-To:Content-Type;
-	bh=bwLHiceTB047v2ScTeAnvuXnjg5cRmD9pk1qQPUmwPY=;
-	b=XgAgnHyhjKIugec9Kz0VgUDcByKTpeXCXWFNWs59y8Nm9rYBxoSycX2JBBdaDMtkSjy2
-	 +xdmKatXbY7xClkNyeFObPyl/a/hJMkk5UCMfNirj6vlmWGFaGWMEAc4egk97uZGWVe0g
-	 sqkam+n+9RntdPAcYeJwO9NPtqxrJ3GVnF4RJxNkdQEOctflohlVWvXACvdwKs26XJX6K
-	 CojstZe0P5ItBpWZGl+XyjeIxgRurEYuiEd/2MEF7ua0CIuNPZT1Zmsm4mciuD5hweMXy
-	 nb9kS3ivNlByS5AbzJkfGXNySWRBiRW4r9Yc0j3pJUDVs4fP80YDE8szngK1uReo+BQ==
+	bh=tAFphuNZhSMbXbrfeyiF5cRg1vQ1G5E1UchQJDp49uM=;
+	b=KHDB5vMHUrpcNC9wdV5FZDDUoObAu/N8gvoJ04WrrlLTSyfd5gh0yUtE0T7gBp5yO9lm
+	 FI25Qiecw6po61473EUu0C3MIte1d5h4u+/WeLX0TNDbgZOevNspvYACmA4egB6zOWKFB
+	 Z8W4YfqfjARSuYOgDn72c/1Qna6WQqi9y5emgXEOAGPfHlHMaOB0EXGAtQl1xqjVhbwvF
+	 VQiGWWJF9XZy7ZIFdZNuzuK3+VKIV0SDNYkBZ9kXzpcrzalvtS2hssyEOXeE8Uj6QGr1G
+	 scItqwZvpYxVT5EKtsT55ZQJ2lgDEtPibVhQRpM55DZ1ZqXFoLRCLZsPsVGryk2UWTA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=erebion.eu;
 	spf=pass smtp.mailfrom=erebion.eu;
-	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=ed25519-sha256 header.s=202508e header.b=PB8nsasG;
-	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=rsa-sha256 header.s=202508r header.b=NqqhjiQq;
+	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=ed25519-sha256 header.s=202508e header.b=sz3wKmQ+;
+	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=rsa-sha256 header.s=202508r header.b=GgEId5a1;
 	arc=none smtp.remote-ip=142.132.183.134
 Received: from erebion.eu (erebion.eu [142.132.183.134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EFA606A332;
-	Tue, 17 Nov 2026 18:13:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70EFA606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A961606A32C;
+	Tue, 17 Nov 2026 18:16:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A961606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=erebion.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=erebion.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=ed25519-sha256 header.s=202508e header.b=PB8nsasG;
-	dkim=pass (2048-bit key, unprotected) header.d=erebion.eu header.i=@erebion.eu header.a=rsa-sha256 header.s=202508r header.b=NqqhjiQq
+	dkim=pass header.d=erebion.eu header.i=@erebion.eu header.a=ed25519-sha256 header.s=202508e header.b=sz3wKmQ+;
+	dkim=pass (2048-bit key) header.d=erebion.eu header.i=@erebion.eu header.a=rsa-sha256 header.s=202508r header.b=GgEId5a1
 DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=erebion.eu; c=relaxed/relaxed; r=y;
-	h=From:To:Subject:Date:Message-ID; t=1794939209; bh=bwLHiceTB047v2ScTeAnvuX
-	njg5cRmD9pk1qQPUmwPY=; b=PB8nsasGFp1PALkuQ1gVW5V5BDCOTmTstEHR5ta9y2+qjvMFiO
-	Krbk8uBBhltG2JPiSYUZ3IyHDihAG5gAfJAA==;
+	h=From:To:Subject:Date:Message-ID; t=1794939390; bh=tAFphuNZhSMbXbrfeyiF5cR
+	g1vQ1G5E1UchQJDp49uM=; b=sz3wKmQ+4jyhpUeg8eBoRjZrUVtKSlSbP4ku5TcA8jfrDe7AXn
+	IAd8CTJ0Y1DixtC0fQp3rhKkAi8iUzjfU3DQ==;
 DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=erebion.eu; c=relaxed/relaxed; r=y;
-	h=From:To:Subject:Date:Message-ID; t=1794939209; bh=bwLHiceTB047v2ScTeAnvuX
-	njg5cRmD9pk1qQPUmwPY=; b=NqqhjiQqSJBXhiMp1YpwqXdku1q562bbd4lhZtSKmaRxjYeSAp
-	n7mJzlqIkgGGYxa+vpgVbhiFBnh6FI5tSALpPzJ1cHJaW0hdjd6VqtBkoPAnuyVjV6bjJxhAxXQ
-	Z4gUmlnq8p5e/whs+H8Z/YCSRC5DIxBxULGE96pzuoF60fNvwk6mCXNLTjaon8wMixAJZiS/6Fh
-	n9HmNzaVAd7mi1A/2HBesw/eyH152TMTky4wG/y+B6GN6l5yjGvVj3IxsT0LKTC4K2IGocgRteJ
-	CSN9PVyV5hDEWI0fa6vI0X/i4777cpexISNMGOWTgXdzJGhp3aYMbjMc5HTPEjEQYPg==;
-Message-ID: <a164ee03-d2be-46b3-9079-3fd60ae02079@erebion.eu>
-Date: Tue, 17 Nov 2026 19:13:28 +0100
+	h=From:To:Subject:Date:Message-ID; t=1794939390; bh=tAFphuNZhSMbXbrfeyiF5cR
+	g1vQ1G5E1UchQJDp49uM=; b=GgEId5a1Mn8eD2a2afWfliHlYTqly+FWA4sHjHZj8Z7xNlyw3z
+	UsaGDphUM1pVQUZ830/KWZdO8FHJRqWAU66/v1tCrSeQv+t4Spezrx81vc7M1T2mWx2OFXAr5jI
+	PX+qX0jElWKpRXaK4T7j42yTGJpCYlKjPw+hjm7MuW2F+ZIRrbE1DWjT1AjmB5BzSsbbyX6jgrx
+	TpaFMo7dbKUHIhyWTkEgO4n4e0FrzGppISM8cUhH6w6YvsFwXGhvgti4Xypbo9MZq+MAuNS+AB3
+	3yGJO8Tx4zUfg7DAxebZgV1PNGo48ErkHzKfczGxd2dtZt5J+NE2ondo7wUufDpXWMg==;
+Message-ID: <4f63673e-67c8-4f68-b3f5-82a0579e2b49@erebion.eu>
+Date: Tue, 17 Nov 2026 19:16:29 +0100
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -58,8 +58,8 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/12] arm64: dts: qcom: sm6350-lena: Add PM7250B
- thermals
+Subject: Re: [PATCH v5 12/12] arm64: dts: qcom: sm6350-lena: enable remaining
+ i2c busses
 Content-Language: en-GB
 To: Luca Weiss <luca.weiss@fairphone.com>,
  Neil Armstrong <neil.armstrong@linaro.org>,
@@ -72,10 +72,10 @@ To: Luca Weiss <luca.weiss@fairphone.com>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
 Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 References: <20261116-pdx213-upstream-3-v5-0-7318a19806eb@erebion.eu>
- <20261116-pdx213-upstream-3-v5-9-7318a19806eb@erebion.eu>
- <DMXH1UYFI74N.FT441QG9ND7@fairphone.com>
+ <20261116-pdx213-upstream-3-v5-12-7318a19806eb@erebion.eu>
+ <DMXH52GLPXUT.236KX5W7LSRY7@fairphone.com>
 From: erebion <erebion@erebion.eu>
 Autocrypt: addr=erebion@erebion.eu; keydata=
  xjMEY7S2FRYJKwYBBAHaRw8BAQdAUf0YlT6sBQSunZeO44bgAPe+ndqTifGaNjw7vzJ2KPHN
@@ -86,21 +86,21 @@ Autocrypt: addr=erebion@erebion.eu; keydata=
  OAhF5jpmd7M0Ybx8AwEIB8J+BBgWCAAmFiEEnIymtRHDv9imMfvrjq9AMm4Crn0FAmlaei8F
  CQeGHNsCGwwACgkQjq9AMm4Crn075QEAoDqfm4OeAEQWMgfQ496u2S3rWJw1EMgTOP51FQbX
  rY4BAKn6AhEBh605uas3OTVtcwNIAJn1sHTA7HqqWniUe9sP
-In-Reply-To: <DMXH1UYFI74N.FT441QG9ND7@fairphone.com>
+In-Reply-To: <DMXH52GLPXUT.236KX5W7LSRY7@fairphone.com>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------Fa2ptS4d9zB5EK84n9ecp0Nu"
+ boundary="------------IZh0FgOC0Mzl8kpWZefDdfl9"
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------Fa2ptS4d9zB5EK84n9ecp0Nu
-Content-Type: multipart/mixed; boundary="------------lsyxdZs7ypaUT8bUSEkJ07y6";
+--------------IZh0FgOC0Mzl8kpWZefDdfl9
+Content-Type: multipart/mixed; boundary="------------sDXDqMcp6Uq300MvD41ZVktY";
  protected-headers="v1"; hp="clear"
-Message-ID: <a164ee03-d2be-46b3-9079-3fd60ae02079@erebion.eu>
-Date: Tue, 17 Nov 2026 19:13:28 +0100
+Message-ID: <4f63673e-67c8-4f68-b3f5-82a0579e2b49@erebion.eu>
+Date: Tue, 17 Nov 2026 19:16:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/12] arm64: dts: qcom: sm6350-lena: Add PM7250B
- thermals
+Subject: Re: [PATCH v5 12/12] arm64: dts: qcom: sm6350-lena: enable remaining
+ i2c busses
 Content-Language: en-GB
 To: Luca Weiss <luca.weiss@fairphone.com>,
  Neil Armstrong <neil.armstrong@linaro.org>,
@@ -113,10 +113,10 @@ To: Luca Weiss <luca.weiss@fairphone.com>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
 Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 References: <20261116-pdx213-upstream-3-v5-0-7318a19806eb@erebion.eu>
- <20261116-pdx213-upstream-3-v5-9-7318a19806eb@erebion.eu>
- <DMXH1UYFI74N.FT441QG9ND7@fairphone.com>
+ <20261116-pdx213-upstream-3-v5-12-7318a19806eb@erebion.eu>
+ <DMXH52GLPXUT.236KX5W7LSRY7@fairphone.com>
 From: erebion <erebion@erebion.eu>
 Autocrypt: addr=erebion@erebion.eu; keydata=
  xjMEY7S2FRYJKwYBBAHaRw8BAQdAUf0YlT6sBQSunZeO44bgAPe+ndqTifGaNjw7vzJ2KPHN
@@ -127,36 +127,32 @@ Autocrypt: addr=erebion@erebion.eu; keydata=
  OAhF5jpmd7M0Ybx8AwEIB8J+BBgWCAAmFiEEnIymtRHDv9imMfvrjq9AMm4Crn0FAmlaei8F
  CQeGHNsCGwwACgkQjq9AMm4Crn075QEAoDqfm4OeAEQWMgfQ496u2S3rWJw1EMgTOP51FQbX
  rY4BAKn6AhEBh605uas3OTVtcwNIAJn1sHTA7HqqWniUe9sP
-In-Reply-To: <DMXH1UYFI74N.FT441QG9ND7@fairphone.com>
+In-Reply-To: <DMXH52GLPXUT.236KX5W7LSRY7@fairphone.com>
 
---------------lsyxdZs7ypaUT8bUSEkJ07y6
+--------------sDXDqMcp6Uq300MvD41ZVktY
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: base64
 
-DQpPbiAxMS8xNy8yNiAxMzowNiwgTHVjYSBXZWlzcyB3cm90ZToNCj4gT24gTW9uIE5vdiAx
-NiwgMjAyNiBhdCAxMTo1MCBQTSBDRVQsIGVyZWJpb24gd3JvdGU6DQo+PiBDb25maWd1cmUg
-dGhlIHRoZXJtYWxzIGZvciB0aGUgY2hnLXNraW4tdGhlcm1hbCBhbmQgY29ubi10aGVybSB0
-aGVybWlzdG9ycyBjb25uZWN0ZWQgdG8NCj4gDQo+IFRoaXMgbGluZSBpcyBhIGJpdCBsb25n
-LiBJZiB5b3UgcmUtc2VuZCwgcGxlYXNlIHdyYXAgaXQuDQoNCkFzIEkndmUgb25seSBhZGRl
-ZCBhIGxpbmVicmVhayBpbiB0aGUgY29tbWl0IG1lc3NhZ2UsIEkgZ3Vlc3MgaXQgd2lsbCBi
-ZSANCmZpbmUgaWYgSSBsZWF2ZSB0aGUgUmV2aWV3ZWQtYnkgaW4gdGhlcmUuIFRoYW5rcyEN
-Cg0KDQotLSANCmVyZWJpb24NCg0KWE1QUDogZXJlYmlvbkBlcmViaW9uLmV1DQoNCkFjY2Vw
-dGVkIGxhbmd1YWdlczogR2VybWFuLCBFbmdsaXNoLCBTd2VkaXNoLCBOb3J3ZWdpYW4sIERh
-bmlzaA0KDQo=
+T24gMTEvMTcvMjYgMTM6MTEsIEx1Y2EgV2Vpc3Mgd3JvdGU6DQo+IElmIHlvdSByZXNlbmQs
+IGFkZCBhIG5ld2xpbmUgYmVmb3JlICdzdGF0dXMnLCBhbHNvIHdpdGggaTJjMTANCj4gDQo+
+IFJldmlld2VkLWJ5OiBMdWNhIFdlaXNzIDxsdWNhLndlaXNzQGZhaXJwaG9uZS5jb20+DQpU
+aGFua3MsIHdpbGwgYWxzbyBkbyB0aGF0IHdpdGggaTJjOC4NCg0KLS0gDQplcmViaW9uDQoN
+ClhNUFA6IGVyZWJpb25AZXJlYmlvbi5ldQ0KDQpBY2NlcHRlZCBsYW5ndWFnZXM6IEdlcm1h
+biwgRW5nbGlzaCwgU3dlZGlzaCwgTm9yd2VnaWFuLCBEYW5pc2gNCg0K
 
---------------lsyxdZs7ypaUT8bUSEkJ07y6--
+--------------sDXDqMcp6Uq300MvD41ZVktY--
 
---------------Fa2ptS4d9zB5EK84n9ecp0Nu
+--------------IZh0FgOC0Mzl8kpWZefDdfl9
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-wnsEABYIACMWIQScjKa1EcO/2KYx++uOr0AybgKufQUCavyZSAUDAAAAAAAKCRCOr0AybgKufThK
-AP9g8PBKyZGAO8pyNFEgg6wZ68YTStLQFq+J7BWXndfEPwD/X1bI3N3C/4nmkakR9jdSQHJMac+i
-OuTWiPNuXRRW6Ac=
-=y+aL
+wnsEABYIACMWIQScjKa1EcO/2KYx++uOr0AybgKufQUCavyZ/QUDAAAAAAAKCRCOr0AybgKufZVv
+AP44LNpwUJ4lzteMf21W5HgTm9u1oF/uAYdWgeHUv075HAD/WfEs1NmlCuXud45L6MnvzXwZ8RdY
+ASC3DDAvI4RpzQU=
+=hO4x
 -----END PGP SIGNATURE-----
 
---------------Fa2ptS4d9zB5EK84n9ecp0Nu--
+--------------IZh0FgOC0Mzl8kpWZefDdfl9--
