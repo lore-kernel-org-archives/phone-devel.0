@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1795019093;
-	b=F/INkbxEsHxhDPMkUN3aRPBIcE3U+Q4vbdWizUI22U7L3UofIQhvpAQASuB+Bodfm5c4
-	 V8TGtVqEjWok50/N65PZq5wOGvZAPZNuTMxYnmaQAMZXUYX2CYygzdMK1phXYZ8zJboXp
-	 n8YANoytRgByM/YyF+GfEXTma5B50ai4wcbnaAOa27e45D3PMWRlACCc1Dm2tct3CF4M/
-	 cS7MsYSJHwt/TMtVskGLj7lcEBeQXKg+3b0a9vSUxjhwSslXc4zVxozOL0eO8BzLy/OJe
-	 Te+ptss6nkghznqowjj9S2DyxOlRFj8Lhkp48Et/9+tLQAvvwcSTYzKfmyOSzQ4qgXQ==
+	b=dZn9U0/T/4dCjs9JbT7gAQ92kMd8JltStzW/YZFUsQIxp432Vwf6yWopmD7DbCoJoS+N
+	 zTYpTubSwKprCGjSYn5mrfcutlNz/fVP014yrZq8ml+QLCZqKYCelM5W4IbpotVpUXmp2
+	 POcz7OjwhRZaopsRGYetQMXVOUT9ZWHKCM62ETORjyk0Cwdg6X+GprDKtOdb75O/nsu5Z
+	 RZsHrCzqD1CbIVmRmKQIj2qrRWMFeGJNK/ZypKJX6+TjK9NqNOVgspJz/UhWdxiGHZ118
+	 kCuZgp7grHIrx9FoEImTD3z+F6KgUVINE/FySE5IXY0ujInf6QVidC9OT+3dbEDLQEw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795019093;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=FLHmE0yNJa1Jt3TSGOVe+8qhekufs+6/Lxt/MWi4vX4=;
-	b=KOgY51L0HZiZ6KIhh2vXgv8sUkX2p/YWTA2GjQret0b0H6uYpedaW8gXj8KF1A/DtBjl
-	 SVzgQ90yG3u3rlMxhThOMVMPxeJcv5gWXos89eebqEyKnBvAtOVLq9tV/CqbDab+Piw2L
-	 ECZQlyjtwnwHpuRUwA0QhKT7vhRK0VfiP011INWjEJrXCrwPtQTku4Y1Qh4uREqF6t9RS
-	 f2mFaCwSz8sP+yL2mE5L+Ks0ICfmJZ8rmHbTXFvNQ8cuF0vgz7aFUuln7CuW3cFIVJYxX
-	 5wEKwhvzd/cxdLZkhkMqmUDQBcW7Ne2chVZCnNsjY0wj7lD9lmpam3QCHgaMMVm0UhA==
+	bh=sAap6/oLo209oGEQs/2vMifUGcUqmldYQ/uCZjY/EzA=;
+	b=eMG4LpHNErZ6drheHPING97Z1hjOy0m5gYTV1DonANWJeAFpjiiU93OeFkZi8JSq8ihv
+	 acYBKhBxyKXiy4j4+U9k1IaioiWySdeIp3qw6fWWdhLJi/k191HKHFquSy5O2Q8WWBHgq
+	 2n0HhgbJgZJRYH6Qcb08IIqC7Yo471ahcBYG4oUT6HANqkV4oH/O9e38nFncEsbf2116W
+	 tWk19TeiprYWNPRjcVMv5A4YHHxjqzvCmKE+/8MkXflCCTcs86ue8GnyUp9yA0u4u5KS1
+	 wTMzsaLV9aFtP+AxAnq6x+3o+wkgQoRtoIscTtxVdW5rHb7alN1bQeAQunDN+Qso2Zg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="LtJ5mu/I";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZDUfJXy6;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B04606A320;
-	Wed, 18 Nov 2026 16:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A396606A333;
+	Wed, 18 Nov 2026 16:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LtJ5mu/I
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZDUfJXy6
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795019092;
-	b=DCp54GR7zvsCZlWc9t8ik1qySMsIGSO9UtJBb7VTInxMUU3Gwx+Ls4evb0+18DxFInBQ
-	 CgRloqFgL2a6ChmJT0b+aBtSTQFWHnvqZJLd64oPHbfCsYOMeURUImY6x3pGY19nZiVIp
-	 wKwYnmLGYRki6F/VIm28m8/hlPxr3J7a0GicEh0ZbnNc0f1x0xP6d1efDrRiZzYOeNs6+
-	 MicXKLW36GdBmXxAAxPm2s7PXSSkzB7MUZEz6ngLTkKGsQhhjsEFnTm0vs9nae2q5rpdZ
-	 cffCzklRSIy/d2b7+5FR5/ICjjLNM3ljkdAmrvXfu7XG2XbpaAv5CVTKXcozHHs9toA==
+	t=1795019093;
+	b=GH001fVZqfTQwm/PqKoy01JpkwmrOvwnas+6ohdrnEvxyjxYdm4glivw1N+21FaFNIFB
+	 nH256JqfcXWt/CY+CymtUpLzu9YiyM5FoSXPBO1Ir+B4FxZJUnHHZndXwU0ntUUrHSP/z
+	 quEX7ZqWjtRgKPGGYJn/hMowCsrpgRizMwwDU7wp5IT/IuZgGHxh/U7+Aq9mff3ZaTYsD
+	 IZCexKHrctbOBjbHfW7ZgmsG1pXxXq4zFKH0ZwweIlsUl0e/oUtAwQ+j3Cdwu6Q0LYaKA
+	 Q0wQJ14pHDoa5eACyBxaIc3D1B8Yisxo0If+HtmVjgHBvsdeOqEGL/OMl0JHk3uCWZg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795019092;
+	c=relaxed/relaxed; t=1795019093;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=FLHmE0yNJa1Jt3TSGOVe+8qhekufs+6/Lxt/MWi4vX4=;
-	b=UeEz/fhg4+oe3OUnMCgTYwLVbixloCRSHVs98y8rrLe/7DupdWNcpn7fLLujaI4kMtpy
-	 jB7ZwPbf2Sl+COuOHPbgFU55d/sqdIzIEFgG9EC4BwVGypOmIh+2lhoaEew5Pg9pX5UnR
-	 1D9dF1T5/tPU9fpMGOwqIHg2MZRlz4Az2VkwmZTFFcthSOH4uSBQomec+6EQVBMGBnBD7
-	 KaGETM0fqrmf1t01H7lnzkmYx9XRDgPuLYZesZbDUGl+H08sX+Atv0wOoqnLxUwRXD6da
-	 UfUKc6VvIMLRi4R+g5eqh9xaz3ApsnHWpHfhBjX3IAcAJm9g5AzfmF/0ktMibDDW/uA==
+	bh=sAap6/oLo209oGEQs/2vMifUGcUqmldYQ/uCZjY/EzA=;
+	b=pdtShhr6DyAh4EApZO2mw1eaJWF519kPeG8y6/8fyrViRX910HYxtgVteAbsWuSfb37L
+	 eP8Eyk5eUZY9ugfUf62JaAl+e2ztu6qXOX3cKgCWdzMLqiR5rJ9B+HQCdri1DAZ9fpQM3
+	 ex8DR1ABzXgm/jFIf/l8mPGwL7S1F7uQ3FSYJHkVMA/zFjzLQsXpOZ/e5P2NMaR8Rgsal
+	 p+8P4O/qsy8QtUjn6Igb9kSUXN2O+ojBcKjwLgsgv3LIqaAOODs1n4/HwHQxqhXT7pYRn
+	 G9bWnrflL0FQnTeB+wVX6G76/vELSv1yasa5BKSRZZ1BUYrdgVZIEayFO2gIJVeUskg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 207AC1F000C6;
+	by smtp.kernel.org (Postfix) with ESMTPS id 1A2A21F000C4;
 	Wed, 18 Nov 2026 16:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795019092;
-	bh=FLHmE0yNJa1Jt3TSGOVe+8qhekufs+6/Lxt/MWi4vX4=;
+	s=k20260515; t=1795019093;
+	bh=sAap6/oLo209oGEQs/2vMifUGcUqmldYQ/uCZjY/EzA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=LtJ5mu/ITXdGcgrDYnbPjz8XEhaKSb3H3NaaYxRntqOVPmEiP48UR5uYvH7Yjkojn
-	 XdsQwbg70MUrCnRRbA5WkyKVFB8HcLGJUm4azFeu7M9FoeIPxNS+E2SF9uOX3g2zcu
-	 lzMgBXg8QuKohq05qYyz+oKaGjaRmk+QYfBdwuYxvcvz9SZ8oiaA6H/oefsyFEL9wN
-	 P6KvzDV0TClTN/M9jHZ5cPotaGlpNeu3F1UUd33fQ6ckVFvbBlv3XwSCJblmZSa7HR
-	 4OTeCY/6r521m7fOKUp1vnlduZ2QJtifNIe8oEGHpVfPKEXmi0YgoOnqRkaenQzjAM
-	 Fh5+A/aRQEE8g==
+	b=ZDUfJXy6U9xamxBjVtjeVQOjHZt8w41C36FKeIb+QhNTv7OwSSVuLi9v4MhRXTP2u
+	 qhq6NUWT86fBTw1Na993H7cuHffEf8OqgrTW1tk3WPGXBZ4RpPzyjTaKSDXjjtCMyh
+	 hgbVgPIyIeHiSV56xuULjjiQhDnsMyFhprC/rboOy3uy1QQr6ZcKPd5bXA4VhCRlDV
+	 DA2BZ1iSymvSs0mzT55j0mJbI4WFEoVUkzoDgVL1VlENqaskU2N8HU0XkQKvc0sn9d
+	 6+TyJfpQEHnxFe+7LWtdDDLDNNEAKETWUFUi0EiA2Pi/yYzK/73XNa/6mp1H3ejXnT
+	 NwEJLC9/bflDg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id A35B94AE44;
+	by lkml.kernel.org (Postfix) with ESMTP id 8CE8A4AE26;
 	Wed, 18 Nov 2026 16:24:51 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 18 Nov 2026 17:23:57 +0100
-Subject: [PATCH RESEND v6 2/3] arm64: dts: qcom: sdm845-shift-axolotl: Add
- actuator for main rear camera
+Date: Wed, 18 Nov 2026 17:23:56 +0100
+Subject: [PATCH RESEND v6 1/3] dt-bindings: media: i2c: dongwoon,dw9714:
+ Document DW9714A and V variant
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261118-dw9714v-v6-2-48cfd8ee4c4c@ixit.cz>
+Message-Id: <20261118-dw9714v-v6-1-48cfd8ee4c4c@ixit.cz>
 References: <20261118-dw9714v-v6-0-48cfd8ee4c4c@ixit.cz>
 In-Reply-To: <20261118-dw9714v-v6-0-48cfd8ee4c4c@ixit.cz>
 To: Alexander Martinz <amartinz@shiftphones.com>, 
@@ -99,21 +99,21 @@ Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
  linux-media@vger.kernel.org, phone-devel@vger.kernel.org, 
  David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3473; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2393; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=gHZ8gqtaNh8wddZIfEMQhnQ9mvQzrc6d6pxFqY4z7/w=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq/dFSDVeoU+ogRKSTSq1LtinQlCi1F7xkyuCGe
- AjJASiz8/6JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCav3RUgAKCRBgAj/E00kg
- ctsgD/9YYXMWCMb2+IejH9jtrpNb06tLclp/9Ig5zML1AYZPaXhYP5okBacdzQBNGGoFFDrcANI
- ihhK0n7RVoPlA2g1c8qNXnHBGFD1X/sycxhNpGsMux5Vq/rTJ2rPRwLWf/oN+K3MCS2lCiY2iD5
- 9d/MOrKjdBTfdk+HnGfdO0JXLOEWkc6nXsR6HbpqoP7UW2GJ58tBFGSdgixClI6Bzx+E0t6lqh/
- 3gvRAlva0huNuVW9yQ12qYht2oZoprgPKPf/OqaqvpEgdAxFUnIRGNPEfx3JhPfY4VqJpvhi1SA
- P2x7AKjn9LMIHmnuLCGciFRm6CeJnXf3Y3cc7KD1e1UrHP0mHUnDbG/i02bZPpfXpFFGZdmGADp
- 6d6dEui2w21JK9hSEbEseCdLWfIH/fcADOFBDxRYcjr1PHniW6IKTWfPhW7y7imye5BFz65U3le
- /dPL3x7T48mu+cCr48fhGGzp61skv6BQhcKFjbBT49tBNLCxdKQiqC7ckRwd6SRrMJ8u2D66ugj
- 6OJHZ7+cUG3eTqQx0WV5exshwQ8elmUCKNr2dfGoXei4vg6fs7LQ9Zp/gLrJdFAyVbAo0eeq7oc
- iMao9X5r3SlJQCqmEdy0BD/R2U6aedxiRc9JwbL6rE6s+2+z670fSC5R8hYwJxrUFAlndk+DYP1
- GVGt/weotWRz8nw==
+ bh=MctnB/YBUlKBkfY6HkmVWzrj67EeGRulizfUpQ/8RY4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBq/dFSfbanzBkVKEUdzbIRWUm26RyYZMeX/trR9
+ fWxIc3JZ6SJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCav3RUgAKCRBgAj/E00kg
+ cu43D/wM3kahxulqMtdpQMfZlethaBetxXfjD1Rudb0vrDeQajTyb9okO8MeqEjgSa0JkTkw/TX
+ Tydpf++oqQ4zp8XlU4X2v3/pLz3iGzxLomNX2wEuOWpAQK4pY6ZN0SrL5x0RJY6c3FoiSttfp24
+ O2413uemhzLGTFcypS2jpwksl3GJuc4SDVygIrd4ucARmV77eNqL5mDIadMaRXtTfbMPpXKwFTh
+ tF0EALpBUvUmz/nbK23GblqSQIFkN+pNG+5JIegRCzO8abgUQTrvdGjB9epNdRvzhVxt0xw5vKK
+ eGoq/ACHq3j6xdMlnd49ET77C6XG8pUyF1KFnECsx91zssENgXG4OifPlruhRKYGgvEbW8017Ph
+ 7RckOpob7/DAUSmgrwatw27DwX3Tk3yVl3iD6vMg6nRgoxbUiAlFNK153sN93qxSB6w3EqEJpvq
+ PG4r69F+QK/AgqshE2TTLO+BP+Z117R8h9PwCgKbN0fECV1jODJFKzDDexxtU+JOrMNtGtE5kqb
+ 8ETGCe7sd6cp0uyHRhzc5p60/X3RHoqMS7A45fwS7bGBSyr4nUF/j5mRX22vMAsSy3BOzr/vAK+
+ xi4C/Wz/+TEpvRpnwMv8Y5opwtFYipdW333vi12DzkO8kQtX6lFzQeb2mFFQvLSAioU0c8yK+pi
+ mwy4n7R0rjgjo8A==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -123,141 +123,65 @@ Content-Transfer-Encoding: 7bit
 
 From: David Heidelberg <david@ixit.cz>
 
-Main rear camera uses Dongwoon DW9714V actuator. Add regulator and
-actuator node.
+DW9714A is a successor of DW9714 and DW9714V is a successor of DW9714A.
 
-Since the actuator sits on the CCI I2C bus, whose 1.8V side is fed by
-vreg_lvs1a_1p8 and there is no place to describe that, keep it always-on
-for now, until bus-supply exists.
+All three are compatible in their normal mode: a 10-bit DAC with the same
+Direct/LSC/DLC slew rate control. DW9714V additionally has an "advanced
+mode", which exposes Smart Actuator Control (SAC2/SAC3/SAC3.5/SLSC) and
+soft start/landing. Out of reset the DW9714V comes up in normal mode
+with ringing control disabled, i.e. behaving as a plain DW9714,
+so nothing has to be configured for it to work today.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Should SAC support be added later, it is board data rather than a userspace
+knob: the mode and the vibration period (SAC_CFG/PRESC/SACT) have to match
+the mechanical tVIB of the actuator and lens assembly of the given camera
+module. Those properties are left out until there is driver support and
+measured values.
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 50 +++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ .../devicetree/bindings/media/i2c/dongwoon,dw9714.yaml     | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index 1b0eaeafbd517..f14fe8e175e96 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -81,16 +81,34 @@ ramoops: ramoops@b0000000 {
- 	battery: battery {
- 		compatible = "simple-battery";
+diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+index 66229a3dc05d6..7c2769e6c4880 100644
+--- a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9714.yaml
+@@ -5,22 +5,30 @@ $id: http://devicetree.org/schemas/media/i2c/dongwoon,dw9714.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
  
- 		charge-full-design-microamp-hours = <3850000>;
- 		voltage-min-design-microvolt = <3600000>;
- 		voltage-max-design-microvolt = <4400000>;
- 	};
+ title: Dongwoon Anatech DW9714 camera voice coil lens driver
  
-+	/* SGM2036-2.8YUDH4G/TR */
-+	cam_main_af_2p8: regulator-cam-main-af-2p8 {
-+		compatible = "regulator-fixed";
-+
-+		regulator-name = "cam_main_af_2p8";
-+		regulator-min-microvolt = <2800000>;
-+		regulator-max-microvolt = <2800000>;
-+		regulator-enable-ramp-delay = <100>;
-+
-+		gpio = <&tlmm 8 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+
-+		pinctrl-0 = <&cam_main_af_default_state>;
-+		pinctrl-names = "default";
-+
-+		vin-supply = <&vreg_bob>;
-+	};
-+
- 	vph_pwr: vph-pwr-regulator {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vph_pwr";
- 		regulator-min-microvolt = <3700000>;
- 		regulator-max-microvolt = <3700000>;
- 	};
+ maintainers:
+   - Krzysztof Kozlowski <krzk@kernel.org>
  
- 	vreg_s4a_1p8: pm8998-smps4 {
-@@ -403,16 +421,23 @@ vreg_l28a_3p0: ldo28 {
- 			regulator-min-microvolt = <2856000>;
- 			regulator-max-microvolt = <3008000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
+ description:
+-  DW9174 is a 10-bit DAC with current sink capability. It is intended for
+-  driving voice coil lenses in camera modules.
++  10-bit DAC with current sink capability. It is intended for driving
++  voice coil lenses in camera modules.
  
- 		vreg_lvs1a_1p8: lvs1 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
-+
-+			/*
-+			 * Supplies the 1.8V side of the CCI I2C level
-+			 * shifter; keep enabled until a generic
-+			 * bus-supply property exists.
-+			 */
-+			regulator-always-on;
- 		};
+ properties:
+   compatible:
+-    const: dongwoon,dw9714
++    oneOf:
++      - items:
++          - const: dongwoon,dw9714v
++          - const: dongwoon,dw9714a
++          - const: dongwoon,dw9714
++      - items:
++          - const: dongwoon,dw9714a
++          - const: dongwoon,dw9714
++      - const: dongwoon,dw9714
  
- 		vreg_lvs2a_1p8: lvs2 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 		};
- 	};
+   reg:
+     maxItems: 1
  
-@@ -441,16 +466,34 @@ regulators-2 {
+   powerdown-gpios:
+     description:
+       XSD pin for shutdown (active low)
  
- 		vreg_s3c_0p6: smps3 {
- 			regulator-min-microvolt = <600000>;
- 			regulator-max-microvolt = <600000>;
- 		};
- 	};
- };
- 
-+&cci {
-+	status = "okay";
-+};
-+
-+&cci_i2c0 {
-+	/* sony,imx519 @ 1a */
-+
-+	/* rear camera actuator */
-+	camera-lens@c {
-+		compatible = "dongwoon,dw9714v",
-+			     "dongwoon,dw9714a",
-+			     "dongwoon,dw9714";
-+		reg = <0x0c>;
-+
-+		vcc-supply = <&cam_main_af_2p8>;
-+	};
-+};
-+
- &cdsp_pas {
- 	firmware-name = "qcom/sdm845/SHIFT/axolotl/cdsp.mbn";
- 
- 	status = "okay";
- };
- 
- &gcc {
- 	protected-clocks = <GCC_QSPI_CORE_CLK>,
-@@ -699,16 +742,23 @@ &slpi_pas {
- 	firmware-name = "qcom/sdm845/SHIFT/axolotl/slpi.mbn";
- 
- 	status = "okay";
- };
- 
- &tlmm {
- 	gpio-reserved-ranges = <0 4>, <81 4>;
- 
-+	cam_main_af_default_state: cam-main-af-default-state {
-+		pins = "gpio8";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	sdc2_default_state: sdc2-default-state {
- 		clk-pins {
- 			pins = "sdc2_clk";
- 			drive-strength = <16>;
- 			bias-disable;
- 		};
- 
- 		cmd-pins {
 
 -- 
 2.55.0
