@@ -1,84 +1,84 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795107274;
-	b=nBQlzNQRqwS7FLVAjEUsHp3f1iipQGCH6ALP5av2ilGakqL4dQ0goEuPU7ViLb95P6yh
-	 F0VlQTlAFJc9P8cE5ZUCp2FK5P/tSVaaCmbXFLSvD+x2DX1KNfLTwjSCIQwpeiODvkC74
-	 TK9MhyYvREAmvUXvUAlSZMxhBLwY7z7bF+lhIj4243PKx8gVZyyrHcgU3Jyjv+fO0gFdI
-	 mTS0iUh33mpLWhLPC+L51AeKnmKzPmprX3c66B6muxP0mufNylvkzSCD7MAJ5a4s1jQL6
-	 OgO0LnGCT6A/I+Jpexazkfrae1jeaiR/QL2m6AowM2rCs7GoOHTbH6grw9jqi9GIpaw==
+	t=1795107276;
+	b=azYiD8x6ZbQJ27BY9eAD/LEm7mxg3Ujv4C+6i+Z7pU7GTL44eGEXvMlA4ZGpdEOrilR8
+	 a+9oI9EEuIrJoFpQkVFi8a70kIy8EEuSE6bQSd0GxpEl4WmH3spCGhW/fRWJEcQ9dWLoF
+	 ItG399fakal85aSOZ5MbGtepx7BTJc0w4sSumMfKjGQYHTCZLZGwoUBoBAtpbXQz7gPy/
+	 Eu7nE8MC9JiaQ/yXK5GAS8bClOMbX+uQfZFFFgnjq7NVYO0K8yuiVdMJNvxTj2g0a2e2+
+	 uva+87LBoOh/voJQaWC1Z8wG+TrWK/SaRrO9C1pqCygwdw59QuoqDfGw3MiM0kmMJiQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795107274;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795107276;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=8HAdjmJFS/vSTReOhqoIJm4R7O9SEUoXAZM3wxNxKGg=;
-	b=nTX1EQ99MxZNoyKFgMhdJL7A8vQoQc3w8MJnXxFDz6YYkFHLu2wszVqWACN4O0wJxaLN
-	 jzuZLizL78mKlaxF0ekHKwQbbTOzMP3+DYnfpJPr6kbMlwnuP8mLwSTv1yr0bx4wR9V6G
-	 90gFm8olrvzEWUeFpkD/IPc81CcjnYAlvPgdTAMv95tKTAtVVXhUMmS4WMl0FYaG5WLQ+
-	 ekqEuY/PGCtDO8ev5aJdV6FSqyCXfAB3XjK+lXwO6Ouv0OlSYTFiQFcLaet1JbstkGbH8
-	 UZ9x0rHpSceNt3FomUaz30EDQisLymMk6g1Xr21mGi+anUuMEs/1qm79dAk2MlF/mmw==
+	bh=eWJ+9K9CujW+/eiSnl3KVXLfbSNQleY4XU8YoN4v9sc=;
+	b=mEdwVhjYXxhzBxu98W7nuN6o4DYzh5B3F+YSuKMvoZvjQpi0KqHl+pE8DuJvTB/LhW/z
+	 kns2Q8COPv+lc8SOmizhqSPYSEmQiSH5w+HRbg//HaPJsL48YjCprTwDaeRgTLc0DkrN6
+	 L454/gQ/X3pgxLi2AjPYEfdr1D7xeGhYghB9PoMo8rWkNIi16r89CUWLIUuNe4a0DHJuw
+	 Yc6Exuftx1MT8xxoK4bYo2aXEQh+wMEjLOL8K+7Ql7pU0jchq9gzU6kQXjKSRGbfUO5vB
+	 +XtzluXEl8X8w8e6IMp/+OFgBrnp5VqTIc44FEzaQ/Bi2WVAdU8yVP6jouWoRTgNE9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tWxDVM+f;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Nrx391Qe;
 	arc=none smtp.remote-ip=209.85.128.41
 Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815D460A6F62
-	for <phone-devel@vger.kernel.org>; Thu, 19 Nov 2026 16:54:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 815D460A6F62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6669760A6F7B
+	for <phone-devel@vger.kernel.org>; Thu, 19 Nov 2026 16:54:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6669760A6F7B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tWxDVM+f
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so20325685e9.2
-        for <phone-devel@vger.kernel.org>; Thu, 19 Nov 2026 08:54:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Nrx391Qe
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4bb72b44a97so19449835e9.0
+        for <phone-devel@vger.kernel.org>; Thu, 19 Nov 2026 08:54:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795107273; x=1795712073; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795107274; x=1795712074; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8HAdjmJFS/vSTReOhqoIJm4R7O9SEUoXAZM3wxNxKGg=;
-        b=tWxDVM+fAapdNLO5oAWMSWtAihRfVvePxg2vTZOMR1EAAz1T6LOrtjMhCbIyJukujb
-         CK8xrym1k13GJeg8eVnp9YpO7I8Dml4JbqzQPDDNTW260lmsIw1Dy+21wMRdeblnV8GR
-         rHisEaxrRdyV7+Iatn88T/yvi4WJXXkqtg4Teig9r/bD8OS9HsoYZmSR6+eLHfTP+TaK
-         n8Q+MisHDTFGPTSqSsmHX1qPdRCEoAmYQNGhRWvVjUQVo5FFWYJO8fp22aEacncxuyIU
-         NufuF4F5ndIjeqeCEhW7rSePkv+nfoUuAC5W8V9Omo7ibEFqK78trnrigzgQ+6gXRKnz
-         5NjQ==
+        bh=eWJ+9K9CujW+/eiSnl3KVXLfbSNQleY4XU8YoN4v9sc=;
+        b=Nrx391Qe8+O8LqOtDCxu0O4VfUEM6BMWsAQwTIo6k8TAeB/r7c7TRfxpIZo1divfz4
+         r8tO2cydvdc/MU3hs6payqwcxFAz9jPrmXFLNOdrDAvI3N9j+cXAVx2J2yH2FUrhXRea
+         K+jyFhiVfTiha3RQw9kkuX2nQRWcBS5adNGDMSxkH0QsFJyVRSHwUMpxaZxkGUbgDGb1
+         6b5CLWS1UAN4WZ2Ws7iiTdWqW1mRUPWrNVKiSTlA8306egVDp8KG7vtlPMrUmECR3+ny
+         CjReWy+0X4DMn9i0Mmy+v/siVTSLv7Xb8hx/Gp2kpi1xdliQfdCEUV6OtE2fncCVBnri
+         SGlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795107273; x=1795712073;
+        d=1e100.net; s=20260707; t=1795107274; x=1795712074;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8HAdjmJFS/vSTReOhqoIJm4R7O9SEUoXAZM3wxNxKGg=;
-        b=LmaWO/cef8UOVT/0KRPdPLJouopiOpA9PnquSaWe2Mjwmyuds2mx5U5/U39wKeLhhN
-         Ju16uzxj2oYEZbJX37KzFXJK+QtljzyQ1Fhjvv+kRnoaSQ0mo4FmUACOQCKnZBZG8mpD
-         ee8PwttqkYlmYsQSiqXaT8YEU9Ru1ekwLpY2OejT1AxRKZz1oUhtq2Jky50XSBCY1l6M
-         9YxXB1O7MB/IVP2VHL35GpcoRgappds/x73nns787eNdG9hu6J5r6HFG9u3qhxyrIuMB
-         /AWhAOn5JkVFi3q2Sa3ihJUoTRu6WivczlRb3WfKe66VismTeUmEV1nxYshjxp/rNAua
-         tP6A==
-X-Forwarded-Encrypted: i=1; AL+hErES/a34yWxlWnbmh21Ikkj1vsSqHkwcHQoxAQL/9zQ0ySIfvOsZ9QvtGbJX8w1egy/z6sNyygW2wLxzwg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+fmyzlqarcTKxyjYoeHWQC+rC6NorfIVNOIdAgbi7VmyeNrRvz
-	RhtiBRqvrQL34vyxbkWlaENQLx8GB9AmJ4OB3vZgx1ihbLHR1XQQS5UG
-X-Gm-Gg: AYBFou0MrD/p3zoX+35SfbS/+JHt2KVqrxIvOX9VFAXxm+15Jf7QPO7LMo6VkCRb1mw
-	HieVT+9H9qb9RFCxfFacjnohIHSOUeevvoyOiv2na3FMywMCbM8xIrBh8MJAwNnd4+UwbH84Xjn
-	0RDmX4FRwcVpBz4D691Pybez8uBuouGyUTOLJbTtcETq2tlRNH6Zw+rWJzD3h3oa+nm706TdRO+
-	3zgnobRXMjgQ+O/GKAV4vpjDa6AL0pShGsdUZbkV0ARX824efeishTBEUTJdQSWGhAcopPsuxTv
-	L/X8138G8pZqa3s5z0w+S12fQ/GGHFnmK1P3QxxYvSt7WUzZvxe8fkX3fCyq9Naog+jOJ45l1UR
-	686ZK1IGAOrIopV/yTeJ80TDRx20OYcjq8EDVcGAlvyS6kYFUTyyPLel11xlvyJ0GgOJllKNNP1
-	QLVvcRRotBYAro1joh01gSrtIh+6WPWUCrH8SxjhGho3UWzfjDJWySztsBxTLzEJmpL7KsCl6nn
-	uTkn6RMy708cFSJEOtscgytJut6UuOQMFV7ogP6iy2qnQdjqyX4kfc/IwV5Os9wCxSJ6kqVKkc4
-	rJT9B9hl3jzBp9jbMMaVmmAnChXtMSn/7brWqLcAjWdhrcdp9y8TA1YsXsMqpr0IBMXdXyttfKd
-	M
-X-Received: by 2002:a05:600c:8b11:b0:4a1:dda8:eb73 with SMTP id 5b1f17b1804b1-4bb8881c630mr1984605e9.27.1795107272825;
-        Thu, 19 Nov 2026 08:54:32 -0800 (PST)
+        bh=eWJ+9K9CujW+/eiSnl3KVXLfbSNQleY4XU8YoN4v9sc=;
+        b=YIGyaxkBy5SYXcknA3LlNG6253DTj1zcZy9LSMmN+IR2Id6/fFHVPMfhV7qGax2L+N
+         dxKUCo1s2NDgiP5IIuNJ+AIqcoIGh04THWgSeqjl4mmWL5mE81tPpshrMsqP9oIYdVJB
+         qwSZiqYH6Pu2kz23tYTYWDzk+ysZWW+TgvwMQviIgZd8hxTCRIA3B/oaYl/pIOtBh5CS
+         K1cbema7Q8t/IMLrs+R12+PJXj4LXCsrqgzgSKJ3v+oPy2l1qyMIL5arKdaQQVfzD2pu
+         gbtwQ1wxdo5Bq1p6lT43vpm33Jf1Isfl2vy2sSaR75isJRZkH8eUYkEU4eR9Jfz/eAnl
+         vZ2A==
+X-Forwarded-Encrypted: i=1; AL+hErEseAza6O318D1GMhlzgpZTpMNnDcdcJaT6E99dcHNzj0dbBi/Vx3Cw870hFpCWmWLG/u+3udYtqoVXWA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9yVksSKuIK49bt055o4P2ZpMJHztWaTc35tS8LJIh4zPDGDxJg
+	OHT7H7oklSc0sEUb154w9364WLrjxwfrHzjGR8VJMebNOz8+S/dRk/UO
+X-Gm-Gg: AYBFou3AQhmvQ1CMIgPeQ3NnaBo5nhzPE4ZdOMAlB3JCVEQLbYcrzKy3BD+0JniTAeg
+	zmNw0k654ekFq05dLyzYBHibGOcsX4rhV2ExhSGeS1J6j9MrK66op71FQUtBNL6tPgC1q3Po/1f
+	S57M89I04OpgDUgaeTJDR4dDnnWONBvWMJ7tKywe2vBow3NAIIxmOKC3G13txS/Yugu7my/lfOk
+	+U5jmmFQiZsP/lGKVEMnGqRgiI94BwGtqPVVHYM8B+ry205HsCz3SxCGmT2FP7k0wfiRhKf9r1a
+	EHqfcC8M/bMFAwbx6W8V0THmZNMoo2ZQ2g4lAhxxKcNgs3fQWhgSpsM+aRF9f8F9/7Q+BIu7Zm5
+	ziXstW18SBw5WoVATeYTVwBzLlsxdAVQgZmgTOeUFK8Jdz6/XzPRFPbGkW48q5Y1p+RHbOnWq6P
+	iEXmh38Lmefkcl7nmcDQMb/0ob19WweFCuANM70E7E3gDPORxrgzP1B2rMZ7U5YSqUTNzmTNOB+
+	cqnL6Wu4DOAV8BPq0kkW1RwOpqIwVdV8/1ahFwJBtaLFKUcTVgutG0uwvZZTjEG5wAZbjVjrDYE
+	X53omGAP4IegMbuGvKlw53xPazd6zMCl60uG/qZGK20Cm1WvgrXaMsObaTaVOeO8m/x8y2Cg1Pg
+	=
+X-Received: by 2002:a05:600c:3ba4:b0:4ba:493b:3401 with SMTP id 5b1f17b1804b1-4bb8880abafmr2552105e9.9.1795107273824;
+        Thu, 19 Nov 2026 08:54:33 -0800 (PST)
 Received: from DESKTOP-BJ3EVC4.lan (178-164-182-185.pool.digikabel.hu. [178.164.182.185])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb88402ce9sm9894555e9.0.2026.11.19.08.54.31
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb88402ce9sm9894555e9.0.2026.11.19.08.54.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 08:54:32 -0800 (PST)
+        Thu, 19 Nov 2026 08:54:33 -0800 (PST)
 From: Abdur Rofik <rofikcoga@gmail.com>
 To: linux-arm-msm@vger.kernel.org
 Cc: devicetree@vger.kernel.org,
@@ -95,9 +95,9 @@ Cc: devicetree@vger.kernel.org,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Ivon Argel <ivonargel13@gmail.com>,
 	Abdur Rofik <rofikcoga@gmail.com>
-Subject: [PATCH v3 09/10] arm64: dts: qcom: sm8250-lg-timelm: enable USB Type-C
-Date: Thu, 19 Nov 2026 17:54:19 +0100
-Message-Id: <20261119165420.24466-10-rofikcoga@gmail.com>
+Subject: [PATCH v3 10/10] arm64: dts: qcom: sm8250-lg-timelm: add QCA6390 Bluetooth
+Date: Thu, 19 Nov 2026 17:54:20 +0100
+Message-Id: <20261119165420.24466-11-rofikcoga@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20261119165420.24466-1-rofikcoga@gmail.com>
 References: <20261119165420.24466-1-rofikcoga@gmail.com>
@@ -112,91 +112,131 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Enable the PM8150B Type-C controller in sink mode with PDO_VAR up to
-9V/3A, and connect the OF graph endpoints for USB DWC3 and SuperSpeed
-QMP PHY orientation switching.
+Describe the QCA6390 power sequencer with properly voltaged supplies
+and enable Bluetooth HCI on GENI UART6.
 
 Signed-off-by: Abdur Rofik <rofikcoga@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/sm8250-lg-timelm.dts | 47 +++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8250-lg-timelm.dts | 92 +++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sm8250-lg-timelm.dts b/arch/arm64/boot/dts/qcom/sm8250-lg-timelm.dts
-index 160b6f4c98b17..3ce8161574a95 100644
+index 3ce8161574a95..1426ce82d3f58 100644
 --- a/arch/arm64/boot/dts/qcom/sm8250-lg-timelm.dts
 +++ b/arch/arm64/boot/dts/qcom/sm8250-lg-timelm.dts
-@@ -9,6 +9,7 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/input/input.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-+#include <dt-bindings/usb/pd.h>
- #include "sm8250.dtsi"
- #include "pm8150.dtsi"
- #include "pm8150b.dtsi"
-@@ -556,6 +557,44 @@ volume_down_state: volume-down-state {
+@@ -65,6 +65,67 @@ key-assistant {
+ 		};
  	};
- };
  
-+&pm8150b_typec {
-+	status = "okay";
++	qca6390-pmu {
++		compatible = "qcom,qca6390-pmu";
 +
-+	vdd-pdphy-supply = <&vreg_l2a_3p1>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&bt_en_state>, <&wlan_en_state>;
 +
-+	connector {
-+		compatible = "usb-c-connector";
++		vddaon-supply = <&vreg_s6a_0p95>;
++		vddpmu-supply = <&vreg_s6a_0p95>;
++		vddrfa0p95-supply = <&vreg_s6a_0p95>;
++		vddrfa1p3-supply = <&vreg_s8c_1p35>;
++		vddrfa1p9-supply = <&vreg_s5a_1p9>;
++		vddpcie1p3-supply = <&vreg_s8c_1p35>;
++		vddpcie1p9-supply = <&vreg_s5a_1p9>;
++		vddio-supply = <&vreg_s4a_1p8>;
 +
-+		power-role = "sink";
-+		data-role = "device";
-+		self-powered;
++		wlan-enable-gpios = <&tlmm 20 GPIO_ACTIVE_HIGH>;
++		bt-enable-gpios = <&tlmm 21 GPIO_ACTIVE_HIGH>;
 +
-+		op-sink-microwatt = <15000000>;
-+		sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
-+			     PDO_VAR(5000, 9000, 3000)>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				pm8150b_hs_in: endpoint {
-+					remote-endpoint = <&usb_1_dwc3_hs_out>;
-+				};
++		regulators {
++			vreg_pmu_rfa_cmn: ldo0 {
++				regulator-name = "vreg_pmu_rfa_cmn";
 +			};
 +
-+			port@1 {
-+				reg = <1>;
++			vreg_pmu_aon_0p59: ldo1 {
++				regulator-name = "vreg_pmu_aon_0p59";
++			};
 +
-+				pm8150b_typec_mux: endpoint {
-+					remote-endpoint = <&usb_1_qmpphy_out>;
-+				};
++			vreg_pmu_wlcx_0p8: ldo2 {
++				regulator-name = "vreg_pmu_wlcx_0p8";
++			};
++
++			vreg_pmu_wlmx_0p85: ldo3 {
++				regulator-name = "vreg_pmu_wlmx_0p85";
++			};
++
++			vreg_pmu_btcmx_0p85: ldo4 {
++				regulator-name = "vreg_pmu_btcmx_0p85";
++			};
++
++			vreg_pmu_rfa_0p8: ldo5 {
++				regulator-name = "vreg_pmu_rfa_0p8";
++			};
++
++			vreg_pmu_rfa_1p2: ldo6 {
++				regulator-name = "vreg_pmu_rfa_1p2";
++			};
++
++			vreg_pmu_rfa_1p7: ldo7 {
++				regulator-name = "vreg_pmu_rfa_1p7";
++			};
++
++			vreg_pmu_pcie_0p9: ldo8 {
++				regulator-name = "vreg_pmu_pcie_0p9";
++			};
++
++			vreg_pmu_pcie_1p8: ldo9 {
++				regulator-name = "vreg_pmu_pcie_1p8";
 +			};
 +		};
 +	};
-+};
- &pon_pwrkey {
- 	status = "okay";
- };
-@@ -660,6 +699,10 @@ &usb_1_dwc3 {
- 	dr_mode = "peripheral";
- };
++
+ 	reserved-memory {
+ 		res_xbl_uefi_log_region: memory@80880000 {
+ 			reg = <0x0 0x80880000 0x0 0x14000>;
+@@ -634,6 +695,14 @@ &sdhc_2 {
+ &tlmm {
+ 	gpio-reserved-ranges = <40 4>, <52 4>;
  
-+&usb_1_dwc3_hs_out {
-+	remote-endpoint = <&pm8150b_hs_in>;
++	bt_en_state: bt-enable-state {
++		pins = "gpio21";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-low;
++	};
++
+ 	sdc2_default_state: sdc2-default-state {
+ 		clk-pins {
+ 			pins = "sdc2_clk";
+@@ -667,6 +736,29 @@ ts_int_default: ts-int-default-state {
+ 		drive-strength = <8>;
+ 		bias-pull-up;
+ 	};
++
++	wlan_en_state: wlan-enable-state {
++		pins = "gpio20";
++		function = "gpio";
++		drive-strength = <16>;
++		bias-pull-up;
++		output-low;
++	};
 +};
 +
- &usb_1_hsphy {
- 	status = "okay";
- 
-@@ -674,3 +717,7 @@ &usb_1_qmpphy {
- 	vdda-phy-supply = <&vreg_l18a_0p9>;
- 	vdda-pll-supply = <&vreg_l9a_1p2>;
- };
++&uart6 {
++	status = "okay";
 +
-+&usb_1_qmpphy_out {
-+	remote-endpoint = <&pm8150b_typec_mux>;
-+};
++	bluetooth {
++		compatible = "qcom,qca6390-bt";
++
++		vddrfacmn-supply = <&vreg_pmu_rfa_cmn>;
++		vddaon-supply = <&vreg_pmu_aon_0p59>;
++		vddbtcmx-supply = <&vreg_pmu_btcmx_0p85>;
++		vddrfa0p8-supply = <&vreg_pmu_rfa_0p8>;
++		vddrfa1p2-supply = <&vreg_pmu_rfa_1p2>;
++		vddrfa1p7-supply = <&vreg_pmu_rfa_1p7>;
++	};
+ };
+ 
+ &uart12 {
 -- 
 2.39.5
 
