@@ -1,78 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795189997;
-	b=oegsY4/cLEd21KNimsQfoOiA0F9VYGa4uaP4VmCsVavZnnu0lt2Imt8+g1G3IQii2vPK
-	 YM5Vw+zXGA7/hokqZck4Pw7o0b04LMC/h40KnG/7Vq+V+eT87B71423qH9LGFn0+qkSj3
-	 zQWVs7uM2FRRGkshDuhZrp++ge8ZNxTewpYN8djx78tnAexIlfDrHEQ9fNcxWphRUYvuR
-	 4J7w7ZpKA/Z/6UUFkb0YCktWv8bcwPDC71wtXuBD1CZoAFOElt7d6qdHq0/MEmHq4GTKA
-	 qkAPywibJlNmyR0A4j8fonflzMIFdhRUrvSqJwGsnrdldY3fMjjHBfn6uJU0LQ7Ba1g==
+	t=1795190003;
+	b=xxipbaT8rQd5qAAGU3Bf7q18MVMc+VdxkIkkqVCj35FhbAg/jq9Vi+pp18JW8Wf+JgwQ
+	 uI3GrBRBle9hQN9c9AIfrUta7SBBVbNcmDjqtEYYmv0koc1PZpLcGebWUmIuI3LF8J577
+	 5UeGgIdLQ/Z5bPDoHE2CO7+3TkTqxxOzq9Vw9qaioREbqhR0FvyKt6c7ivJCh3fqL6enF
+	 Nt00Vk73Mx7m2yzyxH44MKcMlG/t5bqx9/GUi/DmVZsJzujYGaczqkur2L1HK7kNFXdcG
+	 cFwr5/ORfXpLMZ1PR2Q98M7OiQlxAyH5Ti7R12XOCytNyBCa+qTo7+7yweLG3eDf1Zw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795189997;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795190003;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=6GxIMMOl6OT3BgP5yi9+28ovIws7tUAb4j0+aTl65xk=;
-	b=go1HU3MKpCrUtf4UTDS9yTtsJ3ChqwwsuIs4fxDDdSd5i9l1C/iYcz0ukvCzSOCpr+4+
-	 GMu9jOF5A+0xrgI6zOzCouhE0ucKrfIol5SaQvgv3hCpp6bYt0wk40i0CFKDPpKxQUIv6
-	 EVA0R2txL4SHxdNLGgMfTobNGntiT6XLxHp7VU0rhqrcj+I95+593K7DqgVzi+Cd+QowV
-	 +8WAd0t03//XyuWhMueWG9Q/6mH0u/IT562qXHxmJAlEVkhKlcQ8Qxo6WptKREGHvuH/O
-	 AR46dffbI+ZFn094+6OWzNwUS7JOUsuDKAQNnDSK8SGri7r+TkJ2moicGrNHXmgQRhQ==
+	bh=yMWSzz+HgYbOJph14sn/x3zQ0Ez4Ew70r+aZXVFze9U=;
+	b=cnKajaXH99X1I6sAVYim7Qt7syZ6t6yvrYQWjYrxa3MSxcRaOcOBAxGLyJPpdyduHsAF
+	 r+BtHS6VEvth4szfdkk36m1L2CqvIExHxAFQrfsshgGyI07ik0FMNGiBkBoIZdr33v1GH
+	 Fis7hw8gSvxjBDY1AEie47T7q8TM4Qx0cfET/rwqeJfCT9q35FWhSCOmB2SxK9Gg+ISWa
+	 HGuGKcN1OUkAAl0Oc0Qs1lqIgzw6x3iXFUmpB5N2Vfeu4mf/QxkGhdmLcV0JZagzNirt6
+	 sjGfNQp9MvBYwbfSq9wdC0WPh1RMvCdQAC3ywAKjpHThvNkc3diEO45mzJGFqoC5tBA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="I3d/r8iQ";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SNZTBTgd;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AC1606A33E;
-	Fri, 20 Nov 2026 15:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BDB606A330;
+	Fri, 20 Nov 2026 15:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I3d/r8iQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SNZTBTgd
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795189996;
-	b=L6C8/cdY9/vdu8h7tEmY0/W0vPDHX9BxL5DinFQnRjWr+jLdSVe72x/B2SAEUWfIACUC
-	 b04mfEaiIToTMFBeLmgywaObGgID8Uhp/Nh5uUfWArBO5laVaIgBdG4h7PYNYNd4V4c6i
-	 IozrPuxQSxiGOiptkfsRRT+zE0Knhso7xixyvmcFAhj74nrBLgnScTZytFgfv+vSLNDOa
-	 i+Odq0uiWI/+61VJV+DZVM3A4lxGcIvtqsxeQkX3nSW0lqOxtcg8G0XgJKFWHWTPgCnky
-	 szizyw80bAl4ySOIYBL0+UnQGzlcPbzr4YUNTCjKqcBW6Xe6jyQoptiTitGvtViExjA==
+	t=1795190003;
+	b=WMy6L4vABRB9SMpB+kXCm1v5SXqCICe1b+2UIria/xPBxG3EKZvsRk+xpXb7smiVFQXs
+	 tf/E+DH5FkPhid7U8sxBmD2eMVSZov07F33XtyG981QoFtDjaa7t511Q40kn7iCKR3Wph
+	 iGZNBxuzixyi48/xWfxKcl4s+8Wwd3+HE4xYVdcNWcwT1kUNFyWorJbP1T2Xq5RCrjNfw
+	 240tB2zn2xw4UawAfcvntS/aFo8nTOTDwJsJdgYnll8tK2sTM3Z75NrFvXMZ6Tg2TSVP3
+	 Ry4HuSEEZ5Fbj0jzuyF1BfT+TcLEOjdBREeDC4ZGweeSYz7Yh5RQrh9xRmxIAO1hA+Q==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795189996;
+	c=relaxed/relaxed; t=1795190003;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=6GxIMMOl6OT3BgP5yi9+28ovIws7tUAb4j0+aTl65xk=;
-	b=sJWhAso/kl1OW3im73tOu1HFJwA+MyXfA60eTLIwbsP+sWGniXAPgCQPW7nQgrzPobW6
-	 KsMc/7qgclSekcIL9iwWxbGZ8+77cTsfGwnBXdccOAVhld3EePI2ir37JwXncSsYx8WOk
-	 R70U2rdUoCM/UbEEdKP3h1zEHBMHhgJHwsFF0FPbE0IX26PThrtzokduopYLYlx4zcQiu
-	 CwmABOxta8HuUTxiLAY1On4h9b2UomiOAxbZYRkFEkmRugP7O9ens7ZvU5oElzVZF72iG
-	 NWkKIPecHY4jYGvFDVZQf3BYyuk710kejmmy/ZwGEpxYXOO4VpvYQL4WKeziqb9MsHg==
+	bh=yMWSzz+HgYbOJph14sn/x3zQ0Ez4Ew70r+aZXVFze9U=;
+	b=qkqDEU1pZU4qZjwUv9yZ5+qDcLBIP1XwEsF0Sxz/va7rxjBGJW6kDZnHcJmnMvd2NeAj
+	 iCjqQMEhBWMxiKJqR5PL7CSNfA6fqyUl3X602OxXsiCla4kS4S9ut0eFZO805v1CK+nHr
+	 2DAxxGmjk7uJzIlvUWOzDB5IxD5yOXTtauPGFZ7nEvzYShG3OZpqrVXBKX+VN+M9a7L9H
+	 acwXE/hkP5dplRTM1ho/8lUm55iKNx8lO5bWYkXcrIq84l35ZIEwfitXme9Y6vNioC2de
+	 mKIL6P4TsI8YErtA7Eu7+Le6byrfiNmsEjQX82fgZ39cZ1nkDL3wD4pcXmXKTkWus8g==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 2BDF61F00A3C;
-	Fri, 20 Nov 2026 15:53:05 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 272661F00ADF;
+	Fri, 20 Nov 2026 15:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795189996;
-	bh=6GxIMMOl6OT3BgP5yi9+28ovIws7tUAb4j0+aTl65xk=;
+	s=k20260515; t=1795190003;
+	bh=yMWSzz+HgYbOJph14sn/x3zQ0Ez4Ew70r+aZXVFze9U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=I3d/r8iQWUoAddGOSutWRUnkddqijh5r09+PecDW544LGo585pV4TIgnwrHsNE/Vf
-	 rvzhKgcedx7y0M5PyBflT1W4s2mweqybHgec0BJ4DuvKAr7Hyai5lSGdKomhxWmxM2
-	 zGE8rzqsm1JqfwQ3Khuqumurj5fqvgH4vjHDBb8WbP1BT+QezeUDTvjX7a8MBdMPMO
-	 5hcRUQ/hjfmL97vBmM3ZLhVEIQeaAqBjHOop3zqFy4/b31UkaQeJn49c2nOKL2Xo2y
-	 +wltaB3PGn5U81MYUTaX+ztzYFeg8XlPs44QCJcaHjGiO8AOc67Xdiz/rGrg5cK+6p
-	 l3/Ep4fdm3Zew==
+	b=SNZTBTgd0xgaMY7yTaXbBZ+JD6tvoe2E/l64Af8pr6ODRMYXLDHOSWg4mkBuBaQVC
+	 OTwoL0F0Fd/8Qtp1PhqFAmf0yNom431JkbM7FFYlcpyTI6B7nMvy8bEC0a3dBYVIXh
+	 1UPYwizT/8lV0Med5AN8aE5TP6ZC45gjLsED2ZRvOk/I19W3Q9HExUkDSpger7srGY
+	 L/5VBadY9YvJkUneA1+12pw8H+6cXJyylnoNszulvm6dnr4w8g75KWEH/P/Pv2R8VI
+	 oKe6PShZi2eO7YabGcxu04CWjRpTqBS0LNl0Z04oA0waJvwUti2UTfmMdXb4GQZRzI
+	 dfRFtBTIVFFAw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id B18AA4991F;
-	Fri, 20 Nov 2026 15:53:04 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 6235549946;
+	Fri, 20 Nov 2026 15:53:05 +0000 (UTC)
 From: Venkat Yadlapati via B4 Relay <devnull+venkat.yadlapati.yahoo.com@kernel.org>
-Date: Fri, 20 Nov 2026 21:23:03 +0530
-Subject: [PATCH v3 01/11] dt-bindings: arm: qcom,ids: Add SoC ID for SM8845
+Date: Fri, 20 Nov 2026 21:23:10 +0530
+Subject: [PATCH v3 08/11] arm64: dts: qcom: kaanapali: Add the second DSI
+ controller and PHY
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,7 +84,7 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-molokai-soc-v3-1-403d763685d9@yahoo.com>
+Message-Id: <20261120-molokai-soc-v3-8-403d763685d9@yahoo.com>
 References: <20261120-molokai-soc-v3-0-403d763685d9@yahoo.com>
 In-Reply-To: <20261120-molokai-soc-v3-0-403d763685d9@yahoo.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -97,11 +98,11 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795189983; l=789;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795189983; l=3401;
  i=venkat.yadlapati@yahoo.com; s=20261023; h=from:subject:message-id;
- bh=itNkOBsn5zBXIqWfZ31vPjkOQIWmU2w3sGj2sszfkTE=;
- b=tDORZz76Q7I2nv9Eap1OWBYBdurn8FBNZgsHXeQzj8N5Dc8hGmkT1JyTRApmS1gPWCAcN5wOg
- +CvgxWdD8aMBv2r79JFQkFmW2pYBe8fQ6Pe5UP2HwuluO/sKNuB2j+u
+ bh=iFsYs/9s0sJxlpMmr425F1RnSAWZKOQUHiFZ0c+GAms=;
+ b=MGTRqK3GIYYwblPk4QsssioF1xIrl7ULKNLkLcmgYiqcORuYuoZ1RqjCTOJIDVMEWp/4gUfeV
+ 3n0EGngZ/JRDQSOA4PBG5dgf6k/CgJavGmEAKiiGkPXb1iFNVERB4ol
 X-Developer-Key: i=venkat.yadlapati@yahoo.com; a=ed25519;
  pk=e8KStCtEMvUP1Se/riB/KVnDAQFEVR2Dw2PcuA8/eME=
 X-Endpoint-Received: by B4 Relay for venkat.yadlapati@yahoo.com/20261023
@@ -112,27 +113,130 @@ Content-Transfer-Encoding: 7bit
 
 From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 
-Add the ID of the Qualcomm SM8845 (Molokai), a variant of the SM8850
-(Kaanapali), as the Motorola Signature reports it in SMEM. socinfo uses
-it to report the SoC by name.
+Kaanapali has two DSI controllers. Describe DSI1 and its PHY next to
+DSI0, connect it to the INTF2 output of the display processor and feed
+the PHY's byte and pixel clocks to the display clock controller.
 
 Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 ---
- include/dt-bindings/arm/qcom,ids.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/kaanapali.dtsi | 90 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 88 insertions(+), 2 deletions(-)
 
-diff --git a/include/dt-bindings/arm/qcom,ids.h b/include/dt-bindings/arm/qcom,ids.h
-index d89d3b5dd00c..5e4af9edcd77 100644
---- a/include/dt-bindings/arm/qcom,ids.h
-+++ b/include/dt-bindings/arm/qcom,ids.h
-@@ -300,6 +300,7 @@
- #define QCOM_ID_QCS8275			675
- #define QCOM_ID_QCS9075			676
- #define QCOM_ID_QCS615			680
-+#define QCOM_ID_SM8845			685
- #define QCOM_ID_SA8797P			690
- #define QCOM_ID_SM8975			707
- #define QCOM_ID_CQ7790M			731
+diff --git a/arch/arm64/boot/dts/qcom/kaanapali.dtsi b/arch/arm64/boot/dts/qcom/kaanapali.dtsi
+index 132577d540bf..0c4b6a8b32b5 100644
+--- a/arch/arm64/boot/dts/qcom/kaanapali.dtsi
++++ b/arch/arm64/boot/dts/qcom/kaanapali.dtsi
+@@ -3709,6 +3709,7 @@ port@1 {
+ 						reg = <1>;
+ 
+ 						dpu_intf2_out: endpoint {
++							remote-endpoint = <&mdss_dsi1_in>;
+ 						};
+ 					};
+ 
+@@ -3868,6 +3869,91 @@ mdss_dsi0_phy: phy@9ac1000 {
+ 
+ 				status = "disabled";
+ 			};
++
++			mdss_dsi1: dsi@9ac3000 {
++				compatible = "qcom,kaanapali-dsi-ctrl", "qcom,mdss-dsi-ctrl";
++				reg = <0x0 0x09ac3000 0x0 0x1000>;
++				reg-names = "dsi_ctrl";
++
++				interrupts-extended = <&mdss 5>;
++
++				clocks = <&dispcc DISP_CC_MDSS_BYTE1_CLK>,
++					 <&dispcc DISP_CC_MDSS_BYTE1_INTF_CLK>,
++					 <&dispcc DISP_CC_MDSS_PCLK1_CLK>,
++					 <&dispcc DISP_CC_MDSS_ESC1_CLK>,
++					 <&dispcc DISP_CC_MDSS_AHB_CLK>,
++					 <&gcc GCC_DISP_HF_AXI_CLK>,
++					 <&mdss_dsi1_phy DSI_PIXEL_PLL_CLK>,
++					 <&mdss_dsi1_phy DSI_BYTE_PLL_CLK>,
++					 <&dispcc DISP_CC_ESYNC1_CLK>,
++					 <&dispcc DISP_CC_OSC_CLK>,
++					 <&dispcc DISP_CC_MDSS_BYTE1_CLK_SRC>,
++					 <&dispcc DISP_CC_MDSS_PCLK1_CLK_SRC>;
++				clock-names = "byte",
++					      "byte_intf",
++					      "pixel",
++					      "core",
++					      "iface",
++					      "bus",
++					      "dsi_pll_pixel",
++					      "dsi_pll_byte",
++					      "esync",
++					      "osc",
++					      "byte_src",
++					      "pixel_src";
++
++				operating-points-v2 = <&mdss_dsi_opp_table>;
++
++				power-domains = <&rpmhpd RPMHPD_MMCX>;
++
++				phys = <&mdss_dsi1_phy>;
++				phy-names = "dsi";
++
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						mdss_dsi1_in: endpoint {
++							remote-endpoint = <&dpu_intf2_out>;
++						};
++					};
++
++					port@1 {
++						reg = <1>;
++
++						mdss_dsi1_out: endpoint {
++						};
++					};
++				};
++			};
++
++			mdss_dsi1_phy: phy@9ac4000 {
++				compatible = "qcom,kaanapali-dsi-phy-3nm";
++				reg = <0x0 0x09ac4000 0x0 0x1cc>,
++				      <0x0 0x09ac4200 0x0 0x280>,
++				      <0x0 0x09ac4500 0x0 0x400>;
++				reg-names = "dsi_phy",
++					    "dsi_phy_lane",
++					    "dsi_pll";
++
++				clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
++					 <&rpmhcc RPMH_CXO_CLK>;
++				clock-names = "iface",
++					      "ref";
++
++				#clock-cells = <1>;
++				#phy-cells = <0>;
++
++				status = "disabled";
++			};
+ 		};
+ 
+ 		dispcc: clock-controller@9ba2000 {
+@@ -3887,8 +3973,8 @@ dispcc: clock-controller@9ba2000 {
+ 				 <0>,
+ 				 <&mdss_dsi0_phy DSI_BYTE_PLL_CLK>,
+ 				 <&mdss_dsi0_phy DSI_PIXEL_PLL_CLK>,
+-				 <0>,
+-				 <0>;
++				 <&mdss_dsi1_phy DSI_BYTE_PLL_CLK>,
++				 <&mdss_dsi1_phy DSI_PIXEL_PLL_CLK>;
+ 
+ 			power-domains = <&rpmhpd RPMHPD_MMCX>;
+ 			required-opps = <&rpmhpd_opp_low_svs>;
 
 -- 
 2.56.1
