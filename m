@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795174869;
-	b=t1Wc9G4PiU1tsGnjSDQXW5qM5fLx9ye7vDQwsxfu8GBxvb82fZ/u+2XCeewgjHrxhy8F
-	 Woapp1K69jeGiHlJJmDvY3MHJBCztT4+K/rl78bqkHOl9sP6doGpWO6QwQmlOJtHn9mRg
-	 fIpRHgIjcpUk3VN4y+RkyXIG/Smjw7ImJOu91PnIooC8yvKt5ZAjio+so6C9g0C5GvXf8
-	 qq6Dpw9TnyXPMoAV5SiXGKVC7PF4IsJmV5BTeK+KjiUxDRnGHBNPVdyDEqMAtiEH7l9Gw
-	 +LrkKI9Epjq0gLZcbX6Y8fEfZ3nXR1syuS1IVOWczMe92xWE+C6KJOkeeAaK/rfbFyA==
+	t=1795174871;
+	b=qvd1dVvRlVB/OpKWCJb43OBAtWoBmh9dc0Jo0aUvUXfawDH7i55paPWVvjrZMGvZYPfH
+	 3E7ji7I9HkKCkehculjYAlvJvbtRhzIst5OJ2ie56Nk5JrWqrwmtLW2qIEBOTuDZ6LL+7
+	 eMPMqxVM22GilxNcneO23sh4Fmr+G88FQhYLcmKI0FifRSNyZCW7TpqIp3uZVocr4GCbD
+	 7yeWJs52JiA5ZLGumy02ALqjIuYOFPyJGq/MN71G+Y1iwmQ9e4dpYIHnFYOjnHtSGE89O
+	 jPgKvw5YkDC4VZ/mg+P0HGtdtLFYbkXtZiO29HCBM/7l/jtQ68YI734pRxq/JUEtZPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795174869;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795174871;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=N+qZJp3IOLR8W+jXWOKTm3fVJRlvPeQHbpUSJTeUQL8=;
-	b=v8oFYb9Xntgn8VUcxwpOSzLaOGAnrqZY0H583WUNmj89Pyrp30wKydY1jYKYokbtoN/Z
-	 +TK96Yahx4QGCPCdewdB9i/Ho+zrxH4mXv/Zk2Ztk/hQ0yFm6VcDMVLYUzOz0FHBs5AQO
-	 EMMMayf+wvW8kbZylSiJeu5Hznd79elQs0tucUm291wujEWG56F24rBs1LBz6H6CgMHTA
-	 0J6gvluYCQs51Gn+29QjRbM16k8lE86jh9Uo7iKIhLQNCFGkhnlgtopvd8vPjrtJECoFW
-	 WS+sJXayWvys0kGdll9sXJUNey0vvRL6St8VgbsH7P9PYZivJI5JGC3sf9v8GPD5evg==
+	bh=FRDowpMlxsSqGbMH8/hR7UxeXY/jVu9wL78Xe7fTNcM=;
+	b=PqAOO1JtHXYROOFr7RCE1TLQ3uqpVyEW3YZaDCjwvVkc5M04vXRlfMpqrWpP6S5/UzyU
+	 61V/vcVfWFgSxEKTEEVuC1H9jBC8ADtw83lTSguJk2xe/461z5WPEB9YV7a8OOtFiQdTS
+	 3/DzOEl6Gj5x2jKigrWWX2qylXFxSMpyj6AorLKYpcenepBPN45u7Qq4kIMuv3qwQ/E7t
+	 S/EzrmkPfQ42fM6x6crBblLswbzFYjqkoo7bTovs9FEc3lFJi6ESYPDp5+KdKwpBXAOA1
+	 oqDnMd45z4x9RKL9RruaflaKQmgS2OC1hmG/5yDfp4zXkIXX1ONy2mX5Bu5slDimISA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=isPgHmkH;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qWuJxCkP;
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AF1606A331
-	for <phone-devel@vger.kernel.org>; Fri, 20 Nov 2026 11:41:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42AF1606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9F9606A33B
+	for <phone-devel@vger.kernel.org>; Fri, 20 Nov 2026 11:41:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C9F9606A33B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=isPgHmkH
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4bb6c7b6dbdso7956715e9.0
-        for <phone-devel@vger.kernel.org>; Fri, 20 Nov 2026 03:41:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qWuJxCkP
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48e46e449e8so504980f8f.3
+        for <phone-devel@vger.kernel.org>; Fri, 20 Nov 2026 03:41:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795174866; x=1795779666; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795174868; x=1795779668; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=N+qZJp3IOLR8W+jXWOKTm3fVJRlvPeQHbpUSJTeUQL8=;
-        b=isPgHmkHV9iIYt+n7ShKmBawSwEeRIaHOEnivt4vsy8h1bDt1sj4FlWf3hTPlSsP05
-         vdaul1NIZAYpm1OXH1yBtHJx6n+2R5iNAa+VgFgqspJcCGIYeY9dNg78FCUBMUgen6xi
-         oAK5f0EnOVnuEZ08WHKLwBFf8X2+nry8/3Hg53LsjgKV8ZXoMidErWSS5AY9torwZdCF
-         DUkn4mTHKRKTBwpmAFqLusqW4m0GNIqft/7jzBdlYRln8O+d6ze/dqOcwpypU/O7oKBT
-         LZnBRAimH5ChiPKK7BLnIe0heEKK8Og0SoWRcKroAGjFYva1y7as1weBDcCfOBK0XBhi
-         6sbw==
+        bh=FRDowpMlxsSqGbMH8/hR7UxeXY/jVu9wL78Xe7fTNcM=;
+        b=qWuJxCkPBVay44C53gnGY3OUn49m+4YS8owwqGcIdfgGAEU8rj2AkdN1REXOmU6pj1
+         Q1P99GAoDLkjWTukfZEeVORlqKmPFoOb1vKuhhrejXneCniNfG6VZsChN+j6ihREa097
+         aoWLwMf2jiqbVhtfkeoth7l83SffoQOIa5VWNNc4lku9BF2uuCwXnNbVOO01gG6nt/5+
+         mYHBEkGA2t6yi8Bbugnbzy0gr/4lSJt/Bin39rfSE5pWKalQjxjLeOaYC4GwAdh20J+O
+         G19iOuw3bz7smf6JYnzltJNHLvs3QfCTCnee5Mzr8XuBmXszxcKKbhuEg/E4dtLqZNiT
+         t8lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795174866; x=1795779666;
+        d=1e100.net; s=20260707; t=1795174868; x=1795779668;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=N+qZJp3IOLR8W+jXWOKTm3fVJRlvPeQHbpUSJTeUQL8=;
-        b=Pv7A+t6AUKQ9Hk0Bdkb38gPKe6vVGFMgpCW/hTH7+eo5GVt8BeETkLYExAjvpCgsGB
-         r651op6HY3tLE1GShC4UEr5CEmrvp6qmATdXT8sa/HM4/Qp54hV3jRc6BpbAAP0nwfKr
-         BVFni5gAQyncBpVlV99VpMo22OC4gByyGtp41JIhtH9/1ZxN6y76gHv8ZeKim0b2buM+
-         ZicyPYXp9oyhKSpyR90PokD4bcnjbBeIbF+UzR9orFnzBzY+MU3cif+yD8DGM7r3wA2L
-         q0X+WUDx9lnprCXdfSwmsMPbTf3NbOeWutOF3jhnqPWOW2MW2T07UOYNkKU/Cw3/JRdb
-         ed4A==
-X-Forwarded-Encrypted: i=1; AL+hErEkt2h1EQLrBkiqZMzeW+PYjBcFDIKHitTHm/1Q4ZXvMXZhUI7ncfXEkRKOzcRTopPvje2lI/JQA4Dj2w==@vger.kernel.org
-X-Gm-Message-State: APuU4Z82K7tFcCkdAmhwyccnDCVt39whaSubcfKtGlB0NYblZG70Cr4d
-	oAn4QJymqBnhHhQrefVD0qa41HG7Lc4gji+/CvZdAZTAtTNnuZDvRrPx
-X-Gm-Gg: AYBFou0SngBNCN9RQHfQb6//sq0kHOb6ZnoLu+oPyxvX9xmiD2UUpT1k8mwHlLQ/D9X
-	lT/+Ggoq1sfHyDUSnwZ2u8cWTwKTywKYLOXwf3wOY5uEtACzBE/RErVSc0AqSH7OfWoDqQMpT8B
-	Ar8hot8Ew/SAeH/qYEpNV9iMA/JwgpLGAHTdKFadwWCyQxf6rogxyEQH2Z1s5YDOX8Y+0nbyAQh
-	dFhbkyN3DZlDAR36BDGF6BjLeLHj8jXCOROoKLUQXhKlBer0ApfJ55M6rloJ20WmPvopoa5btv8
-	NikRW9wdu0v3X8EvfoOJGTu+Y2kirafYuKyXxLLUxUWUPB2cYVTY9JJJscC/9fnjW6ITFAOqf0+
-	C8SRG4POvvFx0tpmOQzL4IPVORBF9cfbBSZpd4DVZOmxF6+YnUcun9nTlfXvoFkyVtxWAvZQxTc
-	JaAWGD4334RJGyAX7nuzFWC7kLzmt/6jWxhl0Wr2B1iHZOUaCqRcBmqe6Im4wHMZPzvQ8CBERkD
-	yVW5qU4xSIBoWHk2QCuOzSW0jVPtjUDHR0/rAvlGr+8SE/jjOf0pQrSSOuWccJN2mRmrIx6n9hS
-	IIiXu7swrfpq8sKsHx0NMLSRbw==
-X-Received: by 2002:a05:600c:848a:b0:4bb:6626:5a25 with SMTP id 5b1f17b1804b1-4bb88813462mr53820315e9.20.1795174866206;
-        Fri, 20 Nov 2026 03:41:06 -0800 (PST)
+        bh=FRDowpMlxsSqGbMH8/hR7UxeXY/jVu9wL78Xe7fTNcM=;
+        b=cBQCb/twqFp04NzyB6R/jIDwGXVv66t2THbzn7gjfV/Y/gXZdN/4QKR3MNTPGrkYPD
+         K6EvdyH73EqwkyOwApHMT3LQQBUQel+3tXp+9IkZeuPJ63CE8OJMBi3jHsVxeGqXNArH
+         6tVzSpCpF4aXIwiVNhX5CjLGunH2JL1PpZacw56V0XDPRm02AbgmQiPTtAn1+qD8Q7Yn
+         +vYE4L+mzK40Esgk/I+K8ySrRfOhclcru/PVyF+gcIxdEZnFzUNPTmdtzmfMSQzikzmX
+         Kn4C4sAlapFKbVR+dx7BMi0rPGDohgGDbTpvYbmvvnxIy0t6spHeLfSkVXBsu3jV8BuW
+         qjAg==
+X-Forwarded-Encrypted: i=1; AL+hErGsarxLeJaRfA+01zA3mSELJi/FZ9q4222PaTp8nKetzKLbrGOmhbHugny/eKeZXBncU9IE9B/rje95cQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8z9mX57BOSs3CrvtybLvHGZN5wIbcXVPx5/7QZpBNr8Yj6MSUD
+	FuirXQhLTXeHE4yKV+/dF5mjFuF40/HpUY+cqe7u2aj5ZTSJfnp8S7nEcJbi12zqAH+Qkw==
+X-Gm-Gg: AYBFou2djP1ri/N3jiNzak+r/60KGspkvGzFw9EEfCPShghy0kErlrTLDJFW1gEsYYh
+	gdMNry4AjeM7KR3yitz7AJAGqXYMM6keqsKvEpFDGnpiiOFC7CBy4GeuQ7a8eRykjhvpuYs1uQ8
+	UZH8qebyAziBODjoS5QY8S7/gwx/DelCuZbR3m4TZ+aQAJI9kyjswP01sHPXWHtUwsu4ghLC6oy
+	SEOhSk5f0ZVi0akHrSYPpY4y8icKzWIHao/WhNP6nailYx77kXnj4l4gR+qfUGdr9Q8Q3vnxBqF
+	s06IXxN1zqkPDNe13cNtO5Qp2ZgkGChD3GNWugGcqJWTz4QaotdBlNrdbMCCbb0rIvFyeQuSc9z
+	eD1ureyNSiezH9ykzXzVeYikZebS5PDeLlb+Wylwnlt3AGrKpTetLKwaaL6BQyPc+fLl4y7Vk3r
+	2vUNyu63KtLKAl1ATZyN1bU7aHHsg2dScbyb4WWNc38aL8UqljC+beMORtJYpECJvipZ3u8g2Qf
+	ORdMqWNSwu7GXZz24QK+kHCRTIrqxY8w6LFSTVibLvD+30LBNsDWsSXzcbNmYndaGJ8n/Jk41cE
+	LKVLLyYNawRUc/Ziwtn+H/my0CkAVGVc+ccFXOG20V4kA8A=
+X-Received: by 2002:a05:600c:1c0e:b0:4a1:ddaa:571e with SMTP id 5b1f17b1804b1-4bb88824f38mr70578725e9.15.1795174868275;
+        Fri, 20 Nov 2026 03:41:08 -0800 (PST)
 Received: from dl360p ([130.61.107.245])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb8d4f9aa8sm27419345e9.4.2026.11.20.03.41.04
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb8d4f9aa8sm27419345e9.4.2026.11.20.03.41.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 03:41:05 -0800 (PST)
+        Fri, 20 Nov 2026 03:41:07 -0800 (PST)
 From: =?UTF-8?q?Adil=20H=C3=BCsrev=20Tepe?= <tadilhusrev@gmail.com>
 To: neil.armstrong@linaro.org,
 	jesszhan0024@gmail.com,
@@ -96,9 +96,9 @@ Cc: maarten.lankhorst@linux.intel.com,
 	phone-devel@vger.kernel.org,
 	u.kleine-koenig@baylibre.com,
 	=?UTF-8?q?Adil=20H=C3=BCsrev=20Tepe?= <tadilhusrev@gmail.com>
-Subject: [PATCH v4 1/2] dt-bindings: display: panel: add Novatek NT36525
-Date: Fri, 20 Nov 2026 14:40:59 +0300
-Message-ID: <20261120114100.978148-2-tadilhusrev@gmail.com>
+Subject: [PATCH v4 2/2] drm/panel: add Novatek NT36525 panel driver
+Date: Fri, 20 Nov 2026 14:41:00 +0300
+Message-ID: <20261120114100.978148-3-tadilhusrev@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261120114100.978148-1-tadilhusrev@gmail.com>
 References: <20261116070212.314228-1-tadilhusrev@gmail.com>
@@ -115,130 +115,596 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a DT binding for MIPI-DSI video-mode panels based on the Novatek
-NT36525 controller, as fitted on the Samsung Galaxy XCover5 (SM-G525F,
-Exynos850). The panel reset (RESX) is active-low, and the panel needs
-three separate supplies (vdd/vpos/vneg) plus an optional backlight.
+Add a DRM panel driver for MIPI-DSI video-mode panels based on the
+Novatek NT36525 controller, as fitted on the Samsung Galaxy XCover5
+(SM-G525F): 720x1480, active-low reset (RESX), and a DCS init
+sequence that mirrors the stock Samsung bring-up. Backlight is handled
+through the common drm_panel_of_backlight() path.
+
+Tested on a Samsung Galaxy XCover5 running 7.4-rc3 plus this driver
+and the matching DTS/binding: debugfs reports the reset gpio as
+ACTIVE LOW, and the DSI panel connector probes and reports
+"connected", with /sys/class/backlight/ present and readable
+(re-confirmed 2026-11-20, kernel 7.4.0-rc3-00023-gdcb8b91fb779+ #32,
+after rebasing our local tree from 7.4.0-rc1 to the real 7.4-rc3 tag).
 
 Signed-off-by: Adil Hüsrev Tepe <tadilhusrev@gmail.com>
 ---
-v3 -> v4: no changes to this binding.
+v3 -> v4 (addressing Uwe Kleine-König's review of v3,
+https://lore.kernel.org/all/20261117173319.1852638-3-tadilhusrev@gmail.com/):
+- Drop <linux/mod_devicetable.h> (pulled in transitively; of_device_id
+  and MODULE_DEVICE_TABLE(of, ...) still build clean without it).
 
-v2 -> v3: no content change. Resent as a fresh, standalone patch
-(previously v2 1/2 was a diff on top of v1's own patch instead of a
-complete patch against mainline, which Krzysztof Kozlowski correctly
-flagged as a git-management mistake on my part; see the cover letter).
+v2 -> v3: no functional change. v2 was mistakenly sent as a diff on
+top of v1's own (unmerged) patch instead of a complete, standalone
+patch against mainline, which Krzysztof Kozlowski correctly flagged
+as a git-management mistake on my part (see the cover letter). This
+resends the full driver as a single patch, folding in every v1 -> v2
+fix below, and fixes a Kconfig help-text typo ("active-high" ->
+"active-low") left over from v1 that v2 never corrected.
 
 v1 -> v2 (addressing Sashiko AI's review of v1,
-https://sashiko.dev/#/patchset/20261116070212.314228-1-tadilhusrev@gmail.com?part=1):
-- reset-gpios is the physical RESX pin, which is active-low (asserted
-  low, released high); describe it as such (GPIO_ACTIVE_LOW in the
-  example) instead of GPIO_ACTIVE_HIGH. The matching driver fix is in
-  "drm/panel: add Novatek NT36525 panel driver".
-- Add vpos-supply and vneg-supply: the driver requests three separate
-  regulators ("vdd", "vpos", "vneg"), but the binding only declared
-  "vdd-supply".
-- Add backlight: true so dtbs_check accepts the backlight property the
-  driver already parses via drm_panel_of_backlight(), instead of
-  switching additionalProperties to unevaluatedProperties (which would
-  also pull in every other panel-common.yaml property, not just this
-  one).
-- Fold the compatible string into a single, driver-matching value
-  (novatek,nt36525-xcover5) instead of samsung,xcover5-nt36525, which
-  never matched the driver's of_match_table at all.
+https://sashiko.dev/#/patchset/20261116070212.314228-1-tadilhusrev@gmail.com?part=2):
+- Set prepare_prev_first = true before drm_panel_add(). Without it,
+  drm_atomic_bridge_chain_pre_enable()/post_disable() call this panel's
+  prepare()/unprepare() on the wrong side of the DSI host bridge's own
+  enable/disable, which host_transfer() rejects on bridge-based hosts
+  (e.g. samsung-dsim).
+- Fix the reset_gpio polarity: the driver drove the physical level
+  directly instead of using gpiod logical values, which inverts under
+  the GPIO_ACTIVE_LOW DT flag added in the matching binding patch.
+  RESX is active-low (the 1-0-1 physical pulse the vendor sequence
+  describes); switch the DT flag and all gpiod_set_value_cansleep()/
+  devm_gpiod_get() calls to logical values with the same physical
+  outcome.
+- Request the "vpos" and "vneg" regulators the driver already needed
+  (matching the binding fix) so dtbs_check and probe agree.
+- Use drm_connector_helper_get_modes_fixed() in nt36525_get_modes()
+  instead of open-coding drm_mode_duplicate() + drm_mode_set_name() +
+  manual display_info updates and returning -ENOMEM on failure (which
+  drm_helper_probe_get_modes() logs as an error; the helper returns 0
+  instead).
+- Rename the compatible string to novatek,nt36525-xcover5, matching
+  the fixed binding; the old samsung,xcover5-nt36525 never matched
+  this driver's of_match_table.
 ---
- .../display/panel/novatek,nt36525.yaml        | 83 +++++++++++++++++++
- 1 file changed, 83 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/panel/novatek,nt36525.yaml
+ drivers/gpu/drm/panel/Kconfig                 |  13 +
+ drivers/gpu/drm/panel/Makefile                |   1 +
+ drivers/gpu/drm/panel/panel-novatek-nt36525.c | 490 +++++++++++++++++++++
+ 3 files changed, 504 insertions(+)
+ create mode 100644 drivers/gpu/drm/panel/panel-novatek-nt36525.c
 
-diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36525.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36525.yaml
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index 7a520b4d6..bfcac173f 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -676,6 +676,19 @@ config DRM_PANEL_NOVATEK_NT36523
+ 	  around the Novatek NT36523 display controller, such as some
+ 	  Boe panels used in Xiaomi Mi Pad 5 and 5 Pro tablets.
+ 
++config DRM_PANEL_NOVATEK_NT36525
++	tristate "Novatek NT36525 DSI panel for Samsung Galaxy XCover5"
++	depends on GPIOLIB
++	depends on OF
++	depends on DRM_MIPI_DSI
++	depends on BACKLIGHT_CLASS_DEVICE
++	help
++	  Say Y here if you want to enable support for the Novatek NT36525
++	  720x1480 MIPI-DSI video-mode panel, such as the one fitted on the
++	  Samsung Galaxy XCover5 (SM-G525F). The panel uses an active-low
++	  reset (RESX) and a DCS initialisation sequence that mirrors the stock
++	  Samsung bring-up.
++
+ config DRM_PANEL_NOVATEK_NT36532
+ 	tristate "Novatek NT36532-based MIPI-DSI panels"
+ 	depends on OF
+diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
+index da5175909..46de72db7 100644
+--- a/drivers/gpu/drm/panel/Makefile
++++ b/drivers/gpu/drm/panel/Makefile
+@@ -65,6 +65,7 @@ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT35532) += panel-novatek-nt35532.o
+ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT35560) += panel-novatek-nt35560.o
+ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT35950) += panel-novatek-nt35950.o
+ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36523) += panel-novatek-nt36523.o
++obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36525) += panel-novatek-nt36525.o
+ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36532) += panel-novatek-nt36532.o
+ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36536) += panel-novatek-nt36536.o
+ obj-$(CONFIG_DRM_PANEL_NOVATEK_NT36672A) += panel-novatek-nt36672a.o
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36525.c b/drivers/gpu/drm/panel/panel-novatek-nt36525.c
 new file mode 100644
-index 000000000..9158125c9
+index 000000000..9f6f60a04
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36525.yaml
-@@ -0,0 +1,83 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/novatek,nt36525.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/gpu/drm/panel/panel-novatek-nt36525.c
+@@ -0,0 +1,490 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Novatek NT36525 MIPI DSI panel driver for the Samsung Galaxy XCover5
++ *
++ * Panel timing and the DCS initialisation sequence are taken from the
++ * Samsung GPL kernel release for the SM-G525F
++ * (drivers/video/fbdev/exynos/panel/nt36525/nt36525_xcover5_panel.h).
++ */
 +
-+title: Novatek NT36525 MIPI-DSI panel
++#include <linux/delay.h>
++#include <linux/gpio/consumer.h>
++#include <linux/module.h>
++#include <linux/regulator/consumer.h>
 +
-+maintainers:
-+  - Adil Hüsrev Tepe <tadilhusrev@gmail.com>
++#include <video/mipi_display.h>
 +
-+description:
-+  A MIPI-DSI video-mode panel driven by a Novatek NT36525 controller,
-+  720x1480. The first compatible string names the specific panel as fitted
-+  in a device; the second is the NT36525 controller it is based on. The
-+  panel reset (RESX) is active low.
++#include <drm/drm_mipi_dsi.h>
++#include <drm/drm_modes.h>
++#include <drm/drm_panel.h>
++#include <drm/drm_probe_helper.h>
 +
-+allOf:
-+  - $ref: panel-common.yaml#
++struct nt36525 {
++	struct drm_panel panel;
++	struct mipi_dsi_device *dsi;
++	struct regulator *vdd;		/* vdd_ldo28, 1.8 V */
++	struct regulator *vpos;		/* LCD positive bias */
++	struct regulator *vneg;		/* LCD negative bias */
++	struct gpio_desc *reset_gpio;	/* panel RESX, active-low; gpiod value 1 = asserted */
++};
 +
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - novatek,nt36525-xcover5
-+      - const: novatek,nt36525
++static inline struct nt36525 *panel_to_nt36525(struct drm_panel *p)
++{
++	return container_of(p, struct nt36525, panel);
++}
 +
-+  reg:
-+    maxItems: 1
-+    description: DSI virtual channel
++/* XCover5 panel timing, exact from Samsung DTS node. 720x1480@60. */
++static const struct drm_display_mode nt36525_xcover5_mode = {
++	.clock		= (720 + 128 + 20 + 130) * (1480 + 18 + 2 + 232) * 60 / 1000,
++	.hdisplay	= 720,
++	.hsync_start	= 720 + 128,			/* HFP */
++	.hsync_end	= 720 + 128 + 20,		/* HSA */
++	.htotal		= 720 + 128 + 20 + 130,		/* +HBP */
++	.vdisplay	= 1480,
++	.vsync_start	= 1480 + 18,			/* VFP */
++	.vsync_end	= 1480 + 18 + 2,		/* VSA */
++	.vtotal		= 1480 + 18 + 2 + 232,		/* +VBP */
++	.width_mm	= 59,				/* from panel size node */
++	.height_mm	= 121,
++	.type		= DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
++};
 +
-+  reset-gpios:
-+    maxItems: 1
++static int nt36525_on(struct nt36525 *p)
++{
++	struct mipi_dsi_multi_context ctx = { .dsi = p->dsi };
 +
-+  vdd-supply:
-+    description: panel logic power supply (vdd_ldo28, 1.8V)
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x20);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x00, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x01, 0x55);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x03, 0x55);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x05, 0xa9);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x07, 0x73);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x08, 0xc1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0e, 0x91);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0f, 0x5f);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1f, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x69, 0xa9);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x94, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x95, 0xeb);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x96, 0xeb);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x24);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x00, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x04, 0x21);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x06, 0x22);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x07, 0x20);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x08, 0x1d);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0a, 0x0c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0b, 0x0d);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0c, 0x0e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0d, 0x0f);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0f, 0x04);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x10, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x12, 0x1e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x13, 0x1e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x14, 0x1e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x16, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1a, 0x21);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1c, 0x22);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1d, 0x20);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1e, 0x1d);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x20, 0x0c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x21, 0x0d);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x22, 0x0e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x23, 0x0f);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x25, 0x04);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x26, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x28, 0x1e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x29, 0x1e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x2a, 0x1e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x2f, 0x09);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x30, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x33, 0x07);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x34, 0x09);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x37, 0x33);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x39, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3a, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3b, 0x94);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3d, 0x92);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4d, 0x12);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x4e, 0x34);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x51, 0x43);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x52, 0x21);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x55, 0x86);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x56, 0x34);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5a, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5b, 0x94);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5c, 0xc0);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5d, 0x06);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5e, 0x0c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5f, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x60, 0x80);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x61, 0x72);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x64, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x82, 0x0a);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x83, 0x0c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x85, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x86, 0x51);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x92, 0xba);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x93, 0x12);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x94, 0x0a);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xab, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xac, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xad, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xaf, 0x04);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb0, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb1, 0xb5);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x25);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0a, 0x82);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0b, 0x50);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x0c, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x17, 0x82);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x18, 0x06);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x19, 0x0f);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x58, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x59, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5a, 0x40);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5b, 0x80);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5c, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5d, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5e, 0x94);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x5f, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x60, 0x94);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x61, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x62, 0x94);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x65, 0x05);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x66, 0xb5);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc0, 0x03);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xca, 0x1c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xcc, 0x1c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xd3, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xd4, 0xc8);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xd5, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xd6, 0x1c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xd7, 0x11);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x26);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x00, 0xa0);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x27);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x13, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x15, 0xb4);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1f, 0x55);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x26, 0x0f);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc0, 0x18);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc1, 0xe0);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc2, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc3, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc4, 0xe0);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc5, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc6, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc7, 0x03);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x23);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x07, 0x20);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x08, 0x10);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x12, 0xa6);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x15, 0xfc);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x16, 0x0b);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x04, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x19, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1a, 0x00);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1b, 0x08);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1c, 0x0a);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1d, 0x0c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1e, 0x12);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x1f, 0x16);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x20, 0x1a);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x21, 0x1c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x22, 0x20);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x23, 0x24);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x24, 0x28);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x25, 0x2c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x26, 0x30);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x27, 0x38);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x28, 0x3c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x29, 0x10);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x30, 0xff);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x31, 0xff);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x32, 0xfe);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x33, 0xfd);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x34, 0xfd);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x35, 0xfc);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x36, 0xfb);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x37, 0xf9);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x38, 0xf7);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x39, 0xf3);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3a, 0xea);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3b, 0xe6);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3d, 0xe0);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x3f, 0xdd);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x40, 0xdb);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x41, 0xd9);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x20);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb0, 0x00, 0x08, 0x00, 0x18, 0x00, 0x34, 0x00, 0x4c,
++				     0x00, 0x61, 0x00, 0x74, 0x00, 0x86, 0x00, 0x96);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb1, 0x00, 0xa5, 0x00, 0xdb, 0x01, 0x02, 0x01, 0x43,
++				     0x01, 0x71, 0x01, 0xbd, 0x01, 0xf7, 0x01, 0xfa);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb2, 0x02, 0x34, 0x02, 0x6f, 0x02, 0x98, 0x02, 0xcc,
++				     0x02, 0xf1, 0x03, 0x1d, 0x03, 0x2d, 0x03, 0x3b);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb3, 0x03, 0x4d, 0x03, 0x60, 0x03, 0x7a, 0x03, 0x94,
++				     0x03, 0xa6, 0x03, 0xa7);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb4, 0x00, 0x08, 0x00, 0x18, 0x00, 0x34, 0x00, 0x4c,
++				     0x00, 0x61, 0x00, 0x74, 0x00, 0x86, 0x00, 0x96);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb5, 0x00, 0xa5, 0x00, 0xdb, 0x01, 0x02, 0x01, 0x43,
++				     0x01, 0x71, 0x01, 0xbd, 0x01, 0xf7, 0x01, 0xfa);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb6, 0x02, 0x34, 0x02, 0x6f, 0x02, 0x98, 0x02, 0xcc,
++				     0x02, 0xf1, 0x03, 0x1d, 0x03, 0x2d, 0x03, 0x3b);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb7, 0x03, 0x4d, 0x03, 0x60, 0x03, 0x7a, 0x03, 0x94,
++				     0x03, 0xa6, 0x03, 0xa7);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb8, 0x00, 0x08, 0x00, 0x18, 0x00, 0x34, 0x00, 0x4c,
++				     0x00, 0x61, 0x00, 0x74, 0x00, 0x86, 0x00, 0x96);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb9, 0x00, 0xa5, 0x00, 0xdb, 0x01, 0x02, 0x01, 0x43,
++				     0x01, 0x71, 0x01, 0xbd, 0x01, 0xf7, 0x01, 0xfa);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xba, 0x02, 0x34, 0x02, 0x6f, 0x02, 0x98, 0x02, 0xcc,
++				     0x02, 0xf1, 0x03, 0x1d, 0x03, 0x2d, 0x03, 0x3b);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xbb, 0x03, 0x4d, 0x03, 0x60, 0x03, 0x7a, 0x03, 0x94,
++				     0x03, 0xa6, 0x03, 0xa7);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x21);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb0, 0x00, 0x00, 0x00, 0x10, 0x00, 0x2c, 0x00, 0x44,
++				     0x00, 0x59, 0x00, 0x6c, 0x00, 0x7e, 0x00, 0x8e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb1, 0x00, 0x9d, 0x00, 0xd3, 0x00, 0xfa, 0x01, 0x3b,
++				     0x01, 0x69, 0x01, 0xb5, 0x01, 0xef, 0x01, 0xf2);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb2, 0x02, 0x2c, 0x02, 0x79, 0x02, 0xaa, 0x02, 0xe6,
++				     0x03, 0x0f, 0x03, 0x3f, 0x03, 0x4f, 0x03, 0x5f);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb3, 0x03, 0x71, 0x03, 0x86, 0x03, 0xa0, 0x03, 0xbc,
++				     0x03, 0xce, 0x03, 0xd9);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb4, 0x00, 0x00, 0x00, 0x10, 0x00, 0x2c, 0x00, 0x44,
++				     0x00, 0x59, 0x00, 0x6c, 0x00, 0x7e, 0x00, 0x8e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb5, 0x00, 0x9d, 0x00, 0xd3, 0x00, 0xfa, 0x01, 0x3b,
++				     0x01, 0x69, 0x01, 0xb5, 0x01, 0xef, 0x01, 0xf2);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb6, 0x02, 0x2c, 0x02, 0x79, 0x02, 0xaa, 0x02, 0xe6,
++				     0x03, 0x0f, 0x03, 0x3f, 0x03, 0x4f, 0x03, 0x5f);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb7, 0x03, 0x71, 0x03, 0x86, 0x03, 0xa0, 0x03, 0xbc,
++				     0x03, 0xce, 0x03, 0xd9);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb8, 0x00, 0x00, 0x00, 0x10, 0x00, 0x2c, 0x00, 0x44,
++				     0x00, 0x59, 0x00, 0x6c, 0x00, 0x7e, 0x00, 0x8e);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb9, 0x00, 0x9d, 0x00, 0xd3, 0x00, 0xfa, 0x01, 0x3b,
++				     0x01, 0x69, 0x01, 0xb5, 0x01, 0xef, 0x01, 0xf2);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xba, 0x02, 0x2c, 0x02, 0x79, 0x02, 0xaa, 0x02, 0xe6,
++				     0x03, 0x0f, 0x03, 0x3f, 0x03, 0x4f, 0x03, 0x5f);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xbb, 0x03, 0x71, 0x03, 0x86, 0x03, 0xa0, 0x03, 0xbc,
++				     0x03, 0xce, 0x03, 0xd9);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0xd0);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x25, 0xa9);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xff, 0x10);
++	mipi_dsi_msleep(&ctx, 1);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xfb, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0xba, 0x02);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x55, 0x01);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x53, 0x2c);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x51, 0x0f, 0xff);
++	mipi_dsi_dcs_write_seq_multi(&ctx, 0x68, 0x00, 0x01);
++	mipi_dsi_dcs_exit_sleep_mode_multi(&ctx);
++	mipi_dsi_msleep(&ctx, 100);
++	mipi_dsi_dcs_set_display_on_multi(&ctx);
 +
-+  vpos-supply:
-+    description: LCD positive bias supply
++	return ctx.accum_err;
++}
 +
-+  vneg-supply:
-+    description: LCD negative bias supply
++static int nt36525_prepare(struct drm_panel *panel)
++{
++	struct nt36525 *p = panel_to_nt36525(panel);
++	int ret;
 +
-+  backlight: true
++	/* Power-up sequence from Samsung decon_board_nt36525 panel_power_enable */
++	ret = regulator_enable(p->vdd);
++	if (ret)
++		return ret;
++	usleep_range(1000, 1500);
++	ret = regulator_enable(p->vpos);
++	if (ret)
++		goto disable_vdd;
++	usleep_range(1000, 1500);
++	ret = regulator_enable(p->vneg);
++	if (ret)
++		goto disable_vpos;
++	usleep_range(1000, 1500);
 +
-+  port: true
++	/*
++	 * Reset pulse, Samsung sequence from panel_reset. Logical values are
++	 * inverted from the physical levels the vendor sequence describes
++	 * (RESX is active-low): deassert, assert, deassert.
++	 */
++	usleep_range(10000, 11000);
++	gpiod_set_value_cansleep(p->reset_gpio, 0);
++	usleep_range(1000, 1500);
++	gpiod_set_value_cansleep(p->reset_gpio, 1);
++	usleep_range(3500, 4000);
++	gpiod_set_value_cansleep(p->reset_gpio, 0);
++	usleep_range(10000, 11000);
 +
-+required:
-+  - compatible
-+  - reg
-+  - reset-gpios
-+  - vdd-supply
-+  - vpos-supply
-+  - vneg-supply
-+  - port
++	ret = nt36525_on(p);
++	if (ret)
++		goto fail;
 +
-+additionalProperties: false
++	return 0;
 +
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
++fail:
++	gpiod_set_value_cansleep(p->reset_gpio, 1);
++	regulator_disable(p->vneg);
++	usleep_range(1000, 1500);
++disable_vpos:
++	regulator_disable(p->vpos);
++	usleep_range(5000, 5500);
++disable_vdd:
++	regulator_disable(p->vdd);
++	return ret;
++}
 +
-+    dsi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++static int nt36525_unprepare(struct drm_panel *panel)
++{
++	struct nt36525 *p = panel_to_nt36525(panel);
++	struct mipi_dsi_multi_context ctx = { .dsi = p->dsi };
 +
-+        panel@0 {
-+            compatible = "novatek,nt36525-xcover5", "novatek,nt36525";
-+            reg = <0>;
-+            reset-gpios = <&gpa0 0 GPIO_ACTIVE_LOW>;
-+            vdd-supply = <&panel_vdd>;
-+            vpos-supply = <&panel_vpos>;
-+            vneg-supply = <&panel_vneg>;
-+            backlight = <&panel_backlight>;
++	mipi_dsi_dcs_set_display_off_multi(&ctx);
++	mipi_dsi_msleep(&ctx, 20);
++	mipi_dsi_dcs_enter_sleep_mode_multi(&ctx);
++	mipi_dsi_msleep(&ctx, 60);
 +
-+            port {
-+                panel_in: endpoint {
-+                    remote-endpoint = <&dsi_out>;
-+                };
-+            };
-+        };
-+    };
-+...
---
++	usleep_range(3000, 3500);
++	regulator_disable(p->vneg);
++	usleep_range(1000, 1500);
++	regulator_disable(p->vpos);
++	usleep_range(5000, 5500);
++	regulator_disable(p->vdd);
++	msleep(30);
++	gpiod_set_value_cansleep(p->reset_gpio, 1);
++	return 0;
++}
++
++static int nt36525_get_modes(struct drm_panel *panel, struct drm_connector *conn)
++{
++	return drm_connector_helper_get_modes_fixed(conn, &nt36525_xcover5_mode);
++}
++
++static const struct drm_panel_funcs nt36525_funcs = {
++	.prepare	= nt36525_prepare,
++	.unprepare	= nt36525_unprepare,
++	.get_modes	= nt36525_get_modes,
++};
++
++static int nt36525_probe(struct mipi_dsi_device *dsi)
++{
++	struct device *dev = &dsi->dev;
++	struct nt36525 *p;
++	int ret;
++
++	p = devm_drm_panel_alloc(dev, struct nt36525, panel, &nt36525_funcs,
++				 DRM_MODE_CONNECTOR_DSI);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	p->dsi = dsi;
++	ret = drm_panel_of_backlight(&p->panel);
++	if (ret)
++		return ret;
++
++	p->vdd = devm_regulator_get(dev, "vdd");
++	if (IS_ERR(p->vdd))
++		return dev_err_probe(dev, PTR_ERR(p->vdd), "vdd supply\n");
++
++	p->vpos = devm_regulator_get(dev, "vpos");
++	if (IS_ERR(p->vpos))
++		return dev_err_probe(dev, PTR_ERR(p->vpos), "vpos supply\n");
++
++	p->vneg = devm_regulator_get(dev, "vneg");
++	if (IS_ERR(p->vneg))
++		return dev_err_probe(dev, PTR_ERR(p->vneg), "vneg supply\n");
++
++	/*
++	 * Request RESX deasserted (logical 0, active-low) rather than asserting it
++	 * here. At probe the TDDI may still be running the image the bootloader (or
++	 * a kernel that kexec'd into this one) left on screen; asserting RESX
++	 * mid-stream made the touch half of the chip raise its interrupt before any
++	 * driver had mapped it. The real fix for that livelock is in pinctrl-exynos
++	 * (inherited EINTs are masked at init); this only avoids resetting a live
++	 * panel needlessly. prepare() still performs the full deassert-assert-
++	 * deassert reset pulse, and vdd_ldo28 is always-on, so leaving RESX
++	 * deasserted here never drives an unpowered chip.
++	 */
++	p->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(p->reset_gpio))
++		return dev_err_probe(dev, PTR_ERR(p->reset_gpio), "reset gpio\n");
++
++	/* MIPI DSI config from Samsung panel node: 3-lane, video mode, RGB888 */
++	dsi->lanes	 = 3;
++	dsi->format	 = MIPI_DSI_FMT_RGB888;
++	/*
++	 * MIPI_DSI_MODE_LPM is load-bearing: .prepare sends the DCS init sequence
++	 * before the DSIM video stream is running. Without LPM those writes go out
++	 * in HS, which blocks waiting for a stream that does not exist yet, so
++	 * .prepare never returns and the modeset hangs. In LP mode the init goes
++	 * over the low-power escape clock, independent of the video stream.
++	 */
++	dsi->mode_flags	 = MIPI_DSI_MODE_VIDEO		/* video (non-burst) */
++			 | MIPI_DSI_MODE_VIDEO_SYNC_PULSE
++			 | MIPI_DSI_MODE_LPM		/* force LP for all transfers */
++			 | MIPI_DSI_CLOCK_NON_CONTINUOUS;
++
++	/*
++	 * This panel's DCS init sequence runs in .prepare(), before the DSI host
++	 * bridge's own atomic_pre_enable(). On bridge-based hosts (e.g.
++	 * samsung-dsim) that ordering matters: without this, host_transfer()
++	 * rejects the LP writes because the host bridge isn't enabled yet.
++	 */
++	p->panel.prepare_prev_first = true;
++
++	drm_panel_add(&p->panel);
++
++	mipi_dsi_set_drvdata(dsi, p);
++	ret = mipi_dsi_attach(dsi);
++	if (ret) {
++		drm_panel_remove(&p->panel);
++		return dev_err_probe(dev, ret, "failed to attach to DSI host\n");
++	}
++
++	return 0;
++}
++
++static void nt36525_remove(struct mipi_dsi_device *dsi)
++{
++	struct nt36525 *p = mipi_dsi_get_drvdata(dsi);
++
++	mipi_dsi_detach(dsi);
++	drm_panel_remove(&p->panel);
++}
++
++static const struct of_device_id nt36525_of_match[] = {
++	{ .compatible = "novatek,nt36525-xcover5" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, nt36525_of_match);
++
++static struct mipi_dsi_driver nt36525_driver = {
++	.probe	= nt36525_probe,
++	.remove	= nt36525_remove,
++	.driver = {
++		.name		= "panel-novatek-nt36525",
++		.of_match_table	= nt36525_of_match,
++	},
++};
++module_mipi_dsi_driver(nt36525_driver);
++
++MODULE_DESCRIPTION("Novatek NT36525 panel driver for Samsung Galaxy XCover5");
++MODULE_AUTHOR("Adil Hüsrev Tepe <tadilhusrev@gmail.com>");
++MODULE_LICENSE("GPL");
+-- 
 2.53.0
