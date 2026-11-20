@@ -1,78 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795189972;
-	b=SeoMIHWrCgZA3O27w5cgRUz76KN8FCnNxd/Oce2MjAqdnoFcTA7KNCc99UxdOzTJtZjn
-	 9t7B7Jg1XH+JlF3ej1twmoWLV096TvS/7ggfjbXuzflDxPXXdnHo1h6kRSdsqm5YiVc8S
-	 Y1p9mkqM3czbwXJuqs5yoODGwnLFUIh4XdTHBxUmtu7nMy0U8o/QFu3JZqSDVUwwjpONa
-	 D+oXjMqP2XRzWoTf+P/svNgHA/5VDzoUKZs4yqOJwvJuNd4Qrk3PfsG7PdMJpff80TB0u
-	 h904/7rYtyCUJLj0BKQd6J1BRcZ8ld4S8pmO0iDbxAVuRRBVQQZYNJJ2zhyWMvDsMkA==
+	t=1795189996;
+	b=fGH93jKIruekA5h2Z/G2D1nF/7O/EVNRAa0mTaQbdOt8t2aG4CBBhDcepDjWKfz1rY/y
+	 W2v6Eh8pOhDo+jWsArGovlsG5Nlj8qFe72NKNkmQ55rCNBSsJWEqmTtJ8glQYBEJRIgDu
+	 jdTw7wOJfkXzwEy4bJ5jXD1u2v3o2NaPBMazJMOJ9AO0W8lFey6HP+x8LgV2LX9Yawzvd
+	 uqPMX5HES817AtNWPf9BRAn/Vy8KoeeM3wy9zY8SLpcWRbT43Uxb+Ez0+nfcTAu/HtlCb
+	 nvp0q4r4b+K8RxxB3atj2n67ALsP5vAxTN23NUFFAAZOuebAZb0OqKxTUoImOF57evQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795189972;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795189996;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=VC4qyV258udwYJeEWal0u7urGFClu/zmC6JfCNyLnrQ=;
-	b=YVpbmeg+9H3XCIg/jqs9ZBFDKU1fUSQFOB9ySnG2rYoI8FFz1XYqhbLMw88CtvTQp9tB
-	 v5zjxdDcP1FfMWKMbc6cuv/8TYH9EuSEJtTWVUwJD3G90TuHH1OciyQOtNXAVnFdIw0Jq
-	 6D9kdnO19U6A8SAYn9YLOdGl/O6IO8TYKOFY7OMulvln246/u3RUE23iePNkbAIndKuxl
-	 U+wNb7bkEf9+VfXL98yQhsUQruhD2D1hJGWidEMCj5+rUpDS4u173ZQjh2LSld2qc1kz/
-	 6bEesTi8VEZBuyHSp+GFtFQUG3XAR/qD2XYE8GqTI+yqPMegzWzEbhEFyB/macj2jQQ==
+	bh=meT3QAiTSr3qSxGWIp+z3THNZElxOl7c3Peai+6jn9U=;
+	b=YeqOue8Ef4K2yCvqclarv0g5iZR5KwsVAWmu4kf31BrYfrhGCghEEjBngWpQZ9X9x1wx
+	 japt+qEJWcvg4XYVgBNyxhW7y0xz+cHYENc1rUkqPLF0cjzmbEIx7vRGzjCyJExh1amgI
+	 NQMetqGGlZZAMAqWGE/WLuf7evPNGH8K3QIlIGQXkbu0GD9Eg4at98YM1tnzEmTfAFq3I
+	 2cB/wqLtwSHSleVpThfnN2mhVlMRQIqia4p6xB2reRfLUDPRHCV7RIasP9Jm+Ng+WUJ6S
+	 037QyIpALCE94f6bciorEK2Esa7llA3Zz3+eAElEKUSFIAtsRF863eU0AeUrL1sNC+g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V8Q0JfxD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k1a84X4n;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F42606A331;
-	Fri, 20 Nov 2026 15:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33860606A325;
+	Fri, 20 Nov 2026 15:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V8Q0JfxD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k1a84X4n
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795189972;
-	b=pfbkkzyIHPX7B3EiTLKcfAM2qFYuFewVRRd9JWAH8l5Lcwk9E4eFhIsluklkwlchTDHc
-	 UxwdV+1SItEmAfNiIsEIJZw3/vhjXfTj7YWWmkZ9m/mDI7f/nK8sGLFo1VAlMIf7xqPUv
-	 R4xYkXVM4Hs9PIViOdgemKhaTYue3wB8+wJgrRxs5y4Vyl4KugQivPR4c9CYM4MnQogg2
-	 Q3+PbKkHdNsmWG2tn6C6Nw7Pd5WiyiIHv/wkR8UathBbPlmVrd1V9L89akS4IzKvSAOAM
-	 X38K9eDmXkAkvkhZmi20spo14b24iGJVvatLv/olZV1s0ceawgDyu14vZhIwJshL5BA==
+	t=1795189995;
+	b=QnFr1lrBN+iI6ZeISNaRds5rsMqyT0qCOEo4yYa5CmIi54Aya1AeshqOPrIT8+l9BGR5
+	 dMwg3OpYCBZajURcMa5doZAhMJhAZlP5ryOjyLHAmRUoB7xqjc6Jwz8v6z9SoZls/Gr/A
+	 OS8XlOr6pv3lnkfZ6PttT9hizBSzNEYxF9YSlzlQ1VR3KT5LH+VfHKkGHGGS4zC35KTRH
+	 5FoWRhpCzQ8aYRYH5fzqkfYfVpB5SXTMV4HcNOZrkuR0AHjDdSSUJghFIyQBD1rwMJgd+
+	 4XO4FQVxLQcYGsEyRzl9e6Nm0LHuLPX2qaXKKGCXG94mi5uCGET8wvL7tSZHY74AyWw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795189972;
+	c=relaxed/relaxed; t=1795189995;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=VC4qyV258udwYJeEWal0u7urGFClu/zmC6JfCNyLnrQ=;
-	b=rLnrXHxPvFFckNc7iuH9v4RzqzPSV7Ik+lxGEOWwhJO0R6/lrEhPRQ2xexwJ/0o8MSt6
-	 UxsqNrtfqyn5QFQbVOTl/MPvDNqNQClZldbsE+dhaplv5H7rjR9TlBzC7AiPxBAasTzZZ
-	 X9P8QJ4Y7uXg0jmTQDOGcsOC0gw2xGNQcran3LcwV1BVC1Bsjjsx/1p0Rnh+Kad3QsCiq
-	 YdOkEndbbLLn3/d5E0PivZDvYMKVreUA92l8+sWM4qs3nAZ2p3raHk9c8Fo5Jz/DEVQtd
-	 yxNRw8n/5gXzDW5xFJ7iEeu3xZl9DDRMYZda9zC1pwRyWFMMqJGMhwl/hbDj+tmXESw==
+	bh=meT3QAiTSr3qSxGWIp+z3THNZElxOl7c3Peai+6jn9U=;
+	b=BiraV/WrSInT554JaunuCTzBV9PiHsFm5b4ZpzG5B8xZIJWX88EyrhZ50dujtlMLOjBN
+	 GX1s3FIka5SpyIj+PqaHeeQd+uBOPR9vzj24S+z/adbQnzTMlHQf+iSpj2OFydnS2EJLE
+	 MS4O3ytAe/FO0uPSUbB/3RjkMv/LH21U8/0usBT/KdMuun98J9DZbYhemUI0F4b8coul7
+	 BB9KhBlippHkbBWkr9G4ACbaVTDWGLRIgpf6ojFJlaSKc6/yQA4VzTNn6/wGU8W4bMDQ2
+	 QYfwuh5bnR5v7Zcv1tNIDvfnjwqK725TsGFZBnaKURrTFVvWZyAXs2MoBF8ZTXXKYNQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 35CE41F000F0;
-	Fri, 20 Nov 2026 15:52:41 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 72F221F000F0;
+	Fri, 20 Nov 2026 15:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795189971;
-	bh=VC4qyV258udwYJeEWal0u7urGFClu/zmC6JfCNyLnrQ=;
+	s=k20260515; t=1795189995;
+	bh=meT3QAiTSr3qSxGWIp+z3THNZElxOl7c3Peai+6jn9U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=V8Q0JfxDGA21oa9gebnR5HmiQGijQYk7i+CZzQWKzJDBSKV0b4/2rxWUCR6vCpGf1
-	 LwyJ6EAKo0i/hmAUNoAAdF3FN7V1JUb8GlpryWj6Z7huC7khAHJJGfhKPSy7xGaYJ3
-	 nVpAnZhZaiQt/wiNYRlfKNF2Ht7wi4LFfU7g0eAGxji20m7yiVmZ1A4LUaKyxpKda5
-	 fpfanxun5ZFyxne5te3AXUgDMORYgTit51k/nXY7w/yH+2A8UJPAQtzarghQFJji0y
-	 dOMfnWOPFw3M77FoWB5cezbOGlMhuJQYxsXmE+HHireMh4NAozi+vSSGzg9Wxh2Q5g
-	 OoRSisUzPXTCQ==
+	b=k1a84X4nv2KtWiudf/WclQeBewWBiGDavggvumjtUxAjQS2LpiuOhX4tTuu/Js65c
+	 HwOGLIM95xZm3swxBCcAuDPJx10QBLepY4JgYAvYlWPqeIKuujIVe5o75QUr+WcEp+
+	 j7ZXbBD0LmQYr/qONqAfB4gvyp21+jPXyNgEguhRCKFtlg1CRYLxI1qT+rHn+BQy67
+	 RlKIz+mN5nCGEnFYxkqmMpH5E0FrpGo1o5U3jJq3pi2Vj3gEWzikeSIrKJbI1d5+1i
+	 deRza/3PV57sRHx6qtLtXgCxE3qJAwHk684E0yfKTTL68WAV7EKxZ0T+NBrZ4sU0Eq
+	 SvcME0sMQcA4g==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id EAA124992A;
-	Fri, 20 Nov 2026 15:52:37 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 039AA49936;
+	Fri, 20 Nov 2026 15:53:05 +0000 (UTC)
 From: Venkat Yadlapati via B4 Relay <devnull+venkat.yadlapati.yahoo.com@kernel.org>
-Date: Fri, 20 Nov 2026 21:22:38 +0530
-Subject: [PATCH v2 2/2] drm/msm/adreno: Add Adreno 829 support
+Date: Fri, 20 Nov 2026 21:23:06 +0530
+Subject: [PATCH v3 04/11] soc: qcom: ubwc: Add config for Molokai
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,30 +83,25 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-molokai-a829-v2-2-c63c268d5ab3@yahoo.com>
-References: <20261120-molokai-a829-v2-0-c63c268d5ab3@yahoo.com>
-In-Reply-To: <20261120-molokai-a829-v2-0-c63c268d5ab3@yahoo.com>
-To: Rob Clark <robin.clark@oss.qualcomm.com>, 
- Dmitry Baryshkov <lumag@kernel.org>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, 
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+Message-Id: <20261120-molokai-soc-v3-4-403d763685d9@yahoo.com>
+References: <20261120-molokai-soc-v3-0-403d763685d9@yahoo.com>
+In-Reply-To: <20261120-molokai-soc-v3-0-403d763685d9@yahoo.com>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+ Radu Rendec <radu@rendec.net>, Kees Cook <kees@kernel.org>, 
+ Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795189956; l=7967;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795189983; l=1024;
  i=venkat.yadlapati@yahoo.com; s=20261023; h=from:subject:message-id;
- bh=BqP0iWkCUwDgvB1i4/t6//61ObFnD1KDtrfIcRQrNyI=;
- b=89K+sNhIohlSdqsFmxNIoAUhTsIRYwBxl9em+SC0/EpPcvTosr+8jvoAhq7c2ihiQ6SETZY17
- 0wSuWTcMAvfBEYfbI5Oa0x8EEiAETg49hl4kJA2i29ziby+VLKZoLHU
+ bh=9lI0GDLg+ArIvmjuhBkr6Hwen5svXhSHz+Z0e79/fbg=;
+ b=DhLPA89PnQONu7tt3pNu4UmkHWZTOSr5NzQ1FSSUdwtqiRozDM7VEH5LIrtuUPdPGkF5LslrP
+ 0+H/rBh/EGsAeFgNMd1UxJVAJKpjEmvc6gKj7FGh2rnjyV3N3cHmqYi
 X-Developer-Key: i=venkat.yadlapati@yahoo.com; a=ed25519;
  pk=e8KStCtEMvUP1Se/riB/KVnDAQFEVR2Dw2PcuA8/eME=
 X-Endpoint-Received: by B4 Relay for venkat.yadlapati@yahoo.com/20261023
@@ -117,173 +112,27 @@ Content-Transfer-Encoding: 7bit
 
 From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 
-Add support for the Adreno 829 (gen8_9_0) found on the Qualcomm Molokai
-(SM8845) SoC. It is a two slice variant of the A840: same protected
-registers, power-up lists and GBIF settings, but a smaller GMEM
-(2432 KiB, hence a different GMEM protection range), its own firmware
-and a smaller preemption context record.
-
-Like on the A840, the GPU RSC signals that it is off through bit 30.
-
-The A840 CLX and limits tables are not reused, as their values are not
-known to apply to the A829; without them the GMU is not sent a CLX
-configuration, like on the other GPUs without these tables.
+Molokai (SM8845) uses UBWC 6.0 with a highest bank bit of 16, like
+Kaanapali. Without an entry, the display subsystem fails to probe on
+Molokai based devices.
 
 Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c     |   3 +-
- drivers/gpu/drm/msm/adreno/a8xx_catalog.c | 100 ++++++++++++++++++++++++++++++
- drivers/gpu/drm/msm/adreno/adreno_gpu.h   |   5 ++
- 3 files changed, 107 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/ubwc_config.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 662f09bec9d5..b8d94b2ca227 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -658,7 +658,8 @@ static void a6xx_rpmh_stop(struct a6xx_gmu *gmu)
- 	if (!test_and_clear_bit(GMU_STATUS_FW_START, &gmu->status))
- 		return;
- 
--	if (adreno_is_a840(adreno_gpu) || adreno_is_a850_family(adreno_gpu))
-+	if (adreno_is_a829(adreno_gpu) || adreno_is_a840(adreno_gpu) ||
-+	    adreno_is_a850_family(adreno_gpu))
- 		bitmask = BIT(30);
- 
- 	gmu_write(gmu, REG_A6XX_GMU_RSCC_CONTROL_REQ, 1);
-diff --git a/drivers/gpu/drm/msm/adreno/a8xx_catalog.c b/drivers/gpu/drm/msm/adreno/a8xx_catalog.c
-index 55a805ab438c..6478849f6c96 100644
---- a/drivers/gpu/drm/msm/adreno/a8xx_catalog.c
-+++ b/drivers/gpu/drm/msm/adreno/a8xx_catalog.c
-@@ -840,6 +840,69 @@ static const struct adreno_reglist_pipe a840_nonctxt_regs[] = {
- 	{ },
- };
- 
-+static const struct adreno_reglist_pipe a829_nonctxt_regs[] = {
-+	{ REG_A8XX_CP_SMMU_STREAM_ID_LPAC, 0x00000101, BIT(PIPE_NONE) },
-+	{ REG_A8XX_GRAS_DBG_ECO_CNTL, 0x00000800, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_GRAS_TSEFE_DBG_ECO_CNTL, 0x00200000, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A6XX_PC_AUTO_VERTEX_STRIDE, 0x00000001, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_PC_VIS_STREAM_CNTL, 0x10010000, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_PC_CONTEXT_SWITCH_STABILIZE_CNTL_1, 0x00000002, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_PC_CHICKEN_BITS_1, 0x00000003, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_PC_CHICKEN_BITS_2, 0x00000200, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_PC_CHICKEN_BITS_3, 0x00500000, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_PC_CHICKEN_BITS_4, 0x00500050, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	/* Disable Dead Draw Merge scheme on RB-HLSQ */
-+	{ REG_A6XX_RB_RBP_CNTL, BIT(5), BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A7XX_RB_CCU_CNTL, 0x00000068, BIT(PIPE_BR) },
-+	/* Partially enable perf clear, Disable DINT to c/z be data forwarding */
-+	{ REG_A7XX_RB_CCU_DBG_ECO_CNTL, 0x00002200, BIT(PIPE_BR) },
-+	{ REG_A8XX_RB_GC_GMEM_PROTECT, 0x02600000, BIT(PIPE_BR) },
-+	{ REG_A8XX_RB_RESOLVE_PREFETCH_CNTL, 0x00000007, BIT(PIPE_BR) },
-+	{ REG_A8XX_RB_CMP_DBG_ECO_CNTL, 0x00004000, BIT(PIPE_BR) },
-+	{ REG_A8XX_RBBM_NC_MODE_CNTL, 0x00000001, BIT(PIPE_NONE) },
-+	{ REG_A8XX_RBBM_SLICE_NC_MODE_CNTL, 0x00000001, BIT(PIPE_NONE) },
-+	{ REG_A8XX_RBBM_POWER_UP_RESET_SW_OVERRIDE, 0x70809060, BIT(PIPE_NONE) },
-+	{ REG_A8XX_RBBM_POWER_UP_RESET_SW_BV_OVERRIDE, 0x30000000, BIT(PIPE_NONE) },
-+	{ REG_A8XX_RBBM_WAIT_IDLE_CLOCKS_CNTL, 0x00000030, BIT(PIPE_NONE) },
-+	{ REG_A8XX_RBBM_WAIT_IDLE_CLOCKS_CNTL2, 0x00000030, BIT(PIPE_NONE) },
-+	{ REG_A8XX_RBBM_INTERFACE_HANG_INT_CNTL, 0x0fffffff, BIT(PIPE_NONE) },
-+	{ REG_A8XX_RBBM_GBIF_CLIENT_QOS_CNTL, 0x22122212, BIT(PIPE_NONE) },
-+	{ REG_A8XX_RBBM_CGC_P2S_CNTL, 0x00000040, BIT(PIPE_NONE) },
-+	/* Disable mode_switch optimization in UMAS */
-+	{ REG_A6XX_SP_CHICKEN_BITS, BIT(24) | BIT(26), BIT(PIPE_NONE) },
-+	/* Disable LPAC large-LM mode */
-+	{ REG_A8XX_SP_SS_CHICKEN_BITS_0, BIT(3), BIT(PIPE_NONE) },
-+	/* Disable PS out of order retire */
-+	{ REG_A7XX_SP_CHICKEN_BITS_2, 0x00c21800, BIT(PIPE_NONE) },
-+	{ REG_A7XX_SP_CHICKEN_BITS_3, 0x00300000, BIT(PIPE_NONE) },
-+	/* Disable SP2TP info attribute */
-+	{ REG_A8XX_SP_CHICKEN_BITS_4, 0x00000002, BIT(PIPE_NONE) },
-+	{ REG_A6XX_SP_PERFCTR_SHADER_MASK, 0x0000003f, BIT(PIPE_NONE) },
-+	{ REG_A7XX_SP_HLSQ_DBG_ECO_CNTL, BIT(14), BIT(PIPE_NONE) },
-+	/* Ignore HLSQ shared constant feedback from SP */
-+	{ REG_A7XX_SP_HLSQ_DBG_ECO_CNTL_1, BIT(17), BIT(PIPE_NONE) },
-+	/* Disable CS dead batch merge */
-+	{ REG_A7XX_SP_HLSQ_DBG_ECO_CNTL_2, BIT(24), BIT(PIPE_NONE) },
-+	{ REG_A8XX_SP_HLSQ_DBG_ECO_CNTL_3, BIT(7), BIT(PIPE_NONE) },
-+	{ REG_A7XX_SP_HLSQ_TIMEOUT_THRESHOLD_DP, 0x00000080, BIT(PIPE_NONE) },
-+	{ REG_A7XX_SP_READ_SEL, 0x0001ff00, BIT(PIPE_NONE) },
-+	{ REG_A6XX_TPL1_DBG_ECO_CNTL, 0x10100000, BIT(PIPE_NONE) },
-+	/* BIT(26): Disable final clamp for bicubic filtering */
-+	{ REG_A6XX_TPL1_DBG_ECO_CNTL1, 0x04000720, BIT(PIPE_NONE) },
-+	{ REG_A6XX_UCHE_MODE_CNTL, 0x80080000, BIT(PIPE_NONE) },
-+	{ REG_A8XX_UCHE_CCHE_MODE_CNTL, 0x00001000, BIT(PIPE_NONE) },
-+	{ REG_A8XX_UCHE_CCHE_CACHE_WAYS, 0x00000800, BIT(PIPE_NONE) },
-+	{ REG_A8XX_UCHE_GBIF_GX_CONFIG, 0x010240e0, BIT(PIPE_NONE) },
-+	{ REG_A8XX_UCHE_VARB_IDLE_TIMEOUT, 0x00000020, BIT(PIPE_NONE) },
-+	{ REG_A7XX_VFD_DBG_ECO_CNTL, 0x00008000, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_VFD_CB_BV_THRESHOLD, 0x00500050, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_VFD_CB_BR_THRESHOLD, 0x00600060, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_VFD_CB_BUSY_REQ_CNT, 0x00200020, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_VFD_CB_LP_REQ_CNT, 0x00000020, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ REG_A8XX_VPC_FLATSHADE_MODE_CNTL, 0x00000001, BIT(PIPE_BV) | BIT(PIPE_BR) },
-+	{ },
-+};
-+
- static const u32 a840_protect_regs[] = {
- 	A6XX_PROTECT_RDONLY(0x00008, 0x039b),
- 	A6XX_PROTECT_RDONLY(0x003b4, 0x008b),
-@@ -1664,6 +1727,43 @@ static const struct adreno_info a8xx_gpus[] = {
- 			{ 252, 2 },
- 			{ 221, 3 },
- 		),
-+	}, {
-+		.chip_ids = ADRENO_CHIP_IDS(0x44030a00),
-+		.family = ADRENO_8XX_GEN2,
-+		.fw = {
-+			[ADRENO_FW_SQE] = "gen80900_sqe.fw",
-+			[ADRENO_FW_GMU] = "gen80900_gmu.bin",
-+			[ADRENO_FW_AQE] = "gen80900_aqe.fw",
-+		},
-+		.gmem = 2432 * SZ_1K,
-+		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
-+		.quirks = ADRENO_QUIRK_HAS_CACHED_COHERENT |
-+			  ADRENO_QUIRK_HAS_HW_APRIV |
-+			  ADRENO_QUIRK_PREEMPTION |
-+			  ADRENO_QUIRK_IFPC,
-+		.funcs = &a8xx_gpu_funcs,
-+		.a6xx = &(const struct a6xx_info) {
-+			.protect = &a840_protect,
-+			.nonctxt_reglist = a829_nonctxt_regs,
-+			.pwrup_reglist = &a840_pwrup_reglist,
-+			.dyn_pwrup_reglist = &a840_dyn_pwrup_reglist,
-+			.ifpc_reglist = &a840_ifpc_reglist,
-+			.gbif_cx = a840_gbif,
-+			.max_slices = 2,
-+			.gmu_chipid = 0x8090000,
-+			.bcms = (const struct a6xx_bcm[]) {
-+				{ .name = "SH0", .buswidth = 16 },
-+				{ .name = "MC0", .buswidth = 4 },
-+				{
-+					.name = "ACV",
-+					.fixed = true,
-+					.perfmode = BIT(2),
-+					.perfmode_bw = 10687500,
-+				},
-+				{ /* sentinel */ },
-+			},
-+		},
-+		.preempt_record_size = 3708 * SZ_1K,
- 	}, {
- 		.chip_ids = ADRENO_CHIP_IDS(0x44010000),
- 		.family = ADRENO_8XX_GEN1,
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-index 4b2156825bdf..af13d4599d0d 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-@@ -612,6 +612,11 @@ static inline int adreno_is_x285_family(const struct adreno_gpu *gpu)
- 	       gpu->info->chip_ids[0] == 0x44070001;
- }
- 
-+static inline int adreno_is_a829(struct adreno_gpu *gpu)
-+{
-+	return gpu->info->chip_ids[0] == 0x44030a00;
-+}
-+
- static inline int adreno_is_a830(struct adreno_gpu *gpu)
- {
- 	return gpu->info->chip_ids[0] == 0x44050001;
+diff --git a/drivers/soc/qcom/ubwc_config.c b/drivers/soc/qcom/ubwc_config.c
+index 456995699fdb..7c1166c68551 100644
+--- a/drivers/soc/qcom/ubwc_config.c
++++ b/drivers/soc/qcom/ubwc_config.c
+@@ -130,6 +130,7 @@ static const struct of_device_id qcom_ubwc_configs[] __maybe_unused = {
+ 	{ .compatible = "qcom,mahua", .data = &glymur_data },
+ 	{ .compatible = "qcom,maili", .data = &ubwc_7_0_hbb16, },
+ 	{ .compatible = "qcom,milos", .data = &milos_data },
++	{ .compatible = "qcom,molokai", .data = &ubwc_6_0_hbb16 },
+ 	{ .compatible = "qcom,msm8226", .data = &no_ubwc_data },
+ 	{ .compatible = "qcom,msm8916", .data = &no_ubwc_data },
+ 	{ .compatible = "qcom,msm8917", .data = &no_ubwc_data },
 
 -- 
 2.56.1
