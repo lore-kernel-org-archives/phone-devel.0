@@ -1,88 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795279777;
-	b=DThOCOvZMns6TjL5TlMUNGRRAI5vBhgmSrerizjHPFGVNgUSMBJP8rDTuMsLhWfsC1Yw
-	 1CPMvYouMQGwlGMJZygiz0EPo7fj7NB3r+qCSglKClKb/+K67pDaL2AduoHeSvVaeEf25
-	 2HBYjaXWrVibCnm+9s6frA+onxmmu1r32hXKlEj1UgYo+10QO9iGMbYdjkNh5/OytJzoU
-	 ZEPnjEHD2kfXorLsWUy85bxfrk2cItsfbirltJ8ffCpYI5usK8nPZikw7Ch8H8LcNaMwF
-	 MvBKG8HlXdFBRstJwVTqPbHQvqls4Vs7nvR6RUma34KED8FbtDUZtm+wRmrXgXw6w5g==
+	t=1795281798;
+	b=pak9aTCxnIQBYkxSKYwrCiuyQLT6jHNFSK2QimO+rJy7G4vdYknaIgipn3ox80RKscNx
+	 egbA38oFmj0UDKWnSoR3Tbhcb96MppmCVMGXxjn/cd9L7GVoKKaNBwez0NVADM9RI1DEB
+	 T2TnVhv3BrFaruQ5iuWaPxIcuuiumB0+Pqtx37OlpZkYogw8PHY+7ZtkezPldxVtyknDv
+	 DbJNbmCgAO2P7X9yj6JxD8YoWeNkFy4Aa0qi2kNRe67H8LYiecrCl85nmbAHKa8yeESQa
+	 Zo1+4xs0377Gg/UEUbremBZ9ZD66lg9g/3+d4Y5bKOy5YMn6bm7anX9Bqu6Ctv5V0XA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795279777;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795281798;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=ugnNXXIsy9Uor/V8luuCj9VNvTB9GFq713zvZphiVc8=;
-	b=Xot7E8DQqy4uMpDWbnWc+Mh4DlO8mi5fYtV64S8eBz3UEDj+t4hT+cJIivu28HzE18ru
-	 lbl8ag7N6uPfuf9+L2haGLVIYnQUalbLesT14h/WRP1ULLBeCJwsCNyc/M9yUogNNNUMg
-	 OqkjKR/aUWLH4XZ6+im85/iscP1HBqd/xS5+zyC5RZpy3UzX/G3yueQ86PjAm1WJlAs5C
-	 krfe8UMJiifmy2F/IswI92DUsTRlnjXH/80igU0m8rBEqrNjMZLYLG41vXFIHr83V1VCe
-	 Qlv3b5suoOQdXOmc4zXeonr/bHNCGEZuljt9obLkFO6n/GOr3IU398HI8+tohdgWC9A==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=CrE8YZPGbKenKXl5BgmqDcyGKii69/sK0NCMMLNz2nY=;
+	b=uA/0WpDyJJvO45BFqs8ua2ECUJ9dXfHEP8POaP5RRlOS+icFcySZkOyrWPwnNzbI97mz
+	 ooB6Bk3OH2/2USVTinIyALziMfAUkSRxFi4z3JbrUNx5M7JyNfN/JDf1emuqJD2YwrAmM
+	 Co+us0OAdPcpr8MKpatpAkwqO4zhTn2S1EWhFGfH8BmYyDCRmhVeWLGsyZ5UHYmv+yCp1
+	 6ZttTHLyxrgEZMYHFlK5xbCtAK0qjdiID06eEWsSUn0r86PWpDdNJjzk964GHolHL/uY7
+	 hQLxtmmGaNLROwy8iTSJ2rdE8sNTEfk7d9YaMc3sLLIDzkydrTckrlSyDaOw7ALeWEA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=S1NccJw0;
-	arc=none smtp.remote-ip=209.85.221.42
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lRO3qt6j;
+	arc=none smtp.remote-ip=74.125.82.180
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92003606A68D
-	for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 16:49:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92003606A68D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0156E606A32C
+	for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 17:23:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0156E606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=S1NccJw0
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-498f5fa4f70so1530300f8f.0
-        for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 08:49:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lRO3qt6j
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso4211902eec.0
+        for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 09:23:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795279776; x=1795884576; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1795281797; x=1795886597; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ugnNXXIsy9Uor/V8luuCj9VNvTB9GFq713zvZphiVc8=;
-        b=S1NccJw0Ms+NHuzySD+H8dg4z2d7XLQp651/mphadfSwCAJxOZksz4J6/G7lFu4C83
-         wgvpoYo8mezwD2HykkrtAatmVDpTlUPXyfM1Yk47PAkddq4KmODejoLVmjmCXBghfPcz
-         G7pJ2/mggW/ix9QBknkTXUrLaGIYZLl/RPYuF+Y/e/rpjiiTKMMkAQRBWKKGcm9vw7of
-         IGzhEjSSAM/t8gK86Bjv4faIaACHEsW9crqzr5bYd7Osv/lYXikDK0+kwJ1gZrJMCLWm
-         4mkUzKSqchtA5U96FxEN+CPjRFoJOlv6McHzoNFHIx6SWGeuYuE0DygUOYEwmwMAKTwH
-         LY4A==
+        bh=CrE8YZPGbKenKXl5BgmqDcyGKii69/sK0NCMMLNz2nY=;
+        b=lRO3qt6jwuQ3jetshv02wRrSxpRYrXbQXzoajLn1J3Yq4k7u8wVbh9XMq1yJERTZ1l
+         qiCgHYN+rxXKDOy1LND+/FqW4GmTY38yOVM5JL8YETrPyQQMX5wG3Ul/MSRJ+eDEdOhw
+         mH800/ng44G2LwJlv36HaBwMHsHe6lC0axjitMuLP9OHU3NHlOMkrg4lsG8vq1RfCaud
+         ZtMI1aJf0mWvPmS6D+S1FX4VZI3tHzWY4JB8U87wGleiLvZkrbb5ukzrEvj9WUKaA5Ba
+         +BIb3OfAn99n65WsQbbn4CcVIIhF8IWQzGPrUUykZwRfFn1oKNBzyd1rt16hBSfHAa4/
+         uSmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795279776; x=1795884576;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ugnNXXIsy9Uor/V8luuCj9VNvTB9GFq713zvZphiVc8=;
-        b=sHom/lRZx/8N6S2SQXO5oETCXBZoko/eiJMV/93N2qd/2/VxV3dZmiU2BcGv3cy25i
-         D3uPbYL1Ib9Ucc7pwDVxDnx1C6JBTQAq7CDnito1RH7c4E9kzCfzsuog8sd6f4EP4Dx+
-         kDEbdBpW8DMfvv8rAzGOTwCSFCJdVbSWQ45DgyjHnekdDyLJVdmNQc2xNE9mmErAuuDX
-         v/UFCXZdfJHWWwQu7/xh1CNMwxNL6aw3TucJZprJoANwefWO5+BAdqnNWA3dttTGi0gL
-         TF82ABOMBst1psdKJR45uNhqM10CJ2QljQUM/Bx+GWXS31c7TOCPdmEdKy821Pq4cTWZ
-         1b4A==
-X-Forwarded-Encrypted: i=1; AL+hErEo/DFH+PYr74vnykBEz7/wAWjrGJEVIKorPJ52MHHg405SK/+q+GO642vZxvqekX5qnBhSAygMFQol9w==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/KrtZDsXpn2+7NsbMh/yWcWmx8lFvZoMLxzxnFy2t3EDou9uSX
-	OtIe/GJwXIq9M33Nadetfr90sjePGdVS7xWHKzadOhz5Gi0MXrm4Tv3U
-X-Gm-Gg: AZFdTZdBG2+42BMy0Yw/UqqEg9oSER8m3cLxBJaOHs5C4g1ZnDwY2fdpKmh4jr6Mmkz
-	8o1ROSMO0zXWOpNR3iQZVEs/5c7NXTqgdTKmwSvMZDp17OjszvDjtPdzZl+3rZ0RwGfAvyIjhOM
-	lHgYYtQxLSnTIHQr2uFwG/w3akNBBpwHh21WVyeQ/vaD8s/lbjRJhiNoosk0SDwen+xSaCTlyZk
-	UsvWRoP7CxM0jc86TfE1zGCd57WAx9Ow0vwII6f7yvavpt6k8TIDOkSp4GXNDmiMNUzjjYGqyG6
-	eOH7jSfdA892X4QrUt7ByoeW7JUfhdLu6VA8LSOf60lWDb0biKkj9FiXtg2WPouwGBvLsnb+ZmM
-	mdZWL3j5L3OvKPAV5k+7Zxw9vgOL8Lj0J0cCQGgcF/9TzpFrG4IRZeGKNagOlmOPJQawuwXsnV5
-	MpYPYoeMIkjqUCFPTgYRTMSuAvJLPL9LLOYsgX+/tfMgyx8c4jqDVwAM/PSdk76PQgK/QiOnn+x
-	XlYqXj+LWiIFv43OEZK1QmMR10E5a1+aqllR6QDTvI8OHEq8ADf5Ol/e9fdSske68a9VgJdNSVR
-	EwvYZVSsYzCqH4nORA2GW2ywMZkC6U4=
-X-Received: by 2002:a05:600c:820c:b0:4bb:6f6a:1976 with SMTP id 5b1f17b1804b1-4bb887c2923mr139557955e9.2.1795279775875;
-        Sat, 21 Nov 2026 08:49:35 -0800 (PST)
-Received: from unknown.local ([2a02:b027:11:696f:25b0:e663:79f5:e891])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-4ab6b110ba3sm9761749f8f.35.2026.11.21.08.49.33
+        d=1e100.net; s=20260707; t=1795281797; x=1795886597;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CrE8YZPGbKenKXl5BgmqDcyGKii69/sK0NCMMLNz2nY=;
+        b=NJZ+sxdwi+WxFAHz3X5vc+43j1h8VwETz5jQDeLgYRbuLDUeyBHciCA4yla+6wy75x
+         vvYn/rLZIIg+97n2Cw5IAC6Bp2LLwF+pLRL5JZM50a8xno0LJQF/DEzfFqO8sh6RXI1Y
+         3cneEORcwluG34PXZ/9Ge2wb18FxRy4X8kb74eFNmGQFZp8Wvtns+DhXMX6Oh747MKxT
+         n5oEaE/ZyX0TPYDUKL67dKaqlMRM5S5nxB0rHzKxOSSfV/FPkRBWl0TMvXuAtNHRUSrB
+         TlBAMLqpl101ogO/8WbWgnKzGnwUXSm3jjuCuu5/uQAmRnZPMQpwAzXO877RWU1p4DWA
+         m3XA==
+X-Forwarded-Encrypted: i=1; AL+hErEVeMAQ2bQsObOKKBTuXK/yEGSoLjcWwLgHwK7fdI8L6v6glWY1QL/Z8/DngVpPUiNmnMtULUFtZhMUXg==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8A+6iMfk5meFzX9s7SNELG5ZJjvzo/YFci6HT6EUUvzbgvhiiM
+	tGXe3iVBaRCwciA4TixxDs6/p+ItkdFXdXw02plmHfBjNX62trV/jWv3
+X-Gm-Gg: AZFdTZfM/QdMhIbXR1wXnGQxJdHGRkyGT+kkkCSGDEaQa1l/J34MFFrC7Wq0h5gi34i
+	ni0RaNhADLo0B880hyTLpcAsSp9FKLFJPoUQtg7Y2p3l9HSxkXFrZmZyWk7PMR2SMr+tfMI+jHp
+	YyMeuDEYToiggPMuGupKtc37fx8QAGqq2yhj+/YlZwwbu0wj9rekaEDRSuSQF0ktc+FBfHy0j77
+	lgspdZUxldhFD8q5gx+Ry1Ln2RwAwx6UbGMq6MrQl9jkkNZe27RmuZzc2/ct8+rrFQfOyvuX8zw
+	OxwQXqIqhVZyQceZlUAK6+V10+BY0tOxPqP/4tRKVN3dgKUn29ovjOkMNZKpxK1alslUPom5TbR
+	E1HT49UJELOTj+b2xa/ocDk8Wu+6I/Guu/LkayHuqe9vuHPdC/f4eZ6qykNCJwJQTbPhitOIigI
+	GTQNoCcdT9dSu+bzVBk74TPoYLgT+P7iR0MzLXpKmlDD8mDVeVWI50fH+wZHoUG/A73We/TsKWW
+	piTGf+QTNh5K4fIXyJG/FaMHNKEPenKmpMPKDK6y5tVarSjibex17lKEhHMORKuFmG8cS7iIUdq
+	qKr/4h5km3cZCcUOY5q4sQnX9ligje7t0YKq
+X-Received: by 2002:a05:7301:e0cd:b0:375:dbeb:b363 with SMTP id 5a478bee46e88-38570f221dcmr6879077eec.28.1795281796821;
+        Sat, 21 Nov 2026 09:23:16 -0800 (PST)
+Received: from DESKTOP-NM9EKIA ([2001:e60:8509:ba6c:4c23:efbc:89e:50d9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38567cafec4sm22413703eec.26.2026.11.21.09.23.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 08:49:35 -0800 (PST)
-From: Gianluca Boiano <morf3089@gmail.com>
-Date: Sat, 21 Nov 2026 17:49:05 +0100
-Subject: [PATCH] dt-bindings: media: i2c: dongwoon,dw9768: add DW9763
+        Sat, 21 Nov 2026 09:23:16 -0800 (PST)
+From: Joonhoe Kim <26rote@gmail.com>
+To: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Radu Rendec <radu@rendec.net>,
+	Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 08/11] arm64: dts: qcom: kaanapali: Add the second DSI controller and PHY
+Date: Sun, 22 Nov 2026 02:23:13 +0900
+Message-ID: <20261121172313.812-1-26rote@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.5
+In-Reply-To: <20261120-molokai-soc-v3-8-403d763685d9@yahoo.com>
+References: <20261120-molokai-soc-v3-0-403d763685d9@yahoo.com> <20261120-molokai-soc-v3-8-403d763685d9@yahoo.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -92,74 +110,16 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261121-dw9763-v1-1-f215290602f0@gmail.com>
-References: <20261121-dw9763-v1-0-f215290602f0@gmail.com>
-In-Reply-To: <20261121-dw9763-v1-0-f215290602f0@gmail.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Dongchun Zhu <dongchun.zhu@mediatek.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- David Heidelberg <david@ixit.cz>, linux-media@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, Gianluca Boiano <morf3089@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795279770; l=1908;
- i=morf3089@gmail.com; s=20240402; h=from:subject:message-id;
- bh=qLwwZ3rP/fjc2JAHuzzvcKw4S3Ep+DNYoDcVGI1KFc8=;
- b=FXcyCoVTdSrnvMx/FpFgdpHcR6SnrRAqBrBe9xrqyPsXhxCW27B742B0YYg0QtpySDp8a7kv9
- f7/o4C3koqzC44B2qlmfzILBcVcnnUlw6PFbYxtNUCsJZL6+gjJSXlJ
-X-Developer-Key: i=morf3089@gmail.com; a=ed25519;
- pk=HsGrEQ3ia8BGGGO8/nUM2K2UX9JKvRPV+nbrVDGrYhA=
+Content-Transfer-Encoding: 8bit
 
-The Dongwoon DW9763 is a 10-bit VCM driver with 8 KiB of embedded
-eFlash. No public register map exists, but the Rockchip and MediaTek
-vendor drivers program it exactly like the DW9768: control at 0x02,
-10-bit DAC at 0x03/0x04, status at 0x05, mode/prescaler at 0x06 and
-resonance timing at 0x07. The chip ID reads 0xf9 and DAC writes read
-back as expected.
+On Fri, Nov 20, 2026 at 09:23:10PM +0530, Venkat Yadlapati wrote:
+> Kaanapali has two DSI controllers. Describe DSI1 and its PHY next to
+> DSI0, connect it to the INTF2 output of the display processor and feed
+> the PHY's byte and pixel clocks to the display clock controller.
 
-The only register-level difference is the naming of the 0x06[7:5]
-mode field: the DW9763 calls the values SAC1/2/2.5/3/4 (0/1/2/3/5),
-the DW9768 AAC2/3/4/8 (1/2/3/5). The encodings match, so the existing
-dongwoon,aac-mode and dongwoon,aac-timing properties apply unchanged.
-The dw9768 driver's settle-delay estimate assumes the AAC4 multiplier
-for mode 3, which may be slightly off for SAC3; this only affects the
-wait after a move, not the lens position. The eFlash is not covered by
-this binding.
+Tested on a Lenovo Y700 Gen 5 (TB323FU, Kaanapali), whose dual-DSI
+panel uses both links, with a board DT that is not upstream yet. Both
+DSI hosts bind, and the panel works after boot, after a display
+blank/unblank and after s2idle.
 
-Document dongwoon,dw9763 with dongwoon,dw9768 as fallback. No driver
-change is needed.
-
-Signed-off-by: Gianluca Boiano <morf3089@gmail.com>
----
- .../devicetree/bindings/media/i2c/dongwoon,dw9768.yaml         | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9768.yaml b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9768.yaml
-index a0855d3b7..386352f62 100644
---- a/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9768.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/dongwoon,dw9768.yaml
-@@ -20,9 +20,13 @@ description: |-
- 
- properties:
-   compatible:
--    enum:
--      - dongwoon,dw9768 # for DW9768 VCM
--      - giantec,gt9769  # for GT9769 VCM
-+    oneOf:
-+      - enum:
-+          - dongwoon,dw9768 # for DW9768 VCM
-+          - giantec,gt9769  # for GT9769 VCM
-+      - items:
-+          - const: dongwoon,dw9763
-+          - const: dongwoon,dw9768
- 
-   reg:
-     maxItems: 1
-
--- 
-2.56.1
-
+Tested-by: Joonhoe Kim <26rote@gmail.com> # Lenovo Y700 Gen 5 (TB323FU)
