@@ -1,106 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795281798;
-	b=pak9aTCxnIQBYkxSKYwrCiuyQLT6jHNFSK2QimO+rJy7G4vdYknaIgipn3ox80RKscNx
-	 egbA38oFmj0UDKWnSoR3Tbhcb96MppmCVMGXxjn/cd9L7GVoKKaNBwez0NVADM9RI1DEB
-	 T2TnVhv3BrFaruQ5iuWaPxIcuuiumB0+Pqtx37OlpZkYogw8PHY+7ZtkezPldxVtyknDv
-	 DbJNbmCgAO2P7X9yj6JxD8YoWeNkFy4Aa0qi2kNRe67H8LYiecrCl85nmbAHKa8yeESQa
-	 Zo1+4xs0377Gg/UEUbremBZ9ZD66lg9g/3+d4Y5bKOy5YMn6bm7anX9Bqu6Ctv5V0XA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795281798;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=CrE8YZPGbKenKXl5BgmqDcyGKii69/sK0NCMMLNz2nY=;
-	b=uA/0WpDyJJvO45BFqs8ua2ECUJ9dXfHEP8POaP5RRlOS+icFcySZkOyrWPwnNzbI97mz
-	 ooB6Bk3OH2/2USVTinIyALziMfAUkSRxFi4z3JbrUNx5M7JyNfN/JDf1emuqJD2YwrAmM
-	 Co+us0OAdPcpr8MKpatpAkwqO4zhTn2S1EWhFGfH8BmYyDCRmhVeWLGsyZ5UHYmv+yCp1
-	 6ZttTHLyxrgEZMYHFlK5xbCtAK0qjdiID06eEWsSUn0r86PWpDdNJjzk964GHolHL/uY7
-	 hQLxtmmGaNLROwy8iTSJ2rdE8sNTEfk7d9YaMc3sLLIDzkydrTckrlSyDaOw7ALeWEA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lRO3qt6j;
-	arc=none smtp.remote-ip=74.125.82.180
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795300702;
+	b=WEC+xgizDlnlo7Vb+HzGN6L1iudl/qott1fgqgswHDaU7gkLH8xUyzWZvfJgjHovXnf7
+	 FCHWClXiOl3afWuwy0I7YIJGbB/da9YAi9BAZ+qYGZVP9WsbivM9RLRQOe7GdnxN6rfEX
+	 /Yo+KjpfOKQN4xyyAtWY8xjrJURgxdVds1CKRyu3a3VNHJk0hxOw/HPuqzHDQaAM6o2mQ
+	 dI+KtLhTJsyL3NiUR2/VX9QJnX+PgaKKFt7fwyQdjTRXIg0u3vdqJzRObg0p8OcccbSm+
+	 3gFZ2QkVI5FiIr2WiGI1Kys0E0DokmsQAUh035Fs3F/ODFwvEEBHYkyPs5G3tevb7MQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795300702;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=2pVvL6liOZozt7ueKQK+LTvQxDDJvrQPgKYSk7ftnEQ=;
+	b=Np6WPoqeufoGYCP5YJhBm4WcFAqAetQREATOMXgrbrIVrqdDVgYlBAymvfvDREXH0zy0
+	 LWydXLvdIEyUCFMZEzpLd/iM/iqSsjPZCDWk66hcH5o0uRez5wCf/gsj7a3eIShOVIhg/
+	 EE2Q9SpVJwac82/zYlweP3CaulZlUfBqWq3x0y+TuDNe2j3pHG4u3vXc9nzjYt51XcXZj
+	 lllFP9YX0kKbyTrwlUcUr3ZPdSUox/Zgy7ZFkt4LJBshHXBej30G50RqavYgmG2oAH1c8
+	 sxXXTE7jfg8a2Zpjm2Ly4L7VSN6wx5l4UJvmWYhNvOHzjd43X7HRIfb+7TdQCL/VC3Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lOcRvZL3;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9F8606A320;
+	Sat, 21 Nov 2026 22:38:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lOcRvZL3
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795300702;
+	b=Zl+AFD2UoC3bb7jL7Vbh3csemE0vpGPUdGSjZfDyQgSL+r7KjG9A9vVrz33hRBrrtpHA
+	 trlOVjJRKjxsGAnfa+ig9g6cbSkLpdt45Op6jqH3FdVoDh0bBup7S6mknUMsNYWC4ue2a
+	 mFBYZNjTd4lTU/GY6KD6MQ0cCIkC5+Pr2Zmgt0kjVYvwegGZPjDWJHIBy9P5NazfWpRd1
+	 rE0aDLbjbxp/hcqx+hBC3ygnobS1+U0wzToSB87urNZpLi+Awlsp2WPo4iqiqkbaAhOKN
+	 N6ZE67T5OB6AQwLjja2yDTX3yWDzgyyp1+uB8KjyONpd2ahZKoB4ZBSUYbQeWeo4lsw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795300702;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=2pVvL6liOZozt7ueKQK+LTvQxDDJvrQPgKYSk7ftnEQ=;
+	b=nDVH36udObyC1uAZ2gxdf75IK3I5dIXeWlbeGprRSKMYMTz/O2+lPMaN7DqsFuNa9E+4
+	 pdRmDXB7PIA7+g/lnNLGGZP/SApJ/Gxw7OoG3S94In9brMY+aPqfeQLYZvCtIBwGzFtg1
+	 P4NfcTX+FBlgA/MlHaar0+krjd6dWP72l35g62w15PjmogRQvddEu3Blv8qyAMlbxCcy1
+	 AZ/YX5ZxA18/7hCBE2x+edPK/dbTGlTLOQy0OHrk7a4hsMhSgxnSbaAWjtIOjdyQlTWKf
+	 srMG6FS5kZzF91dJTOyiZDVRofeJ2vWBuMxZypXmQ2I2vsfHpYsSHmCwhsm0X9FYLOQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0156E606A32C
-	for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 17:23:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0156E606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lRO3qt6j
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso4211902eec.0
-        for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 09:23:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795281797; x=1795886597; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CrE8YZPGbKenKXl5BgmqDcyGKii69/sK0NCMMLNz2nY=;
-        b=lRO3qt6jwuQ3jetshv02wRrSxpRYrXbQXzoajLn1J3Yq4k7u8wVbh9XMq1yJERTZ1l
-         qiCgHYN+rxXKDOy1LND+/FqW4GmTY38yOVM5JL8YETrPyQQMX5wG3Ul/MSRJ+eDEdOhw
-         mH800/ng44G2LwJlv36HaBwMHsHe6lC0axjitMuLP9OHU3NHlOMkrg4lsG8vq1RfCaud
-         ZtMI1aJf0mWvPmS6D+S1FX4VZI3tHzWY4JB8U87wGleiLvZkrbb5ukzrEvj9WUKaA5Ba
-         +BIb3OfAn99n65WsQbbn4CcVIIhF8IWQzGPrUUykZwRfFn1oKNBzyd1rt16hBSfHAa4/
-         uSmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795281797; x=1795886597;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CrE8YZPGbKenKXl5BgmqDcyGKii69/sK0NCMMLNz2nY=;
-        b=NJZ+sxdwi+WxFAHz3X5vc+43j1h8VwETz5jQDeLgYRbuLDUeyBHciCA4yla+6wy75x
-         vvYn/rLZIIg+97n2Cw5IAC6Bp2LLwF+pLRL5JZM50a8xno0LJQF/DEzfFqO8sh6RXI1Y
-         3cneEORcwluG34PXZ/9Ge2wb18FxRy4X8kb74eFNmGQFZp8Wvtns+DhXMX6Oh747MKxT
-         n5oEaE/ZyX0TPYDUKL67dKaqlMRM5S5nxB0rHzKxOSSfV/FPkRBWl0TMvXuAtNHRUSrB
-         TlBAMLqpl101ogO/8WbWgnKzGnwUXSm3jjuCuu5/uQAmRnZPMQpwAzXO877RWU1p4DWA
-         m3XA==
-X-Forwarded-Encrypted: i=1; AL+hErEVeMAQ2bQsObOKKBTuXK/yEGSoLjcWwLgHwK7fdI8L6v6glWY1QL/Z8/DngVpPUiNmnMtULUFtZhMUXg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z8A+6iMfk5meFzX9s7SNELG5ZJjvzo/YFci6HT6EUUvzbgvhiiM
-	tGXe3iVBaRCwciA4TixxDs6/p+ItkdFXdXw02plmHfBjNX62trV/jWv3
-X-Gm-Gg: AZFdTZfM/QdMhIbXR1wXnGQxJdHGRkyGT+kkkCSGDEaQa1l/J34MFFrC7Wq0h5gi34i
-	ni0RaNhADLo0B880hyTLpcAsSp9FKLFJPoUQtg7Y2p3l9HSxkXFrZmZyWk7PMR2SMr+tfMI+jHp
-	YyMeuDEYToiggPMuGupKtc37fx8QAGqq2yhj+/YlZwwbu0wj9rekaEDRSuSQF0ktc+FBfHy0j77
-	lgspdZUxldhFD8q5gx+Ry1Ln2RwAwx6UbGMq6MrQl9jkkNZe27RmuZzc2/ct8+rrFQfOyvuX8zw
-	OxwQXqIqhVZyQceZlUAK6+V10+BY0tOxPqP/4tRKVN3dgKUn29ovjOkMNZKpxK1alslUPom5TbR
-	E1HT49UJELOTj+b2xa/ocDk8Wu+6I/Guu/LkayHuqe9vuHPdC/f4eZ6qykNCJwJQTbPhitOIigI
-	GTQNoCcdT9dSu+bzVBk74TPoYLgT+P7iR0MzLXpKmlDD8mDVeVWI50fH+wZHoUG/A73We/TsKWW
-	piTGf+QTNh5K4fIXyJG/FaMHNKEPenKmpMPKDK6y5tVarSjibex17lKEhHMORKuFmG8cS7iIUdq
-	qKr/4h5km3cZCcUOY5q4sQnX9ligje7t0YKq
-X-Received: by 2002:a05:7301:e0cd:b0:375:dbeb:b363 with SMTP id 5a478bee46e88-38570f221dcmr6879077eec.28.1795281796821;
-        Sat, 21 Nov 2026 09:23:16 -0800 (PST)
-Received: from DESKTOP-NM9EKIA ([2001:e60:8509:ba6c:4c23:efbc:89e:50d9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38567cafec4sm22413703eec.26.2026.11.21.09.23.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 09:23:16 -0800 (PST)
-From: Joonhoe Kim <26rote@gmail.com>
-To: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Radu Rendec <radu@rendec.net>,
-	Kees Cook <kees@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 08/11] arm64: dts: qcom: kaanapali: Add the second DSI controller and PHY
-Date: Sun, 22 Nov 2026 02:23:13 +0900
-Message-ID: <20261121172313.812-1-26rote@gmail.com>
-X-Mailer: git-send-email 2.55.0.windows.5
-In-Reply-To: <20261120-molokai-soc-v3-8-403d763685d9@yahoo.com>
-References: <20261120-molokai-soc-v3-0-403d763685d9@yahoo.com> <20261120-molokai-soc-v3-8-403d763685d9@yahoo.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id 56F5D1F000C6;
+	Sat, 21 Nov 2026 22:38:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795300701;
+	bh=2pVvL6liOZozt7ueKQK+LTvQxDDJvrQPgKYSk7ftnEQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=lOcRvZL3XM1sDcXNa+RiBnRGDgjRO8267WJF0HC9+G9toTTQi8qdqroiQ+jpfQfSo
+	 BCBIeBH6NGOH7yVWYm8Jdz/MdtRvr5AA7w02d1D/embM8M9dC6pwTmEuHToOc4yN2r
+	 iPdHwv5lcsZdhvlyKoMXn2CjbasOF3Hfi2Rd9QCFXvHQRe1rmho5NpqF+y82DJ+sFm
+	 splJbZm8+dTmBrXWmP95y++hRe55j5GPTeH3zHKG7U9d5qnk0f2iduuxyFcy19o/hS
+	 i61UIWfrK29msPkeykByqekwiWnLWKZPw6HZaS1ESonYZQ9loNENVzQR6BKSJ+7rWT
+	 fILa0E0BTaOxA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id C9E364BE22;
+	Sat, 21 Nov 2026 22:38:20 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Sat, 21 Nov 2026 23:37:55 +0100
+Subject: [PATCH v3 01/12] regulator: dt-bindings: qcom,usb-vbus-regulator:
+ Add pmi8998 and pm660
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -110,16 +83,183 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261121-pmi8998-vbus-v3-1-91ba2e61a877@ixit.cz>
+References: <20261121-pmi8998-vbus-v3-0-91ba2e61a877@ixit.cz>
+In-Reply-To: <20261121-pmi8998-vbus-v3-0-91ba2e61a877@ixit.cz>
+To: Abel Vesa <abelvesa@kernel.org>, 
+ Alexey Minnekhanov <alexeymin@minlexx.ru>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Casey Connolly <casey.connolly@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Markus Rathgeb <maggu2810@mailbox.org>, Rob Herring <robh@kernel.org>, 
+ Robin Snyders <robin@snyders.xyz>, Sebastian Reichel <sre@kernel.org>, 
+ Wesley Cheng <quic_wcheng@quicinc.com>
+Cc: Richard Acayan <mailingradian@gmail.com>, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3908; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=uY38OOoOv7AGRyzhEMqIBpg8bK80KZsXFqsa90ruurA=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrAh1aZ71OU7nXEzGksm9JPBqUjPCMKJQIwl0AR
+ /GgYR1ikoGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawIdWgAKCRBgAj/E00kg
+ crzrEACvV8hZp+8Nvex937epX+wbnJpLE+R4rEnKDaBYvYJasLsS4i7V176Fpr1lzgZVqn2X2be
+ A24nn3e9hYzSDgRsGY1EahzxU7y1xxVS3uWfENPH6N2uv9/pOBPyFacjzD4Gb4AWW8Puh2ykUUO
+ n4uCZuUH5CEOMMXdEWGqznkA4C7/xVj/CmdxhPlZCDFR7/q9yZCM0qBsGY7yBrgvBtmTwfPLCqI
+ TIfLJhSqgYLFwbb77X6SUNuCYxJHOgH3+NDmfwENUA6f2qAjN4flYy0zsv5B3g+IketMeOBa1Wo
+ RuEvnRzsFV+WCrmNCdQXRPeFIWF/OkYce1VravKDOXYC8W/JibanTSZpalLa92uZQCtkiHjXyf2
+ DG/CLoB0+o7FxKF+ZRVY5Dgen78IevGVAvaErCy3WGB81nX8vTWFcKFs5uz1gL3s/BLl8tl+SLn
+ mvab9y/NQ46sotGVTyN5rjcJuF8XHDzwk9vfnkqEPEEILiAs95eFK9/uCNvgGwzrY4eBrsDK31J
+ kHWKa5HvJL08xthSrVv4NQxbHo3/RiVeTaZ6+G0BaHXCR+EU04LTmDTURyekkpf8rHG7EQJQD8m
+ SIm66DualkV8214cYVk/uZahvSA8HrDq8kjVkS42C/UbAAIGma9yK8ITT/x0IUW/p5Pa3+NzdAk
+ BTnzG7xO4yUobIg==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 20, 2026 at 09:23:10PM +0530, Venkat Yadlapati wrote:
-> Kaanapali has two DSI controllers. Describe DSI1 and its PHY next to
-> DSI0, connect it to the INTF2 output of the display processor and feed
-> the PHY's byte and pixel clocks to the display clock controller.
+From: David Heidelberg <david@ixit.cz>
 
-Tested on a Lenovo Y700 Gen 5 (TB323FU, Kaanapali), whose dual-DSI
-panel uses both links, with a board DT that is not upstream yet. Both
-DSI hosts bind, and the panel works after boot, after a display
-blank/unblank and after s2idle.
+The VBUS register block on the PMI8998 and PM660 PMIC shares the design.
+Define corresponding compatible string, having the
+qcom,pmi8998-vbus-reg as a fallback.
 
-Tested-by: Joonhoe Kim <26rote@gmail.com> # Lenovo Y700 Gen 5 (TB323FU)
+As a part of the definition properly define existing chips using
+min/max/multipleOf properties.
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ .../regulator/qcom,usb-vbus-regulator.yaml         | 56 ++++++++++++++++++++--
+ 1 file changed, 52 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+index 024b34d0eb1a6..7e984ab9a1474 100644
+--- a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
++++ b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+@@ -9,35 +9,38 @@ title: The Qualcomm PMIC VBUS output regulator driver
+ maintainers:
+   - Wesley Cheng <quic_wcheng@quicinc.com>
+ 
+ description: |
+   This regulator driver controls the VBUS output by the Qualcomm PMIC.  This
+   regulator will be enabled in situations where the device is required to
+   provide power to the connected peripheral.
+ 
+-  The pm8150b variant uses an OTG current-limit selector, supporting limits
+-  of 500 mA, 1000 mA, 1500 mA, 2000 mA, 2500 mA and 3000 mA.
++  The pm8150b and pmi8998 variant uses an OTG current-limit selector.
+ 
+   The pm4125 variant uses a different register layout with a 2-bit VBOOST
+-  voltage selector supporting output voltages of 4.25 V, 4.5 V, 4.75 V
+-  and 5.0 V.
++  voltage selector.
+ 
+ properties:
+   compatible:
+     oneOf:
+       - enum:
+           - qcom,pm8150b-vbus-reg
+           - qcom,pm4125-vbus-reg
++          - qcom,pmi8998-vbus-reg
+       - items:
+           - enum:
+               - qcom,pm6150-vbus-reg
+               - qcom,pm7250b-vbus-reg
+               - qcom,pmi632-vbus-reg
+           - const: qcom,pm8150b-vbus-reg
++      - items:
++          - enum:
++              - qcom,pm660-vbus-reg
++          - const: qcom,pmi8998-vbus-reg
+ 
+   reg:
+     maxItems: 1
+     description: VBUS output base address
+ 
+ allOf:
+   - $ref: regulator.yaml#
+   - if:
+@@ -45,26 +48,71 @@ allOf:
+         compatible:
+           contains:
+             enum:
+               - qcom,pm8150b-vbus-reg
+               - qcom,pm6150-vbus-reg
+               - qcom,pm7250b-vbus-reg
+               - qcom,pmi632-vbus-reg
+     then:
++      properties:
++        regulator-min-microamp:
++          multipleOf: 500000
++          minimum: 500000
++          maximum: 3000000
++
++        regulator-max-microamp:
++          multipleOf: 500000
++          minimum: 500000
++          maximum: 3000000
++
++      required:
++        - regulator-min-microamp
++        - regulator-max-microamp
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,pm660-vbus-reg
++              - qcom,pmi8998-vbus-reg
++    then:
++      properties:
++        regulator-min-microamp:
++          multipleOf: 250000
++          minimum: 250000
++          maximum: 2000000
++
++        regulator-max-microamp:
++          multipleOf: 250000
++          minimum: 250000
++          maximum: 2000000
++
+       required:
+         - regulator-min-microamp
+         - regulator-max-microamp
+ 
+   - if:
+       properties:
+         compatible:
+           contains:
+             const: qcom,pm4125-vbus-reg
+     then:
++      properties:
++        regulator-min-microvolt:
++          multipleOf: 250000
++          minimum: 4250000
++          maximum: 5000000
++
++        regulator-max-microvolt:
++          multipleOf: 250000
++          minimum: 4250000
++          maximum: 5000000
++
+       required:
+         - regulator-min-microvolt
+         - regulator-max-microvolt
+ 
+ required:
+   - compatible
+   - reg
+ 
+
+-- 
+2.55.0
+
+
