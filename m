@@ -1,58 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795259365;
-	b=nZglg0T3Qe67977wjVBi4tja65BDBrnHkb0w/573jCHjaM/B3KIFzQgOJfhsQCAxuLSd
-	 BmYSqtw0Q1iDogDUIYTj4DY4O+iVCIaJ9YowvV35hmPEob7YTJb5uioCfRdWCpxoLyh8T
-	 Rry/n04IVJqqk0O/+c3tlA1+DbSIMUCoHPUDCevw+B6dALLH3gu4GLzTGwRND/X7Tr2tm
-	 nYiCLcLijLCfCyfpCHqgWyV/ZW4OLDl0xtNlIPHJ1J8E7PIEAGLa97haldBLOdImpypOi
-	 w+rVw7bM8DITIRUHw/YBziutquRyq2vWjKUHnQ5YPye+kDMrvKVFEEdNJzdOrR/SAQw==
+	t=1795279776;
+	b=uqdZ8W6Yz69OxHsD7Z4ADCa440+g55QRQOnG9yHec/QSBMEVxNtQcQNa+V9emfSNO7a3
+	 1kRtF4p3TIFERdKNPWrl8NOMUtIj9s5iV5M/4Ww1o5S5EpX4ig006m84Tu3zHE4N6qiBo
+	 L4e6dLGJivdHSHk5oibOhWYlG9RiDvSHPVF7CrJaXufWIB75MVgJi9zILZ6LmMetvUGtE
+	 S4Nxsb54VOvyXqdtrW7pJ0uzz9mhe8Hd+IOUVEnik/kb8CDeZDKblZdp+USoUQvQut8sr
+	 tEvnA45V6RUvwuN4N3BwU1/xD8AZS80E6QB1f0pAPGdPIJELKjglz2qdUqHSvJUhwvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795259365;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=jm9iGnEOZUBT4S65MLfIOKx/HquVM3674BVINWFFw9E=;
-	b=ieHCLL/HvHQCmLzXPkm7eiQhsqzMs4REIS/+3jJDPCS6gcZmwI3Fs4inNkvXINhgqTt5
-	 HonZSkuI4G5hqr3i54lXJc6xc7URkA/hOts8zFLTFqARehlef1WQOSMHGBEyxjRUFYY45
-	 tQaI8fii1eQ1ngolcJMIiu6bbR5y2gSJnhgeidtesTjzR1rO8Pxll66XSjBGE6jlDoD7D
-	 lSblsE2B8Tg1q8eK2lw2fxyrAnijUgrSMe4FhDkb5M6QsUA48umEbMG5DdsRq62Flr0mj
-	 f+v0r4MWO3H8rS88bf2jFDDs3ygxZjqkt4+YeeWvyd2d1p8W2BPGrfoppjcGMdXafhw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795279776;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=Tr5CKU3UlzjWznuI2jt2cmP/efOOLT4RS9lkC9TSPu8=;
+	b=BN21wVzvF8b82mPtOMJG5SfpxshP9GwWJWuRHm0LJZUhz2Et+sMVJhrGpHR5am2R9kLg
+	 B0jzmAr+bQn6c3ML6vbuS0qF0Py3wGU9w5+YluqPblya62S7b79JDxiw3u7EY2V9qYzeG
+	 JnVBkF4C8CHDVYqg/JieBb5maj+rf5gbudL7vEXeR4FsxUUeZiv+jN4L2gxbpk4FKPliw
+	 iIU/hd2GTYL86n/peSo1USpOw/LyW0RmjuWlBxOzItIvyWLgDL1QTkg7LoJ8b5f1SpZYv
+	 lIv6FkDK9BQfNotzFa7cKxP2PwAAUB0gyeYQVyXyZnhjoLAt0IEoTmO9Qg5TaNpv8hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U7Vge7og;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OdcooltJ;
+	arc=none smtp.remote-ip=209.85.221.46
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1663E606A320;
-	Sat, 21 Nov 2026 11:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C1A606A331
+	for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 16:49:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86C1A606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U7Vge7og
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35EC1F000C0;
-	Sat, 21 Nov 2026 11:09:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795259364;
-	bh=jm9iGnEOZUBT4S65MLfIOKx/HquVM3674BVINWFFw9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U7Vge7oguDE5mXpfvowMRoJpoL1YiqyyRwGq/E4QooWLckmIvJLmtSfzVkhZ4mFS6
-	 KzAyVwejI3acu6T1oEli6UkfekGmAqVoCosFh6hoqGPqPAhHBZBtFPoEWUMDHDW9Tn
-	 3Vsi7O658H82KzlsmfamCQB2yl2Va2LtX2QPxKK/9YmdRMwy7p3+YXazbRydkjwFzC
-	 NSUNfHQOzPzIczwWdSKEczUQFGtOOebGUXaDrR5JV8wND98w4/vi687aWVoCYx7cb8
-	 STaWN4fsjpHlNZ1674Pmtt4idXGujEzmRwB5KQI4VYb8+qyqNJ+sqgOV4dLE2uCqy6
-	 SxVfTGR1ItUFw==
-Date: Sat, 21 Nov 2026 12:09:21 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Adil =?utf-8?Q?H=C3=BCsrev?= Tepe <tadilhusrev@gmail.com>
-Cc: neil.armstrong@linaro.org, jesszhan0024@gmail.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	phone-devel@vger.kernel.org, u.kleine-koenig@baylibre.com
-Subject: Re: [PATCH v4 1/2] dt-bindings: display: panel: add Novatek NT36525
-Message-ID: <20261121-brave-adamant-caribou-b01daa@quoll>
-References: <20261116070212.314228-1-tadilhusrev@gmail.com>
- <20261120114100.978148-1-tadilhusrev@gmail.com>
- <20261120114100.978148-2-tadilhusrev@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OdcooltJ
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-491971ac844so1706059f8f.2
+        for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 08:49:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795279774; x=1795884574; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Tr5CKU3UlzjWznuI2jt2cmP/efOOLT4RS9lkC9TSPu8=;
+        b=OdcooltJshgvnRM7c+d/FGFvp62+GJqr7tPTVT3YQ1ew2d9S63WxhaYLBBMJo7Rish
+         W0jFv7E+bumkwunAAIGW3/h1O8hR53Mce65f8w7P5dd+K4xvASRMIHo6FgHTVG4+plbI
+         SLEjSMPhJ22OZpuOK+En0GZ9ZiMYu8oirKRLLUuXOTU80hnFa8601onbZ3qHt6gXDxwj
+         m3QDaylwAlOAcskZ2OhBE1pLKpx8foNt4cdlL5xCoVbVYlv4mCBYod9ShLAFq9WuzZT1
+         b3gR52+oXacMOpqxOKLS7gSu0HyRtvsVNlieaFvfxpA15HZqvZL8K07lYpZwGiQFj7sK
+         /05A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795279774; x=1795884574;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Tr5CKU3UlzjWznuI2jt2cmP/efOOLT4RS9lkC9TSPu8=;
+        b=thGl1pKsWiW4oQYkBR8iBaYmS2Zsm6BexRCIUioiv2s/Q/PH3HSE7Q9L+vLE2t57KB
+         yLf6pHowmwkawj0pqlhQa0KV2UmXFGlnwyZMj48RRGL892nbtXIz9Ftxn531fqYSMH2D
+         foxY/A71UIbNNEJ4mefnUmrN4qLyG7M7f9R1IxFDOWVm580g7XobB7QMtUo5l7MkdZw1
+         rYYcDVUcEX5/xDQREoOji6AjwoZSq+KRfWk6CcNgSIYzDqbwa7j2DEbpsQjE/GJtndvq
+         HLHNONOnJWZVBJzhedBv7rQoLVQwH9Oc4KMSPHzSBjpbMfHFKg0SVTOy7WNdmTmmzflU
+         btOw==
+X-Forwarded-Encrypted: i=1; AL+hErE0nvm3sZ+KEOIo+MAnEk2OwcMJS3SIKgZZhe0C48UryMr6FBjJe604I5M20IaxhrQ3UOW0BQ4jReetcA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9DeQroRg2RES9negZSlSyNc8ru1VScK/AgKvRrPmK1sU3Bxogj
+	KSkEdjlSjwfvI/RCg0JljF+He0GB2rhrVR0cg904/WjFWoMhI1CDhH/V
+X-Gm-Gg: AZFdTZfB8dimcJqz01W3hGbgIVBBhvqrd2AhcuRk1yBNuwHMxvBd7848+eu7Smn8gUd
+	tohTKyHQd+zw/62u1zqiiRRakMCvlabjkptvB1WgxlsmFmQUUpS/Y0kqRaAFdSEc5kTCwD0Ubz3
+	5FdhfhZ9lGT+LEO9kBeQvIKOFGSnTcYFZafad53FizekosFj+7yGhWvJVZGKJ0PE0U4LHhHmhkJ
+	Kw7khtXsrA6J+v8y+LalG9UX6NpOjTBE+dnki3Vx5jj4IelPa+AJXbzaerAjcTXJyvltTYZz4rH
+	3S7S0DXdyRpNHoZXAvG/1ofAJ4OOcTRAbD63V38XTH3j7x1VAgRQi4+ZNEG2HbiyKgZ6ZoFfyL+
+	4C/xtF5RENI1avBXhLMkPokzn5iOACZeMcpIWidxlir9wTcWcb+9bWnbO9lgVHMaLOXi81BqfNF
+	3Nxz2yXT8lFS+rCj9bltkP0X4B4NSeIvYNfVfLDox+l1FDvh/dSlqmAQZ9rGlYVbCm0JVYV7phm
+	05e+WsN+JDnZK0Qqz+6B5Bo0YLjg8jThreHiyLrrOoTbxiRettsMES4nD9Z3IGbpNNBLVZ4MicP
+	eNWop92BfqYd5NK64sAet8n6ynw0uL0=
+X-Received: by 2002:a05:6000:29cc:b0:4a9:32c9:a6c with SMTP id ffacd0b85a97d-4abb43deca6mr9060540f8f.50.1795279773669;
+        Sat, 21 Nov 2026 08:49:33 -0800 (PST)
+Received: from unknown.local ([2a02:b027:11:696f:25b0:e663:79f5:e891])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-4ab6b110ba3sm9761749f8f.35.2026.11.21.08.49.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Nov 2026 08:49:33 -0800 (PST)
+From: Gianluca Boiano <morf3089@gmail.com>
+Subject: [PATCH] media: dt-bindings: document the Dongwoon DW9763 VCM
+Date: Sat, 21 Nov 2026 17:49:04 +0100
+Message-Id: <20261121-dw9763-v1-0-f215290602f0@gmail.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -62,137 +92,47 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20261120114100.978148-2-tadilhusrev@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDQyND3ZRyS3MzY90UQzPjRNNko2RjI2MloOKCotS0zAqwQdGxEH5xaVJ
+ WanIJSLdSbS0AcDXonGoAAAA=
+X-Change-ID: 20261121-dw9763-d163a5c2c323
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Dongchun Zhu <dongchun.zhu@mediatek.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ David Heidelberg <david@ixit.cz>, linux-media@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Gianluca Boiano <morf3089@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795279770; l=692;
+ i=morf3089@gmail.com; s=20240402; h=from:subject:message-id;
+ bh=VFe6rInvOpcbpjq2cBpErG4KxA9j/Y9r1X0v6h+zhYE=;
+ b=N9bApgpYBwVxB7xDyEKPDEzkL/ZOO/P/SlJmM9T9fKdCl3jhJ1rEKJxw4rPB1UjuXyAXn9Qje
+ c4Lnp5DPvgEAFM+fzXoY/wgd0DT5+jfjdjrKFbulNhO56PJ21VwdRw4
+X-Developer-Key: i=morf3089@gmail.com; a=ed25519;
+ pk=HsGrEQ3ia8BGGGO8/nUM2K2UX9JKvRPV+nbrVDGrYhA=
 
-On Fri, Nov 20, 2026 at 02:40:59PM +0300, Adil H=C3=BCsrev Tepe wrote:
-> Add a DT binding for MIPI-DSI video-mode panels based on the Novatek
-> NT36525 controller, as fitted on the Samsung Galaxy XCover5 (SM-G525F,
-> Exynos850). The panel reset (RESX) is active-low, and the panel needs
-> three separate supplies (vdd/vpos/vneg) plus an optional backlight.
->=20
-> Signed-off-by: Adil H=C3=BCsrev Tepe <tadilhusrev@gmail.com>
+The Xiaomi Mi A2 (jasmine, SDM660) has a DW9763 on each rear camera.
+Both work with the dw9768 driver as is; the commit message has the
+register comparison. The jasmine camera DT that uses this compatible
+will follow in a separate series.
 
-Still incorrectly threaded.
+Discussion: https://github.com/sdm660-mainline/linux/pull/267
 
-I asked to use b4 for a reason. If you insist on not to, then at least
-follow standard process and standard guides of upstreaming work.
+---
+Gianluca Boiano (1):
+      dt-bindings: media: i2c: dongwoon,dw9768: add DW9763
 
-
-> ---
-> v3 -> v4: no changes to this binding.
->=20
-> v2 -> v3: no content change. Resent as a fresh, standalone patch
-> (previously v2 1/2 was a diff on top of v1's own patch instead of a
-> complete patch against mainline, which Krzysztof Kozlowski correctly
-> flagged as a git-management mistake on my part; see the cover letter).
->=20
-> v1 -> v2 (addressing Sashiko AI's review of v1,
-> https://sashiko.dev/#/patchset/20261116070212.314228-1-tadilhusrev@gmail.=
-com?part=3D1):
-> - reset-gpios is the physical RESX pin, which is active-low (asserted
->   low, released high); describe it as such (GPIO_ACTIVE_LOW in the
->   example) instead of GPIO_ACTIVE_HIGH. The matching driver fix is in
->   "drm/panel: add Novatek NT36525 panel driver".
-> - Add vpos-supply and vneg-supply: the driver requests three separate
->   regulators ("vdd", "vpos", "vneg"), but the binding only declared
->   "vdd-supply".
-> - Add backlight: true so dtbs_check accepts the backlight property the
->   driver already parses via drm_panel_of_backlight(), instead of
->   switching additionalProperties to unevaluatedProperties (which would
->   also pull in every other panel-common.yaml property, not just this
->   one).
-> - Fold the compatible string into a single, driver-matching value
->   (novatek,nt36525-xcover5) instead of samsung,xcover5-nt36525, which
->   never matched the driver's of_match_table at all.
-> ---
->  .../display/panel/novatek,nt36525.yaml        | 83 +++++++++++++++++++
->  1 file changed, 83 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/panel/novat=
-ek,nt36525.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36=
-525.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36525.=
-yaml
-> new file mode 100644
-> index 000000000..9158125c9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36525.yaml
-> @@ -0,0 +1,83 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/panel/novatek,nt36525.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Novatek NT36525 MIPI-DSI panel
-> +
-> +maintainers:
-> +  - Adil H=C3=BCsrev Tepe <tadilhusrev@gmail.com>
-> +
-> +description:
-> +  A MIPI-DSI video-mode panel driven by a Novatek NT36525 controller,
-> +  720x1480. The first compatible string names the specific panel as fitt=
-ed
-> +  in a device; the second is the NT36525 controller it is based on. The
-> +  panel reset (RESX) is active low.
-> +
-> +allOf:
-> +  - $ref: panel-common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - novatek,nt36525-xcover5
-
-I don't get it, what is xcover5? This claims it is Novatek device. Why
-isn't this actual panel manufacturer?
-
-
-> +      - const: novatek,nt36525
-> +
-> +  reg:
-> +    maxItems: 1
-> +    description: DSI virtual channel
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: panel logic power supply (vdd_ldo28, 1.8V)
-> +
-> +  vpos-supply:
-> +    description: LCD positive bias supply
-> +
-> +  vneg-supply:
-> +    description: LCD negative bias supply
-> +
-> +  backlight: true
-> +
-> +  port: true
-
-I don't understand why this cannot be part of other bindings... looks
-exactly like nt36536 or nt36672a
-
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reset-gpios
-> +  - vdd-supply
-> +  - vpos-supply
-> +  - vneg-supply
-> +  - port
-
-Drop port
-
-> +
-> +additionalProperties: false
+ .../devicetree/bindings/media/i2c/dongwoon,dw9768.yaml         | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+---
+base-commit: aa0f4c41d4870a18e65772a1817af16427200371
+change-id: 20261121-dw9763-d163a5c2c323
 
 Best regards,
-Krzysztof
+--  
+Gianluca Boiano <morf3089@gmail.com>
 
