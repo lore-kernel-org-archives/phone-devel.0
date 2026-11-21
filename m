@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1795300705;
-	b=N1GacoWlGs9kBVyKQewZKz2TGLT9h/bsybEMMn6c+X3Fm/cbBBENAr/qQ2OSQkDcrTNy
-	 WSn6Y4zJeFAcIPqlqaoC6+xxQftS+kno7jMn7DUCsEKyxoinT9TUoMppny84+DPHpJb3v
-	 vTGu1qenVcZ+FWgBwns0DKMudqXzUEzVrblFf2u+2iK1k6uUq65WNhYMed39s3CTGbiw6
-	 AyX3yyTxE2KvKbPwTFucCGSMtqrFAb6+3wqRssNA7tdxwGoTccRNn2J2gVCl0+nrd8tLy
-	 9FE6sCX51pmOMmUEYLDZ17ZrVKutFka1Q8sOzYcvwXXn2fKgccJcTUyiWuatQf1mEFQ==
+	b=XuRGomEHTqmmWeVFc1kAyaz12KXExgJMUCbmZ/tMSlE6iCH4RgD4fFjl43+vsWJ6ajhw
+	 6eujzZHeHD7ZstO6G/hGGnF/D7GMfwCOcW7LqCuT2d7xNHXGnxtEI5VkU8GoQwikheg1v
+	 TH1MlPODFMVB+OincSzWydGcEu3Z35P0BAM81VLRb9+nWVZ78KL92RZTiVGPhS2oe+JXA
+	 ZygJ3GNL2XY0lj88ucMx++QpcGQfoURIHvvb438oh1R9aJwb+NUM0DCse0IPMdDYEhKXG
+	 ezYOiopA08BbJd1c6Q+Siil/HzPs7IMF/gre+GpeCBG5MXP8r/0HR8qOctOdHm3cHsg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795300705;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=gxun9QDC8DJDeaUi0wrOgcELDuQJNUTtE/AzD7PlJ+A=;
-	b=uTY7rZR+2gz2rP/mNFzmlOOb+3QXeRay+GicD9Klg4f9+Pa1eF4uQWW203wGeXZeaWK7
-	 u6YnmPmI4sie1xGQ0CD4XHAQTVqwwvlRCGn/PbZd/AwtIhZJ4fH/sGlqvgtKJhe8vJjII
-	 H9mEEvN7cRpRN4u9uV7NOcVrNO9s48tOWhm6SkRLF/bSe7soo4DHzaYrxYBZWu76O+AM6
-	 2088HrG4kd4p0qpihFMwhfIL7K1T+rVccWMEY54CU7NmvPw92sZ0bmM8pSxDiTtlEBkon
-	 q9RM3fjpcOTe+MRlexIfRPgTBYccBbyaVxZb0ZuWAxDAHO+7lmTLgZ7cqS0ibih1JFw==
+	bh=4mkoX+OtXZlUYM2KdWyZuMLbP5nRS3AuI75xvEPjRPQ=;
+	b=mDXdr4XYOSMub63ya0UQIZbOOi64BH+mf5m6GP6phH1frr0IBsWyD6+wguBq1FfJ6cW+
+	 T4Rjsc+YB7Xs91Kj12k5TRxJzuOaBT/ZDvfe/F5RnNgsVaNXTc39UNnGgPbEW0xsFC878
+	 /T8pqYGVNxoZKdAlzl8JgcBERjrmNhLQf9KVxXmtStvRZ4A0mvsMXb/taYXQiHR9osDZz
+	 2VDupe42A2RSB66mJsKwT03CACl0xFBgVIe0NwWrbJDl64ZV4+E/vjMhCfdykGGpNXEfr
+	 bJMfJrsXlqOgFoBnhuIegu+XBW3RQoXCqWh+jYEYRuRLHd68IZHnwkvvKqe/q4puR7w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="iZx0t6/j";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BxFgV7bc;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01E1606A689;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E3B606A68D;
 	Sat, 21 Nov 2026 22:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iZx0t6/j
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BxFgV7bc
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795300705;
-	b=t94+sJn18nVeQnMiNoiEIBMq9MbqlOOMGX0v5DG7QrHpQm0CSpMeyR1VWTdTnwVyHl8Y
-	 /jKF5h773Z9ZReQTO1cdduUMjuqAYavc8IjraVxZgvR6OOFUTAdmIM3UNf29wLbHY+ujZ
-	 CEuUYUfI6SzGZUcFhDV3jM3xN0nNFJTC0e4UAsdtyJ0pHb7A+/kOpT/z015HCrJV2iCPJ
-	 TFI1JrwmF6FXjl1E6OUSUhJX0GOnqdBbI3kEsW7TbsIQBmr5bz+/5T4hVEqQfUkV+oJ5M
-	 rarNLAi/yUwPKwTTuRgEXh9oGAIqyP0LSGUGL1blr1zCySmkJNO2ghDsMGjLCABtIwQ==
+	b=tqFpFV0WALk2aZwXLAwOFyVQGwh9WeZBY30rHTJw2vNhBzzZ6rHTUYSLvThcYsvQCFoN
+	 aJuJCjqW3OoEPQJVB2RgCgw6ox0n0mFslbxv52bQu7FKiEmdrjO3spP4tlFielvngme0W
+	 JpppaNbSzXbmOL3pinmqMKAoihltq5nYXPdoc6cxmUWKNFHOKjcoLyJt1IJfj+lBThll5
+	 n55zbn2Kydsj7oL65PGPE2i1G/kJBiyZm0Zax+Fhg0f3Z7O9wa0wnLrFsJocbAUTTJR3B
+	 GZLjEwV7umOAe7ui2qD8DxdJLLkF7ih5tbiXIG858eHdlfoeBiOhiSLVk8PtBF026Bw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795300705;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=gxun9QDC8DJDeaUi0wrOgcELDuQJNUTtE/AzD7PlJ+A=;
-	b=DJGgPxuQ8CzmBJi+y5Ny0e2LG04VTi3knyU2VJqPf41WUXbigvg17/4H/vfSYgh1FdHM
-	 xW6Ehyy10EHCAEPibAhwHyai+fw9pgqLj5Mv0aCDQXZD9YFydzg6HsLV2mUVs3LZVKfyl
-	 s2pVykBR/G/sa0fRTZ6m9zExVGNqoELeuokNMYQD3q4fXouVaBKFG9kSqLma3ygl+W0ya
-	 qo/yN3PuGVtoIE6JtoaH0UAXjcBVLgoJSxBi+67mYbOigG9gg8X4eVkT7jTjJrz0BlcU2
-	 5fNQWPtpwg6mKzyKwLIKz8OUHlSWE6X5W12wn2vtmtIvYe/3/gv8YGoaGEPh4mVTm2Q==
+	bh=4mkoX+OtXZlUYM2KdWyZuMLbP5nRS3AuI75xvEPjRPQ=;
+	b=Pz2awlAE8ChieIzFAPTaRsRDTnrhJQHOzWdRj7w1sIG+so6NR4rFzHdMDEWq5KPTHj2Y
+	 1SPO485V6bOF6yW/35YZg5YVLMmBo4zxtc/eXY9TWpX8gmK2FjM3NzuuL+NdsQpn/VeTz
+	 UfRsvqBJXwdrC+sz+QEUvhsJ/uE6noAde1pdk8Uweb001IuXilFSvj23xVrZ10GZ84JS+
+	 CVsB8bGVnARWRpLBJ7lTMmbuxOZCXUAZxzk/CLsg+7jYcHG5yik466U6smjJHIEyIXCdF
+	 dSY6jIinewCkiS+ojX+QRnVG6LK43WwE/578KWDpMDJUukwqzmNbchVdSAJ42wLiPlg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id D40771F000CA;
-	Sat, 21 Nov 2026 22:38:23 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id A06B81F000D4;
+	Sat, 21 Nov 2026 22:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795300705;
-	bh=gxun9QDC8DJDeaUi0wrOgcELDuQJNUTtE/AzD7PlJ+A=;
+	bh=4mkoX+OtXZlUYM2KdWyZuMLbP5nRS3AuI75xvEPjRPQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=iZx0t6/jxdwCrZQUMui4R2MiPpme2CMtqoQMrFNSv7PEzXYD4h8UVXDO3inBVzURE
-	 Oq6A2xsLXqf3wutBtmS3xvkYJBIPHznG2B0Da2EQGcTzxUq0TuoeDxL4auoUMwCCaN
-	 nMB79AWE91yLTRHhtYhZJfVIz0gvgejkn1EIdfgqC8IiJwJ/MUQT7iQ3jX21kBFwtl
-	 m8hWux8INwXGCYVHi9+vP7fiCrdVA2pNRWRTYAMErLiex8ELLnpEA8qqoMVi557/4U
-	 34DhmQ3PS+lxGWfwBxHJYrleJM3LJdYcUZocjDY7S3OIzFi+KRXtIi4BZA1NwK+0nX
-	 hKVtmOnrsU2WQ==
+	b=BxFgV7bcpK2dAf7q5MRXYxG46mHWc9rWHr7ice8L2NaFZLwDtmG2fSjVYS77YlHoz
+	 hGYS9bL1H5xirS8X/Z5K7A1Z9HyyzzW8ZHa1UvbTH0u3sG3fSJ9eHttchnL81wrtoE
+	 tH+QmG6jfeeFWPfJ1JzmylzrsPGPzR5oR8Ds6eiZVelmBBKO1nWNQXUMFzYoHJcC0K
+	 IbymRRcZNuqpv4bSQoRmHPLfv7PmyR0s6yehMQHclAd77xrCoarudigMs/xt0HKxkp
+	 fwBYsEtilTgKJeiIeY/jAJYn7BxzHQ2FfLEBmQ/58eqJrx3e5ngQWQbLfBp5Fae8OY
+	 k3IPzouBN69dQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id B31084BE46;
+	by lkml.kernel.org (Postfix) with ESMTP id 61B6C4BE3A;
 	Sat, 21 Nov 2026 22:38:21 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Sat, 21 Nov 2026 23:38:03 +0100
-Subject: [PATCH v3 09/12] arm64: dts: qcom: sdm845-shift-axolotl: Enable
- vbus support
+Date: Sat, 21 Nov 2026 23:38:00 +0100
+Subject: [PATCH v3 06/12] arm64: dts: qcom: pm660: Add node for PMIC VBUS
+ booster
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261121-pmi8998-vbus-v3-9-91ba2e61a877@ixit.cz>
+Message-Id: <20261121-pmi8998-vbus-v3-6-91ba2e61a877@ixit.cz>
 References: <20261121-pmi8998-vbus-v3-0-91ba2e61a877@ixit.cz>
 In-Reply-To: <20261121-pmi8998-vbus-v3-0-91ba2e61a877@ixit.cz>
 To: Abel Vesa <abelvesa@kernel.org>, 
@@ -103,21 +103,21 @@ Cc: Richard Acayan <mailingradian@gmail.com>,
  linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=957; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1176; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=2lgBmUBK0MaeAv9Oy1xMjAHeZ/2PGxZmYEJJF355C18=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrAh1b4BJsvRNFa2l8cfLZ4YY1SPxbJVnWYZzzH
- KQxHnJ/Ju+JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawIdWwAKCRBgAj/E00kg
- cihpD/4vpQ/Ai/GFX6wI1ydBxLKNxq2GZDM14X30jXravqIIUy98BJWgXqgDjpevL58+1ZDPS/m
- qgwh71ivI4xlNmuTy7ajuK5Wnf6xXT3IT0uyfhoO2/+7aWal5goKbuxvOyms5/xP6TpgDNwDAwm
- 6TmH/SJDpGksTNi1o8k3YY+PQPrHu26yR4YYtzYGCh/hJm19Re0vC6HPKKxdqaF1jwsPZ5RCvbv
- E4MN6eHnhAPpERMQz3pYk29PeeFTFJ+RABz7ATKl1RraI0RmeX06tj7mdYhuHSxgtTdTiJMgrFw
- rWZVTJPlKiBMX4Jz5lh21u4lTB/dAWv9VKGyCOBqGTiY/XQkgdqEfLV+nCbVxTgdbL2ucmj3WxZ
- fUDi/53lcCcRNxl/CGEwAultmZcbgHym+XpM5X/z3xVTLa22lPwj0pbPBfq26B495LKZ9VYW7fi
- OIVVgMGpQlP2amkMLGvhOsNLqTatTvyqOTwQjCfMLSaa6pOxids2xcSqE00GSheN717P/RIlj9A
- 7FYRRjsPE+gVHzt6ag9KvmGId1HhltU7sIMoyMg8JSs7I6yncaQ+WJoiDRWk5uKB2/Feg0spHc9
- khoYYy/RDknoyqAMao2S2GPIdT3wghftMvIkiL6m5cDS0t1v8jbXwG2BymMPuyoL9DaMmhXnFJd
- gELXppbGgCiXiZg==
+ bh=YJAh5JKxsMmwh1tjGfME9pip1rZ2KokfphW0+tMoGZ0=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrAh1buHGuUxmoIIzuGDVDXYwd52yGDl0BlJRVk
+ yNslinULPKJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawIdWwAKCRBgAj/E00kg
+ cjxaD/950tAIkyPW4qo258AxR9vp7/L7FkyGsj5RyVfHV7xc0yCzkZq3FrR8RoTCTi/xP+S+d84
+ Ey4aEJw40nPGL2/1O9AveqW4IftRIq10ppkmziT/UkGtXyyomlrg3kHfdeeCih2SnU977PLvcmc
+ SafSfAZkiK4LQrvSnrL435MMHMHd3Ke6j6A3pq+eQciybEjxxg4uVWL1wfWQPzPRGmjEkoWOZCt
+ 6QjNkYvK+KUMs3M8chU1BkfQRSb5OLfhvq38f5802E4dwnSOMKf004uzsTc/dqwgIPj283LPe2w
+ CO98DtuVPxDsV7RBoda6XVqPxhOpxo/lULboNpYcpHusmp80yjaSDSAAXXHVjNASvUX4etDkxXV
+ I0wSPgN8vsSd5nQ0V4+aIFMSb7r6JxAVSq7T5j/xTP3lgGawEGWeISs0Ro+xI1jDs6ijkU21sDl
+ CVG0cdLITKmOC3EWXxRbuX5DEQlQb/bTTlW61NtXigJ9dEZI+1OHWrzshR45R24lm+gRgaiF+Dk
+ jEVD+OMgi5S8bjCbkSLfYqMKBjMJ14SLpAYQT7y74iqj9d9u59c3d/NFo/oodOhYpNdvaVBvxM2
+ oDUBInG5bFVoO/NBi+trlA8GgS4+/NUidcGZhOmhmnqfLtecYcfmTL3YpeeC9jUHOppaKxo7WW/
+ wtP53V1kEpTZTOw==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -127,41 +127,43 @@ Content-Transfer-Encoding: 7bit
 
 From: David Heidelberg <david@ixit.cz>
 
-Enable the PMI8998 VBUS regulator on SHIFT 6MQ.
+Add the required DTS node for the USB VBUS output regulator, which is
+available on PM660. This will provide the VBUS source to connected
+peripherals.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 7 +++++++
+ arch/arm64/boot/dts/qcom/pm660.dtsi | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index 1b0eaeafbd517..124717214edd6 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -654,16 +654,23 @@ led-1 {
- 		color = <LED_COLOR_ID_YELLOW>;
- 		led-sources = <2>;
- 		led-max-microamp = <100000>;
- 		flash-max-microamp = <1100000>;
- 		flash-max-timeout-us = <1280000>;
- 	};
- };
+diff --git a/arch/arm64/boot/dts/qcom/pm660.dtsi b/arch/arm64/boot/dts/qcom/pm660.dtsi
+index 156b2ddff0dcb..fe9ef304d64e7 100644
+--- a/arch/arm64/boot/dts/qcom/pm660.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm660.dtsi
+@@ -85,16 +85,23 @@ pm660_charger: charger@1000 {
  
-+&pmi8998_vbus {
-+	regulator-min-microamp = <500000>;
-+	regulator-max-microamp = <1500000>;
-+
-+	status = "okay";
-+};
-+
- &qup_uart9_rx {
- 	drive-strength = <2>;
- 	bias-pull-up;
- };
+ 			io-channels = <&pm660_rradc 3>,
+ 				      <&pm660_rradc 4>;
+ 			io-channel-names = "usbin_i", "usbin_v";
  
- &qup_uart9_tx {
- 	drive-strength = <2>;
- 	bias-disable;
+ 			status = "disabled";
+ 		};
+ 
++		pm660_vbus: usb-vbus-regulator@1100 {
++			compatible = "qcom,pm660-vbus-reg", "qcom,pmi8998-vbus-reg";
++			reg = <0x1100>;
++
++			status = "disabled";
++		};
++
+ 		pm660_temp: temp-alarm@2400 {
+ 			compatible = "qcom,spmi-temp-alarm";
+ 			reg = <0x2400>;
+ 			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
+ 			io-channels = <&pm660_adc ADC5_DIE_TEMP>;
+ 			io-channel-names = "thermal";
+ 			#thermal-sensor-cells = <0>;
+ 		};
 
 -- 
 2.55.0
