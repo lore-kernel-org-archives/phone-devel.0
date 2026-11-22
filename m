@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1795374487;
-	b=l9jSrwcpFzLuZJoZRYl0gOWsfhFVYrOjwWBua5gQiiSPl+udOr6p7GTGBTjRQCQUmbps
-	 6ZGSv8tYguWbauXYcpIZl61UjNRLy2NMHa6IuKMQ3uhOiNtiTtvH5a2yS7PKTURuBQ5Ok
-	 bzx9RInbUmk3nGwwVD5+if+088clQPaS88e8eodOLlBhHgx01KfVMJjbV5ctqC4vN9Czn
-	 qsbfF6Rs77NLa2BJG9UuHKhXf/gpZXjRkeIvPKqYhcOqkRmifLXXZSEoD1i/Ny5FCfpyK
-	 2yHSc6+Iwhg9h0G/Ks/1SE+gtOYSJA+qiaVadAcZPGWdvXowYN3V7gYH9mwx7D/ll7w==
+	b=FI+XKY2kpZlZbCnFyZdrVHt6kKbTHepa7WLDktbeURG60CMx5NCU67ghhUJMqxgr15vr
+	 3S7QIAtKeRcBWcuMZGTVh6XbG/90ZTZqmTz7EzgFNH0o7bvjo36kTuv4LVm9LM233KtjU
+	 GlAg/lIb5trjSPMwy2svAIQoO2A3WggzEcmHtoFVubXPBBjCA/5P6HPUWUhhFMwxaOdkT
+	 L0wr3AKydKHbt41zbPqXPWRwjplLqn3kCkWt2CiCHKsLxNYd88ND4XyEO67Ey4+T6Vn4W
+	 zoE4KdTqg7TJT4wIPCeCnIzJQ6DcS+lkhR5hY/pe2vdbBuQgnXnHfoaC3g+Mlnf2F0g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795374487;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=h2raBvYdQ48AsxZCjroQm9zDYUeGtLkleX9lQ4x15Xg=;
-	b=ZTr6YaxjHvCfEi+GQ9CwgKquXyrgliFVdeKsIaXSjrnMf8WoMbV+5kGqmMXObobFOEIf
-	 lUDYXUO1cqgXhE9GFGB3lGQ1cfGkkFsSKf3CjBeide/03KbWL1pdhu1sqE+G53oRskrwN
-	 OCFTBhXdY54Og6qUkpMv1wMJkaUBlkOIQ09DPfigJQMi0pMDBapx20SjseFzvHNelEI6S
-	 7ZPdYPKSDkmKcTy4Fq6piD0ZKcyjVVaAa4LWBOi3bPaOSnFQHQ7zsp7AKUzEfnoFmjM63
-	 GA+oK+GKE18rU7cQZbA+CbM+BHHDgr2E8KKwNjTJcHGoCulpXVJDMVuD+lbJmeFoS4g==
+	bh=FXJgBz6vr8LA6HCfds0NKQOzIPEzeSxi9JM33PT64AE=;
+	b=uvBDGjyCWtchwGJ1BWG0r9saOt4hcfiRUXFcyulJmNHl/b/j5ik8EqGuJw4piC20d5W6
+	 mFOxv3iPXsC8ohLunIvDQ4dOo9ELP5pFUUhU4oTeG1S/3EoS5CE2ZWmf9XpSoxmGlEJef
+	 w05EDDdyqRrvsq9XiDoPo9XOQHpkkuyTZsrVhFnIbK3qB8l/BPFyaKmly04H3XgtUsqOm
+	 uDsrrCfbcFUDznf1hlF8owrazerdn0TaVz/1R7IrgalMUplQB/q2Wdn6n9ISqY0DVjsY6
+	 MN82PqU6uG15J+YulEthsLGOKAnzh1Gb6oOeZPg00v6rzJs9l6lcD3ajsHicPCp/klQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SqPhEWXy;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="L9YWdp/e";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E87606A689;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EA7606A68A;
 	Sun, 22 Nov 2026 19:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SqPhEWXy
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L9YWdp/e
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1795374486;
-	b=Aj8LZsgULfSxnsX+fwDCw/IGQsOgOMCg/U/kEO6txYcLQKVW1Bqv2H/7rExvt4Ez8Tvt
-	 czvAYD6PZ6HZRqw/Co/lfFO1YFXxvNsRpYNUcpA8+6NtLsnOI3aWxB+RFcSsOJ20Rzidg
-	 0zCTMFQdY3DrQLH1CMYM37i8mKDmt12tJmlSwvPkTaCBjwl/BPUg9UJduGiyBFPFc4ZL9
-	 0q3K6eaWs+YFjeOCwpbUGdTzx0SUjRwC+7xVeISSGrioF5v/+px9aVwHapzj9w+FXpPM4
-	 psW+6qufMLZ+lEg7lfKqZ3N5XbE2IIrWD4Dq1jUTrfFtXRUJsQXrR7AAoZwJo+Q3xkA==
+	b=Yzjp3gusJ7fUiPvfUVUOCMj8lr6ERrxeUaRMjc4ASDMOU1cD3kKDzUqSAj90mDw4wijc
+	 ODujy7luWPqlkVT/3vUtTcj2GPnU+ZCfEVJx4jonfMDCl3+TY8B67pjR/Q9KAU8DcQxk2
+	 zA7oSNSwgpI1QOJx/uBIuiQJvV0CIY1n03uqi8X0t8DZIp0xR8oJhw7KpNhPiIsFjDAZi
+	 TUBu5r2Uzy09wYTr9gf6dYGaYfL/WTEvWLVDP9R9M6uqP5ku/b7YXC5dwER2vGv5Y2vP3
+	 yNmn29PpX5d6iV992//7lh9l7Cx2qcQaH31hPvzjip96GQMGIJ9xJ/Q8FetQE009EDA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1795374486;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=h2raBvYdQ48AsxZCjroQm9zDYUeGtLkleX9lQ4x15Xg=;
-	b=kSuzLrq5ebikMKJcVRuhlq2a/8GAeUx0UThTPaEMJ/8ALUg195mTQvhgtLW5GtnPMzvf
-	 C1UANkTO1Rd2hNlL6KDX5YzoL5t8ictqKbQYfuw6+D3tZiH/ViEGav2kQBoPWbqsOq8OD
-	 8a2zGL7TYzV6RSFtBAFDNTKo3i3PDyTQoqjv3th3jCzNjZtSEmW87rY/hNc+nds6IzwSZ
-	 vEJwVlyx7LB+Yz23wceztfI7ZVUUM9O/S0g1e7rndshFbLlitQzhE/Chml2tz2Q0Ns4pk
-	 PDg46Uf67DIaW4zDcsNLA4qBTDryc3ZedRxiHCFeijkmcePlG7DiybkmuXRwVlDRFOQ==
+	bh=FXJgBz6vr8LA6HCfds0NKQOzIPEzeSxi9JM33PT64AE=;
+	b=o1Zs/lptLjJtbghN0f0zn66B4HvFsEZJVDRVRvcglkXaFzTgECTd9YtEM0UVkpsfPVGC
+	 kMqOPUUk6sssyiFv8Wh9hNAs5I7We5W6hY71D+5mi236q5kR82xa4xYWij+N7IUGSspWf
+	 4R8YF6/UbdtkFQAL+2A1I3EnetcR8KSrXDFsVCyYuIA3lsF8Z4FK7jQKbb6oTO2SOivrY
+	 EphyhnE6sKOuZ4yZIth6IwvLzdeJf4F9H1ewZnQDPv5VvVcYShFAcojuRAXl+vC6y4VMT
+	 Qhq6h3D87HQwidQGEnWqqNyoHhTiy0E5AkWHD5SJIMcLLAoSG2Z7FCnHOgBLKQyVtHw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id DF14A1F000D8;
-	Sun, 22 Nov 2026 19:07:56 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 1D3B01F000E6;
+	Sun, 22 Nov 2026 19:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795374486;
-	bh=h2raBvYdQ48AsxZCjroQm9zDYUeGtLkleX9lQ4x15Xg=;
+	bh=FXJgBz6vr8LA6HCfds0NKQOzIPEzeSxi9JM33PT64AE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=SqPhEWXy7Ww+IrOB5Y5ACAcpsBVEqqGXzjPj0aPqCZL6QyOXlLr0vHmj0Vkfe/5Lt
-	 3vwJcjv/I91z4q8gmWlbUBJJVXXRCLiJ+4Nu21QEtELfAm3zBMQ0JKDWp6LFvjnz5p
-	 fFMxiASH01ZSSC6pJfsrrLyAF0N3MYyiwQK3bGspcli+eAFdako8MUKccCpvmndvsb
-	 q81ijEuDhoUVzgwHirDttax14jiaZX52V2r8gthBP5IuaIoiiw9aFY2TGCWL4YRw7z
-	 2XxJPBIToCtOzBBe1A5BMKnRNIGzMp9HypyxPnumU9ByA1pEGvrdsBOagQNn2FFQoK
-	 gAMhX123KsXsQ==
+	b=L9YWdp/e96TcuixPRjTA5tPMFYsKHM7XUCF/bcnlmNXChI4Ge48t1UiAuBUYimQWr
+	 mf8nh0gst/E2H6P+OCkaJjnBZ08pUt5ubtlWPw1XaqkkYa8zvliDEHKJLlq+6NDNZv
+	 nKFv6/SFs6Qyys93aAiOPTyQejy6W6GK/wLj1JGhwOZ5+olvM5oMkgNeBu5yNVY6yT
+	 ZwgFkm3Lz01AUaMNW0dekPMhpm5B5W6z/Xo88iWM7LX76WvUQH8Pp1aHfNSNnnQ4k+
+	 ZpDLBNVPjZ11osdTGOkUTDQA2yRPQTZSGJt2UXjyAovAFnBX7rc2EAuWW72WOMgAhA
+	 dgMd1Fc6L4yAQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id E8ED84C1B9;
+	by lkml.kernel.org (Postfix) with ESMTP id B3F3C4C1B1;
 	Sun, 22 Nov 2026 19:07:48 +0000 (UTC)
 From: Venkat Yadlapati via B4 Relay <devnull+venkat.yadlapati.yahoo.com@kernel.org>
-Date: Mon, 23 Nov 2026 00:37:53 +0530
-Subject: [PATCH v4 08/11] arm64: dts: qcom: kaanapali: Add the second DSI
- controller and PHY
+Date: Mon, 23 Nov 2026 00:37:51 +0530
+Subject: [PATCH v4 06/11] dt-bindings: arm: qcom-soc: Extend pattern for
+ Molokai
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261123-molokai-soc-v4-8-851e5a9f4878@yahoo.com>
+Message-Id: <20261123-molokai-soc-v4-6-851e5a9f4878@yahoo.com>
 References: <20261123-molokai-soc-v4-0-851e5a9f4878@yahoo.com>
 In-Reply-To: <20261123-molokai-soc-v4-0-851e5a9f4878@yahoo.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -97,13 +97,13 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
  Venkat Yadlapati <venkat.yadlapati@yahoo.com>, 
- Joonhoe Kim <26rote@gmail.com>
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795374466; l=3474;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795374466; l=1622;
  i=venkat.yadlapati@yahoo.com; s=20261023; h=from:subject:message-id;
- bh=pTh/EB4SqPU0O0r9Pn7Rom33QD9a9sJdUKXPCVM9uk8=;
- b=xdbKslzcMAmFzxi7gFzqCLRmh6BkVUMWICd8pTPk6+6SjpeyMnGJZyFCNNKf3u8G5+zKGJjEb
- nKFLwC2d5KpCJSshU2ImTAijx6N1nh8CddcY/btzTGnxlXkaeMLCV0P
+ bh=VD14FFXSRlsFBCtWWzPO6qLJHtCRQHevg44GIXEHArA=;
+ b=dBke2/qE2DzmMgN0vyww4LshZCKOfXsa86SGXZxxxRErURBIhcn0dsfBsf46Yo2OKx8dYtCpQ
+ wQSPNbah6LqD0mOcwD+jt39HqAQrBfPsPDZQD8yOqiToeqNpFsM6C3e
 X-Developer-Key: i=venkat.yadlapati@yahoo.com; a=ed25519;
  pk=e8KStCtEMvUP1Se/riB/KVnDAQFEVR2Dw2PcuA8/eME=
 X-Endpoint-Received: by B4 Relay for venkat.yadlapati@yahoo.com/20261023
@@ -114,131 +114,36 @@ Content-Transfer-Encoding: 7bit
 
 From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 
-Kaanapali has two DSI controllers. Describe DSI1 and its PHY next to
-DSI0, connect it to the INTF2 output of the display processor and feed
-the PHY's byte and pixel clocks to the display clock controller.
+Add the Molokai (SM8845) codename to the patterns of SoC compatibles.
 
 Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
-Tested-by: Joonhoe Kim <26rote@gmail.com> # Lenovo Y700 Gen 5 (TB323FU)
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- arch/arm64/boot/dts/qcom/kaanapali.dtsi | 90 ++++++++++++++++++++++++++++++++-
- 1 file changed, 88 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/arm/qcom-soc.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/kaanapali.dtsi b/arch/arm64/boot/dts/qcom/kaanapali.dtsi
-index 132577d540bf..0c4b6a8b32b5 100644
---- a/arch/arm64/boot/dts/qcom/kaanapali.dtsi
-+++ b/arch/arm64/boot/dts/qcom/kaanapali.dtsi
-@@ -3709,6 +3709,7 @@ port@1 {
- 						reg = <1>;
+diff --git a/Documentation/devicetree/bindings/arm/qcom-soc.yaml b/Documentation/devicetree/bindings/arm/qcom-soc.yaml
+index 179aadc86a9f..19904e5bc947 100644
+--- a/Documentation/devicetree/bindings/arm/qcom-soc.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom-soc.yaml
+@@ -30,7 +30,7 @@ select:
+       contains:
+         oneOf:
+           - pattern: "^qcom,.*(apq|ipq|mdm|msm|qcm|qcs|q[dr]u|sa|sar|sc|sd[amx]|sm|x1[ep])[0-9]+.*$"
+-          - pattern: "^qcom,.*(eliza|kaanapali|kuno|glymur|hawi|mahua|maili|milos|nord|shikra).*$"
++          - pattern: "^qcom,.*(eliza|kaanapali|kuno|glymur|hawi|mahua|maili|milos|molokai|nord|shikra).*$"
+   required:
+     - compatible
  
- 						dpu_intf2_out: endpoint {
-+							remote-endpoint = <&mdss_dsi1_in>;
- 						};
- 					};
+@@ -42,7 +42,7 @@ properties:
+         - pattern: "^qcom,(apq|ipq|mdm|msm|qcm|qcs|q[dr]u|sa|sc|sd[amx]|sm|x1[ep])[0-9]+(pro)?-.*$"
+         - pattern: "^qcom,sar[0-9]+[a-z]?-.*$"
+         - pattern: "^qcom,(sa|sc)8[0-9]+[a-z][a-z]?-.*$"
+-        - pattern: "^qcom,(eliza|kaanapali|kuno|glymur|hawi|mahua|maili|milos|nord|shikra)-.+$"
++        - pattern: "^qcom,(eliza|kaanapali|kuno|glymur|hawi|mahua|maili|milos|molokai|nord|shikra)-.+$"
  
-@@ -3868,6 +3869,91 @@ mdss_dsi0_phy: phy@9ac1000 {
- 
- 				status = "disabled";
- 			};
-+
-+			mdss_dsi1: dsi@9ac3000 {
-+				compatible = "qcom,kaanapali-dsi-ctrl", "qcom,mdss-dsi-ctrl";
-+				reg = <0x0 0x09ac3000 0x0 0x1000>;
-+				reg-names = "dsi_ctrl";
-+
-+				interrupts-extended = <&mdss 5>;
-+
-+				clocks = <&dispcc DISP_CC_MDSS_BYTE1_CLK>,
-+					 <&dispcc DISP_CC_MDSS_BYTE1_INTF_CLK>,
-+					 <&dispcc DISP_CC_MDSS_PCLK1_CLK>,
-+					 <&dispcc DISP_CC_MDSS_ESC1_CLK>,
-+					 <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+					 <&gcc GCC_DISP_HF_AXI_CLK>,
-+					 <&mdss_dsi1_phy DSI_PIXEL_PLL_CLK>,
-+					 <&mdss_dsi1_phy DSI_BYTE_PLL_CLK>,
-+					 <&dispcc DISP_CC_ESYNC1_CLK>,
-+					 <&dispcc DISP_CC_OSC_CLK>,
-+					 <&dispcc DISP_CC_MDSS_BYTE1_CLK_SRC>,
-+					 <&dispcc DISP_CC_MDSS_PCLK1_CLK_SRC>;
-+				clock-names = "byte",
-+					      "byte_intf",
-+					      "pixel",
-+					      "core",
-+					      "iface",
-+					      "bus",
-+					      "dsi_pll_pixel",
-+					      "dsi_pll_byte",
-+					      "esync",
-+					      "osc",
-+					      "byte_src",
-+					      "pixel_src";
-+
-+				operating-points-v2 = <&mdss_dsi_opp_table>;
-+
-+				power-domains = <&rpmhpd RPMHPD_MMCX>;
-+
-+				phys = <&mdss_dsi1_phy>;
-+				phy-names = "dsi";
-+
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						mdss_dsi1_in: endpoint {
-+							remote-endpoint = <&dpu_intf2_out>;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+
-+						mdss_dsi1_out: endpoint {
-+						};
-+					};
-+				};
-+			};
-+
-+			mdss_dsi1_phy: phy@9ac4000 {
-+				compatible = "qcom,kaanapali-dsi-phy-3nm";
-+				reg = <0x0 0x09ac4000 0x0 0x1cc>,
-+				      <0x0 0x09ac4200 0x0 0x280>,
-+				      <0x0 0x09ac4500 0x0 0x400>;
-+				reg-names = "dsi_phy",
-+					    "dsi_phy_lane",
-+					    "dsi_pll";
-+
-+				clocks = <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+					 <&rpmhcc RPMH_CXO_CLK>;
-+				clock-names = "iface",
-+					      "ref";
-+
-+				#clock-cells = <1>;
-+				#phy-cells = <0>;
-+
-+				status = "disabled";
-+			};
- 		};
- 
- 		dispcc: clock-controller@9ba2000 {
-@@ -3887,8 +3973,8 @@ dispcc: clock-controller@9ba2000 {
- 				 <0>,
- 				 <&mdss_dsi0_phy DSI_BYTE_PLL_CLK>,
- 				 <&mdss_dsi0_phy DSI_PIXEL_PLL_CLK>,
--				 <0>,
--				 <0>;
-+				 <&mdss_dsi1_phy DSI_BYTE_PLL_CLK>,
-+				 <&mdss_dsi1_phy DSI_PIXEL_PLL_CLK>;
- 
- 			power-domains = <&rpmhpd RPMHPD_MMCX>;
- 			required-opps = <&rpmhpd_opp_low_svs>;
+         # Legacy namings - variations of existing patterns/compatibles are OK,
+         # but do not add completely new entries to these:
 
 -- 
 2.56.1
