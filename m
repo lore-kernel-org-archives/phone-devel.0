@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795369693;
-	b=Vw6VAJi4S1YMudI7bWC0lxRXxCX9cziiyCHZoYgopJAxLpoHiCro0lVvs2Ex0mAfhvgi
-	 O12REhqMIPV0agIw1v6OemZvRywKsu70gCYSuQIxv6iNpeO2i88Py6bQSG8Ude0tHMH+K
-	 qcBrUFWvVZ+S9ybcN0PZb3BUIzC6pVDIlpWVGizVchvVfnjGZd4QymYrEECYao3rX2PRs
-	 zdosvZh8+j9poQZvT3GDar8bx0q3nsbrKpS2Ves1A5N7vitn6aF471TbVkOQAkoBWx76H
-	 IIgwiQkX+kdbj4AezdkS/8D5HlE2zVm+pyJKoA0af6GxOZGyE1g0hL3OF0GxRLvOnVg==
+	t=1795369737;
+	b=urN/bxLMySlTYlvgxqPeSuEKG7arSUVJHaj/yi0N6uWOPUMR6zasBRuWq2/rCqMlln4m
+	 T4nNkzbnGN+VDAPXUM88AFo1YlUlmpP+o+SDPZWCWh8O0xYlq10NeLNfPMuo3J3zpkgPr
+	 qZyT/Lqup6kO4TD20AJThkP3l0LrBGxh2VYY0jrfpc85WoADPMDooDEa5yzAKmgVottwd
+	 8z6drawz9PmOV6KOsrQmY05LKykvKb7SG+q/Han+nGnk6dBDEsxuuiit1t5Fm8tBmF8zF
+	 oWVWGsQJUj789o6scY1lWwpVxCCKHcV/PuOM0e1oit2BK7kzsHvWiuhcPB8nJsXsdJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795369693;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795369737;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=yQ3LoAmHghAkj2mNsG5N71jRxNpUCjCCWO+/Gb7RziQ=;
-	b=s9KAi6Amqml6MvcKyByA9UmYJ/OVIZaBLFYnmShId50Hs65n5PLkza8gzK3U3+ptlga0
-	 ziWSlI7bxTUlQ/BhwcET0e548r3h0a0CO3Q7wvmIOn3osZTjcgNTGeeYkmgrYJiuAtFJY
-	 cskmOzIFwvaE1XL4rn76xIrfKh0zodOMNI8PcLXXOB4Y/CzRSG9y7dK/q8H8z7BaeGVKH
-	 TNGJw+vl0aUNPJzQ/ErjTAp0AxWYdHf5SSFX7312YBb/kiCAJeS1/dncNE+uYajuMtNaK
-	 0J4b1QhAgnxszeJz6KXlcgEpRgQQVp529IP94bGvz6gZ4L6HuoikZPLxzca4GAuvIng==
+	bh=ZbHdvTZ3+uaHzIbZjQAd9lefWvIEB3s1xmAjOARxdRw=;
+	b=EjUYnXnpilh0Tv9cv/dfWULPPX2mEM/TYzFilmqLVtnrP9Kr2yS8y1aUD62oB3moLxGi
+	 0/YtTben4T8bO7ueQ38steI2O5ixvzpEOdCNQHnaMiGFsnbIH+85ZjXbC9pKGRbnpWgdb
+	 S8jrffiolL0bXKcasfZ7Ia2KmZlEP+qgKnAoL4vApVAOKw0fc3wfIWmjl7dve/ve98n8K
+	 hE/8wgTLqvkO4OAVYV/aE3TSsfps2J60DmVrea1X84LPQf6noSJ7BDUWl3qiMltbAQzJ/
+	 bVLo72FHJwaiuTXxj6cqYRZoEpoDDKjjRCLhIqUYOmyg5KRRnO9IIlBH7eYlFclaSYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BljZ81yS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="LN//XLVl";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23402606A688;
-	Sun, 22 Nov 2026 17:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA4E606A682;
+	Sun, 22 Nov 2026 17:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BljZ81yS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116451F000CA;
-	Sun, 22 Nov 2026 17:48:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LN//XLVl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8121F000C0;
+	Sun, 22 Nov 2026 17:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795369692;
-	bh=yQ3LoAmHghAkj2mNsG5N71jRxNpUCjCCWO+/Gb7RziQ=;
+	s=k20260515; t=1795369736;
+	bh=ZbHdvTZ3+uaHzIbZjQAd9lefWvIEB3s1xmAjOARxdRw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BljZ81ySCefCcz8OjaVbjcJUOYJLiz7igFfP9TiEWwf8u8z/x5W+Bx9sP3PEvqLF6
-	 UdSSI7UHKo8xpfhO4mcAW3Wz/qAZWzvS8UMaM/ZEEXunS2FOyRD4PHLw4OX/5rLWEJ
-	 osGBy9j7cPc1EYKzMlMloYFdam/CoNL/gvwVaF0HbjWX9is1Ei1wfUHltUc2ZJWSdX
-	 ztjzg2QpS+ZVHbNql+yvkvBxuPI3sSTXAWFHvaV5eR7jmaz8fV6+W0pKz8xs7JTQPB
-	 jZFzaWVl7zA1V/5O9F8HzSTtpHGOhYpHithlL/BRuRV8HCOKYKTf/81JMTefPBWDwj
-	 myDgCo1ptTaKg==
-Date: Sun, 22 Nov 2026 18:48:10 +0100
+	b=LN//XLVlqT+ewp9z64ZxSXc/ScSap1JKNER6uEVs21jFqlbuUOOeaE307BcUKJaA5
+	 xWvCQ/RizDDEjHyPk/lMKCF4IzDrrkXhv7FmHp3DqYEbHZnvCwKrMiDFLlhLc7grvc
+	 EpAbAwANnXCXGgP4BDIXr1y8r9qrRq6mODqnQuFQwF2TkVztXPja7nu042LIj5fKBJ
+	 DNFl+XfQP8lrHmfZfFIuAoh7mv/XWMzDQZGLWZZ1XOqVv2VAK9s5fOxnywGJI3krAU
+	 ftCz4Jij7q/zvnhSoXucwCSyBBdqLMIP4ISmQZKlBl03j6TlcXXZLVIfbcPzV8hrtt
+	 phpHXhAbZQxcQ==
+Date: Sun, 22 Nov 2026 18:48:53 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 Cc: Bjorn Andersson <andersson@kernel.org>, 
@@ -49,11 +49,11 @@ Cc: Bjorn Andersson <andersson@kernel.org>,
 	Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
 	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 03/11] dt-bindings: interrupt-controller: qcom,pdc:
- Document Molokai PDC
-Message-ID: <20261122-vague-arcane-collie-fa27cb@quoll>
+Subject: Re: [PATCH v3 06/11] dt-bindings: arm: qcom-soc: Extend pattern for
+ Molokai
+Message-ID: <20261122-dramatic-horned-coati-feeb38@quoll>
 References: <20261120-molokai-soc-v3-0-403d763685d9@yahoo.com>
- <20261120-molokai-soc-v3-3-403d763685d9@yahoo.com>
+ <20261120-molokai-soc-v3-6-403d763685d9@yahoo.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -65,16 +65,15 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261120-molokai-soc-v3-3-403d763685d9@yahoo.com>
+In-Reply-To: <20261120-molokai-soc-v3-6-403d763685d9@yahoo.com>
 
-On Fri, Nov 20, 2026 at 09:23:05PM +0530, Venkat Yadlapati wrote:
-> Document the Power Domain Controller of the Qualcomm Molokai (SM8845) SoC,
-> which maps one more range of interrupts than the Kaanapali one.
+On Fri, Nov 20, 2026 at 09:23:08PM +0530, Venkat Yadlapati wrote:
+> Add the Molokai (SM8845) codename to the patterns of SoC compatibles.
 > 
 > Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 > ---
->  Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>  Documentation/devicetree/bindings/arm/qcom-soc.yaml | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
