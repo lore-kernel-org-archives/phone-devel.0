@@ -1,79 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1795375229;
-	b=sdO5by8gryloMZk00fD1D+6PE0Y/l7AwsaF50yJTK4JYwrXb0agM/LCa4jhxpicBmhB0
-	 VSwyEbCchuscvXgOVsO/9T8Rd0mNmaBUg//LvHBL29UO/yJn3iEAff5DBgKrZmvGMlaBK
-	 z3ZTet6ohyZfWffK0cdn5n/Fge/cpBLn82sj/X1mQtFdjzoo8sLDn/fC9kvLLqmT+oF0r
-	 o56iFKJw17CTCiyUtTvFFeI+7CbOrD2HHOfx6jU1r1xg9u+44WgBJI1Z2UfUuBKcSA91y
-	 9xSSapkuOF7RfGcMZ1vPRRi8zE2H8SRndNevFAk8trL9wdytXhYIgK9kE9KT6DUonMg==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795375225;
+	b=DAaFG/Tac4D0OcP8jyig8JnHa1VQfbVpxO40YmTnemlqdu6QddXMNC/Y/IfvTu7WSCgl
+	 fzoi9SmXDvWocL7GHqkiGQioEefiQwfsbuJRd2JeM+a/T4WMaeQMhdnM2wFhALSrmVFuL
+	 S/X3LWpAPcqys04p8ydCaCaR1+RaNcdykm1Jhovkauu3R/+JNGu2gLWexDIrMyxsnJUQK
+	 Y761yHU8xFPdHmOyjV3ln4hROvhjWPJmDSoNWy7U3R8Na7VTn5V7/mm0ZX0Vdb0aVgNIH
+	 d0e0bvcGTfGsWugLHrZ7c4pjD8pbXmAcLR/3Gka7ikCJij8Bkzq4bTwfRINuHzZEqPQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795375229;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795375225;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=DCcUMNQ22RzezUL1nxZOUlYRInjrH4T/ciWlHj+toKc=;
-	b=B2r2KRdHqkuSxSK0fikQJWvwNoJV8tgVmrompZ0odHuKTKdfddIDoRPuVg+YEwsBwYV/
-	 6pzZzDNRb4Thsuuiq7/uVZDCOahc8s3OsmFgOS5r+LivNyS75yup1UN2FYB0+7GrDb1rr
-	 EaS0N7QzN052SDZhcquJ6PKOMtTmJvkl36b61Max0FGTgkRL4Ia5lfypFozz/Yi5WSSnb
-	 sCOqcTP4dtJSd5BHa8p3tH/3OvyXeGnJn8Gg/2tha7nT0OVP7Oxaq8a2cscYJ+IYHIZFE
-	 uV7215GNXBwErJZZgts68+tdnUk8VOjwVkwitijN8cRk6ybNIo7I++3GB2djae5bqCQ==
+	bh=RbhHn0ijg5qDMRvXVqnUii7Cq4S9tFcX1wIY34cE0z4=;
+	b=DtsJckHIFSRzwVP8xrXc32oH+PNZ5/rDrSxAPL4MQOSF4xAuiDl+nW7aYp14cRnjszma
+	 mVCFuLqIyzq2dzCCyXsVPfH2Fem/GeZwOGnOgtaYKtfCoVbVfBKYDcFCk46CSuKMimtBA
+	 m6PZ6zvHP42pMDX+iwu6eipQ+//dgXl2VTltHz75PnccGc5XduiGcTXsP9d2tR9RYg0BE
+	 OwWeuBJBGpnLNqQXqHOy302nDwFy0g/CQ7q9gtkO1tNImpC/RYQO9nmQkIa7UWRG63E/c
+	 m5CCCVSLN2E12C6wtzhw2fh7JAbkRRTrkHZtxL04M6RNtYku3nAoaLOelh0cSJYRGDw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KRsXAMAQ;
-	arc=fail smtp.remote-ip=100.103.45.18
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="jVo/Lu6u";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278E3606A335;
-	Sun, 22 Nov 2026 19:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688C7606A32A;
+	Sun, 22 Nov 2026 19:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KRsXAMAQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jVo/Lu6u
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795375228;
-	b=g3ZZ0ADlTLs95GpE8skOMtrrhzbdyU2QJgfvuoGkNOp9/+ZKX/CTns6H+Z0Ai0cJ/eLg
-	 hCU5e2oinBteN2Mc4HjPFfhhJ9wfus0W4rCpKff97H10BK59Z886Wp0pjpz5l5zr5Dz7A
-	 TFkwmth9SkMaxMVPrIyHosq5dPBTk/TqpBvXgYkeL5jBRplSp/O6P0Hia9F6t6F9vCg87
-	 0bZtu0SxJUL2s2yrXZMLiIXvmNWbSKswLZK2A/LorrAdxYaCt7VqwDjTy4Mcps94Mn54a
-	 60z3PlDyQ7d1KyQaokyonoXJuoXejsQAN66/nQ8gDyWrwaYTghI6h4sSKx7ZyLXmaBA==
+	t=1795375224;
+	b=A1sp1FWxU8gUJ+wnUmOXSrVIhZsOnR09sT9dLo1uLFN8ZigmR90ZySmSD/48sJQBP16m
+	 cPU3XbtGxEAL9Bd2CsNsy4b1Fq55/jigC59fbAYmqnmjGWLhCf9eyqtmBb6EbrkIR2u95
+	 JlU0FMmZnmcrlaesyNG520RINjmOTLGojEW47G3veWHPYAA86+A5XYYvbfzpJx2k0qs5A
+	 oUW65hyRk9oVtpo8zPoTL+UyDzkE2//upa+OXgBS9feWlp7i19jYMLR/UWQFdVVROjx8F
+	 V1BfNlsE+Pf4Tt9QhfQS4dNWnZRoUtiEpv+c+zl5jqVxIxBXLwYded4NCnwIwTXVgHQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795375228;
+	c=relaxed/relaxed; t=1795375224;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=DCcUMNQ22RzezUL1nxZOUlYRInjrH4T/ciWlHj+toKc=;
-	b=yxNEvRyW32XNK80sEvrAqea5bhuCFKgeJ8CZ9Yg0dUpw0dVnijFbGgnbR0vql4P4sz1J
-	 +AaB0qdY3EZqsOuz5D/Vas8doHPtsIDrS24IqVMkzCZvLCdEDCNvLP5mKdFA+p1K4WPL4
-	 Vl1eughjhtQQCXF++yQEruNQPwyQc/vrWMMGum4S4j7QEeKoyWJKQbxE8Qf2UzbpuNGPN
-	 Tt2XLLaGxw0A0F2TVncTLAlo5zG2D2FMagrhllm8Bdv83AMJ436dWmx9mC0R0FqgFW0Xo
-	 cajXhX08lZbD1b7hp8g4lnFv9bBnwkgjMyR8TvIFTkLqzkli7Uk5EPaOZQ5DB7UePJQ==
+	bh=RbhHn0ijg5qDMRvXVqnUii7Cq4S9tFcX1wIY34cE0z4=;
+	b=fEQIaOsS/P5c8roK2BD/pTCaVR13Yw7iEThry5TAXp/icCXmOGUTgEfHI8hrrSV0zqOW
+	 F3TMDkC2Y4+b1DuviunoVlLLEKh5DFUmyzQM6rgyXwxE4TTzv2NVZVrB7UvzwlEyn/zH2
+	 amhZnq4Yc12TyOfJkL/G8jXClwrAq8Fb3vBHCg6Ly51flXvXHlsc5Flojgvw8ZpwY8ODl
+	 D9L8CMqnhW9ufKUIIWdWe/PVaw71/wizyl6QpO6ymuNA0l/cyuFx0ZROTrRegt4pfolj9
+	 NOimWJs+LPvaJm8XCXWJNux0irUCouCSfkBtFzB5zzAN2Rm9j8ZZSB6+D2GrQKtBzog==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id CC3F31F000CF;
-	Sun, 22 Nov 2026 19:20:15 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 26C3A1F000D3;
+	Sun, 22 Nov 2026 19:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795375228;
-	bh=DCcUMNQ22RzezUL1nxZOUlYRInjrH4T/ciWlHj+toKc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=KRsXAMAQWPNEXuq4jOBIhBH8kKs6ufFdTYlGZ8/3Is8VGqF1nl9UubM4wxKraR1i0
-	 cn8098deu8sywM02mah3Mn7g+a/Mm94fXYgX9TV7VzslPJUoTgncz/bgegsItGgPKJ
-	 63FmlB25pkfKrTR1P3iG5ECYdvevEMgdxxoUe4Hz24dqK6qM5J1ZEbniXkpcuMqckO
-	 iGtaQXfN4PiCG+xwft8TTnVX7bvh+hkzRCudkbBpQiMNolfjdtVyIQirs6Syzob6Pn
-	 UMP/uP9DyHhcZumR5WWuCQ+FHuC4XJXN1b6kufxmOGvgQ2wqcPg1D3YhX0QDZdt3n5
-	 mD5rAGZ9CpusA==
+	s=k20260515; t=1795375224;
+	bh=RbhHn0ijg5qDMRvXVqnUii7Cq4S9tFcX1wIY34cE0z4=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=jVo/Lu6uXorDXQUpC+bviNDzjTkXbQVlIsN7C0PBzrz+I4FRb6fTwl+7xLyEgitkp
+	 xGPOv46+qNTr1X23Xm21XKQ2KnJxwmJeca+1mSGf4RSNGqsyrqjiDKD0t9WjwLUEHN
+	 9SCLl41Ta494twf95+WbtdS0YA6VXXkvlm+mz3LssYbyp1SSnbWsTQhIvOn0Nw4PgW
+	 xiuuXjabEPfmmGBSb4lCdw3pbj5HTzE8M66wpyetMKzbH2ndZOBWZXbbAQNOGMC4o/
+	 ABMqheXB46eD7oHRiplESdty3durkTttIHVss15eAB2dy5olsagPPDLIxdMxp7UcPX
+	 xBcBr1TC1VrzQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5C31D4C1D9;
-	Sun, 22 Nov 2026 19:20:15 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id A601D4C1BD;
+	Sun, 22 Nov 2026 19:20:18 +0000 (UTC)
 From: Venkat Yadlapati via B4 Relay <devnull+venkat.yadlapati.yahoo.com@kernel.org>
-Date: Mon, 23 Nov 2026 00:50:15 +0530
-Subject: [PATCH v2 1/2] power: supply: qcom_battmgr: Apply a USB input
- current limit set early
+Date: Mon, 23 Nov 2026 00:50:18 +0530
+Subject: [PATCH v2] dt-bindings: usb: snps,dwc3-common: Document
+ usb-psy-name
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,19 +84,24 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261123-vantage-battmgr-v2-1-03a419078d0a@yahoo.com>
-References: <20261123-vantage-battmgr-v2-0-03a419078d0a@yahoo.com>
-In-Reply-To: <20261123-vantage-battmgr-v2-0-03a419078d0a@yahoo.com>
-To: Sebastian Reichel <sre@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Joonhoe Kim <26rote@gmail.com>, 
- phone-devel@vger.kernel.org, Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+Message-Id: <20261123-vantage-dwc3-v2-1-2e741a834411@yahoo.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQ7CIBBEf6XZs5guRJp48j9MD3S7tZhYDCDaN
+ Py7UM8e32TmzQaBveUA52YDz8kG65YC8tAAzWa5sbBjYZCt1IioRTJLNCUe36QEE5GcUKpREZT
+ J0/NkP7vu2v84vIY7U6yO2phtiM6v+1/C2vujTihQaDMMJ6Nk103tZTWzc0dyD+hzzl+j2yrnu
+ gAAAA==
+X-Change-ID: 20261116-vantage-dwc3-eccc2f123d3c
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Felipe Balbi <balbi@kernel.org>
+Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795375214; l=3188;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795375217; l=2646;
  i=venkat.yadlapati@yahoo.com; s=20261023; h=from:subject:message-id;
- bh=QRPbpgdZl24zY0fmfpUSTMdKKg7OmwkB9BBBvw6YdvI=;
- b=VDeQLu0wy3u3s42wJ7fJa3Pj37p5X9E1hoNLrrvZYhLt0Wz3ATphqRBFDYARjA+2RuSq8h7Om
- WKxQ5/d/IzBCpt0I0KTB2Th7jpEwHMcmWxDxeXX2yn2YeiXy9tDJxKY
+ bh=UVWhSLAPePZ8e1Iapxx51B9VAvYDZtSIXNZrGl1F++A=;
+ b=LjXwV7r79U8KqLx/vldf3Mc/6A/BgjP6EzZ6jS8G5dTdt4sOEiNqEnmS/Ui+hP5aYL2bg3XyZ
+ 05OKvisLHdHBFh5IqFbzVln+XVooaG1+C1lpR4/ExGWW6ZwD7/OIikM
 X-Developer-Key: i=venkat.yadlapati@yahoo.com; a=ed25519;
  pk=e8KStCtEMvUP1Se/riB/KVnDAQFEVR2Dw2PcuA8/eME=
 X-Endpoint-Received: by B4 Relay for venkat.yadlapati@yahoo.com/20261023
@@ -107,102 +112,65 @@ Content-Transfer-Encoding: 7bit
 
 From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 
-The USB controller can report the current a USB host grants, e.g. with
-the usb-psy-name property of dwc3, before the battery manager service
-is up. The input current limit is then rejected with -EAGAIN and the
-firmware keeps the 100 mA allowed before enumeration, so a phone that is
-in use discharges while it is connected to a computer.
-
-Remember the limit while the service is down and send it once the
-service comes up.
+The dwc3 driver reads usb-psy-name since commit 6f0764b5adea ("usb: dwc3:
+add a power supply for current control") to tell a power supply the
+current the USB host grants, but the property was never documented.
 
 Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 ---
- drivers/power/supply/qcom_battmgr.c | 45 +++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 9 deletions(-)
+The dwc3 driver has read usb-psy-name for a long time, but the property
+was never documented. The Motorola Signature uses it to tell the
+qcom_battmgr USB power supply the current the host grants.
 
-diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
-index 431a35bcac80..fde9704d0acd 100644
---- a/drivers/power/supply/qcom_battmgr.c
-+++ b/drivers/power/supply/qcom_battmgr.c
-@@ -329,6 +329,10 @@ struct qcom_battmgr {
- 
- 	bool service_up;
- 
-+	/* USB input current limit set before the service was up, in uA */
-+	bool usb_icl_pending;
-+	u32 usb_icl;
-+
- 	struct qcom_battmgr_info info;
- 	struct qcom_battmgr_status status;
- 	struct qcom_battmgr_ac ac;
-@@ -1144,25 +1148,40 @@ static const struct power_supply_desc sc8280xp_usb_psy_desc = {
- 		     BIT(POWER_SUPPLY_USB_TYPE_APPLE_BRICK_ID),
- };
- 
-+static int qcom_battmgr_usb_set_icl(struct qcom_battmgr *battmgr, u32 icl)
-+{
-+	int ret;
-+
-+	mutex_lock(&battmgr->lock);
-+	ret = qcom_battmgr_request_property(battmgr, BATTMGR_USB_PROPERTY_SET,
-+					    USB_INPUT_CURR_LIMIT, icl);
-+	mutex_unlock(&battmgr->lock);
-+
-+	return ret;
-+}
-+
- static int qcom_battmgr_usb_set_property(struct power_supply *psy,
- 					 enum power_supply_property psp,
- 					 const union power_supply_propval *pval)
- {
- 	struct qcom_battmgr *battmgr = power_supply_get_drvdata(psy);
--	int ret;
--
--	if (!battmgr->service_up)
--		return -EAGAIN;
- 
- 	if (psp != POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT || pval->intval < 0)
- 		return -EINVAL;
- 
--	mutex_lock(&battmgr->lock);
--	ret = qcom_battmgr_request_property(battmgr, BATTMGR_USB_PROPERTY_SET,
--					    USB_INPUT_CURR_LIMIT, pval->intval);
--	mutex_unlock(&battmgr->lock);
-+	/*
-+	 * The USB controller can report the current a host grants before the
-+	 * firmware service is up, apply it once the service comes up.
-+	 */
-+	if (!battmgr->service_up) {
-+		battmgr->usb_icl = pval->intval;
-+		battmgr->usb_icl_pending = true;
-+		return 0;
-+	}
- 
--	return ret;
-+	battmgr->usb_icl_pending = false;
-+
-+	return qcom_battmgr_usb_set_icl(battmgr, pval->intval);
- }
- 
- static int qcom_battmgr_usb_is_writeable(struct power_supply *psy,
-@@ -1742,6 +1761,14 @@ static void qcom_battmgr_enable_worker(struct work_struct *work)
- 	ret = qcom_battmgr_request(battmgr, &req, sizeof(req));
- 	if (ret)
- 		dev_err(battmgr->dev, "failed to request power notifications\n");
-+
-+	if (battmgr->usb_icl_pending) {
-+		battmgr->usb_icl_pending = false;
-+		ret = qcom_battmgr_usb_set_icl(battmgr, battmgr->usb_icl);
-+		if (ret)
-+			dev_warn(battmgr->dev,
-+				 "failed to set the USB input current limit: %d\n", ret);
-+	}
- }
- 
- static void qcom_battmgr_pdr_notify(void *priv, int state)
+Checked with dt_binding_check and with dtbs_check on the Motorola
+Signature devicetree, which sets the property.
 
--- 
-2.56.1
+I used an LLM (Claude) to help write this patch and its commit message.
+I reviewed it.
+---
+Changes in v2:
+- Drop the Assisted-by trailers and the LLM notes from the commit
+  messages, the LLM use is stated in this cover letter.
+- Move usb-psy-name after phy-names, it split the phys/phy-names pair
+  (Sashiko).
+- Sashiko also asked whether a power supply name belongs in the binding
+  rather than a phandle. The property is not new: dwc3 has read it since
+  commit 6f0764b5adea ("usb: dwc3: add a power supply for current
+  control") and this only documents it. A phandle based description
+  would need a new dwc3 interface; I am happy to do that instead if it
+  is preferred. Its other point, that qcom_battmgr cannot take the
+  limit, no longer holds since commit be5e7367bceb ("power: supply:
+  qcom_battmgr: Allow setting the USB input current limit").
+- Link to v1: https://patch.msgid.link/20261116-vantage-dwc3-v1-1-6abb5a3277f0@yahoo.com
+---
+ Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml b/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
+index 6c0b8b653824..41e8537b34d5 100644
+--- a/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
++++ b/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
+@@ -51,6 +51,13 @@ properties:
+       - items:
+           pattern: "^usb(2-([0-9]|1[0-4])|3-[0-3])$"
+ 
++  usb-psy-name:
++    $ref: /schemas/types.yaml#/definitions/string
++    description:
++      Name of the power supply that is told the current the USB host
++      grants to the device (e.g. after enumeration), so the charger can
++      draw it.
++
+   snps,usb2-lpm-disable:
+     description: Indicate if we don't want to enable USB2 HW LPM for host
+       mode.
+
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261116-vantage-dwc3-eccc2f123d3c
+
+Best regards,
+--  
+Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 
 
