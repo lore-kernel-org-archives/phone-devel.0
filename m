@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795369664;
-	b=sJlSYuhNJUDhLbKlngUcCXpqeGMekpUDSJ7Z6Mv2x57AHLgrDZqGSVLMZ0iShZHPAbM1
-	 5iHsnPqnPWmd2MUOh+ou2/IRWK0FEnYsKVAw4OFuaSw3/qrj87Otk1eJyed7v97uLY4mA
-	 +KhYp5KF9luPtsMTTBQb2pyRTUS2DeE1Jc2/1dK3AAKqxuVD0nbbxr8HDWR30o7V4xAod
-	 POcaOdbmmbV5BGjBXvILtQwRSSe++FZZ/09c5dxYmFxtfhJM4vUWiWHvPMVP/qkhpJuHZ
-	 0uZ6kAP6eD2aSZukQIbsYFV8dGCcmgbg0sVetUVP3cr8l7Qk7PCXluVF2XWgntS3mBQ==
+	t=1795369687;
+	b=bjd3Q3jk7ZKKw21Yks8ML2sKTmThq1gpQdSPgqBzh5xu/X/eXZbgoq1WdViYylkxwnb4
+	 c4XtNhSl5MDe6CYGjW2h0p7VPN4YJbEZwy+b+bJK3Dytzkneqlt8I5WTVk15vCBQ0J+gr
+	 FEgUdBYigSm25FokbV5CZod679sdN9FM4+IGx4RBQ0Q0CpJLGS92QGjpFLJOKYLmJ2WFR
+	 DGuLOCQOTJLlpOnrmwk4Z8/IxI0uludA5SEFNskspqrkB10gdPp9FxSP7SfFhDaHE+wcY
+	 Dx2JJtjdTdZQtZ7QY+Xpvb2JyUDbDavf28O6glkDxTf+YD1533Lz96SqJ4RK3Qa0ZdA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795369664;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795369687;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=kTI+x3eR9/fye4hy68NIkj31QquIHvu1a+2Mc0xYPcc=;
-	b=fLUG6Lsl//sD4zMCXYSLrnZSJiejRR2KiDKuHVGuSClsfvBgWhXZhEOoQzmZNDFHMZ9J
-	 cYPogXn0GhG/LcmMMM0nlnP7vW1z2HON6XYqq3rqnjJLKh+jqrGDtgStU7ZKHzjheuRST
-	 VdYLhAUSbU4qEjHK2mPv8V5nvaj4t2oCZy2mvVm1FylWnP3sJBsnMEqtE/VX5yQvY4Agg
-	 PWfUHh65JmSuN9XqqtfopPF1Ie8ArT6XNvJbrJGq7RxaSKF7R0WJr/3fRBrzrPIrQ0BlG
-	 Q7yfRb5vrFWP4E8lLrryhMnvj4kZj5EB6sfMHNV7KWZ2vF0G1w2Xpidq1CdvL+I7wwQ==
+	bh=sFhVQZt5qf+w1qf1nMt/dnDIo/UDfgjc63sRz0PaBJI=;
+	b=BSJUTBoMaaybzKcmZLBySCgDfwviVT0OBm8E7x/8/r6qHDNsuYXggjYZTc93DP05GAWE
+	 MyzpK2aUhUTDRBqCckImWBACJNWuKa7JgXhGUNhaeu0TwwmTdT1obQykeaumZmtbzVeQR
+	 3Q7v4YTYV0cS6swO09YQfw5KknVUH5T8XXskaTJqoT7phN2+2JcbYoRIV/dm7k9dBgqd1
+	 lx5aYKf3IIgZm9SoWBmZzaqKI09/b/E0eE9f3a+zJNXBdWSmd3x/aT+4T5oWUaZTXqoJV
+	 bGuV6uRpA3OZcqN7PldPcJuhs1t40NrjHyhGU6svNiKv58fyNvuaI2hsGxhrMiGgjqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dXYhv8kK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iWjAQ3oV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A991C606A68A;
-	Sun, 22 Nov 2026 17:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB93606A333;
+	Sun, 22 Nov 2026 17:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dXYhv8kK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D1F1F000C0;
-	Sun, 22 Nov 2026 17:47:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iWjAQ3oV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0311F000C0;
+	Sun, 22 Nov 2026 17:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795369664;
-	bh=kTI+x3eR9/fye4hy68NIkj31QquIHvu1a+2Mc0xYPcc=;
+	s=k20260515; t=1795369687;
+	bh=sFhVQZt5qf+w1qf1nMt/dnDIo/UDfgjc63sRz0PaBJI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dXYhv8kK3ic3YvG+a6aoUeQi4hkJ3JahU7VWv3qpLy1Ns0T9b397kMll4Uj4Zk+mt
-	 n8MMP+SEc1J4HYRss19sSQgD2ahXPvqpBDHDO6O+vOxhmEbT/70YcZ78kUvWCNwItm
-	 ilftl+EpYy8PgIUrLnwLRkbG1DK94Zus71K4G7XOdUXEXXxeoFKL4SSSRKhHevRuNK
-	 k4ENIUIXONy4TSdqQr4oKIar9HBdlkQgI+c61c3rEvEYgavEh4K1NZQ4HEsldgK3Ji
-	 T16hzcj9ZPcRL1zrkuTTOTWxRFiUDxit/caJVBF2hmD57gIywzChUB66/frDIZxkkP
-	 W3atUXyfU79Zw==
-Date: Sun, 22 Nov 2026 18:47:41 +0100
+	b=iWjAQ3oVT3EwtVA3vai2qyIxLRbuUnP+8Ax8TPNILeHapPA+TXL5fIcCYSnTw1iEX
+	 pM61TQD/OCJM/VnRvy6WLEfMRrtGT5nZDYDy9XZfwEQn0FNO8D93gjRnUK3/QgJWfo
+	 vRH7kUBQENjocga/6aXAJFtiHOWQcGLCqe6VqjjK754kKE5MEyh9yPm+QOisphVwpC
+	 WwgE6AazGOhpc6tBN17If0ljMJvaHpZZTvJYLdqXCdMWUdLwNdZ+pO+67kK55Ga0ww
+	 L1pcHOy5QR9hJObzrMbbVcHpz72NAVAey3IP7rcoOcEH/wi9HXT7X7hLHVmpSFq3fT
+	 Khbuk5WuBG7YA==
+Date: Sun, 22 Nov 2026 18:48:03 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 Cc: Bjorn Andersson <andersson@kernel.org>, 
@@ -49,12 +49,10 @@ Cc: Bjorn Andersson <andersson@kernel.org>,
 	Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
 	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 01/11] dt-bindings: arm: qcom,ids: Add SoC ID for
- SM8845
-Message-ID: <20261122-spectral-sceptical-wolverine-3e510c@quoll>
+Subject: Re: [PATCH v3 02/11] soc: qcom: socinfo: Add SM8845 SoC ID
+Message-ID: <20261122-reasonable-tacky-pelican-ed7d06@quoll>
 References: <20261120-molokai-soc-v3-0-403d763685d9@yahoo.com>
- <20261120-molokai-soc-v3-1-403d763685d9@yahoo.com>
- <20261122-convivial-electronic-stingray-5afda6@quoll>
+ <20261120-molokai-soc-v3-2-403d763685d9@yahoo.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -66,26 +64,17 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261122-convivial-electronic-stingray-5afda6@quoll>
+In-Reply-To: <20261120-molokai-soc-v3-2-403d763685d9@yahoo.com>
 
-On Sun, Nov 22, 2026 at 06:14:00PM +0100, Krzysztof Kozlowski wrote:
-> On Fri, Nov 20, 2026 at 09:23:03PM +0530, Venkat Yadlapati wrote:
-> > Add the ID of the Qualcomm SM8845 (Molokai), a variant of the SM8850
-> > (Kaanapali), as the Motorola Signature reports it in SMEM. socinfo uses
-> > it to report the SoC by name.
-> > 
-> > Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
-> > ---
-> >  include/dt-bindings/arm/qcom,ids.h | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
+On Fri, Nov 20, 2026 at 09:23:04PM +0530, Venkat Yadlapati wrote:
+> Add the SoC ID for SM8845, a variant of SM8850 (Kaanapali).
 > 
-> Some folks started changing the bindings here, so how about stop growing
-> this ABI. Add a header for socinfo directly. Let me prepare a proof of
-> work for that.
+> Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+> ---
+>  drivers/soc/qcom/socinfo.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-OK, please rebase on top of:
-https://patch.msgid.link/20261122-qcom-socinfo-id-dt-bindings-v1-0-eeee0ffa25da@oss.qualcomm.com
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof
