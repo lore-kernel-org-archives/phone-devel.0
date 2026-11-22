@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795375225;
-	b=DAaFG/Tac4D0OcP8jyig8JnHa1VQfbVpxO40YmTnemlqdu6QddXMNC/Y/IfvTu7WSCgl
-	 fzoi9SmXDvWocL7GHqkiGQioEefiQwfsbuJRd2JeM+a/T4WMaeQMhdnM2wFhALSrmVFuL
-	 S/X3LWpAPcqys04p8ydCaCaR1+RaNcdykm1Jhovkauu3R/+JNGu2gLWexDIrMyxsnJUQK
-	 Y761yHU8xFPdHmOyjV3ln4hROvhjWPJmDSoNWy7U3R8Na7VTn5V7/mm0ZX0Vdb0aVgNIH
-	 d0e0bvcGTfGsWugLHrZ7c4pjD8pbXmAcLR/3Gka7ikCJij8Bkzq4bTwfRINuHzZEqPQ==
+	t=1795379065;
+	b=mUvhKG8LdPGhBJabNCbDuniDzn2LwdosmSkdxXErCqg//zyWTqB1mrcHJbJs7K2AR2jY
+	 Fo1wZLIH+klVIH4vgGVT/yvb+O/9UAeOLQEu5apGWscKDWCuG8Pt87VS1U1pmI+nXrBdD
+	 P63NYX5CT4UnXroLGZDHZplzjyecSGja0hubQqpefRaUj/B2WZ77XbO/nsW9uYjrqv5i2
+	 etQjdR/v2oYShsm7RjzeV727Gvz3iV9jTsD83MBbPKjHqnC1uNaI4of3G1mx8OG52QIoS
+	 2yrfXaA4BR+jrgRHMXlBdJmo8fMNv76nrisd3QKBNvRgHtMN3/dLdIPbNeULzxFV0fA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795375225;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=RbhHn0ijg5qDMRvXVqnUii7Cq4S9tFcX1wIY34cE0z4=;
-	b=DtsJckHIFSRzwVP8xrXc32oH+PNZ5/rDrSxAPL4MQOSF4xAuiDl+nW7aYp14cRnjszma
-	 mVCFuLqIyzq2dzCCyXsVPfH2Fem/GeZwOGnOgtaYKtfCoVbVfBKYDcFCk46CSuKMimtBA
-	 m6PZ6zvHP42pMDX+iwu6eipQ+//dgXl2VTltHz75PnccGc5XduiGcTXsP9d2tR9RYg0BE
-	 OwWeuBJBGpnLNqQXqHOy302nDwFy0g/CQ7q9gtkO1tNImpC/RYQO9nmQkIa7UWRG63E/c
-	 m5CCCVSLN2E12C6wtzhw2fh7JAbkRRTrkHZtxL04M6RNtYku3nAoaLOelh0cSJYRGDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795379065;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=cshyvm1RGfi9h+MQQ0UCkQXgQEVUysI3Bo9qnIeDWks=;
+	b=oEWdmRUL2Twa2NgyZvqyO6W9I+RTqQndQr6GDk0j1ooJRX/ckynKZEey6+mML9fpOkoC
+	 /WoQmiH87SK2Dl7b9DnBmQO3eFPpO7Jauaxm0alCPzeUj9uI/+vvPMyaGSwLRUuH1iWVC
+	 X3wx1DhMiAgc9Cu8YcarEbzbeyL+nI0ALaRkjbp1vNdFsrdapwoflSmLZhieHr+LlEehe
+	 uefNiFy/ReSeSuHRwnfcB415NjFUwfDPIAHII3fovgNSZL/nYoQ5SSUU+G9kZqeOCB0cl
+	 SzSwPfY581Ilp53tlVlaVOKZj0rWqKoZEYITbvcedaz/wxURYHNHeponxXlXJh5yung==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="jVo/Lu6u";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FxahAm+S;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688C7606A32A;
-	Sun, 22 Nov 2026 19:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B51A606A31A;
+	Sun, 22 Nov 2026 20:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jVo/Lu6u
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FxahAm+S
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795375224;
-	b=A1sp1FWxU8gUJ+wnUmOXSrVIhZsOnR09sT9dLo1uLFN8ZigmR90ZySmSD/48sJQBP16m
-	 cPU3XbtGxEAL9Bd2CsNsy4b1Fq55/jigC59fbAYmqnmjGWLhCf9eyqtmBb6EbrkIR2u95
-	 JlU0FMmZnmcrlaesyNG520RINjmOTLGojEW47G3veWHPYAA86+A5XYYvbfzpJx2k0qs5A
-	 oUW65hyRk9oVtpo8zPoTL+UyDzkE2//upa+OXgBS9feWlp7i19jYMLR/UWQFdVVROjx8F
-	 V1BfNlsE+Pf4Tt9QhfQS4dNWnZRoUtiEpv+c+zl5jqVxIxBXLwYded4NCnwIwTXVgHQ==
+	t=1795379065;
+	b=Wjss74g6QV0N+ACGnvymx+sz2dqKiG0IIxnUbqQYBIjqy/Kp6fEZgV1zL3ZxZJsi2Oca
+	 xmhPssiHBn0+Q8BSiAfxVFVSujHExebOSe73P7l5o7I82sAICmfnCia29ygH4IaIe/xDg
+	 +QhZlxseBCKqW3GUXMiopkUhZXPiVr9hK7VBlsu73LjPjK91m8Fs53+KOfMrGDdqgobq/
+	 4upwFW2aI7lolZ3wHo8D2hMq+GONvLdjWcdnyEYaHHR0akJuOlfCWc6n4wueqzkvMG+Ym
+	 MRIh5h/2C23Ii/ty6aeqROyYhgvefNzP5IeONaTE6B70h6Xc7rPkU6xpCAXeIP1d7Ug==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795375224;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=RbhHn0ijg5qDMRvXVqnUii7Cq4S9tFcX1wIY34cE0z4=;
-	b=fEQIaOsS/P5c8roK2BD/pTCaVR13Yw7iEThry5TAXp/icCXmOGUTgEfHI8hrrSV0zqOW
-	 F3TMDkC2Y4+b1DuviunoVlLLEKh5DFUmyzQM6rgyXwxE4TTzv2NVZVrB7UvzwlEyn/zH2
-	 amhZnq4Yc12TyOfJkL/G8jXClwrAq8Fb3vBHCg6Ly51flXvXHlsc5Flojgvw8ZpwY8ODl
-	 D9L8CMqnhW9ufKUIIWdWe/PVaw71/wizyl6QpO6ymuNA0l/cyuFx0ZROTrRegt4pfolj9
-	 NOimWJs+LPvaJm8XCXWJNux0irUCouCSfkBtFzB5zzAN2Rm9j8ZZSB6+D2GrQKtBzog==
+	c=relaxed/relaxed; t=1795379065;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=cshyvm1RGfi9h+MQQ0UCkQXgQEVUysI3Bo9qnIeDWks=;
+	b=FJRBq69XzuBzWRDmO5/o79P7e/coSev2JA4rPo/PgiYB/b5fswT+Ip9PRbO4GAz1r60U
+	 zgHyAnESE9PeEVUVeUjXcnavLNR4BwIjrn3JptnoO0CHy/5tstETzdrWar3xQNfEzpvbj
+	 qpFXw2i12jQhloUma/c1mvSYoSyVN3g5WeNjRzT0wuOBDtseAZzo2mdmppPneLEg9wqe5
+	 kDIklDEYibHy7JvwzRRVynZuys0dzVzuycIjVzI2sRNWKkw6xUwnSJ3+WX0hIUPf50Qg2
+	 uRzjtDSnz02HDogjbNKFg64sCIfK5L9H6WGH6Jd1bIgeGWzxtD6d6gJB2kmApIcTt9A==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 26C3A1F000D3;
-	Sun, 22 Nov 2026 19:20:19 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 3ED841F000C4;
+	Sun, 22 Nov 2026 20:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795375224;
-	bh=RbhHn0ijg5qDMRvXVqnUii7Cq4S9tFcX1wIY34cE0z4=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=jVo/Lu6uXorDXQUpC+bviNDzjTkXbQVlIsN7C0PBzrz+I4FRb6fTwl+7xLyEgitkp
-	 xGPOv46+qNTr1X23Xm21XKQ2KnJxwmJeca+1mSGf4RSNGqsyrqjiDKD0t9WjwLUEHN
-	 9SCLl41Ta494twf95+WbtdS0YA6VXXkvlm+mz3LssYbyp1SSnbWsTQhIvOn0Nw4PgW
-	 xiuuXjabEPfmmGBSb4lCdw3pbj5HTzE8M66wpyetMKzbH2ndZOBWZXbbAQNOGMC4o/
-	 ABMqheXB46eD7oHRiplESdty3durkTttIHVss15eAB2dy5olsagPPDLIxdMxp7UcPX
-	 xBcBr1TC1VrzQ==
+	s=k20260515; t=1795379065;
+	bh=cshyvm1RGfi9h+MQQ0UCkQXgQEVUysI3Bo9qnIeDWks=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=FxahAm+SSqh/1pcAyamkZNfIofSpWuB0P/PgSFCp3U2R6QK9eUK8m1yibMqZprH0z
+	 D2AG0Oxv918BNILlnFkI9eXsQXp0etCyRdeBd4beuBiBM+fv31WSVBrQzZ+6Ap/J70
+	 K2SrADy6lZvTmFLia4KTbT1pIQ/y1NqYs2+6FiByZEPkBOlXjZ2yGhXZfFT3qpLt84
+	 +bEPE9TcG8kYtr4o0jovpgehYMdASmFXTftd+vUVOCtCrQx/VbZeMk6ou5Pqf1yIbY
+	 HnxfH02Ia3Ja7AcdXk8h92pByDtxAb8WAwjkhZkdTnErLapA/Dglh0b6Yhru0FtP+6
+	 jeK0qQzv8ZhHQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id A601D4C1BD;
-	Sun, 22 Nov 2026 19:20:18 +0000 (UTC)
-From: Venkat Yadlapati via B4 Relay <devnull+venkat.yadlapati.yahoo.com@kernel.org>
-Date: Mon, 23 Nov 2026 00:50:18 +0530
-Subject: [PATCH v2] dt-bindings: usb: snps,dwc3-common: Document
- usb-psy-name
+	by lkml.kernel.org (Postfix) with ESMTP id C47594C1F2;
+	Sun, 22 Nov 2026 20:24:20 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v2 0/2] rpmsg: glink: Offer wakeup capabilities
+Date: Sun, 22 Nov 2026 21:24:17 +0100
+Message-Id: <20261122-rpmsg-qcom-glink-v2-0-d60419793095@ixit.cz>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,93 +84,94 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261123-vantage-dwc3-v2-1-2e741a834411@yahoo.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQ7CIBBEf6XZs5guRJp48j9MD3S7tZhYDCDaN
- Py7UM8e32TmzQaBveUA52YDz8kG65YC8tAAzWa5sbBjYZCt1IioRTJLNCUe36QEE5GcUKpREZT
- J0/NkP7vu2v84vIY7U6yO2phtiM6v+1/C2vujTihQaDMMJ6Nk103tZTWzc0dyD+hzzl+j2yrnu
- gAAAA==
-X-Change-ID: 20261116-vantage-dwc3-eccc2f123d3c
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Felipe Balbi <balbi@kernel.org>
-Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Venkat Yadlapati <venkat.yadlapati@yahoo.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795375217; l=2646;
- i=venkat.yadlapati@yahoo.com; s=20261023; h=from:subject:message-id;
- bh=UVWhSLAPePZ8e1Iapxx51B9VAvYDZtSIXNZrGl1F++A=;
- b=LjXwV7r79U8KqLx/vldf3Mc/6A/BgjP6EzZ6jS8G5dTdt4sOEiNqEnmS/Ui+hP5aYL2bg3XyZ
- 05OKvisLHdHBFh5IqFbzVln+XVooaG1+C1lpR4/ExGWW6ZwD7/OIikM
-X-Developer-Key: i=venkat.yadlapati@yahoo.com; a=ed25519;
- pk=e8KStCtEMvUP1Se/riB/KVnDAQFEVR2Dw2PcuA8/eME=
-X-Endpoint-Received: by B4 Relay for venkat.yadlapati@yahoo.com/20261023
- with auth_id=1303
-X-Original-From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
-Reply-To: venkat.yadlapati@yahoo.com
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/zXMQQ6CMBCF4auQWVvClILgynsYF6VOS2NpcWqMh
+ nB3GxOXf/Let0Em9pThVG3A9PLZp1hCHiows46OhL+VBtnIDhEHweuSnXiYtAgXfLyLQesJm16
+ 21nZQbiuT9e8febmWtlymz5lJ/6G2QTyikgpVPQ7tqHqBwuhAU21SjCmEz7nQmlOd2MG+fwElC
+ 051pgAAAA==
+X-Change-ID: 20251118-rpmsg-qcom-glink-8aab10623ff5
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Dylan Van Assche <git@dylanvanassche.be>, 
+ Casey Connolly <casey.connolly@linaro.org>, linux-arm-msm@vger.kernel.org, 
+ linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3470; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=lTm79sP5N4nCYtqwli3hsRaQG2T1k37aH17D2Pp90kM=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrA09yN87Arpx4zHDSlaRNnlb7QYe663LjdDuCL
+ o27J6X+XTaJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawNPcgAKCRBgAj/E00kg
+ ch5NEAC566yogcpJwCKgrZkbDk+lgF3bYCcnlCI1Hy52FxHt9HS5kpKbZAzq2iE63yvS+6N0kHm
+ YoCPGSXr2fRRFqp0kKRATDk+qC1+9PrbEVnRmnzwlckERaAH7Lkk25AXHtqNYh+tqjDYgCoTUZS
+ wN8BFhpXqeiTx7iqIHIr3QnOsVgDrDhXVqKDWy3g4e7SEkXdziGukNFVVA2KcaMm9j0Fnh2nh1E
+ ec7Pb3Nf6bC/hjaevCMy1a/p5OB9D2V4BL7MNZbZPNMn+w37Ngof20ZaE0z5Zc7cWk/1OaEcESX
+ owZtougwnAXtLlYhw2anbY/MLGAZWdSXPnOOoBh/XxPbjXml8dpgnKUgR2i1q+UrLEgGrWjh9Sg
+ pC/1DxGYKMMRjzwpYIapUQPNiyeBDzS+urnzjBUQnSBprcy63tSwxLbQ4feRH/59LtJaN6s0e41
+ 4choAag5jPQi8jmKOva/2kxDWHj1YCiqB8bfvSyX6FYKmnEaTzHiEThvnI/EFGdb1sAdwf1EtQF
+ ux0R+bldKNbKpUxgm+8tDlT22QII5SCLQ23Mr7+/5F/NLOIAOLO0x8npNg/Wj+xDtboykNj1a1w
+ xTj4RaudHUCzK4Hx8Tz6Sb/xr6tTFj3Lwpq0MrrR8fRlzHgK0WVw0Q7bR/Sp/bQM3ftqk8+MkFG
+ 6zvmjsxoqjIFoKQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+LLM generated summary of the decision chosen here, feel free to skip to
+the changelog.
 
-The dwc3 driver reads usb-psy-name since commit 6f0764b5adea ("usb: dwc3:
-add a power supply for current control") to tell a power supply the
-current the USB host grants, but the property was never documented.
+Trade-offs made:
+1. Sysfs power/wakeup switch vs per-socket EPOLLWAKEUP (from v1 review):
+ - Chosen: Device-level sysfs power/wakeup (disabled by default).
+ - Trade-off: Works immediately with existing userspace (ModemManager, sensor daemons, udev rules) without requiring application changes, at the
+cost of channel/endpoint granularity instead of per-socket granularity.
+2. Reporting wakeup only inside if (channel->ept.cb) under channel->recv_lock:
+ - Chosen: Gate wakeup on an active endpoint callback rather than adding extra synchronization around channel->rpdev.
+ - Trade-off: Keeps GLINK locking simple and avoids waking the system for packets that get dropped anyway (no consumer), while holding channel-
+>recv_lock across pm_wakeup_hard_event() (a short spinlock path: dev->power.lock -> ws->lock).
+3. Solving /dev/rpmsg_ctrlX wakeup in rpmsg_char.c (Patch 2) instead of falling back to channel->rpdev in GLINK:
+ - Chosen: Per-endpoint wakeup on /sys/class/rpmsg/rpmsgX/power/wakeup in rpmsg_char.
+ - Trade-off: Transport-independent (works for GLINK, SMD, virtio-rpmsg) and covers locally-initiated endpoints that never have a per-channel
+channel->rpdev, without complicating GLINK's channel->rpdev lifetime. In return, userspace configures /sys/class/rpmsg/rpmsgX/power/wakeup
+after endpoint creation rather than the GLINK bus device, and directly bound rpmsg_chrdev channels expose two independent power/wakeup knobs
+(both off by default).
+4. Immediate hard wakeup (pm_wakeup_hard_event(), msec = 0) vs timed wakeup (pm_wakeup_event(..., msec)):
+ - Chosen: Same as v1 (msec = 0, hard = true).
+ - Trade-off: Immediately aborts suspend / wakes s2idle and bumps wakeup_count without holding the system awake for an arbitrary hardcoded
+timeout, relying on userspace/suspend managers (e.g. via /sys/power/wakeup_count) not to re-suspend before draining the queued message.
+5. Setting wakeup capability after rpmsg_register_device() in GLINK:
+ - Chosen: Kept v1's placement in qcom_glink_rx_open().
+ - Trade-off: Works via wakeup_sysfs_add() + a KOBJ_CHANGE uevent, though udev rules matching only ACTION=="add" could race with power/wakeup
+creation on the GLINK bus device (Patch 2 avoids this for /sys/class/rpmsg/rpmsgX by calling device_set_wakeup_capable() before
+cdev_device_add()).
 
-Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
----
-The dwc3 driver has read usb-psy-name for a long time, but the property
-was never documented. The Motorola Signature uses it to tell the
-qcom_battmgr USB power supply the current the host grants.
-
-Checked with dt_binding_check and with dtbs_check on the Motorola
-Signature devicetree, which sets the property.
-
-I used an LLM (Claude) to help write this patch and its commit message.
-I reviewed it.
----
 Changes in v2:
-- Drop the Assisted-by trailers and the LLM notes from the commit
-  messages, the LLM use is stated in this cover letter.
-- Move usb-psy-name after phy-names, it split the phys/phy-names pair
-  (Sashiko).
-- Sashiko also asked whether a power supply name belongs in the binding
-  rather than a phandle. The property is not new: dwc3 has read it since
-  commit 6f0764b5adea ("usb: dwc3: add a power supply for current
-  control") and this only documents it. A phandle based description
-  would need a new dwc3 interface; I am happy to do that instead if it
-  is preferred. Its other point, that qcom_battmgr cannot take the
-  limit, no longer holds since commit be5e7367bceb ("power: supply:
-  qcom_battmgr: Allow setting the USB input current limit").
-- Link to v1: https://patch.msgid.link/20261116-vantage-dwc3-v1-1-6abb5a3277f0@yahoo.com
----
- Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+ - Use pm_wakeup_hard_event(&channel->ept.rpdev->dev) inside channel->recv_lock
+and the channel->ept.cb check to fix the NULL pointer dereference,
+dev->power.wakeup/rpdev use-after-free races, and CONFIG_PM_SLEEP=n build.
+ - Fix subject prefix ("rpmsg: glink:") and comment typo.
+ - Add a follow-up patch enabling per-endpoint wakeup on /dev/rpmsgX in
+rpmsg_char so dynamic /dev/rpmsg_ctrlX endpoints can also opt in to wakeup.
+ - Link to v1: https://lore.kernel.org/all/20230117142414.983946-1-caleb.connolly@linaro.org/
 
-diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml b/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
-index 6c0b8b653824..41e8537b34d5 100644
---- a/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
-+++ b/Documentation/devicetree/bindings/usb/snps,dwc3-common.yaml
-@@ -51,6 +51,13 @@ properties:
-       - items:
-           pattern: "^usb(2-([0-9]|1[0-4])|3-[0-3])$"
- 
-+  usb-psy-name:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description:
-+      Name of the power supply that is told the current the USB host
-+      grants to the device (e.g. after enumeration), so the charger can
-+      draw it.
-+
-   snps,usb2-lpm-disable:
-     description: Indicate if we don't want to enable USB2 HW LPM for host
-       mode.
-
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20261116-vantage-dwc3-eccc2f123d3c
+Casey Connolly (1):
+      rpmsg: glink: Support waking up on channel rx
+
+David Heidelberg (1):
+      rpmsg: char: Support waking up on endpoint rx
+
+ drivers/rpmsg/qcom_glink_native.c | 12 ++++++++++++
+ drivers/rpmsg/rpmsg_char.c        |  2 ++
+ 2 files changed, 14 insertions(+)
+---
+base-commit: 909ef7a9a30fa139e69e555e3606680f5cca7726
+change-id: 20251118-rpmsg-qcom-glink-8aab10623ff5
 
 Best regards,
 --  
-Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+David Heidelberg <david@ixit.cz>
 
 
