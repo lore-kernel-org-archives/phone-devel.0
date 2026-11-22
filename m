@@ -1,106 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795333983;
-	b=XgAtPBUXJQPp8y3hRFc/hqHb1hSMQnw87GevGMAyHnzphR1mmBdcoJXrCHgPYNXdIiyK
-	 atkDC3GJBneV1jc4ZnZ1LMfKXvZwoP55Wqhz7YputJ7ebNsY2JZ6qLRDbY9ea0x3Dwfw9
-	 JiWIBTVdIC7FJ7NUk1QnlvFLD2XGr8NRt14uFepW9sBp+45rvP0tEM5X9ZMuOoaccvBhc
-	 H7V8jqSb1m6Vzjy58Xo3uEdDmIJ8NNamAyqHVui+MPtlFuBooM4CN/raeq/gQTf+Xon1j
-	 /5t2JWGZXap9jCV/4l/fOfJ093reCBPhcxoQAEkjupJFa8gLifdOaOXeBBFmS12YFOA==
+	t=1795367485;
+	b=1WaKjQ4uyRMN6yd0e6Bn7RafNP7ShgMdY1xFkfkh/85J5oBYpgMtMsbIvZtMW69VBAZv
+	 rK2bwaKlsw8HTlySr/o3Bf+lAtjgWPaXoLGRjhP9OWcUid6Y18sWo2bQh5m3STu3kvaWk
+	 EGpyW6cWbWaS8LiEDRCB5pli00nDjSQranPlVHULbVbk9vgbfB4Jaq45HvKHewYxSJp4e
+	 UvHEL1Ap3seXMikkpAzuWlsG29iiJHu5MueyEFzBWwz54qt60VT3A53e4P9bdhhIlKmVM
+	 sV7ftBr6DqUH0EqDDprmkoiRAxzHQtpDPV8Ic1ihECcsvBSwN1/z6t3vAOVpOYe720Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795333983;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=YYjiTYJrCn6f2EJvoqo+mfdpJGY/gBVAph1UiZ3/0y0=;
-	b=Uq0T+DJdhx5vO7f+M2qNfk8MgvSI1IE5HTyOsCn9+z/G/BX5PaAfp73KqCmBtwhRpfdm
-	 /fz2T7RXSBsF/XL/Wix8C6d8z8rGEO2BHnztMs/waY7j2wm2YliAmLa4WfQzgOULCumJC
-	 VN9jl/vEhUBnillSQXXeth7F1ydNVEuJwMCvTVthAIpMWqp8bRKh/hxNgbOqxZzPWkucw
-	 f/4XXRhjNNbZJNeCJek66efPTmtzr/z6LTmwWl9IZRkgWaiaQUncIPzllUYxzsl6cHOnn
-	 tDLwWjva9jOaFyD78OQquk6bm+su5DgLbUpVxOvHceGl17ZTant/6DSeLDcmqs7gUbw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795367485;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=BB8oN2iaLLoL+rbrvv3ATfk1pljEVJJN/maFdOLVyjw=;
+	b=zM3/63/ZpRkIYa63SnLf4TweYlAl0ferP7DGutIPytE8jKx6A/4XPL0fc2z338kIF2p3
+	 Y+cTUXcGpsR+agygFeBbuB43Cn6+Wk1XXgE2uN+ihhETjqjF2NceHcrgk/hxM/pEnZ5fH
+	 SjPo69UblKkooZA5IV2QAwkxkHmPkVb9bApMXGkZND4bgz5jzV7n2T9gAogWiqrVRrfYe
+	 9A12feB+Jwo9sI0y0byVa4501t88Addjo3cy2DgOt82tg4iadh2OGN56m5U4dD5jpmpSM
+	 IYz+L3fD0eNcgIynqgGMKqbAy3zHaoS+JHDMIXZPgRAHIoeBdHKn/kNKYHgo+zL6dVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h+PoNCJ0;
-	arc=none smtp.remote-ip=209.85.208.43
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mYv75wa8;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933F2606A331
-	for <phone-devel@vger.kernel.org>; Sun, 22 Nov 2026 07:53:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 933F2606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762FC606A320;
+	Sun, 22 Nov 2026 17:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h+PoNCJ0
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6b408f2d936so3311031a12.1
-        for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2026 23:53:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795333982; x=1795938782; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YYjiTYJrCn6f2EJvoqo+mfdpJGY/gBVAph1UiZ3/0y0=;
-        b=h+PoNCJ0JWrepuHH8XR98IvmKBVK3jVik8a77/KXxcdI+xho07fAPKtyBE92aKj9tn
-         GWDIeT5DmnM1y4lTMxHD+riQmVoLL91OSnvno9BuwNERToIHSP9ucObNFPkySX4gtyWX
-         540MPWlRqpcsRxF1qwudcehjnTwQgvgqaRkrUHUvOSSMzBIEJ9rOTQW31zP7ES6QEZo0
-         gidNU5nhtmKgVnJViP2550SwqgkxpCkiW4lkxy40aAyfjyv1G2wiXJmaOk23ixEcWesd
-         gbcKP1zqZNoNIpp2MBP8o8kuvJXkcEtlpdjR4cxUcXjmWTY0O7R4zYzVFROqp56VcklG
-         elPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795333982; x=1795938782;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YYjiTYJrCn6f2EJvoqo+mfdpJGY/gBVAph1UiZ3/0y0=;
-        b=XYcDN7ehegpTSMYIq4Cv6+RsksgdA+IED1qW7bGFL7Oztudbm2ZKfRwhD6WwWJ0/2p
-         vfwmXWxs4+2lhjKepgzTBqTSEGRHUNZzeebBGdw5TSuQJEyijynN/qXA0TYaPTkm4YPb
-         3iiB7uB8P2UP/tsD494a1zheWdLg5GktD7rgmP3ih8SwmByrSHGH+nlpgxt14uorz9U2
-         Tuv5f9Xb68qsq5UubVt899CKG7ha4pCJGCDXRlX7BUCER6BZ1tWBXe4vwEkiDc72PMYI
-         UhA5PrDRT5i88G5oxSqwoIZS18W2594Dw9VlR8NJtCKYIfUBhbBPGQJ7itYxNo6V4eFK
-         EboA==
-X-Forwarded-Encrypted: i=1; AL+hErG65XnLHe6+JjWDohbDevkeS06fUacIZpyotWPl9UnWCI8AhOEEHVOR1W6224MHDZQIZT2rp7udQQN3hA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+2/+0VVdOCwOB4KlVdTInnCsUwnjIv7tAGmZVf26Tk2Xl/gwod
-	A2AcznKEV2skomVqvCut0sUPJ46rHBe3vKtsLOxzTEn0llY2HEB2kq1p
-X-Gm-Gg: AZFdTZfZ65J4InriyYyy6TF7gYb2qe/Xgqa3AQw63+Iwxg5AYDEjVDbeDclEIaBWl3C
-	IxPwfFoVx3iEoDaRCbI3gFOUI4CHAtqdaRZQR0c9t08djPQClRSaHRQt8heNG+ccHkLPdhHLw9m
-	p+1yqmkB/e9v1ce77++vfkTCoD+BbTzfYij7vKISR6Qy3HUJYlGlxEejEcLe4CCp8SQHnZVn1OY
-	GeuHTyWbaV2qfT7GiB8zo+0NDdgNNluO6nSDkjHgvwoMOAffQhOG8ZJCqVua1WfUUH/sL3rvO7L
-	6T9gRFdNX1R2qPG3Og36i+kWPV66931+Q2qzeDguEyyMa+Sp60EovffToQP1Q6c91njx4iifCN/
-	2KhL7CLHsIiSXBEiqnT5yuGC5CVNZgCpshIdNLv9hHG0MB4Q9gTfN6lNkA+ztBFIGr+ptYc8oyP
-	D2bVe/RZZWZpk45s+w7u+SYfpjqY+sTpVPMXbTQ//FT8G75xCtnp02w1vF3Ncn5gsektyWKByzq
-	cWzgX8fYm/E19RG8Z5buKCOLltcUqf1mPbyYnSiiL6DFr1x32BKggAQgcfK3ZDHqRgV4tNfQcvZ
-	YBSO1WVkbK/P8Zz7+Jr3CNk+u4s=
-X-Received: by 2002:a05:6402:1941:b0:6ba:7be9:ad85 with SMTP id 4fb4d7f45d1cf-6ba7be9aff6mr1735125a12.29.1795333981628;
-        Sat, 21 Nov 2026 23:53:01 -0800 (PST)
-Received: from dl360p ([195.155.168.55])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ba36e362bdsm3668837a12.5.2026.11.21.23.52.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 23:53:01 -0800 (PST)
-From: =?UTF-8?q?Adil=20H=C3=BCsrev=20Tepe?= <tadilhusrev@gmail.com>
-To: Michael McAllister <me@michaelmcallister.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] drm/panel: add Novatek NT36525 (Samsung Galaxy XCover5)
-Date: Sun, 22 Nov 2026 10:52:58 +0300
-Message-ID: <20261122075258.2919999-1-tadilhusrev@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <179501720308.74840.10845458526829767554.g10-nt36525-coordination@michaelmcallister.org>
-References: <20261117173319.1852638-1-tadilhusrev@gmail.com> <179501720308.74840.10845458526829767554.g10-nt36525-coordination@michaelmcallister.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mYv75wa8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A451F000CA;
+	Sun, 22 Nov 2026 17:11:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795367485;
+	bh=BB8oN2iaLLoL+rbrvv3ATfk1pljEVJJN/maFdOLVyjw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mYv75wa8UXIiy3dYmbes57GcUNjxeD+EvILIZQ5bnH5mPCIuNk1DoMbQgwbgTMXZe
+	 XCvC0Z8/AceWI3SEnH9gKOXXQwslW6cLOP3thwv1nWmtP+TaE8T2rSqE0tkusqfSDe
+	 LJAiHy2c5nB5rf2S75RcBV3TfhQ38h2uvba7dAnCMJjJCjgYQsWpjdbqp6L9w05PCo
+	 0J+hIN9sKTW4BPScQrSId+CYoAtf8mPZVa0qrVZTpbdxO7rcgI81V6yLrzG0pLHMSE
+	 6G0xAjbLItpHr0xt5resZcYWMrsO1MNiTlRKl1ykVLo5u47z8hgwZbKvXXNXanA3DT
+	 ESofIA7Ccu0Hg==
+Date: Sun, 22 Nov 2026 18:11:21 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
+	Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: display: panel: Add Ilitek ILI97680A
+Message-ID: <20261122-talented-reliable-beaver-fb09ee@quoll>
+References: <20261120-vantage-panel-v3-0-00b306146240@yahoo.com>
+ <20261120-vantage-panel-v3-1-00b306146240@yahoo.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -110,35 +62,71 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261120-vantage-panel-v3-1-00b306146240@yahoo.com>
 
-On Wed, Nov 18, 2026 at 03:53:23PM +0000, Michael McAllister wrote:
-> I've been working on the Moto G10, which uses a DJN NT36525B panel. I
-> have a local driver, but it'd be good to share yours where possible.
->
-> My panel is 720x1600 with four DSI lanes, a different init/reset
-> sequence, and DCS backlight control. Would you be happy with follow-up
-> patches adding panel-specific configuration and G10 support on top of
-> your series? I can prepare and test those.
+On Fri, Nov 20, 2026 at 09:23:12PM +0530, Venkat Yadlapati wrote:
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vci-supply
+> +  - vdd-supply
+> +  - vddio-supply
+> +  - port
 
-Hi Michael,
+Drop port here
 
-Sorry for the slow reply. I said in the v4 cover letter that I'd answer
-you separately, and then didn't.
+> +  - reset-gpios
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    dsi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        panel@0 {
+> +            compatible = "motorola,vantage-boe-ili97680a", "ilitek,ili97680a";
+> +            reg = <0>;
+> +
+> +            vci-supply = <&vreg_l13b_3p1>;
+> +            vdd-supply = <&vreg_l11b_1p2>;
+> +            vddio-supply = <&vreg_l10b_1p8>;
+> +
+> +            reset-gpios = <&tlmm 146 GPIO_ACTIVE_LOW>;
+> +
+> +            port {
+> +                endpoint {
+> +                    remote-endpoint = <&mdss_dsi1_out>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c4f4e48774d0..e2a8093c328a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13040,6 +13040,12 @@ M:	Stanislaw Gruszka <stf_xl@wp.pl>
+>  S:	Maintained
+>  F:	drivers/usb/atm/ueagle-atm.c
+>  
+> +ILITEK ILI97680A PANEL DRIVER
+> +M:	Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/display/panel/ilitek,ili97680a.yaml
+> +F:	drivers/gpu/drm/panel/panel-ilitek-ili97680a.c
 
-Yes, very happy to share the driver. Your panel is also relevant to
-Krzysztof's review of the v4 binding: he asked for the compatible to
-name the actual panel maker (ours is a CSOT panel), and whether this
-belongs in an existing Novatek binding. With two panels on the same
-controller, I'd rather structure v5 around per-panel data from the
-start: mode, lane count, init and reset sequence, and backlight source
-(external or DCS). The XCover5 CSOT panel would be the first entry, so
-the G10 can come in as a second one without reworking the core.
+There is no such file. Drop.
 
-If you can share your mode and init sequence, or a WIP branch, I'll
-check the per-panel struct against it before sending v5 and Cc you on
-it, so your G10 patch can go on top. v5 won't go out before Nov 27.
+With these two fixed:
 
-Thanks,
-Adil
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+
+Best regards,
+Krzysztof
+
