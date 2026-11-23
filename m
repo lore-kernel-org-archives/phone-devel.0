@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795432748;
-	b=f62XukNIkbHARWVvMaqaXX3JrFfT0rN2+83ojHR3XjW3ekqaF2fD0x2r0Y7wA3tGXA5B
-	 WFWLa/4DZsz0EBbMFRmLW14md+EhYPGV4u4IypFJWumnf72ralxwS4pwL0Is6L3zCpkqL
-	 INox9QGvSRsy2hShKHdgBG4vsSGlOjtOkkSE02lFcp0h2DhjTsh1yGX7HEYyv73X3CQeR
-	 fKeYoaRbNlSy6BitzNjRg8c2wBytMXxJ2OBrCYumYUTFMXSZNVQQwQcCGlqRYguNK3X1M
-	 fwMqCdY1LPfvHXommZjIhy6ZfzUXMrBe/pBz8Iyt0vl/U7EvvMGTiJSJaFlcAYu5/Sg==
+	t=1795432751;
+	b=i5myJfSygvgtFFq6MEPnOE7BaOi2BdefOK441MeBBePI6x4stvgBS40GRpfCfZeDbPVm
+	 X1QHUx3/fqt0ahm/Sk+bYU1AMzt6NMJbpGZvVkUVfL/c3eec2muFcbL8yIJVY1BbCq+i6
+	 na/KaeNjBlG3TML+I1+5TE2GOIhtRwknRdVIC5IFyjF7AQYyGRIyU9y8/ykHFRc27/MtZ
+	 7ol8KPY0yEftBbEzFW6l5NJiXhUITpq9SUGjEKBOG42mpa3MbFp6MMvPgWx3pZ3xWmCVK
+	 GtqAa28CvdiZV7c6h732ZbwdT6zYAV+EbfpjKvuwvwONBCwX84UNoVbP5R6mDvPdAwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795432748;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795432751;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=fhdQyf6FbFbh0WyyBUC7EygAiye6PpyKpdmvafidO2U=;
-	b=Hzba69upP3vgrK737jdgEJyvtmVH9b9lKhvwyPGCsQGA8IVMEVzh5e89gtlrHXgxCeQ5
-	 8eZC+wUZHkO5kWvd1QXW6XxDthxxYHu1cexCVLULOX2S4mY3IWqBi3ZkiKKXoTLB8bYJa
-	 1q+ewF6BKqwDSP8BeFLNdwkf36wP5z4v7wj/7LfMOW/rcmy66T15FVfy3po4J0jI95s8N
-	 Xl8M2Regy5nnlWgBQk4mM4z10X2eAUc3oWtV2FWTH2mKoMoiBinCZ3fhGxo4nCUzLEXOK
-	 zWmW98KvsCbDl/C0bIzVxMz0ifRQcrTtTRet9G3rJD+2Xaglf8hmzcjAr+YIfhFLpcQ==
+	bh=IOrxHtiCHWTIaFRLN9a3XE1Ecmglqu0IREj6XPQBmDM=;
+	b=3YAqRZTcz284x1DU8ALEhjUqywye2G4UhWtXZhcgs2/x9WKQgbg4VSC3EywSZ6apBXqM
+	 eG5dQyn51FqwmmwE0UNK0EXSfDPvWb2g3eOqNMl2Ep1AY8U+3zVaM1QomjCyt/F8DzsY/
+	 r5LCOsrrlrLGRT4nk9IXOGaiVL77KaxWqR5PMFfQndQb9oa4IK5etLt0XSfeGakM6amSq
+	 SkjHj8RoQGZLGaNCYsbUqF1waw36Y3CZn31rK5Eam2NQ5jFtFZ3/ivUS/ehNhV1mkxAXm
+	 sTkdXKmUzh6f2EVfd+uAivCSlwHAJUijkxOWCn3PTWIgmX4ozNMQjUBgrQVQ7j2NtSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HTqjUcY9;
-	arc=none smtp.remote-ip=209.85.218.44
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JcoKie5q;
+	arc=none smtp.remote-ip=209.85.218.51
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9100860A2618
-	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 11:19:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9100860A2618
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7AB60A2620
+	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 11:19:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A7AB60A2620
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HTqjUcY9
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c4d2b741ed9so514309166b.2
-        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 03:19:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JcoKie5q
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c516a574bffso169800466b.3
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 03:19:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795432747; x=1796037547; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795432749; x=1796037549; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fhdQyf6FbFbh0WyyBUC7EygAiye6PpyKpdmvafidO2U=;
-        b=HTqjUcY9hLartbQ+wDqUUWh+DYA5uBQlIQNY8L8c0PwQFxlYvRUmqcKq9vBHjiWlIQ
-         ZEUY4IVw5jmJePNOlSkdFejLPzyC/gnES/8A9mJHHXOsB8T5NCrWqcjznvksBUyFj8fX
-         Gdoirno0KXw/7rEQXjyZtluV4Rd+3+z/PNlUakMZEHUQWIAO721PWX1/mvJ6P8xawItb
-         ysROTquAqd3jS2dFl+6sDSphM2xYXtslTN97/hpIFiJOGhGv7AuWUlk/hK1ubkcgPaD+
-         nmyLdRZ7rePh/oqb+a8G6vq0onwln8KbWQTA7ew4HWiVbD2Xc6bis5BHikU2+BPy7iLp
-         b87A==
+        bh=IOrxHtiCHWTIaFRLN9a3XE1Ecmglqu0IREj6XPQBmDM=;
+        b=JcoKie5qcPIy9VJGNJOeooy8iE89M63mPT4Tj1eTTLSnqtXq2b1lwRilTuF8Wo+w30
+         2mxiL2i3Kgv1GdMK5qHeDH7IacTvYGU6YHektDgrSNsjjnCE7wnipEghpMjLc55Zi4Hj
+         kgzPLiOhYpRTUT4KP2wf0Oo6kIWuFOkV8cF6MluV+qhv6OhNdw5ZYUmNc1PDQCzxjgcM
+         CV+RTr5c85OgIHVnYYn4g2IuTNj8mjnugocu6PNncbEOYSkWeudE4IVx9G5+bwbOTt7i
+         HgpA9vdDoDQCptPRtZwyqsw4GEVjsXpuOQPBTB/cDi2VXoVWy684JhnOA2J1Ipoh5CfY
+         548g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795432747; x=1796037547;
+        d=1e100.net; s=20260707; t=1795432749; x=1796037549;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fhdQyf6FbFbh0WyyBUC7EygAiye6PpyKpdmvafidO2U=;
-        b=xWB9fVpGywf5PDJ0N12XoRWm05Gmm091DUjxA7c1EghDxKpAJ3iRlZkLh1Z9e7Tz9A
-         hamLZcVi2AYd67vEHsiMi5bFgFEc3iXF8XJCV6v+IREO0FDRHkSpGZc9V2GDTmEOpTSy
-         pxoauhETptKdjlWrNK/KLqsM6nY1uKyg7fU1IeHzUzabQwERk0nuZBTMLnk1RZUMO9qH
-         EeKrt4e0+N33cbCaG/vOiH8OFGxr9+XaxsTvvHvvrvEWHhAwhozYFQ5Dmh8i801mvvQC
-         IQnYIvRICQTvNSQCLgUJOEdxiRoH1fq8oqvojHgPjyTnMCIY6Xm+qxPkxYQ0c4JT81HR
-         tlKQ==
-X-Forwarded-Encrypted: i=1; AL+hErHp0/WrlkeX9J3+H6Z3L4kXjBPqTcEr1D/YCoerq6EylAF0+v6KydwNZEYkI3ezvnjl4vuXvyB1ero2vQ==@vger.kernel.org
-X-Gm-Message-State: APuU4Z9jKnID9c2K8mjjanqYgbuaS7QKVOfHvogWweby2xgYkf9rKQXn
-	HnUT0MiT6y1xwLJj/CKWXF3ItEKni4db69ewcXb4c56BGOUIgUyj1lIx
-X-Gm-Gg: AZFdTZfkMZ0PSHHimKN1yssIVYex9aCvclRqTzN0Www/CUDPVob5Vwca9ex25FEbdu7
-	b6unfFZ0/yOZ3YAzNanw4ORvlvqlMRA2/KJ3FU6YMRsZlp4x7xWstDAqMNgU8PJ9HE/rz8rGXwb
-	8ROISLKBcRzUNYg+43gFMMGxHT7EnGI3qX2PozXeo2vKjyUr4Am5HbJjT8Xwm7hsKNjXXw7J4zi
-	jh454gVV76J2BUys69grdvytz/mLRBjQIra380Yy7H7qeeLWZbH4rGnEXhAf7H89odZ6BFI4L+0
-	sn8uakC78gWgNb7mc0YsiGi+9J+9eUbIOXUIwfo8eO2O28hHwil+XY0IpodOQYRfmVay0q3efw6
-	HWOWqI7E/nE6seX6GKTCM0h60hUwInt+MYy+shBs/9K4MKyBVfHiS4xUVR0kg85K5LpFwg1VlQh
-	3NETj8bXmHZhUuTJGoiJHMDx7ARFjoEi4Pg2erS/leanHDqoNjMxZ9I7Nf7btijsKvieAGl2U2z
-	f9oUAQMMNPdUlvp0Uqd+fM1mq6jXxM0oL/kgDUNSJtvxnATjlXbXCG+NiO3o4F4Vtale78mjwcP
-	CJwvd4LMqMoQGQUKiRuRi31Ffpf4+lsD2LQu9aSbjpbuVI31ly8tcvMVkFhzZaTLYA==
-X-Received: by 2002:a17:907:1b1a:b0:c46:7ec3:fde2 with SMTP id a640c23a62f3a-c513a5ea1b5mr863152766b.11.1795432746902;
-        Mon, 23 Nov 2026 03:19:06 -0800 (PST)
+        bh=IOrxHtiCHWTIaFRLN9a3XE1Ecmglqu0IREj6XPQBmDM=;
+        b=kiNKk7LwAKu15I2x3riIDTHB305R+vwmiessLLfF3n+UO+aT+xPYQjXP3okL4DoYjU
+         HTXF+nPh+u99VrJST/U4RsXYhBGFkzrOSuuNh6OEYV0ABU7olub5Ga4NOa9PKtoYUIao
+         DP0moFAMiQExHTNgaHwToPs8d4ZFwBlDnpuk0hEEQevYRt2wmzZfweH+6LqJ4JG6M70T
+         DS9DSDzMqq0sR0Pr8XgNA3fLLGGPRVcEJctK8SVxlG46cO/WmdrNivuTHX6JjsrNtxtK
+         oz0JWMphu0rt6lkDa5KUkElhCoknBinTVA18i8taRN9U5Pe/xdc77ov/nidfzi6Fnlsh
+         h9Fg==
+X-Forwarded-Encrypted: i=1; AL+hErFCZq0mkX43r1Ocr+8Zvp2uLpqS/14baLitxJl8dhfUDj9Y3+ZIWewRgRRByVO0cSyQiCKGzOyME5U4GQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8f5SqIoxnIzm8/1iJ70H3XTSgTSymAx6RQN5ZcZu+XVN7KCzij
+	pw5VSZuOJ/xivjiw6wSzpLbplQx6qoHWJSb7rIWwPec37RDVBC7Sd95V
+X-Gm-Gg: AZFdTZcsTZtyoaxm150+QrXVucVho/KDHwbKMFSakFhlkkMnjAHeeou0Xoodjfv/zYo
+	8Xonrfh8E+f+uSBtYhJdCBQlYnN3AGz3KUTVZ+GHFUioafk66xX6SFdg6jW0nWmWV5rMfQRfUOR
+	fTPAaBZEwQIdC8gdF7p654uB2XVLLbOJPSaQTX93M/4LskVs/K/j0PDTtmwxB8zvlOohSY4/XTj
+	sE7CMVpbyASKJ2NhHBUq5arcOLzfzmTXhODc0qAkXdtl3sAIToAmgypTDuLe4CPGUfvztLqwWjl
+	wDkTaoZd8Wyor1nfE1V1g6yqL0wPxMMlPMDUFNdw1rlxOsF8xFmUtl5lpsixDn9YRRwQr0gWV7/
+	YqE2p4Ujl/de0DrgaXFtl0klrzZbs0JDviEpUb7KOjVMzpnMnGTdtd8g+61/C/75CF5lk7ZvXIr
+	nYPDRmnTBhLki3jhgiCI/qLPL9BdjhkgegK34HUwbSbbEK8gJhf2E2InA8n8hX/lZ1S1j2Nyzc+
+	CLppJvMCoLOpKbEF/Ns09ihJcH2EGC/3PAvOK1Y5Wu3nix4TqjkKkav95uIRdJC16PtD2i7quv+
+	yBXxdgiLDE0z5jhq0cAFkNIFo9U814oNubH2YjvWrs/yFO5P0pZgobS87F04V1tAow==
+X-Received: by 2002:a17:907:84c:b0:c2e:63ba:1f90 with SMTP id a640c23a62f3a-c513acb5be4mr952960766b.48.1795432749405;
+        Mon, 23 Nov 2026 03:19:09 -0800 (PST)
 Received: from [10.120.183.232] ([50.7.123.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513afc679bsm392442266b.63.2026.11.23.03.19.04
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513afc679bsm392442266b.63.2026.11.23.03.19.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 03:19:06 -0800 (PST)
+        Mon, 23 Nov 2026 03:19:09 -0800 (PST)
 From: Alexander Letuchiy <asalde.le1@gmail.com>
-Date: Mon, 23 Nov 2026 14:18:36 +0300
-Subject: [PATCH v3 3/7] dt-bindings: timer: mediatek,timer: Add compatible
- for MT6895
+Date: Mon, 23 Nov 2026 14:18:37 +0300
+Subject: [PATCH v3 4/7] dt-bindings: input: mediatek,mt6779-keypad: Add
+ compatible for MT6895
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -94,7 +94,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261123-initial-mt6895-v3-3-95c46597e63d@gmail.com>
+Message-Id: <20261123-initial-mt6895-v3-4-95c46597e63d@gmail.com>
 References: <20261123-initial-mt6895-v3-0-95c46597e63d@gmail.com>
 In-Reply-To: <20261123-initial-mt6895-v3-0-95c46597e63d@gmail.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -118,29 +118,30 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  Alexander Letuchiy <asalde.le1@gmail.com>
 X-Mailer: b4 0.15.2
 
-Add a compatible string for the system timer (SYST) of the MediaTek
-MT6895 (Dimensity 8000/8100) SoC. It works with the existing driver
-through the mediatek,mt6765-timer fallback.
+Add a compatible string for the keypad of the MediaTek MT6895 (Dimensity
+8000/8100) SoC. Its registers are the same as on MT6779, so it works
+with the existing driver through the mediatek,mt6779-keypad fallback.
 
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Mattijs Korpershoek <mkorpershoek@kernel.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Alexander Letuchiy <asalde.le1@gmail.com>
 ---
- Documentation/devicetree/bindings/timer/mediatek,timer.yaml | 1 +
+ Documentation/devicetree/bindings/input/mediatek,mt6779-keypad.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/timer/mediatek,timer.yaml b/Documentation/devicetree/bindings/timer/mediatek,timer.yaml
-index 337580dc77d8..ee4af54c29b5 100644
---- a/Documentation/devicetree/bindings/timer/mediatek,timer.yaml
-+++ b/Documentation/devicetree/bindings/timer/mediatek,timer.yaml
-@@ -40,6 +40,7 @@ properties:
-       # SYST Timers
-       - items:
-           - enum:
-+              - mediatek,mt6895-timer
-               - mediatek,mt7629-timer
-               - mediatek,mt8183-timer
-               - mediatek,mt8186-timer
+diff --git a/Documentation/devicetree/bindings/input/mediatek,mt6779-keypad.yaml b/Documentation/devicetree/bindings/input/mediatek,mt6779-keypad.yaml
+index 9f0da1240187..9a1369c9ff4c 100644
+--- a/Documentation/devicetree/bindings/input/mediatek,mt6779-keypad.yaml
++++ b/Documentation/devicetree/bindings/input/mediatek,mt6779-keypad.yaml
+@@ -29,6 +29,7 @@ properties:
+               - mediatek,mt6572-keypad
+               - mediatek,mt6595-keypad
+               - mediatek,mt6873-keypad
++              - mediatek,mt6895-keypad
+               - mediatek,mt8173-keypad
+               - mediatek,mt8183-keypad
+               - mediatek,mt8365-keypad
 
 -- 
 2.56.0
