@@ -1,79 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795450433;
-	b=aaY137U6jqNtH+bu9Ia+IrMG7gDVtiDyjV2lalvYtGh+1nDNdJf2mKd0NbWgkzWkYzpZ
-	 1au3Bc5jDGOFQxPM5uvM0yTUKP6AgpyLir2miYoLCD1ps+IsPXiFGLhtBd/4/5E1kIB/o
-	 Up06k3EPF4GkDhLnuTw4RX9fLISo/kLdbVFKnQHMtU3DmwCIlmn138EZzJgjeOHqR5T0C
-	 9Bev89+x06dpu76Uu8bp17UFIg+bgaGA7wU1TgPHSOxlF11Q/CDFxph8TT0YM64EjKbUd
-	 FBYyZmbqdw6OS89y3WWssV+QUrHuuaidOofRpyxQPcIZY3ijUM33Gg75DZzV4qkWYig==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795450433;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=N6f1bdC1RKlhZ46MrIQ+rW41AGuli7kkZ2seR2q07O4=;
-	b=4G55UgK0cPRe55Z/hk3LCSBl2kx4DFZOly6ByWEBQYobDMqtaI+ESTdtMb/M8ZAhz2is
-	 F2t0Zgii/9o/P/2x9Z8PkXvTQx1FDnVt0T/ncQWMoteR5BMusxOSWZuoC//rN27i5wFXX
-	 GlCVnaaF7bLGYpThUjgZ8A8FhLDR/+tgZB9xPsA+frjzekAFIpI1CxINKk0H2AaM5+Zsd
-	 YwtfnVOy3Bh/5OGMLM+8VeuiOEY5HzrKgmUhNCTKGc4noDtZ2xv/dVHCoN6B12V8A4lfX
-	 VOL8kyNxb6RiTSH/t2b8jycsqm18XIMHxDTkxl6xpYBS+oa7Nl14AMh4RBSSO5RvIvg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PFbNLJua;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34A3606A31E;
-	Mon, 23 Nov 2026 16:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PFbNLJua
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795450432;
-	b=OI3wFX4QrO5Y+JIYXChh3vSCcTlJjaI+fzAjvXG8doWAp9UMhwcJfJRZD9dW49WJvSrp
-	 7hgymvKioeBPiaup+TSAj54ZCRCHA1wyHsESZzbTxZX0/UHe+nntkNKLu7Rjj3Lxk9o4B
-	 7BkzR6DDzyrearHVyarjT6f5lmAHjYwwJL6pHr0U+Bt2OYlLfBleqFAGX5NP+ZxTXfwxr
-	 NAalhmQPV0j3oO359kG8eXXdP2g0O6WpsnI6dzB2zhCmIHoC5Q2MRZI8zTd9aOWgAiFXQ
-	 JZPpfQ9ysp4Raezowq3Ar5rse80F6RYtQrgsOqL5SKFLeHRwqNDANp8WacAsp9y8ZFw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795450432;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=N6f1bdC1RKlhZ46MrIQ+rW41AGuli7kkZ2seR2q07O4=;
-	b=ItjJQZWO/h+9+EcA+J7uDaEj6x0wDlJO/FvzjwZIXSMJhzy7z4ELUOk/LtAs4fduPC6z
-	 94Xq/R/5JDBWl1SRxhPLWywmL4M0ioF5/a6xa6Is4EvVZnnR9rZjn4C0W6BPJFSW0EGP7
-	 KYOyNHjXHSJp63PXdi6I77aR3F4WMNHwgPR+00FoqBdR5gtiThK+HIAKIPUVKz6rkQHUe
-	 V2m9stVXlNzabcyPHR5ir27NQW0xCtYgJv/EvVXR7HhPWfrcsz+kzmXpTnXwQMVOp78Sv
-	 yW1KZ3x5sxqiiTDU58I5EahzXGIEgyzUAJ+YBpqpFk0oRXq9vqOnrWzcsLqUn/fSoDA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795457842;
+	b=DG0sRM6p1QbEd115R4eIjWuPfIJKzN2CAHVENXKBcWv123jWumzpFXmNnlc/8hD8A/k2
+	 GovbHwgEbTwSm+17cZq4QZSw9lkmLyFLxTx3oxbs8V8g8SII0WLD3RKInqU0kIA7mOCJM
+	 vpEBptusqYjjiqeePGoxk0Qgpay0W/QQqQZHuAD4r5e8YU2IyA2Q2NskHmPpaJE5jsPqf
+	 VRuzL6ZzrQs+a/aW3M+WfL9tISAB6YyGo5YmoghkxKs9OnRiQgn5vQsW6np/ih8FQd1Dp
+	 VlUxdqD8L2OTju1BTQQSoliZ8kw7eo/SeAXEKHVgW+5Ij045iYsCItv0hhIfByRlj4A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795457842;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=nutOLNh5W4dTyqWoDODtl05Z3AwT5FmB7YX35PdwCns=;
+	b=fbLzZUwTqtffQv1I75snJSisgqq7l0y/aYkcvZF3M/hwXKMOdEDW5QE3VPZe+qX2MbC6
+	 McXQ5N0FG18nL4FsEmcDK1QVG9d0YFEilIwOqblnBhwP2L6/QpSLzVa6WnlyofWvF24RJ
+	 vlQ3y/kHb3lFimDkWUwmiUJNJiG4YP4F180ZlJDZL7GxudX6EpOOWx23BS5oGMBQdt06H
+	 dcgOvDLWWdnnRYx4T+66lPKcRaQzylB8MFbpdoYBl1yb1B99kXgU6ybZU+DXVvomTYnTr
+	 F17fsFHnlxJ0+1xpzMQ2OwJBeFAe7/cRbWi/U2DoNHX1m2jr+tlxF3OWRJMVl4TnDbA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="rAYH/KsP";
+	arc=none smtp.remote-ip=74.125.82.45
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id A0D0E1F000D0;
-	Mon, 23 Nov 2026 16:13:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795450432;
-	bh=N6f1bdC1RKlhZ46MrIQ+rW41AGuli7kkZ2seR2q07O4=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=PFbNLJuah3rJYkfb416HvxC2fLnCXp/nI6EWd510kt1rCeUqsrvk2H9foVzXK25LA
-	 gSWNN5jSNiKGCIeWX2pH/iDYPA9d/Wv1d32gTvvO3u4NQ0oazWE7jIsSUluHpDsd5Y
-	 WOtxX2taBZZ/JhQz4GIf84fWhJV8fdmc7BcS4k9ZE49+1s/OM5nYV9veZtdH4xoezz
-	 M1sOo4IcjYXiAhRDKlhoXjd5wit52MIvBxvQmpDBiauZjtLNHtuI06aBQ1l+h7LCM6
-	 SxjiURgtHeIqzj+A9euSwC/+NRYu3V66cJTwIgx3qsiCyo4Qr9fyrqlw3Z1VcHzLl6
-	 IXwJt98yb3s3w==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id F19EA4C53D;
-	Mon, 23 Nov 2026 16:13:47 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 23 Nov 2026 17:13:41 +0100
-Subject: [PATCH] Input: stmfts - restore touch after system resume with the
- device open
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C55606A31A
+	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 18:17:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28C55606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rAYH/KsP
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-1aefd1bf74aso1536002c88.1
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 10:17:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795457841; x=1796062641; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nutOLNh5W4dTyqWoDODtl05Z3AwT5FmB7YX35PdwCns=;
+        b=rAYH/KsPQ2r/RcXZrUUK/+RyNmCDADQytEDNpjaMcCXTfiXyWEnnWAeUTHlbeT1h/Y
+         qHwaPsDQAmRjVTxo3yHP/ZxdK2d1pQPZJTuRho+pPQ54PpswU33GkPgAhpInghjXSwrr
+         nTGajwtB+qtkURu4+ZKSqSL3sh8sqJhc2yEryyEwGVpB7uIOdec+bJD7aF3syrUVN8Xr
+         aye+4YEwqCu4SqRp+p75soLvgnuiZ6sRscgSsHz44gG7pV2rY0DpCQ7KvVAhkwx1+C5U
+         dh41FWY8UzlZRHj+N1E6SmqbM9tBGQqKhbGxWZ5SH/nVYnxMMFCwy3o3GYL116ewZSfF
+         uNPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795457841; x=1796062641;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nutOLNh5W4dTyqWoDODtl05Z3AwT5FmB7YX35PdwCns=;
+        b=AWUn/4criJ+ZU2SY8Yn5jnJxGyc0ODTj3v6Dpsz78FlVfXA3O1wJrLwt1tGwBAiAdO
+         LBhZ9tw7uhzbTfyt27k3TUeIIYno4h/nrTK7yBvq3EyrXCTdUFj4bqmsobrTJIkgjtxT
+         WYz8qt94KpIDOAuuaso0UBsoDqyZDp21r/6d7fNyphD6NvJzJtSvQrpeYKVt4o/+VIUH
+         65qyT3/c8vkXtHMoxJOkgJ4U6pqQe4zOI3gLDQ4qICi4d1Op27MYHS0E9AykOfRSMEqV
+         lTpMxIPRo/DlsD1ojbcW4X9fcxrM23DONYAjB4fy2yAo2Y17MKD5rrL1aFk1jVJjKHrM
+         FVjQ==
+X-Forwarded-Encrypted: i=1; AL+hErFMqhN6zo0SxfJDQMZXaiKi3lQjoJtDQprOdbw1tHp9bD0qxBmrmxXmJTUvyE6eGCil1qjo/fSD5D6J2w==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9I02g4PZuylCO32AE0O2IxMpkNHZaykUrJ7mnm7DJK5uWk4Bjm
+	8QRVnNauL/Vz4jJe0+T6Ks1nredN2q5RghCYx05ZVWD/eWVXd1IbKeNY
+X-Gm-Gg: AZFdTZe+m5FTi50uFNvxe6+DOmPOcpVMYyr7ybQQZMNATYj52h5kzWhB6hog9GErE3x
+	F5eBk5irD3KIdTrKbB13TdhjC3TAOsiPcHobvmp0aQAee6R76FpXUP7A1iA2JPUoDjb/ljN31nu
+	mjFL5iEjbk3iallgQLyP5fQvUoC3r4bBTvDOZpXfZLGJXHDVhkSf8b5CURqZJUF9Q5Zvkze56xn
+	0zLFLjSEJ7jInmR1o6gbGPeTqpxL/vLE9TKhnzCaNVz3CSF+oP6xV2jP/+UWEO2VJ4AGr7LQTWH
+	/dQIypXe2L9GJjXYC7cVzruvRT+UsnI4Gm2UqctlRpGSUCwbsokg/sz+szqa52XN5sTg101fi06
+	/erSs4sYl3ZNsDSHmTDtDftKX9BneNP6ka+G081YMwzcH7BM7dKHQbirASCrveM5lJaX3O/hcGd
+	TSoHQQt6A7dACjuRkQ2GDyGGSbgfYxdbmZJbHn2x/62sPTzZwg9K4nWWfM0ji8dEle1lkoq7a88
+	2rVmoc23zSj+Dz0FWVc+TEINNasDbwnRjlqcU96kbLtDguCqCeOEWhZl0uOQnIyA7M5w7rEVA+w
+	wLsZDrjadWn0xxBNM3LoG5tP4IBq0tgFyU03RdWgSTr20e6abnPG1GX6y48RKJ8KxneOxvP1
+X-Received: by 2002:a05:7022:1703:b0:1b5:64c0:d2be with SMTP id a92af1059eb24-1b564c0d31fmr7645119c88.19.1795457840287;
+        Mon, 23 Nov 2026 10:17:20 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:4121:d698:201c:9274])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b556840494sm30439137c88.12.2026.11.23.10.17.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 10:17:19 -0800 (PST)
+Date: Mon, 23 Nov 2026 10:17:16 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: david@ixit.cz
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Andi Shyti <andi@etezian.org>, 
+	Javier Martinez Canillas <javier@osg.samsung.com>, Rob Herring <robh@kernel.org>, linux-input@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH] Input: stmfts - restore touch after system resume with
+ the device open
+Message-ID: <awSDI1T2DjX63HlL@google.com>
+References: <20261123-stmfts-suspend-v1-1-4b2276879e8d@ixit.cz>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,187 +100,31 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261123-stmfts-suspend-v1-1-4b2276879e8d@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMSw7CIBRG4a00dyyJ4APSrRgHFn70mpQ2XGqaN
- OxdrMNvcM5GgswQ6ruNMj4sPKUGfejIvx7pCcWhmczRXLU2JyVljEWULDIjBWWddcEBF2/P1KI
- 5I/K6D2/3v2UZ3vDld6FavwM1Ec9yAAAA
-X-Change-ID: 20261123-stmfts-suspend-7878d8ee5c74
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Andi Shyti <andi@etezian.org>, 
- Javier Martinez Canillas <javier@osg.samsung.com>, 
- Rob Herring <robh@kernel.org>
-Cc: linux-input@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4220; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=KNVO9ZDo1+Slo3mWxKh9KjmPpUcwFZVYrPbAM4cSGMI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrBGY6XvwXyLW5+kIbRTHAKomf2ED2Khb36UPFU
- nIUpt+8IgKJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawRmOgAKCRBgAj/E00kg
- cqHcD/0YaboxDDIX4IJX0IJS7HjXYCpeKTG9ImVlZVgPd7KYZOSA+1O+I5R2IKme1wW99/g494r
- 6yCnDHs3fbeKvCqm4+/c+Uf+M5neRHnNma/sGyhCCv92vs+YNm5Qll5VUX/+YpVZGFZ25vUuGMo
- SKpQme4EzmKEZ00d5X0Q9sFiYUOkY+urm2ES5nH4WZtFxWUOrhtjnhwOrvxhvy9p8yJP+D+wtTB
- 5J1dyQUR6fLH3iU1SyQfFwYApf/LrgVBxcVTpdZSP7ooKwW8dHEK8JyV+PCcf7WfpvbahaJZpvr
- uuTH1AZE9agPQozA/DnOXIXn2aBkWsQXQANZXyid6kNnZr5czLQ6CumszDUMUKnOWFAB66cLVwh
- HPjxLj+DlI/RSRTicY9G5CdcbihJbCIm8JmwEaARXu4sCg4ihSMP9JgKlzLYRJvjZJc/GXLWO4O
- AP/JMG4PagRurlktcGf38Jyh9Uka+awCwLSZ/RJlzGZuhTMPjeud4pKqipGawbLlL3AATFL9NMz
- GcQSucx6Su8cx6wjzenfD6O/lRztccN85aFpTadwa/bFPioulXZni9op1MrEWnsOBh2AVZ5IOEH
- LaMOsJKUYEd11kGQv6SiOaZRcNnhxkd7CIG0oiSh7IZF1SUpzA+JzicY5VJnIQdsRjI8iyDxJvB
- hlrPWMmv5Yu3ZhQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261123-stmfts-suspend-v1-1-4b2276879e8d@ixit.cz>
 
-From: David Heidelberg <david@ixit.cz>
+On Mon, Nov 23, 2026 at 05:13:41PM +0100, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> stmfts_resume() only calls stmfts_power_on(), which re-initialises the
+> controller and deliberately leaves it in SLEEP_IN, assuming nobody uses
+> the touchscreen yet. That assumption does not hold for a system resume:
+> userspace keeps the evdev node open, runtime PM still considers the
+> device active and stmfts_input_open() never runs again, so the
+> controller stays asleep with scanning off. On FTS5 the controller
+> interrupt enable command is part of the runtime resume sequence, so the
+> result is a completely dead touchscreen until the input device is
+> reopened.
+> 
+> Factor the scan enable part of stmfts_input_open() into
+> stmfts_start_scan() and, when the input device is open, replay the
+> runtime resume sequence and re-enable scanning from stmfts_resume().
+> 
+> Fixes: 78bcac7b2ae1 ("Input: add support for the STMicroelectronics FingerTip touchscreen")
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
-stmfts_resume() only calls stmfts_power_on(), which re-initialises the
-controller and deliberately leaves it in SLEEP_IN, assuming nobody uses
-the touchscreen yet. That assumption does not hold for a system resume:
-userspace keeps the evdev node open, runtime PM still considers the
-device active and stmfts_input_open() never runs again, so the
-controller stays asleep with scanning off. On FTS5 the controller
-interrupt enable command is part of the runtime resume sequence, so the
-result is a completely dead touchscreen until the input device is
-reopened.
+Applied, thank you.
 
-Factor the scan enable part of stmfts_input_open() into
-stmfts_start_scan() and, when the input device is open, replay the
-runtime resume sequence and re-enable scanning from stmfts_resume().
-
-Fixes: 78bcac7b2ae1 ("Input: add support for the STMicroelectronics FingerTip touchscreen")
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/input/touchscreen/stmfts.c | 53 +++++++++++++++++++++++++++++++-------
- 1 file changed, 43 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/input/touchscreen/stmfts.c b/drivers/input/touchscreen/stmfts.c
-index 36beea6e6eb28..2054c2254947b 100644
---- a/drivers/input/touchscreen/stmfts.c
-+++ b/drivers/input/touchscreen/stmfts.c
-@@ -563,30 +563,23 @@ static int stmfts5_set_scan(struct stmfts_data *sdata, bool enable)
- 	err = i2c_master_send(sdata->client, scan_mode_cmd,
- 			      sizeof(scan_mode_cmd));
- 	if (err != sizeof(scan_mode_cmd))
- 		return err < 0 ? err : -EIO;
- 
- 	return 0;
- }
- 
--static int stmfts_input_open(struct input_dev *dev)
-+static int stmfts_start_scan(struct stmfts_data *sdata)
- {
--	struct stmfts_data *sdata = input_get_drvdata(dev);
- 	int err;
- 
--	err = pm_runtime_resume_and_get(&sdata->client->dev);
--	if (err)
--		return err;
--
- 	err = sdata->ops->set_scan(sdata, true);
--	if (err) {
--		pm_runtime_put_sync(&sdata->client->dev);
-+	if (err)
- 		return err;
--	}
- 
- 	scoped_guard(mutex, &sdata->mutex) {
- 		sdata->running = true;
- 
- 		if (sdata->hover_enabled && sdata->ops->set_hover) {
- 			err = sdata->ops->set_hover(sdata, true);
- 			if (err)
- 				dev_warn(&sdata->client->dev,
-@@ -601,16 +594,32 @@ static int stmfts_input_open(struct input_dev *dev)
- 			/* I can still use only the touch screen */
- 			dev_warn(&sdata->client->dev,
- 				 "failed to enable touchkey\n");
- 	}
- 
- 	return 0;
- }
- 
-+static int stmfts_input_open(struct input_dev *dev)
-+{
-+	struct stmfts_data *sdata = input_get_drvdata(dev);
-+	int err;
-+
-+	err = pm_runtime_resume_and_get(&sdata->client->dev);
-+	if (err)
-+		return err;
-+
-+	err = stmfts_start_scan(sdata);
-+	if (err)
-+		pm_runtime_put_sync(&sdata->client->dev);
-+
-+	return err;
-+}
-+
- static void stmfts_input_close(struct input_dev *dev)
- {
- 	struct stmfts_data *sdata = input_get_drvdata(dev);
- 	int err;
- 
- 	err = sdata->ops->set_scan(sdata, false);
- 	if (err)
- 		dev_warn(&sdata->client->dev,
-@@ -1163,18 +1172,42 @@ static int stmfts_suspend(struct device *dev)
- 	stmfts_power_off(sdata);
- 
- 	return 0;
- }
- 
- static int stmfts_resume(struct device *dev)
- {
- 	struct stmfts_data *sdata = dev_get_drvdata(dev);
-+	int err;
-+
-+	err = stmfts_power_on(sdata);
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * stmfts_power_on() leaves the controller in sleep mode. If the
-+	 * input device is open, runtime PM still considers the device
-+	 * active and will not wake it up again, so redo the runtime
-+	 * resume sequence and re-enable scanning here.
-+	 */
-+	guard(mutex)(&sdata->input->mutex);
-+
-+	if (!input_device_enabled(sdata->input))
-+		return 0;
-+
-+	err = stmfts_runtime_resume(dev);
-+	if (err)
-+		return err;
- 
--	return stmfts_power_on(sdata);
-+	err = stmfts_start_scan(sdata);
-+	if (err)
-+		return err;
-+
-+	return 0;
- }
- 
- static const struct dev_pm_ops stmfts_pm_ops = {
- 	SYSTEM_SLEEP_PM_OPS(stmfts_suspend, stmfts_resume)
- 	RUNTIME_PM_OPS(stmfts_runtime_suspend, stmfts_runtime_resume, NULL)
- };
- 
- static const struct stmfts_chip_ops stmfts4_ops = {
-
----
-base-commit: 909ef7a9a30fa139e69e555e3606680f5cca7726
-change-id: 20261123-stmfts-suspend-7878d8ee5c74
-
-Best regards,
---  
-David Heidelberg <david@ixit.cz>
-
-
+-- 
+Dmitry
