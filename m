@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795464966;
-	b=sE23Zddy+RtTbw+3DqPTJTRMgorrDTVXhuYa/vgLccSuEVw7W9zeUBCOkZ3+mwy7uJc5
-	 S05Y1Sr8oD5GIzAs3H5tunhMTfIdlb34w89LFBF0/e7ILluouNAXU93yrbavTyOPLiTSV
-	 Ac30ukAepH0ym01hQbdUj4fzJgXacEWgWVWErjeX/51sIdVXSB/i3guNyOZouUMQKhfEk
-	 d2Ztxg9WDHeK476ccgmUD6hCw17CI11QxKkkdEbl82C1ZOtqE90k8jF3EBu629SNB8+ew
-	 v3PEJbej7Y86IZlZkpTJnn3MCpZ+vbsJcpq7vwpr0j5XzkhLAwB86G41isK3kBVZRMA==
+	t=1795466050;
+	b=YlaIy/qcEkd1iGSCJcrGJH5C7QAK9Fk6qvaVmmxiEsnG1n6UqLK2kWiYBE/yp/7W3dnh
+	 aECxGhzOH0g9f/n2o2QK7QuylcaMQHBHD5bO2UUNQwr8O67R93ZM2cDdJRMFbJmsuzqX4
+	 8X9M2i8LUVk55bCLSMfxtfeMMR5LBOmyE7gm1xwj/8jBwO3QtXRo35Lv9knbkzf8cMqi5
+	 Q18FATJeJes909YlRujhK7fPh0MYqsAqUSQhFp1JGqn8HxwuOEtxWPQrdwm7jSe6VRjLa
+	 Pn59/Xqp7X7FF/fi+vTOISV8z3Q1A22eYO0zGetHL8wIOFfeBl0c7yPduna6sQVs8jA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795464966;
-	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:
-	 X-Source-L:X-Exim-ID:X-Source:X-Source-Args:X-Source-Dir:
-	 X-Source-Sender:X-Source-Auth:X-Email-Count:X-Org:X-Source-Cap:
-	 X-Local-Domain:X-CMAE-Envelope;
-	bh=gGVvVvpLYm7ZFPpfldspKuf2bI8IrYyXtaX6gOidhkQ=;
-	b=XIVgVwD+sksJWpJCyNe+vDkLMopOYRuItk1p2TCuqNH6nLR6LOtG8IY/28/fOa6MmyLb
-	 74mkkpdE2hilHVxnTumf++yym4cAQLtk4H2zgH1lG+H5yzzC3p5+B3BViBzh9jgWGULIS
-	 M9wRmI7UTd73u346qkOkkVd0AMATM9AcHACjkMXyAUk4taWONTu6AVZ05/KUtuNTID6oC
-	 ggCjl0hxptnzELaM1GvltwngilHQYP+14BruMfdB/0xLLRIZrReUHnKFF62OP898Hl1M7
-	 Ko+l+tYD3Ocm1L53PxNlBejUhQP2C0b2qcWr0Dh+w5Rouat0p56PJXkPFXec1Df6ukg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795466050;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=e2HIsCv1tN4Vi7S2Bt6sM0bBboMl+JYL9mFDX5CB8EU=;
+	b=j8AGuD6qQLrd6VHbCe4Pp5m4aw32C2EN1oAn+EKN4+iu94tluV4hj6blPH1PYTvvzGAT
+	 mVxFwC2zP+dy/qi6o4xWe0ZMCsjNfFW/kkLNITJLpR9o8tPf0udBZI9XQYddLj3j3aeHu
+	 SFH7ZQGxcKBiHtuejZYX7L3/Kl5cHowqVZQfUe4atz1vCzA0rnyoIZ8PGtbiRbvayxo0I
+	 q87eelKuNntHvA9N1RZBYcmLUAuOWNra4sIcsCU8AC7dxZG9A23uZ13bezdrWHzvCXN2Y
+	 ZC3iOmQ8vD2waQPYVfoVLycReO/UH6CgvArXuZUDMV3cFGyYH+bT9J3wJ627o4c2k5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=roeck-us.net;
-	spf=fail smtp.mailfrom=roeck-us.net;
-	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=b8DEk7Uu;
-	arc=none smtp.remote-ip=44.202.169.39
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z0dkIdz1;
+	arc=none smtp.remote-ip=209.85.128.41
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCC2606A334
-	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 20:16:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BCC2606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A97606A31E
+	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 20:34:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 12A97606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=b8DEk7Uu
-Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
-	by cmsmtp with ESMTPS
-	id VSiLxHyUgOOJnVaSKx8iVH; Mon, 23 Nov 2026 20:16:04 +0000
-Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
-	by cmsmtp with ESMTPS
-	id VaSKxUpH43nNNVaSKxQ7oi; Mon, 23 Nov 2026 20:16:04 +0000
-X-Authority-Analysis: v=2.4 cv=TuLmhCXh c=1 sm=1 tr=0 ts=6b049f04
- a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=M0FbrtG7MMAA:10 a=vsWaLUaKAAAA:8
- a=QX4gbG5DAAAA:8 a=CnilkIXYi68h046lorIA:9 a=CjuIK1q_8ugA:10
- a=ZAjiiiQUslnskKx8wA3N:22 a=AbAUZ8qAyYyZVLSsDulk:22 a=KPbNTLLc3YvdawN95zVk:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=roeck-us.net; s=default; h=In-Reply-To:Content-Type:MIME-Version:References
-	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gGVvVvpLYm7ZFPpfldspKuf2bI8IrYyXtaX6gOidhkQ=; b=b8DEk7Uu+idXKc6ft7SaCaQkcK
-	ejSdQ8UJiwxAawFbhfC9PTlB8pw4YnG17z/Epk2zE7dvOa6RGzzraxeFRy5dxUV3MWC4PM48J9xIj
-	cVjAcSxIqjI5Uz9+9KH7o3YKWA5oHqVcIQ7SK2aQykH2T+yVcRi8nx5jlPC9vzdhlrP0N7J9eudmb
-	msoYEA/sY+Mw/+0Tdhu1YgxrDWqZB2c7OPxO1yq0qHRsFmb7i91q5ySWCDZ0RYFIWKtzTOkTjNOL4
-	bYQtXWtlsBM7NOjqK5b4PURzszae0ykfKhBy7q/7HC8Gy+W6R+oU4f/VzfgEWujme9LknjNJrFlNV
-	Z0aknGxA==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:36638 helo=server.roeck-us.net)
-	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <linux@roeck-us.net>)
-	id 1xVaSI-00000001f6j-0DzH;
-	Tue, 24 Nov 2026 01:46:02 +0530
-Date: Mon, 23 Nov 2026 12:16:00 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Rui Cao <i@udp0.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-watchdog@vger.kernel.org,
-	linux-serial@vger.kernel.org, phone-devel@vger.kernel.org,
-	Roman Vivchar <rva333@protonmail.com>
-Subject: Re: [PATCH v2 3/5] watchdog: mediatek: Add MT6833
-Message-ID: <e9033710-6667-449e-a861-cbf3fc65bf43@roeck-us.net>
-References: <20261117-mt6833-base-v2-0-058a0685c40c@udp0.com>
- <20261117-mt6833-base-v2-3-058a0685c40c@udp0.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Z0dkIdz1
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4bb6c7b6dbdso34921625e9.0
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 12:34:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795466048; x=1796070848; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=e2HIsCv1tN4Vi7S2Bt6sM0bBboMl+JYL9mFDX5CB8EU=;
+        b=Z0dkIdz1roQI0bhGJaA9+OHdDJUb11pyWR1I0jClrb25KvbgqdbiUJpTQ/2I5gSBa1
+         ox35HBBCOO/04aN+1/A2xtOItH+b2YFK3uEiKdSjLNqcUXt7OWClMQuHYnWIlhzNABdT
+         8JGr7lszt+hrHB3P1lnIuYM3IuSJLMBfr4IQKPq8lfbOhRi5Z5Bqc+XiAZlqJLcfqu6F
+         Tex4oD/W46mqnR5WWtm149Ey8O/ke4KvGBV89JhJiqn7Z5DGI3EvTQeTBtsgnr6oNDYH
+         CBKE3gbHgR6HixF4//gzTiEUrZxUyfLt/Bi5nmrzEfR3RtbNbrsgZkb0JjKoZTjb6IMA
+         s4aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795466048; x=1796070848;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=e2HIsCv1tN4Vi7S2Bt6sM0bBboMl+JYL9mFDX5CB8EU=;
+        b=dzvhXis09snP9PeHkVJ/DzD8m+S7lU8G9GnSYj67bi1qNicvUGI++vrVV7Ku5IzCGT
+         We8cXK0ttWIbI5rXXhT3Kul2V5hi/m9J+KqOAUOPP/sGJvX4KzReC/4q6x0cZtxcrWRP
+         4RS6AXH23BjcADUfanTtpfEqwBEUqJeeTeRwKLb3E8fq1BL3b/aR/4+G6/xAGPNui72t
+         /3IJMrvEkMmVbiOQzeSLC3/KdFPpbIa1SJijq6VGPe3agJh3AqX0wDaqci4EiKxN5JQs
+         etuuw6gHQB4FBpB1iNSAUSNs44oF+tpjaoBsHtM/tLxJbhkRSG+1edTeaQaGS+Lm9AWD
+         DXqQ==
+X-Forwarded-Encrypted: i=1; AL+hErFp8Un8BSM822VDt0Iu8pZaYORW5uUWW6sXwUmtJ6EaWhanCZ2+9BQxp7S0EGiHZ54bQ3oEuk+bJjtZYQ==@vger.kernel.org
+X-Gm-Message-State: APuU4Z9iL26UcFLCoROeynlh2QbDOPs0i3XAZlngzhu17Bt4uK90Cvfg
+	kSqqCDO7DmcvjgqEn0TT4xhZNG5Gl8N2RpO830tCqtK+G2eZF+9yUpKC
+X-Gm-Gg: AZFdTZcmY3RX4KAmJkLxr49g6mJzBsJbELE62B/IslGmMdqoD0S4de6ajjjCPKomZjd
+	qjauRMS3Df+blxzrEeS1E0J0NORNT/L0XfiPMreDIQM54mrmmb2IZLUnToT6PikxzzZklta0Iwb
+	GWwvHeLiuBHqXp73ZAEkHO+X2fEQBvajprOc6itpd2zmjEbux8tsEy2M9y9oZ1nJOai+CrkzmhY
+	3JufLFSOgHS75aTruuoElgA/xlHquvmHao6je04WkeLQQhBEGncIrIA1t6F3iYCP38WiulYj1GH
+	2Izv41/xVTQYB/pBWYH37sVMB7IahGydPAUz/cFMm//Wr3D75u7cPw9ao8uMj6KGecW2/HB3Wnh
+	Ys+qHzoNHmk17XyHsAU2KOaRK8GQFUQbonzdTeVp2OV8rwEwes+Q7bMJkE6ZjM2T368M+PaKfWm
+	5HZyL5LtD8eK4kIDjA2RUyY2aY/prUiR+3QIxPrPd8mz436jm9+OVK115ffYdWtGSN5L1ZB6XQ0
+	BgZoHnhUWmag+D2zuJDiHeptGjV2Ew7z+8W7fDucnIURTyZjGkPlZgNBETE4y1eg+yBYrpAJ8kc
+	Mqy4bF+CwjJ0TC2WBw0L3mKGH8Osbw==
+X-Received: by 2002:a05:600c:64c8:b0:4bb:6848:d433 with SMTP id 5b1f17b1804b1-4bb8881d141mr251247305e9.26.1795466048254;
+        Mon, 23 Nov 2026 12:34:08 -0800 (PST)
+Received: from unknown.local ([151.34.53.154])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4bb884b7515sm515946805e9.13.2026.11.23.12.34.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 12:34:07 -0800 (PST)
+From: Gianluca Boiano <morf3089@gmail.com>
+Subject: [PATCH 0/5] media: qcom: camss, ccs: Sony IMX376 on SDM660 using
+ the MIPI CCS driver
+Date: Mon, 23 Nov 2026 21:33:52 +0100
+Message-Id: <20261123-b4-ccs-imx376-v1-0-2b26850a6f11@gmail.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -93,41 +93,105 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261117-mt6833-base-v2-3-058a0685c40c@udp0.com>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1xVaSI-00000001f6j-0DzH
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net (server.roeck-us.net) [108.223.40.66]:36638
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 50
-X-Org: HG=direseller_whb_net_legacy;ORG=directi;
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfNoOM92XHIb5+k0g6AlNCSXuYGGyTDkl0iLUcKXpUu68zS4TBf2dVWVRtyf0R3HAinG3hFAfAQTABM+M1H6UHftLVXjhcqN+ot3eeQF4JOrpgr8ZTEe3
- 279hFYlDfF9lHHp5tT3rVOBzNIdQjiY+rviYYPhy3YgTnWwAWDDd037DiblDCHVZ4HaDl5dmIqmqsoUAtqTAgOS4UalhFX22yp+hF5uu6w65VQ9HQ+oHJBNp
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQ5EQBBA4atIrVWiy99kriIWuhVKwky6EIm4u
+ 8byW7x3gLIXVvhGB3jeROU3B5g4Ajc0c88obTBQQoUxRGgzdE5Rpj0tC0zStqGcyk+XWwjN33M
+ n+/Or6te62pHdck/gPC+R5DbtcQAAAA==
+X-Change-ID: 20261122-b4-ccs-imx376-03da25278f5b
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Hans Verkuil <hverkuil@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>, Gianluca Boiano <morf3089@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795466045; l=3605;
+ i=morf3089@gmail.com; s=20240402; h=from:subject:message-id;
+ bh=Ux1jAIk65UvpQG9eUkT9o3z3KHkRuAwplFQDfWVP5dU=;
+ b=Vskrd5wcS4R1Anr5d6Nyalh7iBdzMn/H73Qb2lS95hRFgbE9FGaCuvQ9ikd9Hacqt/V2wzhXR
+ 6U9YRMIlS/oAOkvr6vMQ5bzaJ2s+MkhuOnvS0jFNeEWgPI1e7GDTjVa
+X-Developer-Key: i=morf3089@gmail.com; a=ed25519;
+ pk=HsGrEQ3ia8BGGGO8/nUM2K2UX9JKvRPV+nbrVDGrYhA=
 
-On Tue, Nov 17, 2026 at 05:11:33PM +0800, Rui Cao wrote:
-> From: Rui Cao <i@udp0.com>
-> 
-> Match MT6833's watchdog. It works as MT6589's, but its TOPRGU reset
-> layout isn't known well enough to describe, so it gets no match data
-> and the driver registers no reset controller for it.
-> 
-> Signed-off-by: Rui Cao <i@udp0.com>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Hi,
 
-Applied.
+These make the Sony IMX376 work with the mainline MIPI CCS driver behind
+the Qualcomm CAMSS on SDM660. Nothing specific to the sensor is added to
+the driver: the DT node uses "mipi-ccs-1.1", and the manufacturer specific
+register settings come from CCS static data (sensors/sony,imx376.yaml,
+https://github.com/M0Rf30/ccs-static-data/pull/1, to be submitted to
+ccs-static-data).
 
-Thanks,
-Guenter
+Tested on a Xiaomi Mi A2 (SDM660, rear IMX376, 4 lanes, link frequencies
+500 and 864 MHz):
+
+  - 2592x1940 (2x2 binned), 36 fps at 500 MHz
+  - 5184x3880, 29 fps at 864 MHz
+  - switching between the two repeatedly
+  - cropping the pixel array (4096x3000 binned to 2048x1500)
+  - the front IMX376 and the IMX486, which use dedicated drivers, still
+    stream
+
+Patches:
+
+1: CAMSS calls s_stream on every sub-device from the video node up to the
+   sensor. For a sensor with several sub-devices (CCS has a pixel array, a
+   binner and a scaler) that includes the pixel array, whose s_stream
+   fails with -EINVAL as only the CSI-2 source pad can be enabled. Stop at
+   the sub-device that is bound to CAMSS, as the other CSI-2 receiver
+   drivers do (ipu3-cio2, rkisp1, ti-cal, ipu6, rcar-vin): that
+   sub-device is responsible for starting what is upstream of it. This
+   touches the loops that Qianhui Xu's "media: camss: video: factor
+   pipeline stream on/off into a helper" also changes; I'm happy to
+   rebase on top of it.
+
+2: The link frequency and the pixel clock were looked up from the pixel
+   array of a CCS sensor, whose pixel rate is not the one on the CSI-2
+   bus. Use the sub-device bound to CAMSS instead.
+
+3, 4: Two CCS bugs found while doing the above, both regressions from the
+   switch to sub-device active state: the format set on a sink pad is not
+   stored, and the format of a source pad does not follow the crop
+   rectangle. Link validation fails with -EPIPE for anything but the
+   native size.
+
+5: CCS static data can carry manufacturer register blocks conditional on
+   sensor register values (rules); the driver parses them but never
+   writes them. Apply the matching blocks at stream start. The IMX376
+   needs this for its full resolution mode, which uses different
+   readout registers than the binned one.
+
+The pipeline is configured the usual way, from the pixel array to the
+source of the CSI-2 bus (here the scaler), setting the binning with the
+compose rectangle of the binner and then the size of the sink pad of the
+scaler:
+
+  media-ctl -V '"ccs binner 2-001a":0[fmt:SRGGB12_1X12/5184x3880 compose:(0,0)/2592x1940]'
+  media-ctl -V '"ccs scaler 2-001a":0[fmt:SRGGB12_1X12/2592x1940 crop:(0,0)/2592x1940 compose:(0,0)/2592x1940]'
+  media-ctl -V '"ccs scaler 2-001a":1[fmt:SRGGB10_1X10/2592x1940]'
+
+---
+Gianluca Boiano (5):
+      media: qcom: camss: Don't stream sub-devices upstream of the sensor
+      media: qcom: camss: Look up link frequency from the sub-device on the CSI-2 link
+      media: ccs: Store the format set on a sink pad
+      media: ccs: Make the source pad format follow the crop rectangle
+      media: ccs: Apply rule-based manufacturer register blocks at stream start
+
+ drivers/media/i2c/ccs/ccs-core.c                | 106 +++++++++++++++++++++---
+ drivers/media/platform/qcom/camss/camss-video.c |  28 +++++++
+ drivers/media/platform/qcom/camss/camss.c       |   6 +-
+ 3 files changed, 129 insertions(+), 11 deletions(-)
+---
+base-commit: aa0f4c41d4870a18e65772a1817af16427200371
+change-id: 20261122-b4-ccs-imx376-03da25278f5b
+
+Best regards,
+--  
+Gianluca Boiano <morf3089@gmail.com>
+
