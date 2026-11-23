@@ -1,86 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.54
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795438947;
-	b=iTv4XZgPJs1K2euCnMHOlUa7neagxZDe0awVncQP+G5gnbw2LF5bNjBLFyGVEk06xboK
-	 Xl3BCZBp70cdGdUYNw/lsTZXsBeF3SdTnzguMLgqF9oGioCkBF7pt0I+6VBJWvvrE8vrI
-	 kQZk3P1LjnNnVysp3Q9Hcqp8EWRT1NtSs+1kS6tr70ud9tMEgX9lAna26UXWHcjwjQt/z
-	 Adu735TPkQ9XREo/T4P99N/0IHSowO3WYAR00+lxr37y6AFDZ9v5RV6PPWrFHvqhZNzbv
-	 84+ElJejC7CDlgus2eFiaFqer1PpJMmj/QWpHnunmQlYI0yJVi+Q1Qlrq4X9068LPtw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795438947;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
-	bh=cKQuTWajHqDgBUzh5m680n1boH4vOLK3j00Iq2JfKIk=;
-	b=Lo566kpvQu0OFSROBhHyhGmBa3WJu+DMQ+xTeGdpLdQbPtcl+9xgk+EGCyuQa263iJ8g
-	 JjUcOnoLTDsJwomlVOSEGmjEpbNbyGKuCa3+7ZtN0oQxehwgq+OBrFztv31iceJGtsdyQ
-	 aUBOlghCJTvAPPiQlnwURiKev2pcDEJm9qL3pnO2YVFmACd2SFzzkK8so5Gy8BRj5A5ry
-	 KNDTCTzLsPb4eVn+7ZdpMAhbwi3VnZ6CbWFAbucJXZuX5oQq+V/4NVoY9qs4etR0vycTY
-	 ernuoxkmVxk9k9jqpYNvd09lk1d3oYCcGq+kFpTX1Um4NCOBRXUMiaBH/MKktJIliEw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I+93h+Nj;
-	arc=none smtp.remote-ip=209.85.218.54
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795440504;
+	b=dalYgHJ3Kt6x7CZXJNNfRAqBt7eZU3DoAkEJo728ntuLHv2fxThMLONe/yfEtB0Amwvg
+	 hA6sWUrD2wNmK3VgTJ8EZyNN1h4btbeE6C/651tcP9N9FnyLIIeY0RUJFUDelq2pBk3l1
+	 JU3IzAzbYFsoo4VUqkwpbalf4yRswB01WnWjhIiLfo32fOSxHj0cs7izGFI4zDOvf9b78
+	 dXyvPmb9hMuvp/wJzVNWS67ZNtYctZC45MEz5I2Ibn0Ywj27I+poprphNT/UbiyP6bndb
+	 6XjNhoVqSfa+JO8tAYIboA3aw7ZHyQy3M6blAo6u6tCF5vE0N71s9IVbCJv2kBe3mfg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795440504;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=G/taQXBwoIqNqn0V9uROp2Xr7eAeTMBxy+qngLdA9Fc=;
+	b=aI1OXC/iXqD9suhlJO4HMQAVUrAZs6w+R9kIMgyXmstyaCu2iMpc49TI1f5S8FkzMg6R
+	 Mh1uuqY/LazES8m5bwdV/E/fdmL9ccwfSWmnlT3a2PNbu7w5wiS8rIuo1hln34+TvEglz
+	 38Kau0aBZCDetQIC0j93DAwJ2sLmdeKJLwqymuZYKeIcE23SI5coDIu7TpJnp3H2In8WG
+	 9sm1/Lpc9+Rm3mnceb2xHodYkLKCRxZrdTa9lZ/G6wA31s2O6G1BSYhmhJplgNE+TNTth
+	 APXVz9YMhZav4M+LPn3vts8PN18Vi9FZzOdmsv2CEPVURWg2jgnlwbj84E096HDCsSg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CmAY+25d;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDB0606A31A;
+	Mon, 23 Nov 2026 13:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CmAY+25d
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795440504;
+	b=yH6O1caavM+BNd+pRkvrXLvINjINk35hEb9iTI32qtWzdXTCg2dAys8ISk0W/ZLvkH1q
+	 bVr34BUL8UaF8K70XZoc9wW/+VqpwzVCom0TYQynze+glb+KlsaxCt8pigb1YMc1xiBmn
+	 E+NkQf+a/qDJInA+/UHD28yIQD8RELvbNZ3pxXKEd1AoqLxuj5ivJHto3x2YvKuJj5CqR
+	 OUD/MFjSi7DssPdQ/OF1V36+1tr7aEQ1mZ29Q9l5JJqwUCsfYbG1WPBBY2mgIsr4iyaZ8
+	 BrWFN0g9USSASsIcW5k7LfJgPhIplPCUjr5pb/oH3twXvqLKguWisTUVj2whCeSm7kA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795440504;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=G/taQXBwoIqNqn0V9uROp2Xr7eAeTMBxy+qngLdA9Fc=;
+	b=CJxuuQeNXcHhKzxaUmNabcDkV4Vvm/ae9yGtIckl3kuBlhhgke3TDc/MCy3AcNzmvyIw
+	 JP1NkEB4owdQv4Y7UE5zwkVv8evAt4y7GpNRQHTM9CFdhVXXFSyXRmklNVU3CI+p/MCW8
+	 y02jNFyojrr9HohCD1pmzF1GbyElqYuT/wKL5Pqm3EnURKFnNsDe7yev4zgllWLAXaYcw
+	 JoxC9sVUld0f0gLMxTWe3bKaNv7gF7yS0cI/Z9q0UCAMVPJ0LIdCQAyixTzklp9RPPzgP
+	 VCKlu6TUfhVG4sc56gHo9QjNMhaDBss/Si7rXxZAvqa3y70z+LxFUDpaMMmj7ypzDtA==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E59606A31F
-	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 13:02:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53E59606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I+93h+Nj
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c5127c7abd5so517670466b.3
-        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 05:02:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795438946; x=1796043746; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=cKQuTWajHqDgBUzh5m680n1boH4vOLK3j00Iq2JfKIk=;
-        b=I+93h+NjMVPVj9yGSCa9Yr9/aLoxakDF33sxW0hA4Me2ZHmBigmgD3nvRHdVyy6Czf
-         TA/CH/xVRgsZgVksQ6GlXxKXQMyND+oozcSLvV7DsUdVi2By+27y/9qKXG+i+00JbPRH
-         2+KHo13vwZdmzbaFnGRiyzihcwP27TD3RrfomFbXAZorz6bUacz43tU99G3ycQ0LAORs
-         T60Xd0qBHSzRgz5ln+D3CnLdPNMxPAqcmxpmoswe1W2kkMfVhTW3bEmWuelr475lx/Cd
-         SwZybLGNsQNPoVMmgOulEj9ahnKNw9Jy0lOnJOUQ5mE9UAHbofILR8xJYb6M7RFc5kXY
-         0THw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795438946; x=1796043746;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=cKQuTWajHqDgBUzh5m680n1boH4vOLK3j00Iq2JfKIk=;
-        b=LnKr81fxUnkPZKmuemLUdMaGQM9MNGLosipCdclrI+UKnkCCisi2T49O6DB8AugHCZ
-         VvulRgOUg8OveSIXNY6xkQ5kZoOBkSnfxAyUEpK2tg3S7daTm1Sc4mykfqm0YCgBE83w
-         ISkm1oL4d0EjT16gzMzHAsE3eLeqKbMIPMRkrk2lLPqL1gp73bQGIkRDXzvGEWp8egHQ
-         OlRQB893xvooQSlyPDnameJgPcF5rq8sfno+9FFfGv1CDMDK2vvBVsBDbya2nQwXhuTJ
-         E9af9LtoH1otXHHWxHZsWsaDVD2sUkuaD1Dw+mDCeiU+pIH3C63iqj3e/IPQlF/JbEk+
-         CpTg==
-X-Forwarded-Encrypted: i=1; AL+hErGPVdCY6hebVhKQQG8javs+Te6I6HjpOLkLwyfxxqufByhfw3lhvhxhlTI8w8JtzbUqne7GFNI57MfURg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/nGwLTc+bdigDUTnBu/OG9ggB83BEOMuWayEv7H1vaLWdG0Bvp
-	B/ne0bwUEZdmWKY+vQ2o5672DFhWTlgIgeFHXSMH6Y0xSARCPpFKAX+c
-X-Gm-Gg: AZFdTZfa2lR9oCRHXrkx6dwvpRm1fiO5V5X1RV61YPDKo8ubTQ/PVHNJ2pWwQoHy7zs
-	xTZuPCbBEqEBMOe0sB/7aD1uDhQMimKKO9EPKn4l0+ekiWOb82wmk5Llu4Kbv9aupZwYJEm/0C5
-	xuowhGc8hQhgXM/hUykQpwfLsfvjYCIJbld6kznMx2pUtvIMvlpjSs8f98wODAVXPNOi3gguBJC
-	H6UvqW/6PWMVs8XBg9ShFE+mL9GufMJS9T2h+ONOrFupt1VKplEMS9G3+4Dru+S/rfXLWch9Sv0
-	5Eal30Yir77SJeiAeThmpmQzqf5EdDn9h22whS1nwDP/IaHwlcPClsDQgngEqXl6zHqmKWTyx3y
-	lccyVFEt8350vw5jvfUZMx+WBWbGZ8W2p9GT2t3uyCnSk7onvZkCe7xecdBjyZsunlpqn+Gshz9
-	2STppKBttbCrx11S2A3XmCgkzboMHPhDpr0TvKUn+Ph2i0+7IOK/p8oWR7a9+AZ7wWIR7TVflef
-	XwNMcBayAuRrGV+1sInM2nTqdJWIJsyTr4shOCCSR8rz5u/sdRQMLrTadtYsXIcQaaIgd2LODik
-	gmxb0ILjwbD6fN8b6JswXp3g8d5evGcYGzFAixQrtWuW
-X-Received: by 2002:a17:907:9584:b0:c34:e9fe:82ed with SMTP id a640c23a62f3a-c513a88223amr879508266b.28.1795438945419;
-        Mon, 23 Nov 2026 05:02:25 -0800 (PST)
-Received: from crispy-cucumber.local ([79.133.247.80])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513ae688f8sm412660366b.25.2026.11.23.05.02.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 05:02:24 -0800 (PST)
-From: Erikas Bitovtas <erikas99876@gmail.com>
-Date: Mon, 23 Nov 2026 15:02:12 +0200
-Subject: [PATCH] arm64: dts: qcom: sm7125-samsung: add fuel gauge
+	by smtp.kernel.org (Postfix) with ESMTPS id 5062F1F000D3;
+	Mon, 23 Nov 2026 13:28:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795440504;
+	bh=G/taQXBwoIqNqn0V9uROp2Xr7eAeTMBxy+qngLdA9Fc=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=CmAY+25dJusctYntOP9iuNNMlOWU6c9hL0hK19hiVPPkIhEYCXPiAxa/rnue9Nl2d
+	 L78kBfo3//xThIpaqaMul6bCTmY+oIPgS7v5nXMZK4V+ONlYMRUfYx4ZMa3GWuwtcy
+	 Ka+IaV8m0unZFBZ6of9uAFRaM5yiO9rkG244GthN6sefCp8/WmT1IM4Y6ZeQ97FWwx
+	 brjg5VD1a1yn/7CfqOtqJ3M8Tf22mKJVMR9LrGyvuA6G/QxkB1iUfJ0mnpYUjbjGuo
+	 OLH/hmmGjUPVovRsp3tySKgUWUUkurCmOu+X48Jn4cyF8/b352eAeOx2ID5E5oJddO
+	 Sr9D/tWlft12Q==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id C05174C48E;
+	Mon, 23 Nov 2026 13:28:12 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH v11 0/2] Add initial dual front camera and rear flash
+ support for Pixel 3 / 3 XL
+Date: Mon, 23 Nov 2026 14:28:09 +0100
+Message-Id: <20261123-pixel3-camera-v11-0-d00195d180dc@ixit.cz>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -92,147 +86,125 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261123-sm7125-samsung-fuelgauge-v1-1-edcdef00a6ef@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/0WOQQqDMBBFryJZd8CxmFSvUlzEcUxTGm0TI4J49
- 8YqdPnhzXuzisDechB1tgrPsw12HNLASybooQfDYLu0RZEXErFACE5hUULQLsTBQB/5ZXRMnC4
- VSZ1ThZJEOn977u3yU9+bY4fYPpmm3XcSnj8xNacD+yfr7AhiCpLCWw7mbaFzGrRSlbx2FSNRP
- ePuaXVgoNE5O9XZwMsE57e5aLbtC13hJprjAAAA
-X-Change-ID: 20261121-sm7125-samsung-fuelgauge-a57c6a0c916c
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33SzW7CMAwH8FdBPa9TnE+b095j2iFJnRFpA9ayi
+ g3x7kthEm2QOMbK72/L8qkZuM88NOvVqel5zEPebcsD4GnVxI3fvnObu1JopJBWKDDtPh/5Q7X
+ Rf3LvW0+EFJJBYm6K2fecyocp8PWtvDd5OOz6n0v+CFP1mqQBqqQRWtFKZ5wV1oAJ9iUf8+E5/
+ jZTzigfWlmshoBIPgTQcWnV3MraqmJZ2iBIeAsgllbfrAOqrZ76YvQBpLJo5NKah9YUS2RIJQg
+ dcjWznVkpamuL9Yk1UOCkXbUrN7d3u3LFouyUVNFG01Uz482SuLN4mTmBIUSlNC4tza2rLRUbg
+ BDS1JxgaUHMMNxhEEV3ySqQjoKi7qbP17Pr+eu7nO/h//bO5z85gaYN3AIAAA==
+X-Change-ID: 20260315-pixel3-camera-a9989bf589ee
 To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Erikas Bitovtas <erikas99876@gmail.com>
-X-Mailer: b4 0.15.2
+Cc: Abel Vesa <abel.vesa@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Petr Hodina <petr.hodina@protonmail.com>, 
+ Richard Acayan <mailingradian@gmail.com>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3355; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=DnyxK+CH29aGE0/NgvGyExF9hEYwCx25ThxaJ/VBTS4=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrBD9rd1lGXz5HexqJr0ncrOeM9r6BGzvaYBGtI
+ iRDuFXj8a2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawQ/awAKCRBgAj/E00kg
+ cugPD/98BJK3uoN4L489lXay+FaAzYEZyJbWMnHZdXjaSq68CTxlrQ620F6xg8DIoZ1MwKJggBr
+ gO2EBkhO2+lDSXVPZ+Skkq0AYH2jycQqsbdWdNh/eTq+ERHbmQfuF3nReYrF0D1u1jnqX88G/r6
+ 6sBq0WOfi9piwPWTSFRgFMSX6AKhEOj55O0vPdx7PhHOKMlpsCkwY1rVg3NLhTjHWsCKhF5JrHT
+ CI/rHlmC5TCJAuPgvKRG2VzE9JlNWLH3yJfUNSU4MHp5w4qhGVyDEfh+81M1Abmo66pQJwFCgbb
+ q6VMjtRfQgfmXt/RYJXE70mONsda2VMVi4H+TB+0yfew7Co0f3Nes6pVxnwfE0xVTc6fWDXHfDP
+ APv/5uWwb6VU3CoMbEbXXtUNO0rLWLqAoq2IMoIfU8SAlUYE/PKUn0FURCPruBQFWoOhddI8mCF
+ W8MLgNfaBDoZ74l1vYuiaAHFg+zD2kXrIsFD3YLZJA5sLG9zwNTt5Woo5D/75NBqpFeN5LnDmtw
+ EaAZv5qwDsNGpZC5qzCZfcvOh58vfGD7bFP2f+9E0BM+e4L36uj+NcDyWcyLqDqZU+KdyZYH0gb
+ unw9sF2e2/WBE7+e7UpRE/vNXEeIJM1RjywJq5zY/bR8sQOBAyOiiAgHswQ27BzCRWs2Av6mseE
+ e7X6WdwWF+2tfXQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 
-Samsung Galaxy A52 and A72 use Silicon Mitus SM5714 interface PMIC,
-which includes a fuel gauge as one of its features. Enable GPI DMA and
-I2C controllers, add battery bindings and enable the interface PMIC fuel
-gauge.
+Describe the dual front-facing IMX355 sensors (standard and wide)
+and enable the PMI8998 flash LED with hardware-accurate limits.
 
-Signed-off-by: Erikas Bitovtas <erikas99876@gmail.com>
+This brings up the basic camera topology and flash support in DT.
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-Samsung Galaxy A52 and A72 use Silicon Mitus SM5714 interface PMIC which
-includes a fuel gauge to measure battery state of charge. Add device
-tree bindings for their lithium-ion 4,500 and 5,000 mAh batteries
-respectfully, enable GPI DMA and I2C controllers and enable the SM5714
-fuel gauge.
+Changes in v11:
+- Reverted to the v9 (as the merging didn't occured yet, and now header
+  file is in the place).
+- Link to v10: https://patch.msgid.link/20260917-pixel3-camera-v10-0-df631279b39d@ixit.cz
 
-Tested on Samsung Galaxy A72. The driver reports the same SoC and energy
-as on Android.
+Changes in v10:
+- Removed the (not yet met) dependency. I'll apply fix after it gets
+  merged. Feel free to pick between v10 and v9 for merging as what you
+  think is the best way.
+- Link to v9: https://patch.msgid.link/20260907-pixel3-camera-v9-0-b1981f2d3291@ixit.cz
 
-This patch depends on a currently unmerged series for SC7180 GPI DMA:
-https://lore.kernel.org/all/20261112-sc7180-gpi-dma-v1-0-2a8eceb49563@gmail.com/
----
- arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts   |  4 +++
- arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts   |  4 +++
- .../arm64/boot/dts/qcom/sm7125-samsung-common.dtsi | 38 ++++++++++++++++++++++
- 3 files changed, 46 insertions(+)
+Changes in v9:
+- Dependency merged, no longer depends on anything.
+- Link to v8: https://patch.msgid.link/20260901-pixel3-camera-v8-0-99f159883348@ixit.cz
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts b/arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts
-index ecba5be8164e..cd58f1449290 100644
---- a/arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7125-samsung-a52q.dts
-@@ -15,6 +15,10 @@ / {
- 	qcom,board-id = <0x22 0x6>;
- };
- 
-+&battery {
-+	charge-full-design-microamp-hours = <4500000>;
-+};
-+
- &rmtfs_mem {
- 	reg = <0x0 0xf4f00000 0x0 0x202000>;
- };
-diff --git a/arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts b/arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts
-index f18d03de1585..73a1c3b7facc 100644
---- a/arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7125-samsung-a72q.dts
-@@ -15,6 +15,10 @@ / {
- 	qcom,board-id = <0x22 0x5>;
- };
- 
-+&battery {
-+	charge-full-design-microamp-hours = <5000000>;
-+};
-+
- &rmtfs_mem {
- 	reg = <0x0 0xf3700000 0x0 0x202000>;
- };
-diff --git a/arch/arm64/boot/dts/qcom/sm7125-samsung-common.dtsi b/arch/arm64/boot/dts/qcom/sm7125-samsung-common.dtsi
-index 59ef4921f31e..5d854a76bb21 100644
---- a/arch/arm64/boot/dts/qcom/sm7125-samsung-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm7125-samsung-common.dtsi
-@@ -22,6 +22,11 @@ / {
- 
- 	qcom,msm-id = <QCOM_ID_SM7125 0x0>;
- 
-+	battery: battery {
-+		compatible = "simple-battery";
-+		device-chemistry = "lithium-ion";
-+	};
-+
- 	chosen {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-@@ -379,6 +384,25 @@ &dispcc {
- 	status = "disabled";
- };
- 
-+&gpi_dma0 {
-+	status = "okay";
-+};
-+
-+&gpi_dma1 {
-+	status = "okay";
-+};
-+
-+&i2c4 {
-+	status = "okay";
-+
-+	fuel-gauge@71 {
-+		compatible = "siliconmitus,sm5714-fuel-gauge";
-+		reg = <0x71>;
-+
-+		monitored-battery = <&battery>;
-+	};
-+};
-+
- &pm6150l_gpios {
- 	key_vol_up_default: key-vol-up-default-state {
- 		pins = "gpio8";
-@@ -421,6 +445,20 @@ &qfprom {
- 	vcc-supply = <&vreg_l11a_1p8>;
- };
- 
-+/* External pull-up */
-+&qup_i2c4_default {
-+	drive-strength = <2>;
-+	bias-disable;
-+};
-+
-+&qupv3_id_0 {
-+	status = "okay";
-+};
-+
-+&qupv3_id_1 {
-+	status = "okay";
-+};
-+
- &sdhc_2 {
- 	vmmc-supply = <&vreg_l9c_2p95>;
- 	vqmmc-supply = <&vreg_l6c_3p0>;
+Changes in v8:
+- Fix ordering of includes. (Konrad)
+- Link to v7: https://lore.kernel.org/r/20260721-pixel3-camera-v7-0-82d323c6c5d2@ixit.cz
+
+Changes in v7:
+- Depend on the
+  https://lore.kernel.org/all/20260628-kbingham-orientation-v3-0-4ed92968aff8@ideasonboard.com/
+  (Konrad)
+- Sort the renamed regulators. Why Mr. Anderson, why. (Konrad)
+- Link to v6: https://lore.kernel.org/r/20260720-pixel3-camera-v6-0-afe419bef476@ixit.cz
+
+Changes in v6:
+- Remove forgotten bias-pull-down property from cci0_sleep node.
+  (dtbs_check)
+- ..-regulator -> regulator-.. (Konrad)
+- Rename camera -pin to -state and remove _pin from the labes. (Konrad,
+  dtbs_check)
+- Link to v5: https://lore.kernel.org/r/20260719-pixel3-camera-v5-0-99593f1bd8ec@ixit.cz
+
+Changes in v5:
+- Added function-enumarator to flash LEDs. (Sashiko)
+- Dropped l22a regulator needed only for NFOV actuator. (Sashiko)
+- Dropped vdda-csi[0-2]-supply, as it was unused. (Sashiko).
+- Added previously omited cam_mclk2_sleep sleep state.
+- Link to v4: https://lore.kernel.org/r/20260719-pixel3-camera-v4-0-48cab1236852@ixit.cz
+
+Changes in v4:
+- Use 24 MHz ext clock for the cameras, as the downstream does, since
+  the upstream driver can now support it.
+- Added additional LED, as the phone contains two separately controlled
+  white LEDs flash (upper and bottom, in one module).
+- Increase flash-max-microamp, as I took wrong "flash" from the
+  downstream sources and dropped Dmitry R-b.
+- Address formatting issues. (Konrad)
+- Link to v3: https://lore.kernel.org/r/20260412-pixel3-camera-v3-0-e26b090a6110@ixit.cz
+
+Changes in v3:
+- Dropped cam_vio label. (Dmitry)
+- Move the MCLK2 pinctrl from cameras to common camss. (Dmitry)
+- Link to v2: https://lore.kernel.org/r/20260411-pixel3-camera-v2-0-41b889abb14c@ixit.cz
+
+Changes in v2:
+- leds.h include escaped the initial submission. Fixed.
+- Link to v1: https://lore.kernel.org/r/20260411-pixel3-camera-v1-0-2757606515b6@ixit.cz
 
 ---
-base-commit: 2c0da72bad5631bda9c70dcfbe3497a0ebd9f936
-change-id: 20261121-sm7125-samsung-fuelgauge-a57c6a0c916c
-prerequisite-change-id: 20261111-sc7180-gpi-dma-a77963d9e1cc:v1
-prerequisite-patch-id: 70dc64e33232cae6744eeb11e8f53e099eb49c1f
-prerequisite-patch-id: 1ba00e1d0ffd80fa49f64e8b627ab07ce9478e74
+David Heidelberg (2):
+      arm64: dts: qcom: sdm845-google: Add dual front IMX355 cameras
+      arm64: dts: qcom: sdm845-google: Enable PMI8998 camera flash LEDs
+
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi | 199 ++++++++++++++++++++-
+ 1 file changed, 198 insertions(+), 1 deletion(-)
+---
+base-commit: 909ef7a9a30fa139e69e555e3606680f5cca7726
+change-id: 20260315-pixel3-camera-a9989bf589ee
 
 Best regards,
 --  
-Erikas Bitovtas <erikas99876@gmail.com>
+David Heidelberg <david@ixit.cz>
+
 
