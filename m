@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795466056;
-	b=EzFRbO6nx+MucKia2PK6GQ+qSn3mP6K2DYCzWZQlWXz4uqodEALpFgMRy9Xkqm32hiPf
-	 UGQne/gqMAMcj/LGbGrA39r34B4r43OFSc4NWND3XELpd8ugVg9V2Cr2haVCk1eDWcm+r
-	 wJ4DLTbbofiQULl00ep25TCj+3j0bdQxscGnmKgfhFBoiNkk+qz1XhlFQ1DbYLJvwl6xy
-	 ay1E1iaEayy2cWKN3Gam/196WqOytpnBmSNJERDsrOdtqTTmQ9qbuqQEyCtrdTOdsRJc9
-	 QZaejv2z3Na91lmdSwFjyohmaZ9O5mPADCQVlVGLgj18/DQbfR6pHUN3lRL8uB8aQxQ==
+	t=1795466057;
+	b=YSxLgEgccKjr7h+yaeZXYlerGJvmri+wby2Pv5+9wC5tt/G65o29WjVnGZqTtQ+Xowel
+	 w/+Vo8OFIrWhUG2sHScPNGq5M3nzFuheqk8OMNx+fXQEwiQB3qME+bWyN/wDLdNwfICv6
+	 3G7AlZXQ5V7ukU/Xurctu1XMIlLeAwAWLi2+qTKdkwcVGzCbo1N9e/EYo18aLM52RGU4Y
+	 BEwKFEmGOu9QOE2E3aOEVQhAgc2cJFhls8EgyfUuGJYewQQB2zyScezvW3+gCzG9GbDC+
+	 40DO8lR4rDCv6t7HTV2LrkvcR8ufsbaTrfG/uQjGpzASJ3fjBroFogKkuyZJa/v0M+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795466056;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795466057;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=jmJspXYhqF5Ifm6vBoYFDWnnVcY5oxgK5Qh3Vesxuh0=;
-	b=efLU0HPcYpZnGR8SROHHRUbllh93epSceGK8XjxKqchH+I+xEBQh6TPmhcJzjCkHlEdq
-	 Opzf3DC0leZHldD19dY/JyAEj6baEdt7+Ah/F1KirF0QNh9z/9WpdT/Yh5IN63lsyVLOd
-	 gJa6P57bvwnGQnbY96f5SE8a51t9zPmRX2D0Je1w+TXz9GBvoi6ZxQbNU+XK5p6W8d2Nn
-	 IWxgPRANbmVCBnfrd/c9eXAIMBQiKfJUWWp74nE0NGK9o1MqSY3wKz5jSg6PBRIYgp8je
-	 Z0BVNvwys1yPghKgndAl9C01IDff2vsWoV7OWfixXmg+KrzhY0OR62mmcbXl9ucgLnA==
+	bh=hPT/ypmWmLMxLtJbyhU72b/6yrEAVjSw6rFwMDxvsHg=;
+	b=FerXlICVNKX/ADN98rJDPCx025/3A/O65vP44WJTLP89ZZrc7RwaMZ2Ti3EQvEGGstdN
+	 7kHAbrs2byiToDLg74i1OdXxUEwsufk9tHiAsVop+ua2B88fS3BsrRF1YPKrzIbGAnfYc
+	 h+P2GJ45dfB3sFQ9gfuqSTs5nUzoFyCHfKOSm5gdh0ZzO1H0IMZlk3FVbu257n4Bo1KWj
+	 RJo3m3BelH9JQb+FUzmYS4iYGnbYdjHwcCwbib35KRYUpH7lRfR2HPCB2EkMjZwldcgOO
+	 EhvXQCx3v+/aN077YYsQObBDfavbSUj4H4tz9lU9N3lL8Ly2JXrq0ecMi0JfXoMhWkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eqHfWJa9;
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VNYlOwFm;
+	arc=none smtp.remote-ip=209.85.128.50
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDDD60A2612
-	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 20:34:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BFDDD60A2612
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ED860A262F
+	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 20:34:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24ED860A262F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eqHfWJa9
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4bb68c197c7so47668975e9.1
-        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 12:34:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VNYlOwFm
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4bb9d8e8e90so8883585e9.3
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 12:34:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795466054; x=1796070854; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795466055; x=1796070855; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jmJspXYhqF5Ifm6vBoYFDWnnVcY5oxgK5Qh3Vesxuh0=;
-        b=eqHfWJa9Wea/Fb3/RD4KYoNZlniZ37XLDzgSuVOIwm9447N4+odJLiA9+zkUe8O7X8
-         pK0pzNZwfoFcU2dNJid5h6+dBt/TBAwVz5J5T6E+Boe72nNC8S/RYIm3Egeli4/IEMgA
-         kMjdkocnsr/jvd8VxembzJJFNYf+KCwWAEdQP5wt6SiDf20JnQi1dTcd+XnXb/P19sdj
-         mlD2MvXC8CBGvpHU3jm2kIMGANo69DZbATy6WMiPUyFHx4o6VMlPn0bU5asxKS4JoHHh
-         SRDGprAGom/o6GTtJv7uVF3N3HmCr5Me8w2SGAictAeM4pxXxdh5NZwEa1Iqxd1MlJ5A
-         eZ6A==
+        bh=hPT/ypmWmLMxLtJbyhU72b/6yrEAVjSw6rFwMDxvsHg=;
+        b=VNYlOwFmrm+wLhEGoOMDJnlhb33JACLnJI2PJY6WoDx/+lw/0L8iwubY+Fe1T5seGq
+         uZOpHDJ8XNVSvY0CRcJTzls5ESPF9EJEteQRXiQCQXzG5DSRDqmPkOfoqugitUOKR8ti
+         h88EGkLgbTcUZz5hMLVudh2rLEHCHdcx2s0zsG6oPyJk/ijyqvJBXe0CJGxMIoIKJsXv
+         ucw/jA1j/R0pu+1/mT5GuEZdh23/cy6/Hp8C50+7ByE2ZlF3+vtEl340GDeE5NaXFKfS
+         wCVXj4rqIfT7XGkND+GsqDdX1A8i8BuGw5pjL+cury/90Nswk4eah2cqRYyqMffqhhpi
+         mh+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795466054; x=1796070854;
+        d=1e100.net; s=20260707; t=1795466055; x=1796070855;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jmJspXYhqF5Ifm6vBoYFDWnnVcY5oxgK5Qh3Vesxuh0=;
-        b=ypTkA9p9JB5dRlUm02mfYT7UKpc8kjDtebqxX6edwtHWxgd/tpgIGlyuiJpJzf0Dvm
-         o918PQTjAwdIdCJ51jkjg5i+SRyZrwocTSpQGHi4LoVEA1Oc+yu8K95hWJvq/MUO5nr+
-         SsGO/ORbURQ0SwKMq/OmNFi2dL8FyhKLcT1RQKkC/EV2PfKjhBI+jxQJYGKHlZUfbec7
-         vim6BBRnVgeYyn4BDlpfkXznbVxUsH1hEuK2sZR7Y1LzBGX6eUCpg+1LqCilywQyyijB
-         81jj/R1XpZm5aDeD7OpzxDs/4rc/LZAZSRrCNpHRIJCEx9tHDHlp2hU82QmfvqchOPHV
-         eM1w==
-X-Forwarded-Encrypted: i=1; AL+hErGh8BaaZeadO7i0FxbLlGOMVlBLfKdgO2mt/t/zDo2pht5wchcxJYnNF9hJKh42pG+tBnTAGKq4+wGIJg==@vger.kernel.org
-X-Gm-Message-State: APuU4Z+4wqUyMMIPvR6yKQvYQW+nIHK/As3hk0OqZMMF98V2Tnk402be
-	/r8hhD84iHdMmphtlYPoNpDwflWXaZTgjuWPJQg8/Q2k/osAmr56OK8c
-X-Gm-Gg: AZFdTZciiMj/a6m7pHsbE5ikOc8S6RGX+jXaOAGKUfmZQMfBgOMg6kwXdbzzRTkxRaZ
-	P+wbD14FB1YWcTBzGOQhQC2DjOoRSqCABXBWt0SXmNxoxW+he7u17bQRKqigersnsB0LCxd62VP
-	L/AK7mt6llq2k029bwoHP03XYzAlpJ7AJJZa3vASMCqcRphVjVePo9JvLIRYIg/bpuA4/7Ll2fe
-	stbRMzLyKwKfCg4+NaN6n718OLj6KEgwf2Raw8prR+krm593qcswiBW60ImDnFB0cF3t1NMCB/Y
-	TeJWCfkiJFE4LbHEEcObx9tpeVVuqRKK58A5GRxWt99q8lNoNvvVeiTjDGCXJARyUeX+kqC9qY0
-	sPHyH/EKzNejGSzkz4NDGjHdofm+sIWt/m/ys+zpLPmFp8rXxbqlZXiGUGFXTWlI11fHG0hNK2h
-	XTm2yXskXCW7HT4cK4HY7+lcTkxRA9yOOhMbAiap91Ano4SN3Ze6o4iuQA7STCwaSge7Phnymne
-	zUDSjdKc4RW7V7zhfWXUMdiDVAJcGpm1X2nJTg0tZ4REbBxw2FWl0lagMxiZefOpU6IcvViJzVj
-	pShX1GUtKOmiaDgeahXCgf1hgn9gpgg=
-X-Received: by 2002:a05:600c:820e:b0:4ac:da92:2bd4 with SMTP id 5b1f17b1804b1-4bb887c9936mr256814445e9.1.1795466054054;
-        Mon, 23 Nov 2026 12:34:14 -0800 (PST)
+        bh=hPT/ypmWmLMxLtJbyhU72b/6yrEAVjSw6rFwMDxvsHg=;
+        b=SrgmN8BLpJHeMW/1koLNNdv0dFin8t/95i5+46B+rrlCyvhrGh3dJCeXzsqGmmLWiD
+         sKNasFTG7FjAHdndI9/wLg/KPX9nQY8PN3xeL6WhbT8zmvFhPwtlp3CBxj4saMxHh18I
+         XssFJW/Gup2oUKCIDORIDae+UqsAYGstolyU4Xck7uXALA3PGUVmLxaxVtavE3ea10m4
+         fHWLOXxI5vwP24/B53AgAwhTs1ysZly75SHDNRtWCWCshIR1h9ieHMwe4Kzm9EvLIkZB
+         cW/7gAyUtE9E8RJ6CIngHmbv7UWf42dzD2MxfGDANsqWkVUbE/befUrAN+VPshTbv1vE
+         LSrA==
+X-Forwarded-Encrypted: i=1; AL+hErEegtFydYlJoLj22Gzu6/ncYe1MBYg+kzjVg6UwH3ZGKoYCnD6eTTL0kuU9MW7Lb7N3bF8oFvxwLumCMA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/GbZDCZ7Hc41VPFnjBhLmh/T9uGjd5P+onLLL0lCwHllZ0LEV+
+	1A8wrKlWhmUepDSkoJeqGYu+i8ZDg1XqvbbAAt/Nw9CZfE1SJi0mTaXmSKo8PdhJ
+X-Gm-Gg: AZFdTZestfbfctI8BqA2UT7FQMe9PFpc/lA4sgQmcEmVrm/I4RuhdKEsLCetNvLXieX
+	2VAtJZ71AQIBq8oVlMKjTeyZqlDLGpMGUNgTmzepPDNodSrgO1WSjViFOp2shtZ0QGsahe54G2i
+	UFnIpjydiNZ0nqti+xsvDfjeqqBAVQyd6pRmepfRFlK+Lzumd4aJ7ZeU6rgcaMtkVGlkHuqCdf+
+	c2TtoWxpqKeLt/nB9AeVyxyG+8lfI3ibaDH4kPbziSik25HAk7d/gujd0/LCkLWEQfLobzffOUd
+	RzTLs6HBELU+isYvUum6Zoza2fq1ncMAXQfxF+X9BYG3slb9lWp2R2mJv1MaIgppX0ZIrQ4IZGm
+	AFsGtaKvNkexQ6totFzDch6TuSUgBrwHIpQg7cxhOXFBl5aqlNgQv4ymJz2W1PsHDuiC1N9S8B7
+	3UytoSF7SdVUwlba/lWga8cHT8VKpHQ4Sz2lfs/7FIoqtrNrOJIhDDdtdnI44x2RTpalpn51+Q9
+	icSdDDdwmC4s0tab8Uo9rvhAbIL9pjdABVgL1AbAVY6bvufScdZzxeX6Rl4YJro/V5uBgBezv8U
+	myOEzGD8Gvkir/Cuq51VBjtNaLYW/g==
+X-Received: by 2002:a05:600c:4e0b:b0:49f:e772:6ddf with SMTP id 5b1f17b1804b1-4bb8881ae90mr271461095e9.32.1795466055465;
+        Mon, 23 Nov 2026 12:34:15 -0800 (PST)
 Received: from unknown.local ([151.34.53.154])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4bb884b7515sm515946805e9.13.2026.11.23.12.34.12
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4bb884b7515sm515946805e9.13.2026.11.23.12.34.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 12:34:13 -0800 (PST)
+        Mon, 23 Nov 2026 12:34:15 -0800 (PST)
 From: Gianluca Boiano <morf3089@gmail.com>
-Date: Mon, 23 Nov 2026 21:33:56 +0100
-Subject: [PATCH 4/5] media: ccs: Make the source pad format follow the crop
- rectangle
+Date: Mon, 23 Nov 2026 21:33:57 +0100
+Subject: [PATCH 5/5] media: ccs: Apply rule-based manufacturer register
+ blocks at stream start
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -95,7 +95,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261123-b4-ccs-imx376-v1-4-2b26850a6f11@gmail.com>
+Message-Id: <20261123-b4-ccs-imx376-v1-5-2b26850a6f11@gmail.com>
 References: <20261123-b4-ccs-imx376-v1-0-2b26850a6f11@gmail.com>
 In-Reply-To: <20261123-b4-ccs-imx376-v1-0-2b26850a6f11@gmail.com>
 To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
@@ -106,101 +106,123 @@ To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
  Hans Verkuil <hverkuil@kernel.org>
 Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, stable@vger.kernel.org, 
- Gianluca Boiano <morf3089@gmail.com>
+ David Heidelberg <david@ixit.cz>, Gianluca Boiano <morf3089@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795466045; l=3197;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795466045; l=3499;
  i=morf3089@gmail.com; s=20240402; h=from:subject:message-id;
- bh=AfhBJJT/dYmW+sBV6vyFvVaWagbgV6JhE5LC9kE6/9w=;
- b=nA+mPZum9SfgJ6ZaFHnBsjvxZSARCOiB7wSvuXdYHv0c3WlskBv1F9e4K0z64Lp5zVi/LfWCS
- bsfvfP9bsrpApXIBaGZJ8QAEOn0BW8kIsqyx1hwoN5rRmPBZz/5icF1
+ bh=VfDCx66Bt9Q8ssDuqyaFOOZuxp5MaGCTsBGPv8t+RG8=;
+ b=NAftwknVuWdeZhsZgh/6X5zyWUZbkl202qCbHJEL29BwWA0IUWx/7BgmqO5i80iqHzD4qKiJ6
+ 6mHO0e+HqvVDk176PadruzQefMIA//D4e/+mM70fA0XvtZsNzGlkz6V
 X-Developer-Key: i=morf3089@gmail.com; a=ed25519;
  pk=HsGrEQ3ia8BGGGO8/nUM2K2UX9JKvRPV+nbrVDGrYhA=
 
-The size of the format on the source pad of the pixel array, and on the
-source pad of the sub-device that is the source of the CSI-2 bus, is that
-of the crop rectangle on the same pad: the analogue crop of the pixel
-array and the digital crop at the end of the pipeline, respectively. The
-format was only initialised from the pixel array size or the compose
-rectangle and never updated when the crop was set, so after setting such a
-crop the format did not match what the sensor outputs.
+The static data rule based blocks were parsed but never used. Before
+streaming, write the base manufacturer register set again (undoing any
+earlier rule) and then the manufacturer registers of each sensor and
+module rule whose if-rules all match the current register values, e.g.
+binning_mode, which is already written at that point. This lets one
+static file carry settings that depend on the readout mode.
 
-As the format of a source pad can not be set from user space, and the
-format of the sink pad it is linked to has to match it, link validation
-fails with -EPIPE for any crop other than the full area.
+Tested on a Xiaomi Mi A2 (Sony IMX376) with a static file whose base set
+is the 2x2 binned mode and whose rule on binning_mode 0 holds the full
+resolution deltas: both 2592x1940 and 5184x3880 stream correctly from the
+same file. Without the rule application full resolution output is corrupt.
 
-Update the size of the format when the crop is set. As the size of the
-pixel array format is then no longer its native size, use the native size
-as the bounds for its crop.
-
-Fixes: d8bca3ed1d70 ("media: ccs: Use sub-device active state")
-Cc: stable@vger.kernel.org
 Signed-off-by: Gianluca Boiano <morf3089@gmail.com>
 ---
- drivers/media/i2c/ccs/ccs-core.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ drivers/media/i2c/ccs/ccs-core.c | 72 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
 diff --git a/drivers/media/i2c/ccs/ccs-core.c b/drivers/media/i2c/ccs/ccs-core.c
-index a4af27de5453..acea07d906f3 100644
+index acea07d906f3..db98590c1ed6 100644
 --- a/drivers/media/i2c/ccs/ccs-core.c
 +++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -2541,6 +2541,14 @@ static int ccs_sel_supported(struct v4l2_subdev *subdev,
- 	}
+@@ -1620,6 +1620,72 @@ static int ccs_write_msr_regs(struct ccs_sensor *sensor)
+ 				   sensor->mdata.num_module_manufacturer_regs);
  }
  
-+static void ccs_get_native_size(struct ccs_subdev *ssd, struct v4l2_rect *r)
++static int ccs_rule_matches(struct ccs_sensor *sensor,
++			    const struct ccs_rule *rule)
 +{
-+	r->top = 0;
-+	r->left = 0;
-+	r->width = CCS_LIM(ssd->sensor, X_ADDR_MAX) + 1;
-+	r->height = CCS_LIM(ssd->sensor, Y_ADDR_MAX) + 1;
++	for (unsigned int i = 0; i < rule->num_if_rules; i++) {
++		const struct ccs_if_rule *if_rule = &rule->if_rules[i];
++		u32 val;
++		int rval;
++
++		rval = ccs_read_addr_8only(sensor, CCI_REG8(if_rule->addr),
++					   &val);
++		if (rval)
++			return rval;
++
++		if ((val & if_rule->mask) != (if_rule->value & if_rule->mask))
++			return 0;
++	}
++
++	return 1;
 +}
 +
- static int ccs_set_crop(struct v4l2_subdev *subdev,
- 			const struct v4l2_subdev_client_info *ci,
- 			struct v4l2_subdev_state *sd_state,
-@@ -2556,7 +2564,9 @@ static int ccs_set_crop(struct v4l2_subdev *subdev,
- 	comp = v4l2_subdev_state_get_compose(sd_state, ssd->sink_pad,
- 					     CCS_STREAM_PIXEL);
- 
--	if (sel->pad == ssd->sink_pad) {
-+	if (ssd == sensor->pixel_array) {
-+		ccs_get_native_size(ssd, &src_size);
-+	} else if (sel->pad == ssd->sink_pad) {
- 		struct v4l2_mbus_framefmt *mfmt =
- 			v4l2_subdev_state_get_format(sd_state, sel->pad);
- 
-@@ -2579,20 +2589,21 @@ static int ccs_set_crop(struct v4l2_subdev *subdev,
- 
- 	*crop = sel->r;
- 
--	if (ssd != sensor->pixel_array && sel->pad == CCS_PAD_SINK)
-+	if (sel->pad == ssd->source_pad) {
-+		struct v4l2_mbus_framefmt *fmt =
-+			v4l2_subdev_state_get_format(sd_state, sel->pad,
-+						     CCS_STREAM_PIXEL);
++static int ccs_apply_rule_list(struct ccs_sensor *sensor,
++			       const struct ccs_rule *rules, size_t num_rules)
++{
++	for (unsigned int i = 0; i < num_rules; i++) {
++		int rval = ccs_rule_matches(sensor, &rules[i]);
 +
-+		/* The size of the source pad format is that of the crop. */
-+		fmt->width = crop->width;
-+		fmt->height = crop->height;
-+	} else {
- 		ccs_propagate(subdev, sd_state, V4L2_SEL_TGT_CROP);
++		if (rval < 0)
++			return rval;
++		if (!rval)
++			continue;
++
++		rval = ccs_write_data_regs(sensor, rules[i].manufacturer_regs,
++					   rules[i].num_manufacturer_regs);
++		if (rval)
++			return rval;
 +	}
++
++	return 0;
++}
++
++/*
++ * Apply the manufacturer-specific registers of the matching rule based
++ * blocks. The conditions refer to registers that are already set for this
++ * stream (e.g. binning_mode). The base set is written first, undoing what a
++ * previous stream's rules may have left in the sensor.
++ */
++static int ccs_apply_rules(struct ccs_sensor *sensor)
++{
++	int rval;
++
++	if (!sensor->sdata.num_sensor_rules && !sensor->mdata.num_module_rules)
++		return 0;
++
++	rval = ccs_write_msr_regs(sensor);
++	if (rval)
++		return rval;
++
++	rval = ccs_apply_rule_list(sensor, sensor->sdata.sensor_rules,
++				   sensor->sdata.num_sensor_rules);
++	if (rval)
++		return rval;
++
++	return ccs_apply_rule_list(sensor, sensor->mdata.module_rules,
++				   sensor->mdata.num_module_rules);
++}
++
+ static int ccs_update_phy_ctrl(struct ccs_sensor *sensor)
+ {
+ 	struct i2c_client *client = v4l2_get_subdevdata(&sensor->src->sd);
+@@ -1993,6 +2059,12 @@ static int ccs_enable_streams(struct v4l2_subdev *subdev,
+ 			goto err_pm_put;
+ 	}
  
- 	return 0;
- }
- 
--static void ccs_get_native_size(struct ccs_subdev *ssd, struct v4l2_rect *r)
--{
--	r->top = 0;
--	r->left = 0;
--	r->width = CCS_LIM(ssd->sensor, X_ADDR_MAX) + 1;
--	r->height = CCS_LIM(ssd->sensor, Y_ADDR_MAX) + 1;
--}
--
- static int ccs_get_selection(struct v4l2_subdev *subdev,
- 			     const struct v4l2_subdev_client_info *ci,
- 			     struct v4l2_subdev_state *sd_state,
++	rval = ccs_apply_rules(sensor);
++	if (rval) {
++		dev_err(&client->dev, "applying rules failed (%d)\n", rval);
++		goto err_pm_put;
++	}
++
+ 	rval = ccs_call_quirk(sensor, pre_streamon);
+ 	if (rval) {
+ 		dev_err(&client->dev, "pre_streamon quirks failed\n");
 
 -- 
 2.56.1
