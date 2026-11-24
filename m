@@ -1,89 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795466057;
-	b=YSxLgEgccKjr7h+yaeZXYlerGJvmri+wby2Pv5+9wC5tt/G65o29WjVnGZqTtQ+Xowel
-	 w/+Vo8OFIrWhUG2sHScPNGq5M3nzFuheqk8OMNx+fXQEwiQB3qME+bWyN/wDLdNwfICv6
-	 3G7AlZXQ5V7ukU/Xurctu1XMIlLeAwAWLi2+qTKdkwcVGzCbo1N9e/EYo18aLM52RGU4Y
-	 BEwKFEmGOu9QOE2E3aOEVQhAgc2cJFhls8EgyfUuGJYewQQB2zyScezvW3+gCzG9GbDC+
-	 40DO8lR4rDCv6t7HTV2LrkvcR8ufsbaTrfG/uQjGpzASJ3fjBroFogKkuyZJa/v0M+Q==
+	t=1795485384;
+	b=2kBrPIbxclFfKPQW2MwzPtpVE4+5uPizVfxIg5AKdZeGwhxP5zgtZb6REmqSvpnyqHQE
+	 rQSBlcB7Grggn8md+WE3Z5nI6XtM6/gmoV8jiObpIxAYBjcYsRyJasiZsJAnTOa+HZpBc
+	 x8FQUb0KzX2sgHCB99CYukK6tMfxqxSXXFHb8TmphPuny+9zG4lcmpfoW88yX5oWDCmLc
+	 TllJrP54iGSqYWOloxHCf0Fz+AOdS9aApDtqHzD+P1JHyYmqI+Mf8ayBMjklRJSGCL/8X
+	 TVyutgtvJ3iLgNoufpJyZI8Z/Bfz9vpLm8Bcil6/IdcOWYY0rcAF1kWe83VUWJjUfXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795466057;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795485384;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=hPT/ypmWmLMxLtJbyhU72b/6yrEAVjSw6rFwMDxvsHg=;
-	b=FerXlICVNKX/ADN98rJDPCx025/3A/O65vP44WJTLP89ZZrc7RwaMZ2Ti3EQvEGGstdN
-	 7kHAbrs2byiToDLg74i1OdXxUEwsufk9tHiAsVop+ua2B88fS3BsrRF1YPKrzIbGAnfYc
-	 h+P2GJ45dfB3sFQ9gfuqSTs5nUzoFyCHfKOSm5gdh0ZzO1H0IMZlk3FVbu257n4Bo1KWj
-	 RJo3m3BelH9JQb+FUzmYS4iYGnbYdjHwcCwbib35KRYUpH7lRfR2HPCB2EkMjZwldcgOO
-	 EhvXQCx3v+/aN077YYsQObBDfavbSUj4H4tz9lU9N3lL8Ly2JXrq0ecMi0JfXoMhWkg==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=q7yKCR40q8eUq26k3oT3KK8/EmLxrrYzaMJfF2nkc00=;
+	b=NH0kfSMBGwuXCxouO8Pm00TSlwcj1P/UExqgJS9Y5bhC6QgmmBHgPT1vfNx7iThrA6cY
+	 xzorp8i5CWCBIMuW+6DsMVhn+4Iz14xI4eEzm1DAm6HLXlaveKjLchh3tc6+s6mlAanAC
+	 i8ZWtQWWpoPbRXAFk5IBYL27nxFETMDx2uvOs5tzF8a9elNjy8rCy0sqRXpdB70yPPGmz
+	 KoaJjoYR3AyHJGcyiT5Z/mPgc/Hp28k48PXjknPdtiBhqbDxTyDhkYc89mgLyxfjhX4I+
+	 D1WAP3x4BhCMFFPXHfYJkkhSH4xMkDnIeUCt/X3Tw2lLxSnSccm1Tr4hYPy/iXMsAxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VNYlOwFm;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=z4DfO8nm;
+	arc=none smtp.remote-ip=209.85.222.180
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ED860A262F
-	for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 20:34:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24ED860A262F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FFC606A31E
+	for <phone-devel@vger.kernel.org>; Tue, 24 Nov 2026 01:56:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21FFC606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VNYlOwFm
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4bb9d8e8e90so8883585e9.3
-        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 12:34:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=z4DfO8nm
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-949664ee41cso420515785a.3
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2026 17:56:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795466055; x=1796070855; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hPT/ypmWmLMxLtJbyhU72b/6yrEAVjSw6rFwMDxvsHg=;
-        b=VNYlOwFmrm+wLhEGoOMDJnlhb33JACLnJI2PJY6WoDx/+lw/0L8iwubY+Fe1T5seGq
-         uZOpHDJ8XNVSvY0CRcJTzls5ESPF9EJEteQRXiQCQXzG5DSRDqmPkOfoqugitUOKR8ti
-         h88EGkLgbTcUZz5hMLVudh2rLEHCHdcx2s0zsG6oPyJk/ijyqvJBXe0CJGxMIoIKJsXv
-         ucw/jA1j/R0pu+1/mT5GuEZdh23/cy6/Hp8C50+7ByE2ZlF3+vtEl340GDeE5NaXFKfS
-         wCVXj4rqIfT7XGkND+GsqDdX1A8i8BuGw5pjL+cury/90Nswk4eah2cqRYyqMffqhhpi
-         mh+g==
+        d=gmail.com; s=20260707; t=1795485383; x=1796090183; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=q7yKCR40q8eUq26k3oT3KK8/EmLxrrYzaMJfF2nkc00=;
+        b=z4DfO8nmNbrEgFqhLcRF8JcVLCkC/ktyGqWEafsu/BnXYKGWDpkQKyjV6z/HDjK1Kq
+         abYz7L0vbof+4kPv/6Qx1Y/TBUKzBvE4tImHN8gB7d9oeEioRLqsL3cyRz8NEGw9IMjf
+         RU9ebb7eB7QjWkzxjz2vsQrykKsN380f4aP2M3MWdCLrbfqdUQRZkwQ07G7V9SwlRwLq
+         nPzQGI1GzGLj6TJUXX763xDdMuZGfiFkJxLujZZArNEEMpxtMg2+wWr3/IqJv7q7DS3N
+         OJ1rzC/wEMX0qDKS3cNd+rKKpKTcPkXvM8d8NOfEe+QUY3s/27FEwB36Whcw2FfqJ9qH
+         +aaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795466055; x=1796070855;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hPT/ypmWmLMxLtJbyhU72b/6yrEAVjSw6rFwMDxvsHg=;
-        b=SrgmN8BLpJHeMW/1koLNNdv0dFin8t/95i5+46B+rrlCyvhrGh3dJCeXzsqGmmLWiD
-         sKNasFTG7FjAHdndI9/wLg/KPX9nQY8PN3xeL6WhbT8zmvFhPwtlp3CBxj4saMxHh18I
-         XssFJW/Gup2oUKCIDORIDae+UqsAYGstolyU4Xck7uXALA3PGUVmLxaxVtavE3ea10m4
-         fHWLOXxI5vwP24/B53AgAwhTs1ysZly75SHDNRtWCWCshIR1h9ieHMwe4Kzm9EvLIkZB
-         cW/7gAyUtE9E8RJ6CIngHmbv7UWf42dzD2MxfGDANsqWkVUbE/befUrAN+VPshTbv1vE
-         LSrA==
-X-Forwarded-Encrypted: i=1; AL+hErEegtFydYlJoLj22Gzu6/ncYe1MBYg+kzjVg6UwH3ZGKoYCnD6eTTL0kuU9MW7Lb7N3bF8oFvxwLumCMA==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/GbZDCZ7Hc41VPFnjBhLmh/T9uGjd5P+onLLL0lCwHllZ0LEV+
-	1A8wrKlWhmUepDSkoJeqGYu+i8ZDg1XqvbbAAt/Nw9CZfE1SJi0mTaXmSKo8PdhJ
-X-Gm-Gg: AZFdTZestfbfctI8BqA2UT7FQMe9PFpc/lA4sgQmcEmVrm/I4RuhdKEsLCetNvLXieX
-	2VAtJZ71AQIBq8oVlMKjTeyZqlDLGpMGUNgTmzepPDNodSrgO1WSjViFOp2shtZ0QGsahe54G2i
-	UFnIpjydiNZ0nqti+xsvDfjeqqBAVQyd6pRmepfRFlK+Lzumd4aJ7ZeU6rgcaMtkVGlkHuqCdf+
-	c2TtoWxpqKeLt/nB9AeVyxyG+8lfI3ibaDH4kPbziSik25HAk7d/gujd0/LCkLWEQfLobzffOUd
-	RzTLs6HBELU+isYvUum6Zoza2fq1ncMAXQfxF+X9BYG3slb9lWp2R2mJv1MaIgppX0ZIrQ4IZGm
-	AFsGtaKvNkexQ6totFzDch6TuSUgBrwHIpQg7cxhOXFBl5aqlNgQv4ymJz2W1PsHDuiC1N9S8B7
-	3UytoSF7SdVUwlba/lWga8cHT8VKpHQ4Sz2lfs/7FIoqtrNrOJIhDDdtdnI44x2RTpalpn51+Q9
-	icSdDDdwmC4s0tab8Uo9rvhAbIL9pjdABVgL1AbAVY6bvufScdZzxeX6Rl4YJro/V5uBgBezv8U
-	myOEzGD8Gvkir/Cuq51VBjtNaLYW/g==
-X-Received: by 2002:a05:600c:4e0b:b0:49f:e772:6ddf with SMTP id 5b1f17b1804b1-4bb8881ae90mr271461095e9.32.1795466055465;
-        Mon, 23 Nov 2026 12:34:15 -0800 (PST)
-Received: from unknown.local ([151.34.53.154])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4bb884b7515sm515946805e9.13.2026.11.23.12.34.14
+        d=1e100.net; s=20260707; t=1795485383; x=1796090183;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=q7yKCR40q8eUq26k3oT3KK8/EmLxrrYzaMJfF2nkc00=;
+        b=igXVbrVrTGM0MPXUE90ijc5iq6cHh/GOP6QS6eKJE8UUsvMrwpmGrPLNGG7v5cUT3f
+         6gYCsR4kJrZAqHFSCWrEaxB2BzVywNblRvLKBSJe1H+qjN2e8yl+Ny7Z9Wj9i+/Gl0oX
+         FED76uzxT5qxLwTPyfnEoQDXogibcjIB/PnA3aTL0fNmWY9PvnkOXFYNcpVDn9NFlB9d
+         zwffiWZgghTOu+h5J+8nSzi9S3O+C4PF4uzuo5TqEt8q41ImpY1gWX7hNAOB7aDicRs8
+         oVeCflpvdQCqt1osX3TVLyCth6TOalHxICayuz4RsxNuHBT/2o2ITai0TOn8QtvvCI75
+         tMAg==
+X-Gm-Message-State: APuU4Z9uYcFHkp3FTLCzSW6oda6kglCCJQz8aL55WBn6QVjXakU0uPqy
+	kafG/5F6dkjLJVlsRiIesajK20gF/5GyzWNYprKMsUwgKrgc+N6SA7Iy5ZB1sw==
+X-Gm-Gg: AZFdTZe/wdRB7Oi7gc3bDkxd/CdrGfUwUx9V6/s04py2qcCWWxLjAaWzBPc4zQ8wEcQ
+	g+nUO3tsmmomhcoLOiLYWxWq/iZwX0eYWnf++9vbzXQiP+fXNWwk3rzZK93doEHx+bX1dv0ZAtC
+	syTHPLdbiEz6+upJ+l2nY+XuYIg5vGvm/gqz0vTfRotqPPISa3tqhSZConL4S8JQKPNt7roaa84
+	4q1eskPfheejoZCnBX9nSz3kVMKPWyXiTSOemC0b6lgAGlLkVl3BaqYCY48xh8HnX12QqcGYwKo
+	IfliSp8bGMIVU7YNFt8ujigTD3SFLBIqXpzDB+RJIxmVMLvdHole/zM7aarocy7hA89OeSvEbTB
+	9qgaJK8izoD75GoPjrkJBMbAEw3v8Ibijrsa2mtX+RM7C7wxHwoSqM5dFi1C6MASQaBnKOwSGhZ
+	N2JP5nO9TqlR7Sh0nEt9VE0qG6E7orTwnjZHSa+uhTjMGdW5P9F2pqCH8tTcwsS1Na62figq0vx
+	DaKVppZ2c+Ij8WdF083+3RFIB/YJqwlfZqz8kDHPDtJPvw7SziZmMHAbDYW5DgYWXeg9zM9+k3P
+	9FlLme8cIzge+lPvIEJuZWOANq+i
+X-Received: by 2002:a05:620a:450e:b0:947:b201:fadb with SMTP id af79cd13be357-949ba9b7434mr2479954885a.29.1795485383133;
+        Mon, 23 Nov 2026 17:56:23 -0800 (PST)
+Received: from localhost ([174.93.36.89])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb34ac11sm941507985a.14.2026.11.23.17.56.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 12:34:15 -0800 (PST)
-From: Gianluca Boiano <morf3089@gmail.com>
-Date: Mon, 23 Nov 2026 21:33:57 +0100
-Subject: [PATCH 5/5] media: ccs: Apply rule-based manufacturer register
- blocks at stream start
+        Mon, 23 Nov 2026 17:56:22 -0800 (PST)
+From: Richard Acayan <mailingradian@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: phone-devel@vger.kernel.org,
+	Richard Acayan <mailingradian@gmail.com>
+Subject: [PATCH v4 0/5] ADSP for SDM670 and sound on Google Pixel 3a
+Date: Mon, 23 Nov 2026 20:56:06 -0500
+Message-ID: <20261124015611.187024-1-mailingradian@gmail.com>
+X-Mailer: git-send-email 2.56.1
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -93,136 +99,47 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261123-b4-ccs-imx376-v1-5-2b26850a6f11@gmail.com>
-References: <20261123-b4-ccs-imx376-v1-0-2b26850a6f11@gmail.com>
-In-Reply-To: <20261123-b4-ccs-imx376-v1-0-2b26850a6f11@gmail.com>
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Hans Verkuil <hverkuil@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>, Gianluca Boiano <morf3089@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795466045; l=3499;
- i=morf3089@gmail.com; s=20240402; h=from:subject:message-id;
- bh=VfDCx66Bt9Q8ssDuqyaFOOZuxp5MaGCTsBGPv8t+RG8=;
- b=NAftwknVuWdeZhsZgh/6X5zyWUZbkl202qCbHJEL29BwWA0IUWx/7BgmqO5i80iqHzD4qKiJ6
- 6mHO0e+HqvVDk176PadruzQefMIA//D4e/+mM70fA0XvtZsNzGlkz6V
-X-Developer-Key: i=morf3089@gmail.com; a=ed25519;
- pk=HsGrEQ3ia8BGGGO8/nUM2K2UX9JKvRPV+nbrVDGrYhA=
+Content-Transfer-Encoding: 8bit
 
-The static data rule based blocks were parsed but never used. Before
-streaming, write the base manufacturer register set again (undoing any
-earlier rule) and then the manufacturer registers of each sensor and
-module rule whose if-rules all match the current register values, e.g.
-binning_mode, which is already written at that point. This lets one
-static file carry settings that depend on the readout mode.
+This series adds a user for the SDM660 sound support code [1]. It also
+adds the ADSP remoteproc for SDM670.
 
-Tested on a Xiaomi Mi A2 (Sony IMX376) with a static file whose base set
-is the 2x2 binned mode and whose rule on binning_mode 0 holds the full
-resolution deltas: both 2592x1940 and 5184x3880 stream correctly from the
-same file. Without the rule application full resolution output is corrupt.
+[1] https://lore.kernel.org/r/20260730174353.108023-1-mailingradian@gmail.com
 
-Signed-off-by: Gianluca Boiano <morf3089@gmail.com>
----
- drivers/media/i2c/ccs/ccs-core.c | 72 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 72 insertions(+)
+Changes since v3 (https://lore.kernel.org/r/20261107022453.159341-1-mailingradian@gmail.com):
+- remove sound-name-prefix (3-5/5)
+- add newline before status (3/5)
+- add review tags (3/5)
+- drop applied patches (previously 1-4/9)
 
-diff --git a/drivers/media/i2c/ccs/ccs-core.c b/drivers/media/i2c/ccs/ccs-core.c
-index acea07d906f3..db98590c1ed6 100644
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -1620,6 +1620,72 @@ static int ccs_write_msr_regs(struct ccs_sensor *sensor)
- 				   sensor->mdata.num_module_manufacturer_regs);
- }
- 
-+static int ccs_rule_matches(struct ccs_sensor *sensor,
-+			    const struct ccs_rule *rule)
-+{
-+	for (unsigned int i = 0; i < rule->num_if_rules; i++) {
-+		const struct ccs_if_rule *if_rule = &rule->if_rules[i];
-+		u32 val;
-+		int rval;
-+
-+		rval = ccs_read_addr_8only(sensor, CCI_REG8(if_rule->addr),
-+					   &val);
-+		if (rval)
-+			return rval;
-+
-+		if ((val & if_rule->mask) != (if_rule->value & if_rule->mask))
-+			return 0;
-+	}
-+
-+	return 1;
-+}
-+
-+static int ccs_apply_rule_list(struct ccs_sensor *sensor,
-+			       const struct ccs_rule *rules, size_t num_rules)
-+{
-+	for (unsigned int i = 0; i < num_rules; i++) {
-+		int rval = ccs_rule_matches(sensor, &rules[i]);
-+
-+		if (rval < 0)
-+			return rval;
-+		if (!rval)
-+			continue;
-+
-+		rval = ccs_write_data_regs(sensor, rules[i].manufacturer_regs,
-+					   rules[i].num_manufacturer_regs);
-+		if (rval)
-+			return rval;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Apply the manufacturer-specific registers of the matching rule based
-+ * blocks. The conditions refer to registers that are already set for this
-+ * stream (e.g. binning_mode). The base set is written first, undoing what a
-+ * previous stream's rules may have left in the sensor.
-+ */
-+static int ccs_apply_rules(struct ccs_sensor *sensor)
-+{
-+	int rval;
-+
-+	if (!sensor->sdata.num_sensor_rules && !sensor->mdata.num_module_rules)
-+		return 0;
-+
-+	rval = ccs_write_msr_regs(sensor);
-+	if (rval)
-+		return rval;
-+
-+	rval = ccs_apply_rule_list(sensor, sensor->sdata.sensor_rules,
-+				   sensor->sdata.num_sensor_rules);
-+	if (rval)
-+		return rval;
-+
-+	return ccs_apply_rule_list(sensor, sensor->mdata.module_rules,
-+				   sensor->mdata.num_module_rules);
-+}
-+
- static int ccs_update_phy_ctrl(struct ccs_sensor *sensor)
- {
- 	struct i2c_client *client = v4l2_get_subdevdata(&sensor->src->sd);
-@@ -1993,6 +2059,12 @@ static int ccs_enable_streams(struct v4l2_subdev *subdev,
- 			goto err_pm_put;
- 	}
- 
-+	rval = ccs_apply_rules(sensor);
-+	if (rval) {
-+		dev_err(&client->dev, "applying rules failed (%d)\n", rval);
-+		goto err_pm_put;
-+	}
-+
- 	rval = ccs_call_quirk(sensor, pre_streamon);
- 	if (rval) {
- 		dev_err(&client->dev, "pre_streamon quirks failed\n");
+Changes since v2 (https://lore.kernel.org/r/20261003175659.23536-1-mailingradian@gmail.com):
+- stop using fallback compatible and add lcx power domain (3-5/9)
+- move lpass codec bclk from sdm670-google-common.dtsi to sdm670.dtsi
+  (5/9, 9/9)
+- reformat q6dsp dts (5/9)
+- set flags for codec interrupts (7/9)
+- move "qcom,..." properties to board dtsi (7/9, 9/9)
+- add review tags (6/9)
+
+Changes since v1 (https://lore.kernel.org/r/20260922015801.32373-1-mailingradian@gmail.com):
+- squashed sound card and device-specific codec config (11/11)
+- converted to fallback compatible (4/11)
+- added compatible for WCD digital codec (5/11, 10/11)
+- removed sleepstate comment (7/11)
+- sorted subnodes of dai link (11/11)
+- add review tags (1-3/11)
+
+Richard Acayan (5):
+  arm64: dts: qcom: sdm670: add adsp
+  arm64: dts: qcom: sdm670-google: enable adsp
+  arm64: dts: qcom: pm660l: add analog audio codec
+  arm64: dts: qcom: sdm670: add digital audio codec
+  arm64: dts: qcom: sdm670-google: add sound card
+
+ arch/arm64/boot/dts/qcom/pm660l.dtsi          |  37 ++++
+ .../boot/dts/qcom/sdm670-google-common.dtsi   | 139 ++++++++++++
+ arch/arm64/boot/dts/qcom/sdm670.dtsi          | 198 ++++++++++++++++++
+ 3 files changed, 374 insertions(+)
 
 -- 
 2.56.1
