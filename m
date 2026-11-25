@@ -1,56 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795628308;
-	b=Z7RJ/vSWB5S6UgA6J5IYS8cjWoxVSybv7+HoSQ8toO14xpq2JzhrYXHgOgsFuQR/j4Kr
-	 M1Zo49pB977MH+hrobj6JYGESoLDLGv4xOfldy2A806wTaWvXaZFU8EhmbUfvDtdTSgDQ
-	 x6VakQCP0DN9JGRfQlO2wAPnRpCCTKpzcVuN/eWPPPwXCBBFPajsxxqCjkUv+mugYam10
-	 Kww21hJahtfuyWmhz7MDfwNVwRbfe3qm9LaXGnH3QWBLtxyXT5zJPx92hTcBqbO/4CrsL
-	 IvF0hpzJJFMYY0fVdTb/SIm0NCfe49tqgS78hsWWkr5PKnOccOfbHzV6okIZs8dHnRg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795628308;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Jc2fT23SPWqHr6nIykatx49BNkv061JXFi2XlfZIV5I=;
-	b=FX6GjCTNhtSKsm5opLn8WdEz9/Vnx6JAKgJPm+6sLey8yYAx+b9mykcdEoEHW+6j3L6w
-	 mfD6u8gOV506CWtxg6gIUwz4Vb4IevPT/CDjp9tK9kgcnsQ06mSP1m1KjmzOgTtv7mezk
-	 5I/HvkGBV5S3DAndzEOK8vkatlQNopZXdr7g+hXhNZ2VFpH40T1MueypVA+fRx8aU3R6o
-	 JYwRefi0jsjVag/ILptEXhXv0TM4lXF/2bJyLGFIVXPhciZRYiXdoxXiMTmHROsgdP3xv
-	 SXfxiZJhukjau2713ihVm9L5Svk3QolSeaU1Ghe9BMOe57uyjk/3IGWa5mlju4n9lvw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ixit.cz;
-	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=vz6eljYw;
-	arc=none smtp.remote-ip=84.42.129.46
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795630375;
+	b=DvaTvaUCNc/yIwsbCg1b1d472yIqlzbugyr/P7y95tsCqUXj9MZUcENGC+hskStRJi24
+	 V5+kXVC7SxmOz1T2s7xSQSZd+Rllum5QRE+KV8W1Vgko8baAtSif5SftjRU6L5dH9O/ra
+	 zS5KKIZOMW8g4ediRSl0BUIsd1O+H3BV7foKF1BQtLgQ7h8pBbWQ/jsN29hzfJjIp+oFn
+	 twcRjq1+qcaIHjatVqSqXF2WjG/JU0MuylIqzN7sBYWJt0UlQFhdw+F+Q6yFWPgz5XI5u
+	 dMcTGc/jZEmYP376o28ilz3GI87avgVxa0VyF+8OjSxyDCwNn+pPJaL/qnHjRQVHpug==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795630375;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=1kb4MkqJfJ01MWxX0WLE/KCVtYTRmoNOlVQyKbSTlqo=;
+	b=LASiMfge3WVdIaFvo1ZfRZne9Dd9EvD7di8/mkiO8vWlRYPhgCZBBetu19o1UzsJ6bsy
+	 HS/szCUTSOhNgvjlOzIQlAUX3X2nisbTOT/6URSY8c2WCSrYOWcxQ+mtIcIuSu02IJgZe
+	 RLyBkcvcYafjX2acw7MRFiM9xv7ZzR7x5OtAChUkTdIfZf0Z12dO9Nl5fLg7s5UzFiU0w
+	 j5j6W5op32C9Syt282VWzz8IZ5UxarcV1QUKSDGN3fYw7OtJpfrOYhejjb7O5Xqwg4Ktb
+	 eBkiFZwfYY7SrQguMAh/seI5WgQh7cpIkmA1Qm1dEEvTyqKX8bbVbidqBksY6cgzcPA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JQsZWzkd;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C970606A334;
+	Wed, 25 Nov 2026 18:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JQsZWzkd
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795630374;
+	b=OCeSVYDy0f85IHjMqbCVMtOwlhxwaeSm9cOqI8fawfl6fO00g4LrS4mJkXss/+RVY7LY
+	 DhKgbPBpfwtRpCnBsm1Ij7MlQrMIGbEGQVOAmu/OO25WXatsZITDCaWe6i8UXPhI8kwzS
+	 stlww6SjVMM6fXsEziFzyFdgdrW7FWp+UvlWooNSXiKxQOBY7EEdtn9dxTlepQ3nctZ9X
+	 IdMSGScDYtstDGlDfIMxIN3C7qZs7LYFYLN/fzl6NKXo2i6CYcLeUyuqJwSBuBoejtiX2
+	 csB0hxbKeAW93jgli1xc7WgonrspaCCNuDNFgixRgB0tk6kUMNXw3fLFPXWvzx1Ha3Q==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795630374;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=1kb4MkqJfJ01MWxX0WLE/KCVtYTRmoNOlVQyKbSTlqo=;
+	b=FHsi31VVhNiXYUTtIVh1QGX1PZQpSf1Eazy1oA5btgpt3zvOiFq60pkU37kSX3vZUfit
+	 lJr2I7ICk+Aco038Rk8wR0oXyWtBF0dCRy8Y0KORPu37soIeFfXtidixBMgoLk7yFRi5D
+	 iVscqxqwpH9mFWOFLkVeHpRxybwjji64mtaiDpIDlmZViZorQjrCrvI5Wz2EJo3syL/v8
+	 n2YacqlCPYEHshRoL3qUoYgTh2JD6LmfQ1Rxs2KnX6ENEcwO4XuJECnVI/mebOGLJVDz7
+	 5SteeiTBsXaYxXN34O908omQFTkHrTAmJjTzzCmCG4sMk8LiMT1aZGI69tMhS4stBow==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94355606A326;
-	Wed, 25 Nov 2026 17:38:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94355606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=vz6eljYw
-Received: from [IPV6:2a02:830a:f787:8f00:f33c:cbcd:417b:d2b9] (unknown [IPv6:2a02:830a:f787:8f00:f33c:cbcd:417b:d2b9])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id E82FF53402F6;
-	Wed, 25 Nov 2026 18:38:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1795628305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Jc2fT23SPWqHr6nIykatx49BNkv061JXFi2XlfZIV5I=;
-	b=vz6eljYwfoF4hl31mO8OMR8yWufis/ML2BxifwgqeIAYVH97dvFmsuVdJWgA0gZT5Y58V3
-	inXPK4a7sjHC9/YYssW/e+uzH2qny9d4EmVU6g2TIVKNtN+DJFFfTLnqzZZPZjgtV3IwEC
-	kfW6lEuobSwehOtIO53WT7TIjU1d//E=
-Message-ID: <72548a95-f009-465f-ac04-b1b09ea4d1ae@ixit.cz>
-Date: Wed, 25 Nov 2026 18:38:24 +0100
+	by smtp.kernel.org (Postfix) with ESMTPS id EE4981F000C6;
+	Wed, 25 Nov 2026 18:12:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795630374;
+	bh=1kb4MkqJfJ01MWxX0WLE/KCVtYTRmoNOlVQyKbSTlqo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=JQsZWzkdWXi5dM+i8fWnKduKyihc8sdnsrNHJK44B7oF9XeJ1PkooRY/fx6oxheOd
+	 feJbgR+otNQphSbeN+5vdHmL0d932lTNUXEf/PHVN1DMxYhvUI7dj5fiJn3yWE7U3S
+	 /GiPREmiIYmR8h/+L+dUnduEqLomJC25jH3P6LjRd+YnebzwXsgoiNBuddcKOtyq49
+	 GOpHNoeXHV/OttH+YtLzW3LSQABRXOGTqXYHxVTeul5wFGpaNT7uR4RBMTYa3qv9FX
+	 EXNjg3NOm6lUnVQOoYb8Be/ZCXxS5O27dpd1diZ4rpHUOLlqGarwwK1ni7CTh7Ra5m
+	 hnLbqRCe3+vHw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 737A74CF69;
+	Wed, 25 Nov 2026 18:12:48 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Date: Wed, 25 Nov 2026 19:12:45 +0100
+Subject: [PATCH v4 1/9] dt-bindings: display: panel: s6e3ha8: Adjust to
+ reflect the DDIC and panel used
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,118 +83,139 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/10] dt-bindings: display: panel: samsung,s6e3ha8:
- Add AMB630QY01 panel
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Dzmitry Sankouski <dsankouski@gmail.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Petr Vorel <petr.vorel@gmail.com>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20261108-crosshatch-panel-v3-0-87dd4ec4f7cc@ixit.cz>
- <20261108-crosshatch-panel-v3-2-87dd4ec4f7cc@ixit.cz>
- <20261109-tacky-busy-kelpie-cbd5be@quoll>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20261109-tacky-busy-kelpie-cbd5be@quoll>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261125-crosshatch-panel-v4-1-120adc58e737@ixit.cz>
+References: <20261125-crosshatch-panel-v4-0-120adc58e737@ixit.cz>
+In-Reply-To: <20261125-crosshatch-panel-v4-0-120adc58e737@ixit.cz>
+To: Dzmitry Sankouski <dsankouski@gmail.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>
+Cc: Marco Mattiolo <marco.mattiolo@hotmail.it>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Petr Vorel <petr.vorel@gmail.com>, dri-devel@lists.freedesktop.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
+ David Heidelberg <david@ixit.cz>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3098; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=izTTRiBpx1JipD+dbLjNqF77ZbLX4nMkT+eXkb5bPYw=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrByUehr4emA3qeY3gQxZgr/wAfiHOTvNYwo+Kc
+ YOA1+5sXx2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawclHgAKCRBgAj/E00kg
+ cq2ZD/9ZtNuvtR/a/J56Ln883I8IIqwF8RZlVQb30sIuL9c0rKrIfCxazKZ+poIZKG+p041E1lb
+ Z6LNCHtUlmYo/Y0v+L0WjDHKAIdcURh7AeP4YoBfIOssgbIu0zbSI5wsv1Hnyx023dsUpavnxYz
+ vMv55atqo2FnMDQCMZkfiEV0YEzAaCLG2MDvL23KDP3G6uwp2VBuC9WJbh/AFcE3IVHel8LafRj
+ 9aK0MrvrD/UMSjffJKLxk/ffmT1w4gyn+43Z4NxkK8IEHaf3/NXhrNo9vvVhQWaHWiavhv1uA5j
+ D2m6ivG4wU8asYllkq6NgZtoLrj3mnN7JfOoH1lqdVZBQQDy2vf8qnVc0BtlpDZz82IPz+uoN7r
+ tFybrJD4AkuVoDaVg2acPCzvDu+ickmrBgLpZrR1aaSuI7kbDLfPOqsADirmKWIMhWJukIOUPA9
+ TTTpaIC5R+fCj4ga+JtUEN+ERsJ7b/Hu8/p6BAwZF9Hy2Kp5UADscWB5qfUqp7y/x7Q3EknRDmk
+ BFuyA3tbGSjp+TBJKD3/a4y0bc+PYp3u7aRa6K6R7yurC77bnAPC//UwM/bSt0rvLmE/wtQ0sEp
+ zOL9fHs1DS7peLZBsB8vLFHZ/M73x9xIRilsGcUSPDt7EmnDYXLWQZelYLUlORfxRxAnYgwPJ8x
+ 60gjP/EteLBSagw==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
 Content-Transfer-Encoding: 7bit
 
-On 09/11/2026 13:30, Krzysztof Kozlowski wrote:
-> On Sun, Nov 08, 2026 at 12:32:23PM +0000, David Heidelberg wrote:
->> The Google Pixel 3 XL (crosshatch) uses a Samsung AMB630QY01 6.3"
->> 1440x2960 flexible AMOLED panel.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   .../bindings/display/panel/samsung,s6e3ha8.yaml    | 41 ++++++++++++++++++----
->>   1 file changed, 34 insertions(+), 7 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
->> index ca250b1b91712..dcf347fe5ca83 100644
->> --- a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
->> +++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
->> @@ -7,48 +7,75 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->>   title: Samsung s6e3ha8 AMOLED DSI panel
->>   
->>   description: |
->>     The s6e3ha8 is a display driver IC used in 1440x2960 AMOLED panels from
->>     Samsung Mobile Displays (SMD).
->>   
->>     Known panels:
->>       - AMB577PX01, 5.77", Samsung Galaxy S9 (samsung,s6e3ha8-amb577px01)
->> +    - AMB630QY01, 6.3", Google Pixel 3 XL (samsung,s6e3ha8-amb630qy01)
->>   
->>   maintainers:
->>     - Dzmitry Sankouski <dsankouski@gmail.com>
->>   
->> +required:
->> +  - compatible
->> +  - reset-gpios
->> +  - vdd3-supply
->> +  - vci-supply
-> 
-> I see no reason why order of this schema should be re-invented. See
-> every other binding or example-schema.
+From: David Heidelberg <david@ixit.cz>
 
-Sorry about it, I guess I messed up fixuping moving the pieces.
+S6E3HA8 is the DDIC, while the panel used on the Samsung Galaxy S9 is
+the Samsung AMB577PX01. Introduce a compatible reflecting that using
+established practice 'vendor,ddic-panel' format. Adjust the example,
+and deprecate the DDIC-only samsung,s6e3ha8 compatible as
+the DDIC isn't able to auto-detect the panel attached anyway.
 
-Fixed in next rev.
-David
+We're going to introduce another panel with different sequence, so keep
+calling original panel sequence just by the DDIC name is confusing.
+While we're at it, we can cleanly fix reversed GPIO polarity.
 
-> 
-> Best regards,
-> Krzysztof
+Update the polarity to better match newly introduced compatibles with
+fixed logic.
+
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+ .../bindings/display/panel/samsung,s6e3ha8.yaml         | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+index 00ce5a4e1c6be..ca250b1b91712 100644
+--- a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
++++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+@@ -1,28 +1,35 @@
+ # SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/display/panel/samsung,s6e3ha8.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Samsung s6e3ha8 AMOLED DSI panel
+ 
+-description: The s6e3ha8 is a 1440x2960 DPI display panel from Samsung Mobile
+-  Displays (SMD).
++description: |
++  The s6e3ha8 is a display driver IC used in 1440x2960 AMOLED panels from
++  Samsung Mobile Displays (SMD).
++
++  Known panels:
++    - AMB577PX01, 5.77", Samsung Galaxy S9 (samsung,s6e3ha8-amb577px01)
+ 
+ maintainers:
+   - Dzmitry Sankouski <dsankouski@gmail.com>
+ 
+ allOf:
+   - $ref: panel-common.yaml#
+ 
+ properties:
+   compatible:
+-    const: samsung,s6e3ha8
++    oneOf:
++      - const: samsung,s6e3ha8-amb577px01
++      - const: samsung,s6e3ha8
++        deprecated: true
+ 
+   reg:
+     maxItems: 1
+ 
+   vdd3-supply:
+     description: VDD regulator
+ 
+   vci-supply:
+@@ -44,23 +51,23 @@ examples:
+   - |
+     #include <dt-bindings/gpio/gpio.h>
+ 
+     dsi {
+         #address-cells = <1>;
+         #size-cells = <0>;
+ 
+         panel@0 {
+-            compatible = "samsung,s6e3ha8";
++            compatible = "samsung,s6e3ha8-amb577px01";
+             reg = <0>;
+             vci-supply = <&s2dos05_ldo4>;
+             vddr-supply = <&s2dos05_buck1>;
+             vdd3-supply = <&s2dos05_ldo1>;
+             te-gpios = <&tlmm 10 GPIO_ACTIVE_HIGH>;
+-            reset-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
++            reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+             pinctrl-0 = <&sde_dsi_active &sde_te_active_sleep>;
+             pinctrl-1 = <&sde_dsi_suspend &sde_te_active_sleep>;
+             pinctrl-names = "default", "sleep";
+ 
+             port {
+                 panel_in: endpoint {
+                     remote-endpoint = <&mdss_dsi0_out>;
+                 };
+
+-- 
+2.55.0
+
 
