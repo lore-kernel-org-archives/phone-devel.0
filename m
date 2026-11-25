@@ -1,79 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795612120;
-	b=sxRLCFXWEMFuo2Ax/+esEPF8ZWv2qSorZntptdSpr4pQRyVgLfL+hiq7yq2M7LI+tJmE
-	 khmSTN7sn+PaApDcOuiEOg+8YGhkr1BprsJmfSToyMSXc1pjoUAkOdl5IulPOx/8zRm9Q
-	 rHCVuqGbeZDs9jshxH6EX5q86Tn1OoGr18DCpUuJlLQtsq5tqq5sLDz/uh2ZPldXVjwHf
-	 s0fsBVbaHk8ZeZjLZhxx3gUFtBmc84HWod917CBv5iCR3qpIOKpd7cnLECAWJCfDvXX0G
-	 htNVJq2l4rI8sKbbG66Y4vj7OR5hEcr/HgRj21iu7pdUc9ThpjFsM0386DhUO5WED8g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795612120;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=bC6BOA8lkj4euco4/6Bslnj1/a+liwPShT0rQp2o0u0=;
-	b=hYgttz//9eAWdCqjIG7GfsqKyZk4jAo+8WhOWwgRBAg3iWi+Eex4ttWVU93WBTdtiNeq
-	 lRJHxoQhCcOO3yp8BNM/DR3ujUqWwjm3coe4XcEJhCgc7cdTzJEGCbXCHXqa2aUZxgTtr
-	 v8SvpywVkiUyJnXbJaEWwp+AjFst+rQksocRCtK2rnvuP86xVuzaM+2g+qb87rbrm0P9u
-	 S0bQMYKIWMgPEJ9qsEusM9QqBSsA1UVPwmXH5K1bS7IC+44UpNKekw/UCZlWHHbZxQHVp
-	 bwcWOWZzcOf8S/lmRLYxd4dxtId7Dt+tdxNZR0aVQqKjd87aNepUHBco7N+UNZbbctg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I6OYEWOF;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C49606A32C;
-	Wed, 25 Nov 2026 13:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I6OYEWOF
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795612120;
-	b=G4euRiEazQJqfCqNyUcxnd01IXO/tpwydroPDcplpVeyMdmnaqGd6vZ9LcUdcFiIPYwJ
-	 zMN00y+rx9qSN3JAmEdWPIikfcsK8AO611mtSl0mZjfJRR2EBQYl54ERNIc+OUmien/uP
-	 F6T8VRvvtDalPHU63rK/vRxiWpjilhjfDYlVbgGCxpPaszLFth6LCnmlpMG9E67g8+1aL
-	 oAepR56OkLzf8p/4daopTnibhnqBuvTSfh9Lzou+Y/P5glcH9sJPmb8ct/9qC6PePItgk
-	 boSSMYuXHX9Dojy7dcLpn63QwhbT+AcwV4lsnohAWR0VZ9quM63vJHuqBBf/DIjX3/A==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795612120;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=bC6BOA8lkj4euco4/6Bslnj1/a+liwPShT0rQp2o0u0=;
-	b=NxMMRlewSIzdqFn78OXIk3ZukxabJSqJmLgYkNg86BgK350pXxMYJrm+6dE6IG8HAqeU
-	 s61WvOBuWZQyzVXsqMIcFPtfnumdazuxYe2ZIFRAR3BJt6FZm7jubazLrmHy2KTgLUSAA
-	 /uk3LjnHRKRUyKJkU7AVtvG1IzhKCy8INC9luich0JqlRja3GABiHIe17W958VLhAH71d
-	 j7KNgy4D+9kMkXxWbrPkn2m8A951M8w2caLLa4R2oXfKMPKe9T++PvsB1mJxpF+uYHo3h
-	 yt8y9/khoRXS2b+zaxRJ0UrYnfxEOap+LACyxb8D27h6oBmcdyrrwzv3JFasknz1Q4Q==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795621201;
+	b=fyMs8jdSl3z516fOtfcQdqDqAz8myi/P+6wujdnlDsgYE8j5LHpAOJ1m/VjU8T9Lgz2G
+	 WwZsx5on8SB8nJJcMz9v98ujMO9SpBL+xcBrcawbordOdCg4Xm8GuXIiyEllnoI2djSp/
+	 Is5B/VB+WeWTz2/ZvxnHSGChSViCDYDJXJBmjJ1SPFumID898YzpILlg2JJjLY1UBAnXB
+	 55RmuEzOADmR+Ki4Jw/9b0g4VxBeYnZ8YpZV/YS5Yu1Ie7AB2tUEMfmAIbidIBkvo87JG
+	 bNUHH7pg7HmOBbYLu8mNl3JGeimsgTvD/Z/e5CURq4Ur5304NuDMgjSOrnI+4NIYEKQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795621201;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=gqUeEhyGjKq93ahPeMI4CffMFtMuuHUd8X1hC7MuE8c=;
+	b=Voe8QEd0QheFhvJQCfOWWL9K21islptxEBJeciyFuUK356sNJcYuWDy+5ACppdq9cRim
+	 5Q3CVoefDpS5EOXeBqZHJ4t/HbhYQdf/4GVVBINjPnbc/e0RECirZwR04oYyCLKKRM49a
+	 YKlBjAwMhEdw0fqkBL3EMjHgFi1yD1Yh7cCsffDa2Z3WWWTbRWEY8mGVH046WGiyIOMV5
+	 Gc5U1pfUlwjHs3lXzRWS7tCZxIgrVS0RcbVLLHDiTZBqErmSk+A7r2csPrbXHTCdjheYX
+	 aviuZn3Mypgy/+9bcrH3ajbiHsVRAzKJ7ctWVv4EyvxAAB1vALdMGgm1+hT4ocVSlKA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linaro.org;
+	spf=pass smtp.mailfrom=linaro.org;
+	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=RjxdsfKw;
+	arc=none smtp.remote-ip=209.85.128.50
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 51F6C1F000E6;
-	Wed, 25 Nov 2026 13:08:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795612120;
-	bh=bC6BOA8lkj4euco4/6Bslnj1/a+liwPShT0rQp2o0u0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=I6OYEWOFxYvjfUY0UL5lTLq9+2Y16VdmRXx/HIcXeR7KyWvhyNY4ObG9u3o1sKYX0
-	 xhbsDDv4zT3djYCftuyLn8oam9pIevC5JY1j/uLdH4YJfQe1gjR+R0qnK/QWA2lO24
-	 Tyu6IihDjdne6ouhZajVjdwWNOqPzfpdvXSAj4IBLm3J35TeNWyk6y8g+HwsVBg9p+
-	 EoYPJegrJhAcTM3GX7pd54BEaQHY5/wjN22p6RvKoi0H1UnvidyhLy/DjbQQXayn3k
-	 GTKPUh8udWFwBP7fFAPIi6gewB3KUrpBukuNVLYkJSop8VgUesj71H+ubIT0ob2M2P
-	 ACCK7mbLwJXyQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 742204CEDD;
-	Wed, 25 Nov 2026 13:08:19 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 25 Nov 2026 14:08:16 +0100
-Subject: [PATCH v3 5/5] arm64: dts: qcom: sdm845-google: drop panel
- regulator-always-on
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D749B606A32C
+	for <phone-devel@vger.kernel.org>; Wed, 25 Nov 2026 15:40:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D749B606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=RjxdsfKw
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so56646555e9.3
+        for <phone-devel@vger.kernel.org>; Wed, 25 Nov 2026 07:40:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1795621199; x=1796225999; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gqUeEhyGjKq93ahPeMI4CffMFtMuuHUd8X1hC7MuE8c=;
+        b=RjxdsfKwvvddGpQSiNhRsMhHqK+KznqtEzdvJlHNkNxRcNDDOnVVWr0obg9T1+w5YF
+         IXSVqRD72Kt14j7/vOch3js9XRZ+MOQav6q+WBeAvgDXBYU5UAlDmPZTqqj8maE6QTzk
+         RH8OhZMEzGRWmI13DO0mVDzTjznLEvNsLJudBVG0o/2U0CAzCh/p18Eis767vb0mWFkt
+         wOdRWWP4FXylRdYfohZkobSdmX/jcRRrz2lvpCrUBmEAS1NrPXbhC2X+VCfPh1YPFPHV
+         tgqR26Le1ES5fcDtsnSZid+RMgOyE6a704dSJca23QAMgNQkjO3J1mJm4VtXdQs4IgSd
+         E3Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795621199; x=1796225999;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gqUeEhyGjKq93ahPeMI4CffMFtMuuHUd8X1hC7MuE8c=;
+        b=IIqqBiube1ghgv2/MJr6nPfOTFF5IWnc0caVmKvA2GGyBEA/A/U46aZK4vrJ9gGfiP
+         8BukWo9+HoJ0yr/tm7pOxedW4ignMH0ZMiApycwuk0vuNqb9RWzDmWyVll4oqlJGoUM2
+         egXJAxN4zioRRa0ep4Fynh0Ryb1qS2s6gpUZ1MKo1b3ElPYc31Gx0sl4eqv3FVo/6J9K
+         IQUgolfLy79ukWunajTG1EwRtYMQxOhEoJyQCbt7DbhLJBTWEvRltMPESccFyTNW5xEQ
+         TXUlY7eBsHNY8W5hrieTW5rnmIcRE1vJIpslefygNg5vbIzISRRSYBvwbZUHLEYdSwSf
+         FM/w==
+X-Forwarded-Encrypted: i=1; AL+hErG8VJgoOPO5tLAd4GWODW6gYci5tjRGb8qe5QvT4yHId0+LjWrxMLzkrwKggapMQbVcYJy8jdvA/JJo3w==@vger.kernel.org
+X-Gm-Message-State: APuU4Z/EpxzaIpiZd29UV8Oxiy7I+cg+r6rvIlL21xTw7erunGjzmM9C
+	Fr0xH6C6RoGPO1gOOf/px9Lx3eY1vWDsaZCtPhqDxAWc1/hyOtl7rZMyk20O18ea9yo=
+X-Gm-Gg: AZFdTZcHrehuRRe2b25IfiGDfXCIWViCbQ4NqSaC186nFGAEeibnVuAqT5uj5S33exk
+	sPpDAx2DMevbICdxSYCl1ZFO2sLRH1xiXa1BYV+MtkQF/2ipxk5FGutMjU4tzKJzfBtXG1HGO3q
+	jAY4ne+la8n5+FgKBbKf60s25TBu6t1BcydZTp+46fF1dWjlWW78smW41R60naZl8j8XCrVOmny
+	5tZLiDe048bcn8VHzURCwLSDG1xWPJbwm2v8g91awZFGAZzUFT1TI7bGenivYA/m0qRWsXeD6tW
+	jvZSpZ8tAG2P3f/3+4Sp1awIj+EStTQ2pyUn9T4EGPucNZGtwyLlR6OsHvumUDFpXTMs/+7DudZ
+	9RLXYcwA3C+2I6LbdtOFe5WGJxdsqgM1Xu2xF7fbmIvkglfrgrRmC79ExKMTMw+WGK8kalaBvqq
+	X+nUK9n4g9CnarR7BgjwkYjnEdVrkiaXNyCZCCYPQoJs76Y9qkEtystrRC50sRVlxfVttAFzGtH
+	CBK0k0BhG3D5ggX1B0Jx+KarxHsJQ1Zjkr6NrzAuOR9XiyrZeD4f0/Q8i5d1KeSvxXEqbomfftw
+	/d2sGwurURNnb81v+pfAUOyBAK1G+zB5zCAzvQ==
+X-Received: by 2002:a05:600c:3ba9:b0:4a2:1050:aff with SMTP id 5b1f17b1804b1-4bb8881c741mr427623865e9.6.1795621199120;
+        Wed, 25 Nov 2026 07:39:59 -0800 (PST)
+Received: from [10.229.50.9] ([90.82.202.178])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4b3415763f7sm14255031f8f.9.2026.11.25.07.39.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 07:39:58 -0800 (PST)
+Message-ID: <8a9a4fe1-0fa5-4c48-aa88-f61b3a01739f@linaro.org>
+Date: Wed, 25 Nov 2026 16:39:57 +0100
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,164 +90,73 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261125-fix-blueline-panel-v3-5-914b4a30b73e@ixit.cz>
-References: <20261125-fix-blueline-panel-v3-0-914b4a30b73e@ixit.cz>
-In-Reply-To: <20261125-fix-blueline-panel-v3-0-914b4a30b73e@ixit.cz>
-To: Abel Vesa <abelvesa@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Casey Connolly <casey.connolly@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>, 
- Dmitry Baryshkov <lumag@kernel.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Maxime Ripard <mripard@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Rob Herring <robh@kernel.org>, 
- Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/5] drm/panel: lg-sw43408: use the full DCS brightness
+ range
+To: david@ixit.cz, Abel Vesa <abelvesa@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Casey Connolly <casey.connolly@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>,
+ Dmitry Baryshkov <lumag@kernel.org>, Jessica Zhang <jesszhan0024@gmail.com>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ Maxime Ripard <mripard@kernel.org>, Rob Herring <robh@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>,
  Thomas Zimmermann <tzimmermann@suse.de>, Vinod Koul <vkoul@kernel.org>
-Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3724; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=7MbJWcOA7VgDjyx+wISNbX3wFon6Upjhtfj1PpZjQxE=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrBt3BP5Lf1wO+j5Mx/5MSPqPEcwqPoMlGv/Zcc
- PrK11+eEfiJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawbdwQAKCRBgAj/E00kg
- clXoD/41wH4jQ2DlT9BhUtMArglYyo7sqm5aOY7yyZ5mM5eH9losiXE56sS8ihyEO/UZAN5vyDQ
- QDPdpORQ5pxnA2Mmc1pxQYCl0TeEbjsxXji3wZ0CItqXEk/wettggKnb5hlaBU1z6EiGdp2f7De
- Mx1IbciyUHEgSW9yzzuv94ZzWIkAVaKEi8gUiMSJBatJn7WFrpQrxD7aEGm2KV5vlsWKB7SqSJW
- WtS4okXZrAbEGQGFRH+hFgddp0eHGZX3WAEyBgR0NaPt0sUoFMW2QmovUFAeEScVCy+puZdKwe3
- GLE9pPCZyPRWgEdk2bl1XaxnnZJ+wa/Z724pbryOPx/XGP2Cld7DAgiQaTNYxTvK5Q0puBUoaFx
- eWFbqdupYvQ9r5fBAt6tFu+0LbK8To9ylptdOYwzFmLIFBfH/saQDQARRgI2gznL3xATV1UDMrA
- AJECdsfywp8KZqvE189QTe0NBFsktAw71L0A2LmT9dX699c0isV8Ks52dU6+xiIpECizTFSNkUI
- 00CT5xZYa5XTm+WDFmyDHZWqEsV5erwrwWzHdrPAVkBvdC968m108HfBR0uJhLewZr0V5fW0x1T
- b8SspazuuKf3Ee33ppR0y8O2/uONXGz/KohqS0E8O833dylOAUCa8kRBRT5hd5w8EVAWcVwaZbv
- O8PzMa64wMKLTqA==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ phone-devel@vger.kernel.org
+References: <20261125-fix-blueline-panel-v3-0-914b4a30b73e@ixit.cz>
+ <20261125-fix-blueline-panel-v3-1-914b4a30b73e@ixit.cz>
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20261125-fix-blueline-panel-v3-1-914b4a30b73e@ixit.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-From: David Heidelberg <david@ixit.cz>
-
-Drop the regulator-always-on workaround from vreg_l14a_1p8 (vddi) and
-vreg_l28a_3p0 (vpnl/vci) now that the LG SW43408 panel driver keeps vpnl
-paired with vddi, allowing both rails to power down on Pixel 3 when
-neither the panel nor the touchscreen requires vddi.
-
-Define the supplies on Pixel 3 XL's framebuffer0 node so simpledrm keeps
-the panel powered once regulator late cleanup runs, while intentionally
-leaving them off Pixel 3's framebuffer0 node so simpledrm handover does
-not drop vpnl independently of vddi.
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts   |  2 ++
- arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi    | 10 ----------
- arch/arm64/boot/dts/qcom/sdm845-google-crosshatch.dts |  3 +++
- 3 files changed, 5 insertions(+), 10 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-index a000c75494f1c..f916f4dbb89c5 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
-@@ -14,16 +14,18 @@ &battery {
- 	voltage-min-design-microvolt = <3600000>;
- 	voltage-max-design-microvolt = <4400000>;
- };
- 
- &framebuffer0 {
- 	width = <1080>;
- 	height = <2160>;
- 	stride = <(1080 * 4)>;
-+
-+	/* intentionally no supplies here, see the LG SW43408 driver */
- };
- 
- &i2c2 {
- 	clock-frequency = <1000000>;
- 
- 	status = "okay";
- 
- 	/* ST,FTS @ 49 */
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-index 3c9656b88b696..c025b2df4ea25 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi
-@@ -246,21 +246,16 @@ vreg_l13a_2p95: ldo13 {
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
- 		vreg_l14a_1p8: ldo14 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 			regulator-boot-on;
--			/*
--			 * We can't properly bring the panel back if it gets turned off
--			 * so keep it's regulators always on for now.
--			 */
--			regulator-always-on;
- 		};
- 
- 		vreg_l17a_1p3: ldo17 {
- 			regulator-min-microvolt = <1304000>;
- 			regulator-max-microvolt = <1304000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
-@@ -308,21 +303,16 @@ vreg_l26a_1p2: ldo26 {
- 			regulator-boot-on;
- 		};
- 
- 		vreg_l28a_3p0: ldo28 {
- 			regulator-min-microvolt = <2856000>;
- 			regulator-max-microvolt = <3008000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_LPM>;
- 			regulator-boot-on;
--			/*
--			 * We can't properly bring the panel back if it gets turned off
--			 * so keep it's regulators always on for now.
--			 */
--			regulator-always-on;
- 		};
- 	};
- 
- 	regulators-1 {
- 		compatible = "qcom,pmi8998-rpmh-regulators";
- 		qcom,pmic-id = "b";
- 
- 		vdd-bob-supply = <&vph_pwr>;
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-crosshatch.dts b/arch/arm64/boot/dts/qcom/sdm845-google-crosshatch.dts
-index 2a81ca1d00b1b..7591c6ebb1cb9 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-google-crosshatch.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-google-crosshatch.dts
-@@ -19,16 +19,19 @@ &dispcc {
- 	/* Disable for now so simple-framebuffer continues working */
- 	status = "disabled";
- };
- 
- &framebuffer0 {
- 	width = <1440>;
- 	height = <2960>;
- 	stride = <(1440 * 4)>;
-+
-+	vddi-supply = <&vreg_l14a_1p8>;
-+	vci-supply = <&vreg_l28a_3p0>;
- };
- 
- &mdss {
- 	/* Disable for now so simple-framebuffer continues working */
- 	status = "disabled";
- };
- 
- &wifi {
-
--- 
-2.55.0
 
 
+On 11/25/26 14:08, David Heidelberg via B4 Relay wrote:
+> From: David Heidelberg <david@ixit.cz>
+> 
+> The vendor changed the value multiple times. Last value for production
+> devices was 900. HBM can go up to 1023, but keep value safe for now.
+> 
+> Fixes: 069a6c0e94f9 ("drm: panel: Add LG sw43408 panel driver")
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>   drivers/gpu/drm/panel/panel-lg-sw43408.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
+> index 822318f546ef3..92cab6478ea61 100644
+> --- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
+> +++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
+> @@ -197,17 +197,18 @@ static const struct backlight_ops sw43408_backlight_ops = {
+>   };
+>   
+>   static int sw43408_backlight_init(struct sw43408_panel *ctx)
+>   {
+>   	struct device *dev = &ctx->link->dev;
+>   	const struct backlight_properties props = {
+>   		.type = BACKLIGHT_PLATFORM,
+>   		.brightness = 255,
+> -		.max_brightness = 255,
+> +		/* HBM can go up to 1023, stay safe for now */
+> +		.max_brightness = 900,
+>   	};
+>   
+>   	ctx->base.backlight = devm_backlight_device_register(dev, dev_name(dev), dev,
+>   							     ctx->link,
+>   							     &sw43408_backlight_ops,
+>   							     &props);
+>   
+>   	if (IS_ERR(ctx->base.backlight))
+> 
+
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+
+Thanks,
+Neil
