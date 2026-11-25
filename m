@@ -1,56 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=106.10.242.141
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795635491;
-	b=kp4GlnQk2ZdeU0VqmDHPQN7U8CHj1zh3DbxpDTVl7UGNmIA0IUpqDwnO/pIzgLjPUqfu
-	 2n+Ty4ItjjaSNOOB8+XP67Ce3WMetIMyo/JelaIuUN5jOW2r8vYm2D2vHKXxymIDh0+kJ
-	 xWuyYEW2HBpwBgwUD9ErOgfVIuleO6dmw3zAEiXRd/yGIWDoOU4jnFhu/l+i4oU0tja2d
-	 QHO427eLRzEyHsBkohAmxvT1s3c4Ug6bcqfKg0sU8Lg28paqXpZobFz66t7bw19027N/m
-	 WAN5X0BRfILH9HZMCl3nqampmHHpvUIQLhHAGZjU1sMzyT9XMba+/Cx9VYGiC9PcZ+Q==
+	t=1795637100;
+	b=bV8Ii8zvqndg5HoJaGKOuGH9HIlBKXnMZR7TbM6NSMM5SYYthqJ3mQlBUwqj/b7CFm7p
+	 YtU9UHWuHSzCuYdd3XJb/8HDpsYaQROdywc6yDo7IXf5adOPgT3OB7eP4mMu3Aor2APQW
+	 UR2UlJu11/FrC95nJsL7lzEOTBr9yolc6u0VOci5dpTSjxlfgvxUMQ2Y5y9fhr91XEukI
+	 TrQjc4pHmkFHwmaKx1zwlsx1bj3piOMxytQs/1WktgD8r66q+KhMoFnP5tGejmzXgCxa0
+	 i9GfPTHj7rj7cTO5o/kdNYKjVRXPotbsd6EVFfQ1nf2596aHOizd7zXyf/3EQUhMvaQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795635491;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Spam;
-	bh=htE2M1hy7O9Hdwg5xNHQhAuiFErmgHovLFWXKCYuMZQ=;
-	b=sHZkBqfoBms92TgQfRKla1xyBQ9bTZRvGY0A6ZHLYbnpAwFqEM/54pQCFiHOUH5Zi4Jp
-	 W0OSN6PnDKAX1mxXoU+bLQvmaSB84cjLjylfmWJVMX+Rw/3yEHvYHykBKFTbRX3qTLgRl
-	 J8wZQrba/6J/hea7yqeC85O54D+k/SpyKCec3+jLmwDEOznV2vZTVQXInqJNLiDs9RACk
-	 WLX7rn8Wb9V3ca17is3ldbOnYfXudoLoVPH5QTidhNAh6E4IknT+vtrKp89DUmeRi0q0Q
-	 VaE/LaxHSCO1n5sm+dIl4Vf7eN05G3KxdUglTzFnSbyr9QmcNguIhhRu0xTypOzm/Yg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795637100;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:References;
+	bh=n9WudRKG92TIZtxgec08BaYCU8vqDKv9uhBMsODxaac=;
+	b=HKLkaZKcHuL2hrxB7gWZ5wdFxU3uJi7nvGPxalKtIPj7RJMbwTRF93QGBhRBqbU2iJtc
+	 ghH3KxyQRzGi4VlG6pB0UewcliqRSLOgW59RqMOWLdxe3loYqiT43DexxQQ9LnTomm+JE
+	 qqUXTVz4r2qQalSRiUI4pPcw5aoRhzJCfmh87HB6L/GRVo7bjeTQVK+t6hhcrgji1qTlc
+	 hBNVQxETYhocA8O6lPZIaL87R6GZwYZtgsLdzSIb3ISnpdlac++za8Bzs9aIR2FKfT9zs
+	 H62ghvgUUlloSY01YzEzANofnrqjD6AazeZb7wfeZS02ESTiBI+iUSRBhsX26a/FYvA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ixit.cz;
-	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=K85IxFFc;
-	arc=none smtp.remote-ip=84.42.129.46
-Received: from ixit.cz (ixit.cz [84.42.129.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=fy33EZoY;
+	arc=none smtp.remote-ip=106.10.242.141
+Received: from sonic302-21.consmr.mail.sg3.yahoo.com (sonic302-21.consmr.mail.sg3.yahoo.com [106.10.242.141])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F0F606A31E;
-	Wed, 25 Nov 2026 19:38:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07F0F606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB8A606A31E
+	for <phone-devel@vger.kernel.org>; Wed, 25 Nov 2026 20:04:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0BB8A606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=K85IxFFc
-Received: from [IPV6:2a02:830a:f787:8f00:f33c:cbcd:417b:d2b9] (unknown [IPv6:2a02:830a:f787:8f00:f33c:cbcd:417b:d2b9])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 63B3453402F5;
-	Wed, 25 Nov 2026 20:38:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1795635487;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=htE2M1hy7O9Hdwg5xNHQhAuiFErmgHovLFWXKCYuMZQ=;
-	b=K85IxFFclHF6FGndLn3SqWflK3X3sMjY3xiKtJZzzZ6woVqUzgeBBdy1izSqa4wycKhkwn
-	68xmNOhECQFv5Ovvwfj5PaQJAJQBEY/EhsGDnwMVtRq5ORxxVXs9zwsX9MaVTQTZFpBKIv
-	5LotsaFPAk28sfrm7TeqNyHKDhBLrkc=
-Message-ID: <222ff97d-2c06-4c84-8234-8495602abbcf@ixit.cz>
-Date: Wed, 25 Nov 2026 20:38:07 +0100
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=fy33EZoY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1795637097; bh=n9WudRKG92TIZtxgec08BaYCU8vqDKv9uhBMsODxaac=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To:Content-Type; b=fy33EZoYFMOnFigckbReckBa3eJT/rpvujFgq8tsOROVMLkirzttxcBM7w/GOOtxDz+Psgn3qmVWJLDj4zs8K4phvoTAeYwrH/5BO+4+0GQHyBvnA0bMU62zbfDYbhtVWQ4aua5USxQTp8KuczYyRgv1CqX9W+QIiUS4A8HZRGeWWKc9jTpdfCsFCsWu03clDhcndR9+Joqsth/OL2O98H+r4Mhb+27oZCb+B3SOjfzAtkh4HSL4zkXKzIfpNS3TDNVNp2qP6gQieaVDazHxzouU63qdnNGTNnjJEX8Y96S8hvGeXI73Xn6TFISttsCrV6HPzTY+ljX6wRF4CjuzIg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1795637097; bh=SPJnfhqxU9p0p5Kakd/3BhfQ19bxdHsW5hH3hPvKvOT=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=UCgrcZ4MXa4o55a91h1bATwI0tp58z9xFyVRpFo2ydX6MvcOXluBomHh7eXk5xCRCcwiFnPI+lQxP+6uyvGXi486NMCf3W+fEmqvHsT0upgWnRsWXcHUOBplDFLonxMqoTzsx9KMhMyw4G07snWkXOJbYf/J4X82MUKJM3zHOixONhUFBpD2idUUq7bsPetH7XDHjlif3grqpO9+uUC88Hz5PI8IDP7iE7w7c+P2KW6PxWW/6W4o10Sn287EyFpkkV7jtb0kxJKf+re13MDLTjIiO4gykve+TGxqTmF+VLcP0l30E8GlPa6RYwTAQdpwsTVNEXrY2QEipLg/mmS5hw==
+X-YMail-OSG: 8trdvQoVM1maTQp6rmMH5P.JG7NqQlOQ2rMBhQ7r6XH11SvqFWLa73I4Xp8v_gb
+ PVGSyia8TnYaJ27hmSP1b54PTh3fCymYD_orfrApN1Urp3wCojES656.CtfI8wCDXyO8a4i5uwiN
+ x_e.aDU3d_u_BDvdQmYsKwg7U.Z.Lw9qUCqa1jGA8aZ5_r5dqTxerBINn6a0AigB6uEToIIfkYzH
+ b29K42rTSRrQIjzaytARFT4p6SVlHKqzuOAt4f4wk7NOABYFdqs6h9rIrl8REuq2LLSu8vHuWpuP
+ eHKYGCRzrW8EcsHW.gc2cEjrfJAA84Ojm2ZLzWcNJCIZaQ.Qg4xlZbomhlQK7VrW3zHGOz8sOKBs
+ ltDj9TfRJ2UPvSDysQlqHDdfRI71z0Ftfan3XEqhn6bRGjAffA_5nbQFopFOVYMsry80yLCTYrf4
+ 4jTBOFB.GoxK.ap8sb3j1WplHhtJxIqA3ez3NTI7i6_BYUoV7yQzZ9V1lckJYAypCEBa_gCBN5HW
+ .ccemsgoyZ0C.LCCY85o3qdyd9ejYhuV0DWOgzWSKnRNMcpoUS3EbCWPwZyUGHVGrwjALgw41MAp
+ ksRNshAEO9MXu3rpbfTppxVD2LNxxQSanF1B7rBawE10KYjLYOMj9LOvfJCWy1nWzCO_mTc5m9.o
+ UbWSyCjajAaIG5.y.XUan7j0aJL9VDuXT.j1fbGe1QDaN0Gx6H1xs0oAvb9cEs.cd1qeaioRDh.K
+ O.1wOXu2z8s3oyc31633Nx72XqN6aicnritLKB4eLOgMtcQvEQkMt7a_EJGfe6UHfuhPyhMCHVjQ
+ eS.6CUn1HOtayK9Wni6b2S8cRhTfHROivw70qe2vuOIGLuQ.tf4X1dDB8w7OLNc_T5Sdsw5snkQ.
+ OPR.I9xQ4lfTc2EFhItwtLOTXVBYCn.Iy_T3jd7t5ZOL1TI7Ipbfwo9kX.vLmvNZRTdWRf3EMQ_a
+ drnvkqkJE4oct2vgrihNn7Q3EDNpmmQwXWlIjNVivayk.SOzZ7sD1ny3ZJQ.cgCb99t_KDpe.Yxe
+ nZJswAFzlFwDJ.ce_Q4ih4b2y0ogq6jYvnOeAi.6ILOxJQfm8tgj4h.EukC_sCLw7Mwkl9vL0AB4
+ 3uKPG.VH4mBKRPvaUbu5jgFpem9cZG0SmwusaVMpzEuaD9ZEr5dloLCu1TwQSpq6yvwFwebZF5cn
+ mj0sLWDfIi7gjL4qwdH0WL1gWw_c5rhJ1A1PQrxVKSfYFOG0.G7hOcZ5l0HJDmKMSflEvXMNTru2
+ 3gR15_4CS8kzUOJHaxoU9rvuCf06LOoITFPKv7jQvQL6rJ0K4nENlgMqqXoyolmL1qaPsDvNYIjD
+ azKxlxKxgpmUK9q.o.IBTQ_r47ceWeekKQBDtIr206gyUoDCnw6g_rYuSgFOQGf52Qr8z.pPystk
+ ZRuBpjA6lNAjaeVTCS_mHtmVnxy_.qb_ZoV1ePhn8eNTjfRcY6A4qYSaStFZUgX.5vYhOeBOOgnc
+ SGYRL2urditkt2y9NQVxBIU8RJvOPqpa8fwJLHK8f7DhtZOpZZlds0odY3kipzG3CrCy1M7_R7.9
+ uEtzqWMmx.5SUVs1Nlv2ATvv3pbtovYu231MxxsGXAw4ibiQ.n0GiKa0rjS02.WwjkwC4iJ1sxyZ
+ W_CWYRiJJiOf1dRDrmOa1biUZRCaUDdMpw6jDkcH9YQ4Etg0vLG06HTKxMqfKpJATuYCurCdEv8i
+ Vd6Zf6hr4ACZJI0aTfij.xMqp_RnfdOcBDlDN1z9DRAlxTyPs3a6iA6AwfTiWq.GOw_rhxVaQ6Mp
+ 4U_Gb4dpy0HKQvNetobrxfdtAto5S89UvVW4FiQrLJDVMEOn7qaGQRyeCwltPxKWhLceQe1C2HDf
+ 8nNWw1so09MVV8_8wABATNRNT_QFzoZ2GtP4XOh10BRLheB4lW3rsKdbEkyTunFaeCK0y0YvBtv1
+ _CPm9.4DX4x2IMBiFKDOH1v0ziBWuKXWHgZKxKAVIoGQJBB9xyDaRn.ltsN5.flnKgyknsfBBldZ
+ v9QJBEcmt.5iJLSRrorXpp7g11xawWeoNZ.A_lOsq48nIusjPdgZqHyTHEBRK4s.krplUlTJyGZ_
+ 6dJDynPtogpyhrhvje8Z2MQJ8U92kcXAMcwgMV_GBHFXXxUgR336H.7MZtQ1lDYM0JXBltT9fg9z
+ Vkx7Q5nQTwBVdKgO1sjnMH7RNmFiQxKkCqc0_9csYXhyPs4L2N0k3HhW.cJWV39Tn0vV6NZrZbCx
+ i13NqqEpO9PHQcytWkN0vpfJGJMgSZoCC4wCq0nwF2n.X91b3QQ--
+X-Sonic-MF: <venkat.yadlapati@yahoo.com>
+X-Sonic-ID: f8ef700c-c79a-451a-8fae-c9d5fd2b4cd2
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.sg3.yahoo.com with HTTP; Wed, 25 Nov 2026 20:04:57 +0000
+Received: by hermes--production-bf1-8768df57c-2bnv4 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID f42d62ca4a6ffea7a46eff020458cb38;
+          Wed, 25 Nov 2026 20:04:50 +0000 (UTC)
+From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>
+Cc: Shayne Chen <shayne.chen@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-wireless@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	phone-devel@vger.kernel.org
+Subject: mt76: upstream support for MT6878 (CONNAC2 soc7_0) integrated Wi-Fi/BT
+Date: Thu, 26 Nov 2026 01:34:35 +0530
+Message-ID: <20261125200438.1586907-1-venkat.yadlapati@yahoo.com>
+X-Mailer: git-send-email 2.56.1
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -60,134 +95,76 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi 8 family
- compatibles
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20260915-dipper-v2-0-cbade54919ee@ixit.cz>
- <20260915-dipper-v2-1-cbade54919ee@ixit.cz>
- <20260917-heavenly-weasel-of-criticism-1add6b@quoll>
- <b324f0b8-0875-457f-936c-89b858d082fa@ixit.cz>
- <0fd3e0a5-33f7-4bc6-9146-dcaf035c3ef5@kernel.org>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <0fd3e0a5-33f7-4bc6-9146-dcaf035c3ef5@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam: Yes
+Content-Transfer-Encoding: 8bit
+References: <20261125200438.1586907-1-venkat.yadlapati.ref@yahoo.com>
 
-On 18/09/2026 10:40, Krzysztof Kozlowski wrote:
-> On 17/09/2026 12:25, David Heidelberg wrote:
->> On 17/09/2026 12:21, Krzysztof Kozlowski wrote:
->>> On Tue, Sep 15, 2026 at 04:32:24PM +0200, David Heidelberg wrote:
->>>> +      - description: Xiaomi Mi 8 family
->>>> +        items:
->>>> +          - enum:
->>>> +              - xiaomi,dipper
->>>> +              - xiaomi,equuleus
->>>> +              - xiaomi,ursa
->>>> +          - const: xiaomi,dipper-common
->>>
->>> We do not make "common" compatibles.
->>> git grep common -- Documentation/devicetree/bindings/arm/qcom.yaml
->>
->> TBH I have mental issue with calling it xiaomi,dipper-dipper
->>
->> All three devices are branded as own devices, just based on 99.9% same base.
->>
->> I'm not aware of any internal name which group these devices.
->>
->> I could call it like xiaomi,common, but there is the polaris and beryllium,
->> which aren't "that common" with these three.
->>
->> Do you have idea what to do in this situation?
-> 
-> Just don't use "common" or "generic" or anything close to it, because it
-> confuses future contributors thinking "common" compatible is allowed.
-> It's not.
-> 
-Hello Krzysztof,
+Hi all,
 
-since the rest of the generation uses Android codenames, to not complicate 
-sdm845 gen, I would stay with these here.
+I am bringing up mainline Linux on a MediaTek MT6878 (Dimensity 7300)
+phone, the Lava Agni 3, and would like to ask how you would prefer the
+integrated connectivity block to be supported before I shape any
+patches.
 
-The change would be such as:
+The hardware is the CONNAC2 "soc7_0" WFSYS/BGFSYS with an MT6637 A-die.
+In the vendor tree it is driven by gen4m (chips/soc7_0, HIF AXI) and
+the conninfra/connv2 platform code. On this phone the bootloader (LK)
+loads the Wi-Fi, BT and GNSS firmware from the connsys_*_a partitions
+into the CONNSYS EMI region (CFG_WLAN_LK_FWDL_SUPPORT=1).
 
-        - description: Xiaomi Mi 8 family
-          items:
-            - enum:
-                - xiaomi,dipper
-                - xiaomi,equuleus
-                - xiaomi,ursa
--          - const: xiaomi,dipper-common
-+          - const: xiaomi,mi8-family
-            - const: qcom,sdm845
+Current state, on next-20261123:
 
+ - CONNSYS power-on (conn_infra, A-die init, calibration, low-power
+   setup) in a small drivers/soc/mediatek driver shared by BT and Wi-Fi.
+ - Bluetooth works: BGF power-on plus the BEIF shared-memory rings in
+   EMI (H4 framing); hci0 comes up, LE scans find devices.
+ - Wi-Fi: WFDMA on AXI with an mt7921-based SoC bus glue. The firmware
+   preloaded by LK starts with INIT_CMD_ID_FW_IMAGE_START, and the
+   NIC capability, CHIP_CONFIG and several EXT commands get answers.
+   wlan0 registers.
 
-The files like (because the dipper doesn't imply shared base):
+Along the way I found what looks like a generic mt76 bug:
+mt76_set_irq_mask() writes the mask with mt76_mmio_wr() rather than
+through dev->bus->wr, so drivers that remap offsets in their bus ops
+end up writing the wrong register. I will send that fix separately.
 
--#include "sdm845-xiaomi-dipper-common.dtsi"
-+#include "sdm845-xiaomi-mi8-common.dtsi"
+Where I am stuck, and my questions:
 
-firmwares would be:
+1. Command set. The soc7_0 firmware does not seem to answer unified
+   commands (MCU_UNI_CMD DEV_INFO_UPDATE gets no reply); gen4m enables
+   CFG_SUPPORT_UNIFIED_COMMAND only for CONNAC3. Does this firmware
+   support the EXT DEV_INFO/BSS_INFO/STA_REC_UPDATE commands, as used
+   by mt7915, or only gen4m's legacy CMD_IDs (BSS_ACTIVATE_CTRL,
+   SET_BSS_INFO, UPDATE_STA_RECORD, ...)? Depending on the answer, which
+   would you prefer: a soc.c variant inside an existing family, as
+   MT7622 and MT7986 are handled, or a separate driver directory with
+   its own mcu.c, in the way mt7925 split from mt7921? Is there by any
+   chance a soc7_0 firmware build with unified command support?
 
--       firmware-name = "qcom/sdm845/Xiaomi/dipper/ipa_fws.mbn";
-+       firmware-name = "qcom/sdm845/Xiaomi/mi8/ipa_fws.mbn";
+2. Regulatory commands. CE SET_CHAN_DOMAIN (0x0f) and
+   SET_RATE_TX_POWER (0x5d), built as mt76 builds them for mt7921, make
+   the firmware assert:
+     <ASSERT> wifi/open_core/wificore/rlm/domain.c #455 -
+     prWifiCmd->u2Length == u4CmdSize
+   As far as I can tell, the payload layouts match gen4m's
+   CMD_SET_DOMAIN_INFO_V2 and
+   CMD_SET_TXPOWER_COUNTRY_TX_POWER_LIMIT_PER_RATE (161 SKU entries).
+   Is a different length or command version expected for this
+   firmware? A CE REG_READ query (0xc0) also never gets an answer.
 
-but for specific devices inside dipper/equuleus/ursa.
+3. Firmware. Could the soc7_0 Wi-Fi RAM code, the ROM EMI patch and
+   the BT RAM code be submitted to linux-firmware, so the driver can
+   load them itself and recover from a firmware crash? Until then,
+   would a "firmware already loaded by the bootloader" path be
+   acceptable upstream, if it is documented and detected at probe?
 
-Would be that reasonable from your POV?
+4. Integration. Would you be fine with a shared CONNSYS power provider
+   (drivers/soc/mediatek, refcounted, used by the Bluetooth driver and
+   by mt76), with the firmware areas described as reserved-memory
+   regions in DT? Or is there an existing or planned conninfra
+   abstraction upstream that I should follow?
 
-Thanks
-David
+I am happy to share the WIP branch, register dumps or logs if that
+helps. Thanks for any guidance.
+
+Best regards,
+Venkat Yadlapati
