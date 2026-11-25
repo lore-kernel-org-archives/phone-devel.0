@@ -1,86 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795621201;
-	b=fyMs8jdSl3z516fOtfcQdqDqAz8myi/P+6wujdnlDsgYE8j5LHpAOJ1m/VjU8T9Lgz2G
-	 WwZsx5on8SB8nJJcMz9v98ujMO9SpBL+xcBrcawbordOdCg4Xm8GuXIiyEllnoI2djSp/
-	 Is5B/VB+WeWTz2/ZvxnHSGChSViCDYDJXJBmjJ1SPFumID898YzpILlg2JJjLY1UBAnXB
-	 55RmuEzOADmR+Ki4Jw/9b0g4VxBeYnZ8YpZV/YS5Yu1Ie7AB2tUEMfmAIbidIBkvo87JG
-	 bNUHH7pg7HmOBbYLu8mNl3JGeimsgTvD/Z/e5CURq4Ur5304NuDMgjSOrnI+4NIYEKQ==
+	t=1795628308;
+	b=Z7RJ/vSWB5S6UgA6J5IYS8cjWoxVSybv7+HoSQ8toO14xpq2JzhrYXHgOgsFuQR/j4Kr
+	 M1Zo49pB977MH+hrobj6JYGESoLDLGv4xOfldy2A806wTaWvXaZFU8EhmbUfvDtdTSgDQ
+	 x6VakQCP0DN9JGRfQlO2wAPnRpCCTKpzcVuN/eWPPPwXCBBFPajsxxqCjkUv+mugYam10
+	 Kww21hJahtfuyWmhz7MDfwNVwRbfe3qm9LaXGnH3QWBLtxyXT5zJPx92hTcBqbO/4CrsL
+	 IvF0hpzJJFMYY0fVdTb/SIm0NCfe49tqgS78hsWWkr5PKnOccOfbHzV6okIZs8dHnRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795621201;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=gqUeEhyGjKq93ahPeMI4CffMFtMuuHUd8X1hC7MuE8c=;
-	b=Voe8QEd0QheFhvJQCfOWWL9K21islptxEBJeciyFuUK356sNJcYuWDy+5ACppdq9cRim
-	 5Q3CVoefDpS5EOXeBqZHJ4t/HbhYQdf/4GVVBINjPnbc/e0RECirZwR04oYyCLKKRM49a
-	 YKlBjAwMhEdw0fqkBL3EMjHgFi1yD1Yh7cCsffDa2Z3WWWTbRWEY8mGVH046WGiyIOMV5
-	 Gc5U1pfUlwjHs3lXzRWS7tCZxIgrVS0RcbVLLHDiTZBqErmSk+A7r2csPrbXHTCdjheYX
-	 aviuZn3Mypgy/+9bcrH3ajbiHsVRAzKJ7ctWVv4EyvxAAB1vALdMGgm1+hT4ocVSlKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795628308;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Jc2fT23SPWqHr6nIykatx49BNkv061JXFi2XlfZIV5I=;
+	b=FX6GjCTNhtSKsm5opLn8WdEz9/Vnx6JAKgJPm+6sLey8yYAx+b9mykcdEoEHW+6j3L6w
+	 mfD6u8gOV506CWtxg6gIUwz4Vb4IevPT/CDjp9tK9kgcnsQ06mSP1m1KjmzOgTtv7mezk
+	 5I/HvkGBV5S3DAndzEOK8vkatlQNopZXdr7g+hXhNZ2VFpH40T1MueypVA+fRx8aU3R6o
+	 JYwRefi0jsjVag/ILptEXhXv0TM4lXF/2bJyLGFIVXPhciZRYiXdoxXiMTmHROsgdP3xv
+	 SXfxiZJhukjau2713ihVm9L5Svk3QolSeaU1Ghe9BMOe57uyjk/3IGWa5mlju4n9lvw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=RjxdsfKw;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=ixit.cz;
+	spf=pass smtp.mailfrom=ixit.cz;
+	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=vz6eljYw;
+	arc=none smtp.remote-ip=84.42.129.46
+Received: from ixit.cz (ixit.cz [84.42.129.46])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D749B606A32C
-	for <phone-devel@vger.kernel.org>; Wed, 25 Nov 2026 15:40:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D749B606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94355606A326;
+	Wed, 25 Nov 2026 17:38:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94355606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=RjxdsfKw
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so56646555e9.3
-        for <phone-devel@vger.kernel.org>; Wed, 25 Nov 2026 07:40:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1795621199; x=1796225999; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gqUeEhyGjKq93ahPeMI4CffMFtMuuHUd8X1hC7MuE8c=;
-        b=RjxdsfKwvvddGpQSiNhRsMhHqK+KznqtEzdvJlHNkNxRcNDDOnVVWr0obg9T1+w5YF
-         IXSVqRD72Kt14j7/vOch3js9XRZ+MOQav6q+WBeAvgDXBYU5UAlDmPZTqqj8maE6QTzk
-         RH8OhZMEzGRWmI13DO0mVDzTjznLEvNsLJudBVG0o/2U0CAzCh/p18Eis767vb0mWFkt
-         wOdRWWP4FXylRdYfohZkobSdmX/jcRRrz2lvpCrUBmEAS1NrPXbhC2X+VCfPh1YPFPHV
-         tgqR26Le1ES5fcDtsnSZid+RMgOyE6a704dSJca23QAMgNQkjO3J1mJm4VtXdQs4IgSd
-         E3Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795621199; x=1796225999;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gqUeEhyGjKq93ahPeMI4CffMFtMuuHUd8X1hC7MuE8c=;
-        b=IIqqBiube1ghgv2/MJr6nPfOTFF5IWnc0caVmKvA2GGyBEA/A/U46aZK4vrJ9gGfiP
-         8BukWo9+HoJ0yr/tm7pOxedW4ignMH0ZMiApycwuk0vuNqb9RWzDmWyVll4oqlJGoUM2
-         egXJAxN4zioRRa0ep4Fynh0Ryb1qS2s6gpUZ1MKo1b3ElPYc31Gx0sl4eqv3FVo/6J9K
-         IQUgolfLy79ukWunajTG1EwRtYMQxOhEoJyQCbt7DbhLJBTWEvRltMPESccFyTNW5xEQ
-         TXUlY7eBsHNY8W5hrieTW5rnmIcRE1vJIpslefygNg5vbIzISRRSYBvwbZUHLEYdSwSf
-         FM/w==
-X-Forwarded-Encrypted: i=1; AL+hErG8VJgoOPO5tLAd4GWODW6gYci5tjRGb8qe5QvT4yHId0+LjWrxMLzkrwKggapMQbVcYJy8jdvA/JJo3w==@vger.kernel.org
-X-Gm-Message-State: APuU4Z/EpxzaIpiZd29UV8Oxiy7I+cg+r6rvIlL21xTw7erunGjzmM9C
-	Fr0xH6C6RoGPO1gOOf/px9Lx3eY1vWDsaZCtPhqDxAWc1/hyOtl7rZMyk20O18ea9yo=
-X-Gm-Gg: AZFdTZcHrehuRRe2b25IfiGDfXCIWViCbQ4NqSaC186nFGAEeibnVuAqT5uj5S33exk
-	sPpDAx2DMevbICdxSYCl1ZFO2sLRH1xiXa1BYV+MtkQF/2ipxk5FGutMjU4tzKJzfBtXG1HGO3q
-	jAY4ne+la8n5+FgKBbKf60s25TBu6t1BcydZTp+46fF1dWjlWW78smW41R60naZl8j8XCrVOmny
-	5tZLiDe048bcn8VHzURCwLSDG1xWPJbwm2v8g91awZFGAZzUFT1TI7bGenivYA/m0qRWsXeD6tW
-	jvZSpZ8tAG2P3f/3+4Sp1awIj+EStTQ2pyUn9T4EGPucNZGtwyLlR6OsHvumUDFpXTMs/+7DudZ
-	9RLXYcwA3C+2I6LbdtOFe5WGJxdsqgM1Xu2xF7fbmIvkglfrgrRmC79ExKMTMw+WGK8kalaBvqq
-	X+nUK9n4g9CnarR7BgjwkYjnEdVrkiaXNyCZCCYPQoJs76Y9qkEtystrRC50sRVlxfVttAFzGtH
-	CBK0k0BhG3D5ggX1B0Jx+KarxHsJQ1Zjkr6NrzAuOR9XiyrZeD4f0/Q8i5d1KeSvxXEqbomfftw
-	/d2sGwurURNnb81v+pfAUOyBAK1G+zB5zCAzvQ==
-X-Received: by 2002:a05:600c:3ba9:b0:4a2:1050:aff with SMTP id 5b1f17b1804b1-4bb8881c741mr427623865e9.6.1795621199120;
-        Wed, 25 Nov 2026 07:39:59 -0800 (PST)
-Received: from [10.229.50.9] ([90.82.202.178])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4b3415763f7sm14255031f8f.9.2026.11.25.07.39.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 07:39:58 -0800 (PST)
-Message-ID: <8a9a4fe1-0fa5-4c48-aa88-f61b3a01739f@linaro.org>
-Date: Wed, 25 Nov 2026 16:39:57 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=vz6eljYw
+Received: from [IPV6:2a02:830a:f787:8f00:f33c:cbcd:417b:d2b9] (unknown [IPv6:2a02:830a:f787:8f00:f33c:cbcd:417b:d2b9])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id E82FF53402F6;
+	Wed, 25 Nov 2026 18:38:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1795628305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Jc2fT23SPWqHr6nIykatx49BNkv061JXFi2XlfZIV5I=;
+	b=vz6eljYwfoF4hl31mO8OMR8yWufis/ML2BxifwgqeIAYVH97dvFmsuVdJWgA0gZT5Y58V3
+	inXPK4a7sjHC9/YYssW/e+uzH2qny9d4EmVU6g2TIVKNtN+DJFFfTLnqzZZPZjgtV3IwEC
+	kfW6lEuobSwehOtIO53WT7TIjU1d//E=
+Message-ID: <72548a95-f009-465f-ac04-b1b09ea4d1ae@ixit.cz>
+Date: Wed, 25 Nov 2026 18:38:24 +0100
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -91,72 +61,117 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] drm/panel: lg-sw43408: use the full DCS brightness
- range
-To: david@ixit.cz, Abel Vesa <abelvesa@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Casey Connolly <casey.connolly@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>,
- Dmitry Baryshkov <lumag@kernel.org>, Jessica Zhang <jesszhan0024@gmail.com>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
+Subject: Re: [PATCH v3 02/10] dt-bindings: display: panel: samsung,s6e3ha8:
+ Add AMB630QY01 panel
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Dzmitry Sankouski <dsankouski@gmail.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jesszhan0024@gmail.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Maxime Ripard <mripard@kernel.org>, Rob Herring <robh@kernel.org>,
- Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Vinod Koul <vkoul@kernel.org>
-Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-References: <20261125-fix-blueline-panel-v3-0-914b4a30b73e@ixit.cz>
- <20261125-fix-blueline-panel-v3-1-914b4a30b73e@ixit.cz>
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20261125-fix-blueline-panel-v3-1-914b4a30b73e@ixit.cz>
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Petr Vorel <petr.vorel@gmail.com>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20261108-crosshatch-panel-v3-0-87dd4ec4f7cc@ixit.cz>
+ <20261108-crosshatch-panel-v3-2-87dd4ec4f7cc@ixit.cz>
+ <20261109-tacky-busy-kelpie-cbd5be@quoll>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20261109-tacky-busy-kelpie-cbd5be@quoll>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 11/25/26 14:08, David Heidelberg via B4 Relay wrote:
-> From: David Heidelberg <david@ixit.cz>
+On 09/11/2026 13:30, Krzysztof Kozlowski wrote:
+> On Sun, Nov 08, 2026 at 12:32:23PM +0000, David Heidelberg wrote:
+>> The Google Pixel 3 XL (crosshatch) uses a Samsung AMB630QY01 6.3"
+>> 1440x2960 flexible AMOLED panel.
+>>
+>> Signed-off-by: David Heidelberg <david@ixit.cz>
+>> ---
+>>   .../bindings/display/panel/samsung,s6e3ha8.yaml    | 41 ++++++++++++++++++----
+>>   1 file changed, 34 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+>> index ca250b1b91712..dcf347fe5ca83 100644
+>> --- a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+>> +++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+>> @@ -7,48 +7,75 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>>   title: Samsung s6e3ha8 AMOLED DSI panel
+>>   
+>>   description: |
+>>     The s6e3ha8 is a display driver IC used in 1440x2960 AMOLED panels from
+>>     Samsung Mobile Displays (SMD).
+>>   
+>>     Known panels:
+>>       - AMB577PX01, 5.77", Samsung Galaxy S9 (samsung,s6e3ha8-amb577px01)
+>> +    - AMB630QY01, 6.3", Google Pixel 3 XL (samsung,s6e3ha8-amb630qy01)
+>>   
+>>   maintainers:
+>>     - Dzmitry Sankouski <dsankouski@gmail.com>
+>>   
+>> +required:
+>> +  - compatible
+>> +  - reset-gpios
+>> +  - vdd3-supply
+>> +  - vci-supply
 > 
-> The vendor changed the value multiple times. Last value for production
-> devices was 900. HBM can go up to 1023, but keep value safe for now.
-> 
-> Fixes: 069a6c0e94f9 ("drm: panel: Add LG sw43408 panel driver")
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
->   drivers/gpu/drm/panel/panel-lg-sw43408.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> index 822318f546ef3..92cab6478ea61 100644
-> --- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> +++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-> @@ -197,17 +197,18 @@ static const struct backlight_ops sw43408_backlight_ops = {
->   };
->   
->   static int sw43408_backlight_init(struct sw43408_panel *ctx)
->   {
->   	struct device *dev = &ctx->link->dev;
->   	const struct backlight_properties props = {
->   		.type = BACKLIGHT_PLATFORM,
->   		.brightness = 255,
-> -		.max_brightness = 255,
-> +		/* HBM can go up to 1023, stay safe for now */
-> +		.max_brightness = 900,
->   	};
->   
->   	ctx->base.backlight = devm_backlight_device_register(dev, dev_name(dev), dev,
->   							     ctx->link,
->   							     &sw43408_backlight_ops,
->   							     &props);
->   
->   	if (IS_ERR(ctx->base.backlight))
-> 
+> I see no reason why order of this schema should be re-invented. See
+> every other binding or example-schema.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Sorry about it, I guess I messed up fixuping moving the pieces.
 
-Thanks,
-Neil
+Fixed in next rev.
+David
+
+> 
+> Best regards,
+> Krzysztof
+
