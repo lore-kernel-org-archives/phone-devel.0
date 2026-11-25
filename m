@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795612111;
-	b=KmlqrKwiKeUysEgVuIoivEdsdk1/XZ5H6rgtzytR+jYA9pApoPoEzY4hDbVqL0tOGOiX
-	 Aw/UXRNzxAkLuys3rvm5a0xCWjGaZ881aFTLwVREOEvMivbGb6A1HLahZM9cEjK+Fy5bF
-	 rcmuQ2WfHHRqFULerulScpzMDNTmRCh0IFh5+6CbHtzNASs0Fy2HIObpuPO9IpdsmHjFJ
-	 WFnllYLZhGPZ5JI/3ERqiHryVADYwtSJ+yac3EoRcpcgffF+H75Oy6PD+urfFfTvSZL6e
-	 IRnP8zn85Y2tjKwgyJFA8Ix5qudwv654lTiZxIRUKfwVaCKBSYH0RyHVKiFD+DL8e5Q==
+	t=1795612112;
+	b=uU6KUDOFXbO1AVmsRlSV8B89zMLvMND/N10z5YWdlR0NupDQF6CpOPeiL7g2WJshkXjl
+	 3oJ/1EWdkRYBHYtM3weY+2GPUmKH9tGYzW16zjfjl8BWXZcx3s+LjjIXuVfqmAMjKjeuC
+	 heNDyT2QYU95NqD/Cht3cu+C3Nvkbb1FYxywLdEwyZCy3xPUGz3dpNskstYu5Aflx32Dz
+	 wTyRKN+rluHrhcT3XMnvERaSn9BvZzqK+D9UeuIjKUeuRcbqbxdvTWuIswja9cENMTx/4
+	 v0+L5M122BF+6rdQnoNGd4TbilnX25zeyxAoa8TtAlj29oWlKXxYQKwpz5IQn68e5JQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795612111;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=ONotlEahceqvdW/gLtVb9KiwJj5aa1h7mJqg2zchc18=;
-	b=XlX1LAtQ/F4cV4bjg3UNvpcaMtmJZKkOIVjcczuMDxKXOVVAhl0pD1MP2UqG6nd8vfKd
-	 70GGFZTmeZvuUmJxjfQqNoMlV8ovuUGODcZ1CeFj61y3dH/ZhujYpVi2OCmjGRDqeMj25
-	 Sg9gT0XIiKMYU8ZxpVhIWo2iVwx4z9p7JpuRbZW48h8B+cdH3blgwCvCm3g9F6nxnHm0/
-	 lVjeS08mLmSc63c1TS0Si/A8h3x/0K4KbSwnv7adSfW+xYa/YOhITlgHKiZwsZBuoRLAh
-	 8Tm3FvErYvBYKxbk0Y1AUnZbpkC2LOmMNujL/xLzjEGI8J2jFqSsuiabaHAPncKpr5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795612112;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=aXJr4z99n0IsW5VU0Ka0thQEbMpW1cePBGzNA1i1HPQ=;
+	b=DzbbEsBUyX2DVbU1+7bnH/UBctyA4DyQgP+qzkyUeC121iQUlWi0XMbp822ka+WE9Z95
+	 X0rKaYvGCBI72+Ux272YMdBuMdHLd7F6hMjDvHkHds4cm8ReFXKJsfA+1QkGhW0JcS+de
+	 XNpCypmVImkU2JQptTzp3oxPOOhqcKM+bxVYDxgPTsMCgiKWG2sBAj0sM6rrBhYkzOQZf
+	 kFtc14RIVKkzMQOWHr5IH9BlRExO660Fs+e+pLP5CnCT2G78e5kYNKBxy2BZzkR7gBCpe
+	 iTM7bAH9eugYHw751AgOMN5qMCf3oLHFc5+t7D87okpPO74keK9+jesbZqWi+zmtnfg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h8kU879l;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBT82xLo;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FB3606A695;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3232606A6AB;
 	Wed, 25 Nov 2026 13:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h8kU879l
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBT82xLo
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795612110;
-	b=zpbniVTClbb1GvTeaXDG8tpoF0LmbNlgQsrBtUzUREmmbWhsmrxTF5YU4HLluJeahuFy
-	 i+iNpnYQ7UdxaKAECYydGtWUh7kw4TExxVt1z/DNrLYhFRDIj/m37eI3c6Bs4Yxcces3S
-	 F3/RFtJn86uXwPa6iLfT5LZt+e8jbUKCqFxVaBcPPmYOCkmL1+t5pAnunlCcGSi7zR1/T
-	 aGZyjUp/JYnXYMj6Z6yaGQvZ3c6woT1rzqyK1w20vkVET3OgFcNg+NM/I9k8tcGoxel1S
-	 u1Rva8gRm6J1PcsMEchW8c0pUMCq8i8LUOec+x2vrXg8sAxgyQKB6y/pCOhYAGtutpg==
+	t=1795612111;
+	b=fykVc78nsD/WibQTP/FrO+p0nBltmlqmxOJR/D3fH7P0X85ZJGo0ELnj0mwjmp066I/k
+	 +kLDUemBZeZMs5PUw3emJLRdHosPBkKkC/NjP7YEHvxqpo2ugd9/DXhnqdxAq45AYU56z
+	 zMeLN69TO50aNks5l3SVDjAW9MxXqA7AAyPqhyMtC2pTTy+5evt+KODqRYq6fBptG5xbF
+	 uY+cJOqZ+Hqd5jeLm8ZQ+mc/yfEwG5que3PZ7q/S/hRE0H3/2Rh/7g9Pd5II9PWBXXxjf
+	 E9hQcOwJJmJm6xNQyxx6ciG0rQAVZ8cnUyXB01iVLDOuzXRgdOZChSdD6B5G3HlKPJA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795612110;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=ONotlEahceqvdW/gLtVb9KiwJj5aa1h7mJqg2zchc18=;
-	b=wHEO9MJ8qnRvPAAxbC6hludEV5h8QCQaGKZM6LiVCr2mkvOgxOfvL24iMuJSxZ29LElS
-	 kEYlu8A5Conj6e3Jp9tlXJmuRrWnFRa43UAwhm10sBAzUuJqzCz1C0ACWgkWs8WhFfjqZ
-	 EzvB8BDjo5QSVo+bZKWdTsZFHvbk+rW+JnOjK6IaDOgehN5M5YlxdRj766Yg9pqzpygBg
-	 U909CQlfy0g7xzY2MthJUcR6ACuC1szE8wVijurjXXVfA/kcZi2GYk1VXQk3toWiBhf48
-	 wHblDKeZ1ZkJgt64p5wnw1V78JOnTo24dAUgVJ8NLxnQgHT/5GJ4tRiLi0CqBhpf1Vw==
+	c=relaxed/relaxed; t=1795612111;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=aXJr4z99n0IsW5VU0Ka0thQEbMpW1cePBGzNA1i1HPQ=;
+	b=iY6JnQraT8AkgPXZlfKHBPXDNsufhfudaQhaW8nUphLVhRvTUz78D4B98jfpLzBZmY6q
+	 HAX3c1JHGrtW8/1euT2or20PV30hbL65ffdHpMPbeEkoP0UAofdgQhp7NVvygT0tvOlR2
+	 g729XGUqWkwXeRyhsbu4D+A9qYiVHfSpvgdhf4TN8p05YykYUB7hIJkKTEj9q2saGbNRV
+	 Fqxgf3oOhIOh75erMTGvpwfUoFs/PeS/zUAzo7mYhNPVA0JF1Ak/dm86joYCqmKaZyzo1
+	 LdV7quS8wMrkvHTvI8FkZoFTG5dnkS3ffr6tmg++A8o3jBePMelaG5a8q9oaaxwBbIg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id AAB181F000D4;
+	by smtp.kernel.org (Postfix) with ESMTPS id 700481F000D1;
 	Wed, 25 Nov 2026 13:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795612110;
-	bh=ONotlEahceqvdW/gLtVb9KiwJj5aa1h7mJqg2zchc18=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=h8kU879lRc8nNshFokznjEsV7dpssRl+52MbjF/LDds2bZNG6U7aIZBCaSyk14Jhm
-	 4KAPZI2CFahn0trjVMmQNB4t8dua9T4J0u8AaToYoMg6DpuHskaqpJQAp0lnHUBayl
-	 K1bH6dWLKKOAT5i2q/sPl0WBwmZ9EsvtkHWMxnqRRjfyC/N4101YSH8XX7ZOhrqtja
-	 nQm3Yl6F69rNbaViXtwXCJ3wlJomLVKdUND/IFftEkq5PAp/JK376P8v5tW5xOr0jD
-	 LX24BU5wPkod/gUG4j1pd7VYbfRJIKP2XCN0ZNkb/cKMPJ+PPLuFrDAJm4EmlvIYld
-	 2RcVUL5Vcur1A==
+	s=k20260515; t=1795612111;
+	bh=aXJr4z99n0IsW5VU0Ka0thQEbMpW1cePBGzNA1i1HPQ=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=JBT82xLonbXw+vz7MT1Ugz3nnS+kZsPWFM21aEpRrhQzrIBURFdTRuYZUJ3QwYLMI
+	 us4w4oWPNaCpkCI44119ogxmxKF4fnJAGnAGw6EPcT2LIA6aQJaI2Puqx9G2qnHNMb
+	 e5lJOGVWbChtcCr/C8lEXD4eh/SIph5iYlOk7vMbo9C6TZ9ArqDZ8ufKhkVkoijBBi
+	 2AN9licjaX/W1HY9PisJsCSswpshSz9vys20Mie7id6mlm9CzRJJw0UewyzwUbyvCi
+	 8ayjPJG7GNGYdILaVWHE3eBzikLD3ZhhNxezlryV0Rrd3vqC6rfgGQN0Vlag9ATWBP
+	 c6VRYGsU3bU5g==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 329984CED5;
-	Wed, 25 Nov 2026 13:08:19 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id C0CDE4CECD;
+	Wed, 25 Nov 2026 13:08:18 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 25 Nov 2026 14:08:14 +0100
-Subject: [PATCH v3 3/5] drm/panel: lg-sw43408: split enable/disable from
- prepare/unprepare
+Subject: [PATCH v3 0/5] Pixel 3 display fixes
+Date: Wed, 25 Nov 2026 14:08:11 +0100
+Message-Id: <20261125-fix-blueline-panel-v3-0-914b4a30b73e@ixit.cz>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,9 +84,12 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261125-fix-blueline-panel-v3-3-914b4a30b73e@ixit.cz>
-References: <20261125-fix-blueline-panel-v3-0-914b4a30b73e@ixit.cz>
-In-Reply-To: <20261125-fix-blueline-panel-v3-0-914b4a30b73e@ixit.cz>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NTQ6CMBQE4KuQrq0pLQHrynsYF/15lWcIkhYal
+ HB3W1zowricZOabhQTwCIEci4V4iBjw3qcgdgUxreqvQNGmTDjjNTswSR3OVHcTdNgDHVQPHVW
+ O68bIunHckjQcPKTWhp4v7xwmfQMzZik3Wgzj3T+211jm3t+DWFJGoXFC1Rp06dQJZxz35kkyH
+ /kXULKfAE+AFFVlndVGOPkB1nV9AWV5g/kFAQAA
+X-Change-ID: 20260809-fix-blueline-panel-af2b7c967f2d
 To: Abel Vesa <abelvesa@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
  Casey Connolly <casey.connolly@linaro.org>, 
  Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>, 
@@ -103,164 +106,63 @@ Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4437; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1515; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=zdOJs/tIhku4VxDIOc1H243ngJpi3Zm+4lt2IgEmTVw=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrBt3Bf171PFCQnMrQaSWl6YXnE+4lvjdQyX06n
- wc5wsUTR5WJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawbdwQAKCRBgAj/E00kg
- cuNXD/4ok4+agFZwcqrAuGR8XEjNPAhQyceNnZ/0Iz3hBcBqg01F8hFfjRTyH0Soh2+FxGfUzgL
- qx0tLQoYYYGaTeoCerCo/qsN7kKHYh/09HrvZ8Y/4z/zedIhJdqJ9CUr5LG4M4VwKIWbP9BEQ40
- oQTK04gykgptY28k5lAboZhvK3tIAoU/4Zsc8hR1D5Kh8D5mQxedbXjnXgznvToUPVPRmNKheG/
- thtjsMX1pwlzMRx1Dbcq/D0y6GbvkgYKPTM7ioquxTP8QTdFt1w1p5pMO8RXWw3hevC2QldreKs
- ISYO6rU6wLUyxurWZf4Cm1GIYAZApbXcBn5LUnPx2gbYtl7AkxU1+V4OXOlnG9iCcKSybsco2+x
- twcr4ChMWQoTylfS8/WDAManw9yEO/MhLMbXF423t9nfTAxCvo+FVng8SN76UAZHy+UwJKRD1j7
- VQw7F/69yRtp+zirFxaEArEvkVQaPfUVkOw3x6jFt/104WW5NRTEGfOeQflFUBoGRrDoCaD5Rsl
- yC1dIx6R+8kO8z86NoNzFrgWql7qvDpPqA5Vpt/uU64WL3OmtJeW4ouaztFPBcws0O1iK31x092
- mQ78CXza/wVbRb0OX4BtW8gIhFQl59hf4eUrc4BunDSeM7U6Gy7vLvIjRM6yluaQ7t5bfB/1Uzl
- UmOSZiuIzOECSew==
+ bh=hS+2R1WEEhHdtFJdBzf8GuRaPhYVXr3NowJRCDOllIQ=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBrBt3BGEprGvWIkV5M/UhQEk9sj1jUQjrHcBET+
+ OWocuRD5+yJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCawbdwQAKCRBgAj/E00kg
+ cmrQEACDRepoXdI68OrR5HOo24wWyUqB069HLm4YtObpmSfgE1jxgVPVm/a7wvsK5GNTkU9fxDp
+ 5nnME1zxQoncc0mW/nFuEDaxQoXUBb6+n3vX9Qw7r88eT1KiUYv+jgyEIS8wMaKfO19/+L3B3UQ
+ +du2GUGCz8KNKmZKMp2n/6FJlB7FLxc3PeJ8FFta7kMHhtxiqPFn92I5EHcxbUzj8MH7ez5A07N
+ PU2kqQCCb/NZKeka+f6klGZwi5cZV71NmE4KWaD+vU+ZbcNGum0xl6FbVg+PQEOiUTdJSoiIV1x
+ CJ02bWUudOgkbiMuWxkZWlkhQ/SGpGI2AagdQ6rj0vnuspHJIK2F6EUOBeYzzb4fBPMyExxfoBF
+ X6l0bUlNCyYNwmEO366RXTCNWjXY9WHoIVf1jXRj6N0fiDCXQ4UrKb+Ap/GlIW04Z0s6ZRLATOm
+ bOS0wGLhmILX8qaKAhUpbfjU7gRKRe4LotDsfqsfefstgO1LhGBqmbFtP3VvV/5h0Aq7K4Nsb/K
+ 9D6WEmJX6tsPTogO9cCOeVzE107Md7ea3ePxtIt8MJM3ZfaN7LtsYtOlDtzYRagtPyXQG0x8Esd
+ KIVoLkGXyey1jC4fhv47XJIJ+LoOiG+dS91y10Sqxg74fdUjpXOfDR3+ETBD3UpRgOE99BZwVP/
+ NvTWN9rnvWeDY6g==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
-Content-Transfer-Encoding: 7bit
 
-From: David Heidelberg <david@ixit.cz>
+1. Update backlight intensity up to what vendor use for production
+   phones.
 
-Separate display blanking (enable/disable) from panel power sequencing
-(prepare/unprepare), matching DRM panel conventions and other SDM845
-AMOLED panel drivers:
-
-- Move MIPI_DCS_SET_DISPLAY_OFF, MIPI_DCS_ENTER_SLEEP_MODE, and the
-  100 ms sleep into sw43408_disable(), leaving sw43408_unprepare() to
-  handle panel power-down.
-- Move MIPI_DCS_SET_DISPLAY_ON and the 50 ms delay into sw43408_enable().
+2. Keep panel power supplies in sync so panel can recover from blanking.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/gpu/drm/panel/panel-lg-sw43408.c | 32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+Changes in v3:
+- Properly fix the panel driver power-on/off cycle.
+- Vendor in later downstream kernel commits increased BL limit to 900.
+- Link to v2: https://patch.msgid.link/20260810-fix-blueline-panel-v2-0-9344dfdbc3f9@ixit.cz
 
-diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-index 7f7d7b6b17f61..7123ad18744cf 100644
---- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
-+++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-@@ -38,33 +38,38 @@ struct sw43408_panel {
- 	struct drm_dsc_config dsc;
- };
- 
- static inline struct sw43408_panel *to_panel_info(struct drm_panel *panel)
- {
- 	return container_of(panel, struct sw43408_panel, base);
- }
- 
--static int sw43408_unprepare(struct drm_panel *panel)
-+static int sw43408_disable(struct drm_panel *panel)
- {
- 	struct sw43408_panel *sw43408 = to_panel_info(panel);
- 	struct mipi_dsi_multi_context ctx = { .dsi = sw43408->link };
--	int ret;
- 
- 	mipi_dsi_dcs_set_display_off_multi(&ctx);
- 
- 	mipi_dsi_dcs_enter_sleep_mode_multi(&ctx);
- 
- 	mipi_dsi_msleep(&ctx, 100);
- 
--	gpiod_set_value(sw43408->reset_gpio, 1);
-+	return ctx.accum_err;
-+}
-+
-+static int sw43408_unprepare(struct drm_panel *panel)
-+{
-+	struct sw43408_panel *sw43408 = to_panel_info(panel);
- 
--	ret = regulator_bulk_disable(ARRAY_SIZE(sw43408_supplies), sw43408->supplies);
-+	gpiod_set_value(sw43408->reset_gpio, 1);
- 
--	return ret ? : ctx.accum_err;
-+	return regulator_bulk_disable(ARRAY_SIZE(sw43408_supplies),
-+				      sw43408->supplies);
- }
- 
- static int sw43408_program(struct drm_panel *panel)
- {
- 	struct sw43408_panel *sw43408 = to_panel_info(panel);
- 	struct mipi_dsi_multi_context ctx = { .dsi = sw43408->link };
- 	struct drm_dsc_picture_parameter_set pps;
- 
-@@ -97,20 +102,16 @@ static int sw43408_program(struct drm_panel *panel)
- 			       0x00, 0x00, 0x00, 0x19, 0x19, 0x19, 0x19, 0x19,
- 			       0x19, 0x19, 0x19, 0x19, 0x19, 0x19, 0x19, 0x19,
- 			       0x16, 0x16);
- 	mipi_dsi_dcs_write_seq_multi(&ctx, 0xcb, 0x80, 0x5c, 0x07, 0x03, 0x28);
- 	mipi_dsi_dcs_write_seq_multi(&ctx, 0xc0, 0x02, 0x02, 0x0f);
- 	mipi_dsi_dcs_write_seq_multi(&ctx, 0x55, 0x04, 0x61, 0xdb, 0x04, 0x70, 0xdb);
- 	mipi_dsi_dcs_write_seq_multi(&ctx, 0xb0, 0xca);
- 
--	mipi_dsi_dcs_set_display_on_multi(&ctx);
--
--	mipi_dsi_msleep(&ctx, 50);
--
- 	sw43408->link->mode_flags &= ~MIPI_DSI_MODE_LPM;
- 
- 	drm_dsc_pps_payload_pack(&pps, sw43408->link->dsc);
- 
- 	mipi_dsi_picture_parameter_set_multi(&ctx, &pps);
- 
- 	sw43408->link->mode_flags |= MIPI_DSI_MODE_LPM;
- 
-@@ -119,16 +120,27 @@ static int sw43408_program(struct drm_panel *panel)
- 	 * PPS 1 if pps_identifier is 0
- 	 * PPS 2 if pps_identifier is 1
- 	 */
- 	mipi_dsi_compression_mode_ext_multi(&ctx, true,
- 					    MIPI_DSI_COMPRESSION_DSC, 1);
- 	return ctx.accum_err;
- }
- 
-+static int sw43408_enable(struct drm_panel *panel)
-+{
-+	struct sw43408_panel *sw43408 = to_panel_info(panel);
-+	struct mipi_dsi_multi_context ctx = { .dsi = sw43408->link };
-+
-+	mipi_dsi_dcs_set_display_on_multi(&ctx);
-+	mipi_dsi_msleep(&ctx, 50);
-+
-+	return ctx.accum_err;
-+}
-+
- static void sw43408_reset(struct sw43408_panel *ctx)
- {
- 	gpiod_set_value(ctx->reset_gpio, 0);
- 	usleep_range(9000, 10000);
- 	gpiod_set_value(ctx->reset_gpio, 1);
- 	usleep_range(1000, 2000);
- 	gpiod_set_value(ctx->reset_gpio, 0);
- 	usleep_range(9000, 10000);
-@@ -217,18 +229,20 @@ static int sw43408_backlight_init(struct sw43408_panel *ctx)
- 	if (IS_ERR(ctx->base.backlight))
- 		return dev_err_probe(dev, PTR_ERR(ctx->base.backlight),
- 				     "Failed to create backlight\n");
- 
- 	return 0;
- }
- 
- static const struct drm_panel_funcs sw43408_funcs = {
-+	.disable = sw43408_disable,
- 	.unprepare = sw43408_unprepare,
- 	.prepare = sw43408_prepare,
-+	.enable = sw43408_enable,
- 	.get_modes = sw43408_get_modes,
- };
- 
- static const struct of_device_id sw43408_of_match[] = {
- 	{ .compatible = "lg,sw43408", }, /* legacy */
- 	{ .compatible = "lg,sw43408-lh546wf1-ed01", },
- 	{ /* sentinel */ }
- };
+Changes in v2:
+- Unintended change 255 -> 256 for default brigtness. Drop it.
+- Added R-bs.
+- Link to v1: https://patch.msgid.link/20260809-fix-blueline-panel-v1-0-e7f3a6beb1fa@ixit.cz
 
--- 
-2.55.0
+---
+David Heidelberg (5):
+      drm/panel: lg-sw43408: use the full DCS brightness range
+      drm/panel: lg-sw43408: skip backlight updates when unprepared
+      drm/panel: lg-sw43408: split enable/disable from prepare/unprepare
+      drm/panel: lg-sw43408: keep VPNL paired with VDDI and reset deasserted
+      arm64: dts: qcom: sdm845-google: drop panel regulator-always-on
+
+ .../arm64/boot/dts/qcom/sdm845-google-blueline.dts |   2 +
+ arch/arm64/boot/dts/qcom/sdm845-google-common.dtsi |  10 --
+ .../boot/dts/qcom/sdm845-google-crosshatch.dts     |   3 +
+ drivers/gpu/drm/panel/panel-lg-sw43408.c           | 153 ++++++++++++++++++---
+ 4 files changed, 138 insertions(+), 30 deletions(-)
+---
+base-commit: 909ef7a9a30fa139e69e555e3606680f5cca7726
+change-id: 20260809-fix-blueline-panel-af2b7c967f2d
+
+Best regards,
+--  
+David Heidelberg <david@ixit.cz>
 
 
