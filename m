@@ -1,50 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795719602;
-	b=bcNGdeGAQkZVi4bgPv1bDrpGxgDuIS5hXxmvuCxStHVqvDt6PEYo63K28/9wzVJcra0z
-	 K/WsVtbTrm0Fy52Uk1loBncS9CBOvAzuyrcFT3A9pslPP6QZMBagspjMF3t+3GFBoXFNY
-	 vtOxgpDz4bB0NKVawuuPkMLzuWvqVEQBBzMck9/escrwnKYGhM6PUQYZ8z9x9BJjN+8M7
-	 rwUqJBQOq6AQ6NEcC6iWF/M3tLFRTqLUc4lqlr1Aun03va/C0AcUUjrFKiA9dxDOYr4Gr
-	 hpBNpBJeksAHrfIG/0apWUAIHyLdTpdqBmU2HwsBm8a1aWdVPY362rRSfIBkIefipDA==
+	t=1795719603;
+	b=jMwi5VWw0pE/SW5HvrS/IhtFlYhyh3Za8v87y4Sr1+oZh/twXGG/If5GJyB78N45oEGx
+	 fmVsSP/QnFasWaJFOIrDFvP5QLp8OY3V2TG6ZaslUFrbpXskHo1b7+RyZYfzFanCe/ukn
+	 gniHadJpE60ZqHDWydO00fvIRDdVteIR7/rA7kHNT7ZJ0T/aoCjEuQjYx3/cDqKlDT7ht
+	 4BqXsrc3QOKFc9KJwYWnQpq8II3Om/Ix73IAmXHua1VJ6abTo6Px19alTFP58+00G96p4
+	 Y8WOPn6Q5+kkau2hUdwpHJdMS2uAk9zmcWEta1ENTqdIT0ojaSOMujjqBH3B3MkJrig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795719602;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795719603;
 	h=DMARC-Filter:DKIM-Signature:X-Pm-Submission-Id:From:To:Cc:Date:
 	 Subject:Message-ID:In-Reply-To:References:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=whyYBFaRg7vM5AgWVPAf0VahbrPtCCLkEesp43DsjqQ=;
-	b=e2urwj9LqEMp3nR7VrzRh3Zbt+4J8riNhIAGzkCOxtjIhqhnrZ7PqH1atFOaEeMTHbfh
-	 KrSvPWKSi/1vesV3TWJK2BnpR5xjw3FyqTBWzSCPgQkBh037NuDS5R+gekbCknEBUOo3l
-	 cdh9hyKEZcZNUs1WCc363bbkVfzXkeVXunxjl/UGIs+quHhV+1mufaLWA3JEM2zgN0INm
-	 to0W67IAxyaW6LeFyDBf7hWMF74J2A9XbBD/6LDjvAaxnCFjZmEg0HRKkVLf3UQpzxyvN
-	 lqpVen6y9o/kduliljdVdGmnrgz5Y4ettFu3aWMdzaZtKtdBBa3o/a9QyzFYnNpoMVw==
+	bh=2b6K6pvLLOQHdHQFNsRUOJnyQczbFVIGhymNPlQlyy8=;
+	b=Z4+IJ2KrBbehOgKMj9h2vqONJI+GUuKLUhEbpjrV8R+XpXVQ8SFjHiNO+QYWX541Ei8F
+	 P1G78QwUUev8rVj0xBJgEqBvaBPwBCtTfOnQ0wPsMyU0nYiJRG8m7/JbVpct6zAL3HTYM
+	 RbVtign7pDMXjb5HiniuBX+w9sLZUl0rTwCQWvm9qeJ4fU/qY9Kc7qrNvpRd0cViw9Sk9
+	 Uh/bTE0OfhqUkBGsZum3iW2DI8mDVtmJqTgVZOSBerJuJ/B8jAysYc501L6F12EBVOMS6
+	 qPLhSmlvp1pW0hTlIXiJurSWBj+x5hY0zkyp9hOA8P/f+o+PTMVidCbHoENz7wkIs4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=michaelmcallister.org;
 	spf=pass smtp.mailfrom=michaelmcallister.org;
-	dkim=pass header.d=michaelmcallister.org header.i=@michaelmcallister.org header.a=rsa-sha256 header.s=protonmail2 header.b="QmgCDZj/";
+	dkim=pass header.d=michaelmcallister.org header.i=@michaelmcallister.org header.a=rsa-sha256 header.s=protonmail2 header.b=KLR9WuaB;
 	arc=none smtp.remote-ip=185.70.43.170
 Received: from mail-43170.protonmail.ch (mail-43170.protonmail.ch [185.70.43.170])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D82606A329
-	for <phone-devel@vger.kernel.org>; Thu, 26 Nov 2026 19:00:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A6D82606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D886606A681;
+	Thu, 26 Nov 2026 19:00:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D886606A681
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=michaelmcallister.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=michaelmcallister.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=michaelmcallister.org header.i=@michaelmcallister.org header.a=rsa-sha256 header.s=protonmail2 header.b=QmgCDZj/
+	dkim=pass (2048-bit key, unprotected) header.d=michaelmcallister.org header.i=@michaelmcallister.org header.a=rsa-sha256 header.s=protonmail2 header.b=KLR9WuaB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=michaelmcallister.org; s=protonmail2; t=1795719599; x=1795978799;
-	bh=whyYBFaRg7vM5AgWVPAf0VahbrPtCCLkEesp43DsjqQ=;
+	d=michaelmcallister.org; s=protonmail2; t=1795719601; x=1795978801;
+	bh=2b6K6pvLLOQHdHQFNsRUOJnyQczbFVIGhymNPlQlyy8=;
 	h=From:To:Cc:Date:Subject:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=QmgCDZj/m7tbtM278xysX2kjWvUTUrdv/K+i+aRJmkQE6ofnp61zKnLi08lnZ7117
-	 +XWKetSWyCrANrkm4XImz/lYhCUvt+6zyGEtgIuYdHQ0ZI2rVT3Iq21JCsUDMq++iW
-	 ky+GL0UgPCd8w831XMQLgA7JRT6Bg9KkysXr/QIcb7Wuudv6V/Xgqw2/axK0Qve32I
-	 jR5F8h3B7pcMhBpArVThTcoYYgtnK+KkeS2gCjuRTbu67uulNvy7rbcMzw1s0H5scb
-	 8CZAaLYIiHJ5TEt73ReFdMCYDfboBghy2JM5yuHqt7Uq4qCANz9ytrTzHmdqsjDR7W
-	 YrF8ZNGXRJnzA==
-X-Pm-Submission-Id: 4jb5T91Gqfz2ScXX
+	b=KLR9WuaBY7rtxnEXoOKqHWVBvL98XZIlP2lmfS7HIneGsUra70O8tiU5T5Mcf0w0Y
+	 Qnx7RE0HA8on5KnslIrxi4zX+17MyGethw92BbwTo44RIHm42jAlKuV4GZV7xK7p3k
+	 JiGDGOD8+7GsaA0LhaNKP4WI6KpwLoMyD/29JgzAx0sRT6vCeu1Dti4LNyGF93806X
+	 1LgFenb94PiaIuLiii3Xc3Od3ZdiD9c1pUQfQQ6Tbwc2NcxtDiPfD0IG8X3P2BAVRn
+	 +TF5F5rXvH31YEGOCFbaU1T4PW37HAsLzUevRqCrJxUv8mwt0foIc6FAbILbKTUhIG
+	 msH3NJyxviTug==
+X-Pm-Submission-Id: 4jb5TB3wPsz2ScWs
 From: Michael McAllister <me@michaelmcallister.org>
 To: marcel@holtmann.org, luiz.dentz@gmail.com
 Cc: brgl@kernel.org, enderaoelyther@gmail.com, linux-arm-msm@vger.kernel.org,
@@ -54,11 +54,12 @@ Cc: brgl@kernel.org, enderaoelyther@gmail.com, linux-arm-msm@vger.kernel.org,
  shuai.zhang@oss.qualcomm.com, zhaojinming@uniontech.com,
  me@michaelmcallister.org
 Date: Thu, 26 Nov 2026 18:59:41 +0000
-Subject: [PATCH v4 0/4] Bluetooth: qca: Power off WCN3950 safely
-Message-ID: <179571958163.81221.3368253997777320112.wcn3950-poweroff-v4-0@michaelmcallister.org>
-In-Reply-To: <hvwqozj3r7n7igxw5qogu7xxya4fkhqanb334sroj37ufzdizu@qarvtlkkulmj>
+Subject:
+ [PATCH v4 1/4] Bluetooth: hci_serdev: Track whether the serial port is open
+Message-ID: <179571958165.81221.3058707179497995247.wcn3950-poweroff-v4-1@michaelmcallister.org>
+In-Reply-To: <179571958163.81221.3368253997777320112.wcn3950-poweroff-v4-0@michaelmcallister.org>
 References: <179484638195.54009.1916641645532262287.wcn3950-poweroff-v3-0@michaelmcallister.org>
- <hvwqozj3r7n7igxw5qogu7xxya4fkhqanb334sroj37ufzdizu@qarvtlkkulmj>
+ <hvwqozj3r7n7igxw5qogu7xxya4fkhqanb334sroj37ufzdizu@qarvtlkkulmj> <179571958163.81221.3368253997777320112.wcn3950-poweroff-v4-0@michaelmcallister.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -71,47 +72,153 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Hi,
+HCI_UART_PROTO_READY is cleared before protocol close during unregister,
+even though the serial port stays open. QCA needs to distinguish that
+case from a port left closed by a failed setup reopen before sending
+its power-off pulse.
 
-On my Moto G10, turning Bluetooth off leaves its four regulator votes
-enabled. This series adds the missing WCN3950 power-off handling and fixes
-the UART teardown ordering needed to send the pulse safely.
+Track the port state in the transport and QCA open/close helpers. Keep
+the existing PROTO_READY handling for setup failures and use the actual
+open state when flushing or closing the port during unregister.
 
-I've split the unregister/TX fix out as requested and rebased these four
-patches onto the current Bluetooth tree, including Zhao's flush and close
-changes. This series depends on that standalone fix.
-
-Tested as a module backport on my Moto G10 running 7.2.9: six Bluetooth
-off/on cycles and driver unbind/rebind with Bluetooth both off and on.
-The four regulator votes dropped to zero on every power-off, and Bluetooth
-came back on each time. One firmware download needed a retry and recovered;
-the original driver also needed retries in the same six-cycle test.
-
-Thanks,
-Michael
-
-Changes in v4:
-- Submit the unregister/TX fix separately from this series.
-- Rebase onto f57f78086ab5, retaining the merged flush and close fixes.
-- Move controller TX flushing into the standalone unregister fix.
-- The separate Marvell prerequisite from v3 is now upstream.
-
-v3: https://lore.kernel.org/179484638195.54009.1916641645532262287.wcn3950-poweroff-v3-0@michaelmcallister.org/
-
-Michael McAllister (4):
-  Bluetooth: hci_serdev: Track whether the serial port is open
-  Bluetooth: qca: Power off after unregistering the HCI device
-  Bluetooth: qca: Handle failed power-pulse writes
-  Bluetooth: qca: Power off WCN3950
-
- drivers/bluetooth/hci_qca.c    | 34 +++++++++-----------------------
+Signed-off-by: Michael McAllister <me@michaelmcallister.org>
+---
+ drivers/bluetooth/hci_qca.c    |  4 ++--
  drivers/bluetooth/hci_serdev.c | 36 +++++++++++++++++++++++++++-------
  drivers/bluetooth/hci_uart.h   |  3 +++
- 3 files changed, 41 insertions(+), 32 deletions(-)
+ 3 files changed, 34 insertions(+), 9 deletions(-)
 
-
-base-commit: f57f78086ab54f3b3122fbaeba2c842ba7bb6d00
-prerequisite-patch-id: 4f7b2f10b0911886f60ec40656c453138c3570f0
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index d51db761f..0f893f16a 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1758,14 +1758,14 @@ static void qca_port_close(struct hci_uart *hu)
+ 	 * hci_uart_close() or hci_uart_unregister_device().
+ 	 */
+ 	if (test_and_clear_bit(HCI_UART_PROTO_READY, &hu->flags))
+-		serdev_device_close(hu->serdev);
++		hci_uart_serdev_close(hu);
+ }
+ 
+ static int qca_port_open(struct hci_uart *hu)
+ {
+ 	int ret;
+ 
+-	ret = serdev_device_open(hu->serdev);
++	ret = hci_uart_serdev_open(hu);
+ 	if (!ret)
+ 		set_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 
+diff --git a/drivers/bluetooth/hci_serdev.c b/drivers/bluetooth/hci_serdev.c
+index dfa921afc..d4b8c3b61 100644
+--- a/drivers/bluetooth/hci_serdev.c
++++ b/drivers/bluetooth/hci_serdev.c
+@@ -21,6 +21,29 @@
+ 
+ #include "hci_uart.h"
+ 
++int hci_uart_serdev_open(struct hci_uart *hu)
++{
++	int err;
++
++	if (hu->serdev_open)
++		return 0;
++
++	err = serdev_device_open(hu->serdev);
++	if (!err)
++		hu->serdev_open = true;
++
++	return err;
++}
++
++void hci_uart_serdev_close(struct hci_uart *hu)
++{
++	if (!hu->serdev_open)
++		return;
++
++	hu->serdev_open = false;
++	serdev_device_close(hu->serdev);
++}
++
+ static inline void hci_uart_tx_complete(struct hci_uart *hu, int pkt_type)
+ {
+ 	struct hci_dev *hdev = hu->hdev;
+@@ -145,7 +168,7 @@ static int hci_uart_open(struct hci_dev *hdev)
+ 	 * BT OFF. Upon next BT ON UART port should be opened.
+ 	 */
+ 	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
+-		err = serdev_device_open(hu->serdev);
++		err = hci_uart_serdev_open(hu);
+ 		if (err)
+ 			return err;
+ 		set_bit(HCI_UART_PROTO_READY, &hu->flags);
+@@ -187,7 +210,7 @@ static int hci_uart_close(struct hci_dev *hdev)
+ 		clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 		percpu_up_write(&hu->proto_lock);
+ 
+-		serdev_device_close(hu->serdev);
++		hci_uart_serdev_close(hu);
+ 
+ 		clear_bit(HCI_UART_TX_WAKEUP, &hu->tx_state);
+ 		enable_work(&hu->write_work);
+@@ -351,7 +374,7 @@ int hci_uart_register_device_priv(struct hci_uart *hu,
+ 	if (percpu_init_rwsem(&hu->proto_lock))
+ 		return -ENOMEM;
+ 
+-	err = serdev_device_open(hu->serdev);
++	err = hci_uart_serdev_open(hu);
+ 	if (err)
+ 		goto err_rwsem;
+ 
+@@ -422,7 +445,7 @@ int hci_uart_register_device_priv(struct hci_uart *hu,
+ 	clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 	p->close(hu);
+ err_open:
+-	serdev_device_close(hu->serdev);
++	hci_uart_serdev_close(hu);
+ err_rwsem:
+ 	percpu_free_rwsem(&hu->proto_lock);
+ 	return err;
+@@ -470,7 +493,7 @@ void hci_uart_unregister_device(struct hci_uart *hu)
+ 		hu->tx_skb = NULL;
+ 	}
+ 
+-	if (proto_ready)
++	if (hu->serdev_open)
+ 		serdev_device_write_flush(hu->serdev);
+ 
+ 	/* Close the protocol before freeing hdev (intrinsically purges queues).
+@@ -479,8 +502,7 @@ void hci_uart_unregister_device(struct hci_uart *hu)
+ 	 */
+ 	hu->proto->close(hu);
+ 
+-	if (proto_ready)
+-		serdev_device_close(hu->serdev);
++	hci_uart_serdev_close(hu);
+ 
+ 	hci_free_dev(hdev);
+ 
+diff --git a/drivers/bluetooth/hci_uart.h b/drivers/bluetooth/hci_uart.h
+index 7fbe8dffa..2f8e346f3 100644
+--- a/drivers/bluetooth/hci_uart.h
++++ b/drivers/bluetooth/hci_uart.h
+@@ -66,6 +66,7 @@ struct hci_uart_proto {
+ struct hci_uart {
+ 	struct tty_struct	*tty;
+ 	struct serdev_device	*serdev;
++	bool			serdev_open;
+ 	struct hci_dev		*hdev;
+ 	unsigned long		flags;
+ 	unsigned long		hdev_flags;
+@@ -112,6 +113,8 @@ static inline int hci_uart_register_device(struct hci_uart *hu,
+ }
+ 
+ void hci_uart_unregister_device(struct hci_uart *hu);
++int hci_uart_serdev_open(struct hci_uart *hu);
++void hci_uart_serdev_close(struct hci_uart *hu);
+ 
+ int hci_uart_tx_wakeup(struct hci_uart *hu);
+ int hci_uart_wait_until_sent(struct hci_uart *hu);
 -- 
 2.39.5
 
