@@ -1,92 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=106.10.242.84
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795804963;
-	b=pakxjhbVTkAmhUl8+lHfsWsdzP0VTWy82weLYSUnGuf0n1rBUWSHQMHdXkmSwC6lOajj
-	 N3AsU4PTscw3eDMr3e7YY8VoMJblacf9umbxVmCUa7Vm3qBxTtRMz40LtlapPfd55Niet
-	 j/FPT0j1BvlkY7vMvgv6qoOvjSaOrTVu18H1HCWxJwQwttLH2IyDQNGp0wCQtFSff1YZ4
-	 UAJx6wJ/NvMJaqZeRjQoAJ4k/azlbDqs0BCxlKD2aHlGysDuIIHotwWEHINTfWCgX+I7/
-	 h46r26vOsboELEGtHzWHIAjYUGmYragyPpP67vTobRrNAU88sINtWSsWIKogeczmbeg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795804963;
-	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
-	 X-Sonic-ID:Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=faDONGWkfAuDNx7cFOlN96ZgR+Ck6XywIVc0ff0uZlQ=;
-	b=CQGGTJJEk1ixbj9GLlVpD+ph0E9ol5e25EccFu5DOzqnadRo4ZLqQq1ChRCo5OLwHwql
-	 xeH1Tj6F2yyGLPu01P6DLZ/Lr2VlwqwKAUlKW4/j5WJauP/xQ59deXAg1QlxfPsjuHUb+
-	 jwTCiPQTnCpxc4T8C3ac0wkmQVz7Yq+JYZ74DEiIaBWlbD+2PucLiK1MSONcMnr2jZ7wH
-	 vvovmxfzkT7u8OKISsd2NvPZRYbmlT497U4PyoHSiD1OiczvhNM8IdA6l9SsKo/owxn5u
-	 7M2UFa3f4eBU4WK++Ka7U+lCkwubqnw2h5CmZyNU7SoCzr3lpEk1GFylwkAQaHUXC1g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=yahoo.com;
-	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=YClVWdL7;
-	arc=none smtp.remote-ip=106.10.242.84
-Received: from sonic301-21.consmr.mail.sg3.yahoo.com (sonic301-21.consmr.mail.sg3.yahoo.com [106.10.242.84])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795806358;
+	b=QNaXjs62HeQdTDU+IpjQdDyNJi6lySfZnF77xsmhMkr3i0mOn90HULt6KDlpMP3sPGWP
+	 37fwOLVAomrhPC3XFs0RV0SnhXTzK28H7f+7Dr/NNfRy/k6Y54lYjpcS0ghiw8xdSlhe4
+	 CVIn5Uoc2YPh4qpx/b1uxGNjqrVzJ+GwBBKc+afS3LkLphk5BWPMqOfUOOXjHIRNODF2A
+	 mhKPiM8MNisXvAB2J5WeCrxgWXsnF3tNaUj0hZ3vtCWnPUPNWVwDGHnjk/i7IhTcNfgRX
+	 9rUd6iBoi4PO9lPZ98ktWPUpJiGlO7/KlWXvb9UY+/oCYlYmJBrcsmNbS/ff9vwfj7A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795806358;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=zNT2+KtUd9oxOXZ7VJVA4bdniUDvQzJvv3ytvWd8DDA=;
+	b=jwkdkKU/qWWqxKwXzpfa+MY2fLKzCaoh6Zn0qyLeZLQYKQ2zkzWfB7yNY1y/bzIlur3g
+	 2GjV84lC7LB1kk82FdNCJqB/ofqKYcRGoejffxMLsvkQRBNQHC0W17DBuDmmm0ClScuSC
+	 e2Z+mHMxxg0GzdavOAtURuLIXWP9Tnewh7YUlmxBi4HcCiLDJQVmsj9OVqJ/rbySk5CN/
+	 SiawCe+sRVqu1rovbgEMoOT4eRYsyWJCoKhBvx7bcaxkJm9FSf15HhBZ2MM6O7WTBbHjE
+	 OZzxCk9fGvD+gAVJpTURvddtrfU4B3AT3gF7ZR8gv6SuR5ywOsPtsb+AX7yHaf9ytmA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TpVwf8k5;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A457A606A31C;
+	Fri, 27 Nov 2026 19:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TpVwf8k5
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795806358;
+	b=HIcVUlwFsD4lxt3491ogqvuQeYQqsQHrkxsokLHc56DM1vuG4kX3N/vG4A7q0KJZ4bU+
+	 RmO8TrXX+om3ww7tXffRaGYbSObEcPXx47i5aqTUrB3C2grkCaBzT38Kg+LlL1rMZRgGl
+	 apfFYRlYDzaDFFq3bPXrBJE5UH8MmP6HeEoQjse4UkU3X7e6OUKsRl0dEQiS1lhTRG4Tt
+	 5NMXdvOfk9Z25ZvHH8ySMwVwvZF3R8GXRROkIA5bMyHB/IERCaNI5w2Nw1p/R51r+AejU
+	 q9S/KT5UUiYjaAqhMlK2s6GsG3P0TqBeSFBrvepqYFinnolcuWfOeq0re4JfGUDsNig==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795806358;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=zNT2+KtUd9oxOXZ7VJVA4bdniUDvQzJvv3ytvWd8DDA=;
+	b=pelG5yZIsbgt0OoreCBPUHn+wffK0dRRaiW6799qJKIytutGG6CBJ8F2YRJAO+oF8zFz
+	 /78WcqirBoJMyHS26Y90beXscVMm1R3e6gxvQgY8XYYs1NPbsghZqcXexCm1PJmrhoGec
+	 wGaAWRbUWFXoIMGixqMjvVrbvA7GwOm6RKIa6NAj4NwGdpSoOBTWFhukhtgrE1xe+maHh
+	 WUOAt58HKlnhdN549wRxtjMAKen0+beW+eoAlks65Yr9O1kHe6KnoZ7nAkZuftfJLO9kQ
+	 pPwAQvYHyDQC/nWdrRSkDscW3m10L9Vp9O1iyUGD7plwqk7LE/ffAo/i2yh+yUHayJg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2365860A2606
-	for <phone-devel@vger.kernel.org>; Fri, 27 Nov 2026 18:42:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2365860A2606
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=YClVWdL7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1795804961; bh=faDONGWkfAuDNx7cFOlN96ZgR+Ck6XywIVc0ff0uZlQ=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To:Content-Type; b=YClVWdL7Hn/I5dmQ7y8yrFCtifw3ip0YK4mHdd1MymXJfxRpr7/F64kxEU7BxoVS8H/iFGF5Xbk2aOaQAcznjBpHSh/G37krN92ZDY6h+nmp7hgyOgC2PjkoLWNsq1OlaFpUQDP9aK0Ep2I0QJ4i969LjxkDgDmgJNo3cydaIVYmhROR30+IKOumQHrc6/SiaYU/n/17l9VlETp91oKlgqiWWoes3eFutFKlObEU+rqHs0+rncRXR1t7jmZJE4gjvpG8ZJgb9FR1iKbCw+mVmfVrw9Oh1titmygo497ONjLqo8Sv9IC0i3/FsCXE7ITMTK1jAsXXxT22MWduKKaJpQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1795804961; bh=K4xAHI6e8jdoIkxVMcUseRJumcmRisyuPqzroRQa90H=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=XifUCYRe+RWDmyZu4lou6in0MqDBqrIHRq/U9BkGF6IJJrwrLa4c2Ke0P287b8TG7ratbIq+rihkT2FzibrpR1qo21awu1K4aTTN4l9KMLYFV9f4JHJ8587PmCge1aoYgHKrfcjdBDwDqG3PNM05hApbBM3fx4czHDfVzsJJs3oSi3snmGeYELyHnjLmcOtFqeVNgcnlO/In6+lWFTTv61+Avb0Uh4r6COeRJniIUJtwlos3EZYs8i5ZDfcFecqru1I9ecyPzKXRetrNt4aZr3sY87sSOZCS/wo4nNFjKKALkKtgbJu85uvvDgCgZgBAOXbaIScs/uaG9IG58KrUFA==
-X-YMail-OSG: yz1Dch4VM1lj_M59J6.2MNSolckKNffvOHSATxmVulkCWd5gKvtnOUEM2HEnPlV
- QDu0_k_Wo3kz1q63k4xclrTGMvtUVlTtv73RZv_JAmAQhcy0Q37GoiDgwrpmHwCat5uRyREtwdlS
- d_Zy2jhRQIiFn7k7nMO7zwbAwjQBMThHyCFzIpPH12JK5uuBwn2IBkoHs46zIwJwZmjJGQhWHQ4E
- c_RIMyZVLFYsVpAvVm85IYCY1DkEVNja0EckyBSIB3kqDr1f.0qSJM_XxmlYFWQD7q3TjgmBbe9b
- Tbp73LJp3SAjJ_rFgbl5dMlLAWlQ0bEHvXJFrvo7jJsJIk.tVMcL_OcomYlYhoBivcVz44vQQ4H4
- QuEzAzV54w4v8AWZ9SCUSSh1S4oFjbasKhwBheDgJ06rhDMJgHyGlMibXc9qenubT9eqcTxWdFdl
- jRQY5KecCFexeBIO3hXS_XVo7IYav9xRv1bgyJwd5FR4i8NLZBJb5BR_lkR.gfsdLcJsJ313_C88
- IshmU9nIG5NC3nVWgpGnKU7mQAYYDIwC26A8WYRi75h6ITA7cLkWITvkLu6ogRkEG9UYgCjGDN.n
- BBF45sriOLwAAkd84Oa4VofKIVmRrmZwIa8Eq.5YgDYqE8ghFRiUPtSAzG302wsGJO12xoTvGaxI
- D5nq1iACMgrohvZLby1LHpRISUgiHBjV6Ai3psoNjKUjY2QvhtnUdcu25Bc9rYrbLYaashfv0Zk0
- ceiDOIG0b1SnOjzrG4z0tnyVb8ckMtSiDrPxSx3.N9tOULqeaSF1eWQ5WYHaR11iJn4v8_nyZ718
- PABr033hWxWirJscO6bdxhzJ..pQL6.5ndxj8jrP.65_KJiUgXfYLh6axLA8cnGCBzIB_d8gPpcR
- zP0XLQmIM9syYjxydaxfRrz6hRsAKXb.8dCFuQdzv_ExLqZoFwPzD9QVeRXZAi2CntSkYSubyoAO
- raITwN_k4isO4u1Eif6XZMa0TzOCyPLQcuNEOTDmgEu5qrU9sODvO92koY1PYK7wuYRfyPXTZdfV
- 3MCZutr1GK2YCwhIXuEHtU6RPzekh_Ec6NYEzwX5LcOQd_6VA98nmQysyJ_xzg26ps5M_TcTdOOq
- 62.StnZOYdCkWf3wNRVevyQISHEZR5IPZRncYCDaYpdFqKzLu1_GExn7yTKzqo3HiAMrj.csrWCc
- 8rjvlo0EqLU7fZbm5re7EhGS6v0vN2l0YS1cb2ulOY0lCO3sLjNneSJX7gWCQna.v3I5WaxAudCC
- IgW3s1FVOxhKt27vTHSIPeA1dLtJZa1vdm8X8KdhYCMgz6FxvGO3_TlhRjMzjs37T.I6goyqEKpz
- KZoYECUzKn8CklZmulBpI5_cAhNoSuN2suz2EiM.NQmI5XlOt2R8aadKM7_AXlrJgOYIqIOzHf4n
- pZV646ybluol_d3WoreqxIKTyOKT_T9enhW6IYrSgXARq581q56l.Nh8jN4Cierg_O3oDAHUtWXt
- zUVgxNy6gjP0LDggh2hspTPwN6wPCf5bRHYqWmcM.bZKF_f2KaGzavJrPbRPXS_AaQbGEGaR7D83
- 2a3CDqkql7bHgn3wJgUIbCcxYu_x8AX3T82Rsa0tIYAIOunJeTgvHo986Pkw2iCiLVtTE42qZfT3
- mJcwrCcceZBeI7xYDXo2l3WKxnQhrEL8JXJQCVn0jmU1jELcybuc_zVy8XwoOPGqR9qTJ6yWorEQ
- AuhOcKMgrvtS6L.aGs8ZDNrxj40qIMgffHoZ2ld2OQgpGymWYei7RZtO9xC.NON1Mpk6oe2XCDgz
- Hi7Ad0FFP_4CRPDRklhQGTZwOgEQYuWr.HykrgIByMH2KkDxG_jEs9d0qru2vneESf74iAoVzu.z
- TorxDHLGrtbFsmaaDQEkRqTynfGDZYopUJgtlSaP4bQm8sWAp8sgvw.PJIOkB_XoaEGDvdUy26qD
- xW5wAFiAHv5VMiEO18_6pkb8MVDEQjhRSS1eyFaguOu1iBrzC5maCRoPs17bHnyOLo56UmikHFqC
- IvnZbJ4_4BSmYOWYu9BY4IfQvJUtZN1ZGGpbZH7Wh5AdgPRQOSnzBo8yLltIOfxiotzutQGeEPEA
- vbdGjK0JYZkfIQYRghkYdZwhlpBO0r7PS2P3TO_Zp9GECqCLrgt6dfupgFmqYEFydEMPcwWbXUNO
- 46Rs70vU65Q8zgHZyxRF6maRUciGv2B_axv4ntuwZ7NPXTTOGIwjq_0.6Lwm7M_sr7kMezVm9_fn
- OLl5v0Be6P6oshokwUxKmbQpM0fY1r4EYtD9cJjTacTiGmGLXaqD0lQ--
-X-Sonic-MF: <venkat.yadlapati@yahoo.com>
-X-Sonic-ID: 890b40db-28a4-473a-bd1b-d41a843fdaae
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.sg3.yahoo.com with HTTP; Fri, 27 Nov 2026 18:42:41 +0000
-Received: by hermes--production-sg3-5ff9d6888d-5kb5h (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e4ab3347475f853fc74f7d143b76b9e6;
-          Fri, 27 Nov 2026 18:42:37 +0000 (UTC)
-From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Georgi Djakov <djakov@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2] interconnect: qcom: Don't read back BCMs without an RPMh address
-Date: Sat, 28 Nov 2026 00:12:10 +0530
-Message-ID: <20261127184218.670679-1-venkat.yadlapati@yahoo.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <8184404e-93f9-42c8-b10c-ccd88c7934cd@oss.qualcomm.com>
-References: <20261123-icc-bcm-readback-v2-1-bacee81398e5@yahoo.com> <8184404e-93f9-42c8-b10c-ccd88c7934cd@oss.qualcomm.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id 524681F00899;
+	Fri, 27 Nov 2026 19:05:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795806358;
+	bh=zNT2+KtUd9oxOXZ7VJVA4bdniUDvQzJvv3ytvWd8DDA=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=TpVwf8k5d3rzLD5KonaXgw/hnrr7wpsvFaZrU2fY9sG+Nn3wmt5ElSJ/QOojG+V9m
+	 TXeDzpdz5NyJ6uAcyXsQAZdEQGVqEaaJKYC26tuMDgf8O35wDPHGzXlZEkZCHMckUF
+	 3ok3HnuK2urVu41EDCPbAVyvCT44LQF6oDnSgRhYIgLuXwS1eoM7NtqATi9YmBnsEj
+	 h2M8hawn/pustxj1MqABV59kQJTsxvQchwANwfm0x47nus2mVk509pnt0jakXKnPtY
+	 cTMk+fdTg2xmU6j+dCBbTaUiepkb/Rc4TG4WMAxwW9L5Zi/VFWcxEJtaR1YwV9FHch
+	 R+TbdRqMMc28Q==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id D48744DD78;
+	Fri, 27 Nov 2026 19:05:53 +0000 (UTC)
+From: Venkat Yadlapati via B4 Relay <devnull+venkat.yadlapati.yahoo.com@kernel.org>
+Subject: [PATCH v2 0/2] interconnect: qcom: Add the Molokai interconnect
+ providers
+Date: Sat, 28 Nov 2026 00:35:52 +0530
+Message-Id: <20261128-molokai-icc-v2-0-7806842d166b@yahoo.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -96,16 +84,100 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1WNyw6CMBBFf4XM2ppO5enK/zAsahlkVBjTIpEQ/
+ l3AuHB5knPPnSCQZwpwjCbwNHBg6RYwuwhcY7srKa4WBqNNimgy1cpD7pYVO6fwgLF1lS6KJId
+ l8fRU83urncsvh9flRq5fE6vRcOjFj9vdgKv3K+d/5QGVVjYhzJK41nlanUbbiOydtFDO8/wBS
+ 1UXvrgAAAA=
+X-Change-ID: 20261127-molokai-icc-1314acd09958
+To: Georgi Djakov <djakov@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Abel Vesa <abel.vesa@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, 
+ linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795806352; l=3168;
+ i=venkat.yadlapati@yahoo.com; s=20261023; h=from:subject:message-id;
+ bh=OLY8f5RTTQRtYbj7FHrGwVS/UNeuccZVvC2l7+O5rZo=;
+ b=SOG3hH0S+ubC5Vw2XwK5K8aZedCtRBe7ctvfFALmoPiygSz23zInbTqpjpO9bpIWFnFGwqxzA
+ 2uF52Nlpc0EClItGhM1JU5vxxSEZMwCt6lBIUpryy+Rihz8JyzatJyC
+X-Developer-Key: i=venkat.yadlapati@yahoo.com; a=ed25519;
+ pk=e8KStCtEMvUP1Se/riB/KVnDAQFEVR2Dw2PcuA8/eME=
+X-Endpoint-Received: by B4 Relay for venkat.yadlapati@yahoo.com/20261023
+ with auth_id=1303
+X-Original-From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+Reply-To: venkat.yadlapati@yahoo.com
 
-On Fri, Nov 27, 2026 at 12:05:29PM +0100, Konrad Dybcio wrote:
-> Well, you made a great case for it being separate!
+Molokai (SM8845) is derived from Kaanapali, but its NoCs are not the
+same: the aggregate NoC is split into aggre1 and aggre2, the MMSS NoC
+config and service ports are split into HF and SF halves, many QoS
+ports moved, and QUP4, SDCC4, SP, QPACE and a few config slaves are
+gone. This series adds the binding and a Molokai driver.
 
-Thanks. The separate Molokai interconnect driver is out:
+It replaces "interconnect: qcom: Don't read back BCMs without an RPMh
+address" [1], where Konrad asked to fix the driver instead. Molokai used
+the Kaanapali driver, which votes on the QPC0 BCM that the Molokai
+command DB does not have; the read back of that BCM hung RPMh. The
+Molokai driver has no QPC0, and it programs the Molokai QoS offsets
+instead of the Kaanapali ones.
 
-https://lore.kernel.org/all/20261128-molokai-icc-v1-0-a5e1754f086d@yahoo.com/
+The topology and QoS settings come from the Molokai driver in
+Motorola's downstream kernel. The upstream Kaanapali driver matches the
+downstream Kaanapali one node for node, so the driver is the Kaanapali
+one with the downstream Kaanapali to Molokai differences applied.
 
-It replaces this patch, so please drop it.
+The binding header includes the Kaanapali one and only adds the new
+MMSS nodes: molokai.dtsi builds on kaanapali.dtsi and inherits its
+interconnect paths, and a header with its own numbering would redefine
+the same macros with other values. If a standalone header is preferred,
+molokai.dtsi would have to override every inherited interconnect path,
+or stop building on kaanapali.dtsi; I can rework it that way.
 
-Thanks,
-Venkat
+Tested on the Motorola Signature with molokai.dtsi switched to these
+providers (Molokai SoC series v5 [2]) and the generic
+read back fix reverted: all 14 providers probe, there are no RPMh
+timeouts, and the display, GPU, touchscreen and audio work with QoS
+programming enabled.
+
+[1] https://lore.kernel.org/all/20261123-icc-bcm-readback-v2-1-bacee81398e5@yahoo.com/
+[2] https://lore.kernel.org/all/20261128-molokai-soc-v5-0-144801dfad7f@yahoo.com/
+
+I used an LLM (Claude) to help write these patches and their commit
+messages. I reviewed all of them and tested the result on the device.
+
+Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+---
+Changes in v2:
+- Route the crypto engine through the A2NOC slave instead of A1NOC: it
+  sits on aggre2, the downstream A1NOC link was left over from Kaanapali
+  (Sashiko). Tested: the SCM crypto path now goes through
+  qnm_aggre2_noc.
+- Cover: point to v5 of the Molokai SoC series.
+- Link to v1: https://patch.msgid.link/20261128-molokai-icc-v1-0-a5e1754f086d@yahoo.com
+
+---
+Venkat Yadlapati (2):
+      dt-bindings: interconnect: qcom: Add Molokai RPMh NoC
+      interconnect: qcom: Add Molokai interconnect provider driver
+
+ .../bindings/interconnect/qcom,molokai-rpmh.yaml   |  144 ++
+ drivers/interconnect/qcom/Kconfig                  |   11 +
+ drivers/interconnect/qcom/Makefile                 |    2 +
+ drivers/interconnect/qcom/molokai.c                | 1753 ++++++++++++++++++++
+ .../dt-bindings/interconnect/qcom,molokai-rpmh.h   |   26 +
+ 5 files changed, 1936 insertions(+)
+---
+base-commit: e5aad2bdbbee783611d32599f89cea3f12f9593d
+change-id: 20261127-molokai-icc-1314acd09958
+
+Best regards,
+--  
+Venkat Yadlapati <venkat.yadlapati@yahoo.com>
+
+
