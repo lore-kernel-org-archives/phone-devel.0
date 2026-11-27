@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.42.129.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795790965;
-	b=TOhL/WYuEq5HwKRxRqrGL+E5NQszCyk0HPS9tF//u/UEj/YPf3a0j2axsAATMXZa9rmE
-	 KikCe5YflFi9ARgdpFi/3H7sFoWHMlRrXv+MeF9FaDwrNZ+11w1ffpvBeh9BBE5KrrjFa
-	 TK+wghKECSzK7bOcMNncAObjUxw7Pu023MrBgQMUNxffgdyXqtaBZF2jxecSLlvatTe8M
-	 p0ofUQf97XXZadTIrzDGXMrhbRl1+GPek7Yip3wFehxJpi1jYndw7sbI69ysUJOvwpPU2
-	 4TbwWqZ6kff+pxagXK7vE90+XkEE5JqondcyQArr9m/LIdN0Mkax1eJw9hd2xr+ngvw==
+	t=1795791768;
+	b=O7Dbxm1WsbGZ4e0uSCeHJ+5dmvM14/LLZcopx5AggvmJe0GxmJmu/vzkKkY6MFyaZknI
+	 6+gl3tinzGZsT4c2ZcJNqT9e8YshemKhXfhEhmfRGtQ/SkW3laPNge+uS2aRHTvfArm3Q
+	 J80NRsTF/KVY+bjC5IEPhOOcRVveQTsir0WYSs1sCTyOOrTkTifxtlc9qXtiS66ay29Eg
+	 +JpJTN6b9m4F+M0ydA9Q9dmihqAdPqxYkx/H1ggieDAJnCrFgh6Bv74j449qxpxFZcjuB
+	 6UqnKFs/Nzn1WYBNjNQcg6WDm/rn9D2ZQggJSxqF3bVW3F9kcB1L8qipFF3ce6Ln3yg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795790965;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795791768;
 	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
 	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
 	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=iGpMPupJEuJ9/8yBGBSvfo52D4xeT918r1obPvWpeJE=;
-	b=uPIkpxeZw5Ieh/rLF/vmGF9kDQ7raaicgawxwnNDmzy0Z5JmIRa98oocQBREXKmLZliw
-	 tW0tKNGk5hTD/WXDm3h1nA8qI3vKCKkJnzFrw8CY0aI875hMG62vM0gctodLR01VY38mZ
-	 9g6/58Qh5ArFfwjE4/aoBTbUluf+TGG9kZV1x9NhWcC5rSkDoYOylK7pPjq3YBtlgx9UC
-	 Rn2UAbM7YSToFMZBWdMmheE1qVqEVlaXwCcVVtyat5bGt+fB7nzoPwscsMBASiZHvL7Bb
-	 ZRynZOTGl/1Gz1yiTSCeJHYOqCg5U8/8MVe+XjfqHjwj0+b6OVVipZJfGfgPVuuhzNA==
+	bh=onDhl6RsecVlyNP/9RWRWVuN3lsmBMqoUnPI1wwAWi0=;
+	b=YVhByqc3JrH+qziiKm5c/banhnl3upe2OlTTqQBb5K+HCKsUIrK1aZHXlDvi2TiM+ppB
+	 0VH2LGiWcZy/cpus0w0lNQl8AEf/x6gqPL7z/CuIBcYv2E5qdzT0Gr15ykdFPqxjqsplO
+	 VGUvp5q68buZLlObB08Pht8EYoEamlZuWHbOiglImciAWDyNK4cEq6W2jAu4eFCAUDB+B
+	 pmU3EcmwXukiUgrAD8PNNGiLflCS13hCtQzQhovjqHoMH04n3NR3ppZnWK7NDyqckTDvu
+	 AI8R8Or7fQcq+jbSOBv/zrKLdgnIJZOPNrlyOGCKxZflvWSXzvCXi6dQv2GUncoKP3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=ixit.cz;
 	spf=pass smtp.mailfrom=ixit.cz;
-	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=i9V9MkU4;
+	dkim=pass header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=EptLPe2q;
 	arc=none smtp.remote-ip=84.42.129.46
 Received: from ixit.cz (ixit.cz [84.42.129.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBB1606A31E;
-	Fri, 27 Nov 2026 14:49:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EBB1606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AE7606A31C;
+	Fri, 27 Nov 2026 15:02:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45AE7606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=i9V9MkU4
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=EptLPe2q
 Received: from [IPV6:2a02:8308:209:d600::5a9a] (unknown [IPv6:2a02:8308:209:d600::5a9a])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange x25519)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 1DC415340322;
-	Fri, 27 Nov 2026 15:49:22 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 88E6A5340322;
+	Fri, 27 Nov 2026 16:02:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1795790962;
+	t=1795791765;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iGpMPupJEuJ9/8yBGBSvfo52D4xeT918r1obPvWpeJE=;
-	b=i9V9MkU42/EHDP0f+r3YfhsuzqMhXzWqDBwlqEwrv6IdEWGoU0BCh2vibGuipsD/FqzucL
-	dIwqt0yFP7j4fibPfSJCp4W0aBN8EmBGdRDXP5PKuZkn3QsaGPPIbFM0XSH/DX+Q6WWYQY
-	HNYIJuuJ7UAS7apBIngwIMsSOBnyBtM=
-Message-ID: <934be439-b32c-41ce-9d91-40d4440c4a12@ixit.cz>
-Date: Fri, 27 Nov 2026 15:49:21 +0100
+	bh=onDhl6RsecVlyNP/9RWRWVuN3lsmBMqoUnPI1wwAWi0=;
+	b=EptLPe2qMPqoF2UrRSGGAZNr2zSiLCF562MYqzzn6mKWA0mO+ibU81ZDXNJOMbHwuRG95Z
+	kRuc/hR4uM744fctF+kHyg7C/+f7KHlUTsJt4DVBJvCE5bZB93MOBIenfBUX5Oki8d2sEW
+	qrURMKgjHLT+PcCGi0DrL5z9a/rPViM=
+Message-ID: <b8a6d6da-da6b-4788-b6fa-dca9d4eb9d1b@ixit.cz>
+Date: Fri, 27 Nov 2026 16:02:44 +0100
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -61,19 +61,27 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-lg-judyln: Drop qcom,te-source
- property
-To: Paul Sajna <sajattack@postmarketos.org>,
+Subject: Re: [PATCH v7 1/2] arm64: dts: qcom: sdm845-google: Add basic audio
+ support
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Srinivas Kandagatla <srini@kernel.org>,
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ David Rhodes <david.rhodes@cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>,
  Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Amir Dahan <system64fumo@tuta.io>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-References: <20261111-judyln-panel-glitch-fix-v1-1-ecee1f0a1b30@postmarketos.org>
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ David Rhodes <drhodes@opensource.cirrus.com>,
+ Conor Dooley <conor+dt@kernel.org>, Abel Vesa <abelvesa@kernel.org>
+Cc: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+ linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@opensource.cirrus.com,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20261111-pixel3-audio-v7-0-ecf28efc5c33@ixit.cz>
+ <20261111-pixel3-audio-v7-1-ecf28efc5c33@ixit.cz>
+ <765f3451-0f2e-4783-9a7e-893c06b2a735@oss.qualcomm.com>
 Content-Language: en-US, cs-CZ
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -119,45 +127,48 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20261111-judyln-panel-glitch-fix-v1-1-ecee1f0a1b30@postmarketos.org>
+In-Reply-To: <765f3451-0f2e-4783-9a7e-893c06b2a735@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12/11/2026 00:53, Paul Sajna wrote:
-> It was introduced without proper verification, and causes
-> graphical glitches on the display. Discovered by bisecting.
+On 27/11/2026 13:27, Konrad Dybcio wrote:
+> On 11/11/26 6:41 PM, David Heidelberg via B4 Relay wrote:
+>> From: David Heidelberg <david@ixit.cz>
+>>
+>> Introduce support for sound card and wire two CS35L36 audio codecs for
+>> top and bottom speakers.
 > 
-> Fixes: c6c66aa3ef33 ("arm64: dts: qcom: sdm845-lg-judyln: Add display panel")
+> [...]
 > 
-> Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-> ---
->   arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts | 1 -
->   1 file changed, 1 deletion(-)
+>> +&sound {
+>> +	compatible = "qcom,sdm845-sndcard";
+>> +	model = "Pixel 3";
+>> +	pinctrl-0 = <&quat_mi2s_active>, <&quat_mi2s_sd0_active>,
+>> +		    <&quat_mi2s_sd1_active>;
+>> +	pinctrl-names = "default";
+>> +
+>> +	/* mm[0-9]-dai-link nodes must be positioned first regardless of sorting */
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-> index 349faa123ff1..e54e46a1a6dd 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-> @@ -111,7 +111,6 @@ &mdss_dsi0_phy {
->   &mdss_dsi0_out {
->   	data-lanes = <0 1 2 3>;
->   	remote-endpoint = <&panel_in>;
-> -	qcom,te-source = "mdp_vsync_e";
+> Could you try the patch in
+> 
+> https://lore.kernel.org/linux-arm-msm/655212ed-4812-4747-ba5a-f0093bf05411@oss.qualcomm.com/
+> 
+> ?
 
-Reviewed-by: David Heidelberg <david@ixit.cz>
+Sure, I'll test today.
 
-I would say here that this implies the hardware uses mdp_vsync_p (I missed this 
-in the commit msg), and TBH isn't that obvious from the code :)
+Thou, changing this patch without precursor being merged would mean +- delaying 
+patch inclusion at least by one merging window*.
+
+I'm very much fine thou bind to this patch and when included send sorting for 
+all sdm845-* devices.
+
+*still having patches for Pixel 3 camera in my fork ~ 4 month from these patches 
+has been reviewed and ready for merge, due to recommendation to use header which 
+didn't got in Linux in time.
 
 David
 
->   };
->   
->   &ibb {
 > 
-> ---
-> base-commit: aaa2f954c21b205a0bcd0961e5b2be4e82e58455
-> change-id: 20261111-judyln-panel-glitch-fix-17610b11513c
-> 
-> Best regards,
+> Konrad
 
