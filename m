@@ -1,79 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795804781;
-	b=hLeCpo+YSOa9UWaal61n82PUqCRANhSZcxn01j47IJDX686EDvYgJt4v/Ca17ZeflVzu
-	 1G0LW9I47STtSCPHL68UjcV8Z7CFwFxSrvI66/TNGaKMVAarM6H83JKC+ybAn/er+j3cL
-	 R1PCRN2lAJMFCgZEy67FFxUbEzZBAzzsGO3IDxrErEJNCVdE7uNOT17gnrHRXLofQmqk+
-	 +m0xzQVJEgrpUkA6TPooJ2nk0Wh0RlSSlp5nIGktK7laImfw0cGtNMJL1OXWiM13sk/2g
-	 6JAbgXmwR9NR+RGKHKzWagbGi1RVE33I33H4HUdfUlWD+wATPyOE+QEv9mv9QzSxZvA==
+	t=1795804787;
+	b=U7SlsRs9ynIMbJCAkVVoN7oPFIpWNJqA7MFlcNHSB8cWn63J3D1SPmZikabNF7R7+n8O
+	 jDHztS95BI1RUNBnhcVpxjpDvYChvM7aMhI/be44pbrgHWvpvgXM+W98j0N3iex480qJs
+	 uSIWM8qNFMoN+l/Pu5DmPsjsQhDRoh2SelbhMiExmaDYjTn/IEfbgkDiqoAHzaJ8duMKd
+	 EoDPYvLb1YQ4vkDXpEaasyz6jqp+Jtc7SIIdUTWw7K3k4yY2Y1y8zfylKy152d9dxuAGL
+	 jMNariqaoGL6B3aVvcyDQyV1ayQeDqB1O1hzWUnDWA8tsNhjeR4ow3/eShM7meQXpmw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795804781;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795804787;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=FXJgBz6vr8LA6HCfds0NKQOzIPEzeSxi9JM33PT64AE=;
-	b=WFYwfshK/5+c7Nns2N/qCBvxUk9aj1jxg2Kn8Gfcr0RlKriQxJQlUq3fpOgcVt+nj/X7
-	 J5x6Ud6xet60MXYWA3K+spsc+DSHS9kOgbQDE3P4MonsC/+QOu8W4KoUdXQEU+bwznkKP
-	 j8fVsm7fwiuUO6rtUN/KiMYIEYq78pdxfnYxKxIwg8wIc2NKAgUhhcnvSpHZys7SGGaHU
-	 BTabD2nqim1JihP+YZ21LI7qdST/qs1qk360ZFyslng5k9HDgfFH5A7pFnUbdmkki/ODC
-	 6aQNlCwGrBUTMK81Y1nzT8+IH8QwHHZToOqZ9ldzJT4IeEk/Vls4Ungi1OWK6XEcUTA==
+	bh=uS5UChngIHI03acdpVBWgg3b43agBP+PxV9C016TcGk=;
+	b=cS4dY8T4aNN/reiBCNu/aQWq0EjIYQQ4p6lCA+zTguJmEz0jGei5bZeipU6FugLe01ua
+	 NVAlYYYMVHU1GkVUgsr8TEhlWu2jJ1Phj1SnXy7vq1hOXSoRyNBt1R0Uw6OW3TqGBqcvi
+	 QOAMieHQEbsyOLPT/28bKSB9xRFARdL9Bf6fXsdbeI2aDWH8iNKv2mp5p3YONzRjtE915
+	 X9jI/dXteBm0jVTDKW3Tno12kPw9ow5SLsatoPg0yrlfoxiHXx7WJLQncTmOdnKI0H/yz
+	 iEhMRIzDvx57/v3T0vxeQ0i4oGT/KcHMrUAHWVVsklXtXiyQRrsaKmwvC1TVoYCKDJA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="MQ/xnAvm";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Dhv/P1BR";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5422F60A261B;
-	Fri, 27 Nov 2026 18:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C176606A321;
+	Fri, 27 Nov 2026 18:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MQ/xnAvm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dhv/P1BR
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795804780;
-	b=YOE5Z7Capv+3+pKr0xu1wBB5F+oKkGCtecoe5UBdqjbN68NF4BX4mj5sFAV0FaDfQ9pP
-	 Qb9/ZWejrt2vNINNpjec9SNdGzgFl5c2YhY5QSmhZOshGNVZtDAvOaAp7NS3p6Acdk5xe
-	 wvusO/ooyVw9GLPhmB+3alkAdKDqe3BSqu5T3Jn4zm9Joi7tDMVeZG7u/n/psaRIfNfWV
-	 5Mg8zLpeCeoyRuEq0MDQnJR0Lx7Hs7YJOFGxgjtGO56IbY1go/mkCFVG3CHc/G9QFUw+M
-	 UfI0S+uf87jiCP4nuiCPUUJzre/5jgMb5h8uadulq1duRQAugI9vkxdsjcmh+E7oJBQ==
+	t=1795804786;
+	b=Av9Bbv6ujv9k6aog9ls8k75nHagtzo2iCCqe45p7++KBr72GYeWsrJHbDcjws8QmwlQk
+	 a4dFPTyCYVaGMFpjG5lyhIPG/AGuPsI9r9923ffVeicQU0F9rOm0CDZ3v2/t2OJtKPYkh
+	 EiEm2b+f0KGhULNtXndkpj7aRBfuxBj6GuNztEpuMQ8gJhgOv0a/2Pm/ynOk71aW6/55u
+	 Eq90hn8dQH/ry5/YjwFRQ7Q6g1obSweFa2546bT3+afYLPUV6KeXnW5gWeclKact710sy
+	 +QBE6fpO3Z9svmXq1X+kQSU/uSegTzmrmG1Dfvgf3IeOY8HJpUJvADXp9QCXV8glMRQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795804780;
+	c=relaxed/relaxed; t=1795804786;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=FXJgBz6vr8LA6HCfds0NKQOzIPEzeSxi9JM33PT64AE=;
-	b=N0+WMnuls31H2fTbOcYr6dy4b+TtHdZQE1eeZP7B2tl8WhGQmH55ZRaLdb73wBpTuPsb
-	 ss60y9Xg7qVpco1Mn+WSVjle7WEM9qv8+vaOAnEgBjCKRUAky6JQ4+WtF9h+nup96KRaZ
-	 7sjlgPbI9MiFxjwIkq8IPacrEY6ic2QWnfxHNSHtTg3znIUXESYSHexaPsLqM9gDvwLmK
-	 t0NgP+bbf35xbOwEh/yEKrz2P7Wqf55WaXoGFv2PNXSNmU7iopr7OQO52/ek6Lt70wcKb
-	 3pKGbuwDS2tHxKn79Mu39yXpnFFkAFPYV/ncdX0tPgjNP6I8g2y6DsOwVR1TqpDNpQw==
+	bh=uS5UChngIHI03acdpVBWgg3b43agBP+PxV9C016TcGk=;
+	b=PeqNZ4fudxZdtfv4eoqm47v88DAWf34W7g0KZjGk8PWqd9fcVzc6f+IlznK5mo36qPmw
+	 8TSV85yG0ufq5vIuinrf2beg2sqrrkoISHcV526/Z0lHQV+jlaEGw6iMAK1fnaInl7HUI
+	 qHChXPu8v+bwmikyMsuczkowUO5o70iaTQGKPIz0M6orLuWg4yNaoJhgPJ+4EimKqMSHF
+	 R28D5HK48L8nVWVSK8fZAHCCvgibHIljwW0lWCB4K038cKei/5KdT2ph4/cd4CryOXymv
+	 U3WA6cn6syzzKWp14weaOsVA79YhUnr0KKCAXEIYjncZx8efSh95BSdpfnMgTe8Ryrw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id AE8D81F00934;
-	Fri, 27 Nov 2026 18:39:30 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 2851A1F0092B;
+	Fri, 27 Nov 2026 18:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795804780;
-	bh=FXJgBz6vr8LA6HCfds0NKQOzIPEzeSxi9JM33PT64AE=;
+	s=k20260515; t=1795804786;
+	bh=uS5UChngIHI03acdpVBWgg3b43agBP+PxV9C016TcGk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=MQ/xnAvmipTfp9WyZdSAT1tn2h20rG7j4i2JHXxKQufDqeW3O5gdhuTxoxK7NrI8G
-	 5QV325mYRuivlXhVhltGac/BnkMFleaeuiHEm61XXU/GteRP4DX3umelNEuHL8jIv0
-	 3Lmme9xDbEl1ETT4TVXL99Hv8MqUxMiaSpCvQtRFhfClgarFsS606IHVxS9Fsqcpou
-	 ZKiGCsStS4li64kkHQLlcvcoAoojHEqbgaQNld/qhL5tpiXcn9MdpaBVJ9hMoY0Ml/
-	 zzITSFFMkUcisgm3kvnXnkiJI70amqPItm6hYtvR5fpTcfF1lpCImvSUrLYHzaGvAo
-	 ji72LuqGO2Nxg==
+	b=Dhv/P1BR85a7579iKBPm5RjWpLoENz1OfhmKFqrHi1yUBX5t5k1fzOndcujk3g14m
+	 7FzguQUWfIf3OIcadahevxqoNbfx1HaVm9k4jYLJO+iYbZpTep8KZI8mLeAxlQxPGm
+	 JPkX1vPelBjiyEIWhaGZef2T2th2iza4gp1NcrsCqL/tSu4ekW37kAIrLHwZ4rnRRO
+	 yZYYVmsbpEXE2w0w9ixPxA6MzzRbCQEv+Lesbp06f19j2ThAYMV9QROmWwDuHv4w+n
+	 o1kzfdDkEyTSteuznSZvtIK1OBrh/mfg//Yx8+XttH/Cn69kF2hIf5cVwKHPr3dyu7
+	 b39P7WXnhZYyw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 32F6C4DD3F;
+	by lkml.kernel.org (Postfix) with ESMTP id 9662C4DD4B;
 	Fri, 27 Nov 2026 18:39:25 +0000 (UTC)
 From: Venkat Yadlapati via B4 Relay <devnull+venkat.yadlapati.yahoo.com@kernel.org>
-Date: Sat, 28 Nov 2026 00:09:26 +0530
-Subject: [PATCH v5 06/11] dt-bindings: arm: qcom-soc: Extend pattern for
- Molokai
+Date: Sat, 28 Nov 2026 00:09:29 +0530
+Subject: [PATCH v5 09/11] arm64: dts: qcom: Add Molokai (SM8845) SoC dtsi
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -84,7 +83,7 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261128-molokai-soc-v5-6-144801dfad7f@yahoo.com>
+Message-Id: <20261128-molokai-soc-v5-9-144801dfad7f@yahoo.com>
 References: <20261128-molokai-soc-v5-0-144801dfad7f@yahoo.com>
 In-Reply-To: <20261128-molokai-soc-v5-0-144801dfad7f@yahoo.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -96,14 +95,13 @@ To: Bjorn Andersson <andersson@kernel.org>,
  "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- Venkat Yadlapati <venkat.yadlapati@yahoo.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+ Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795804762; l=1622;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795804762; l=10720;
  i=venkat.yadlapati@yahoo.com; s=20261023; h=from:subject:message-id;
- bh=VD14FFXSRlsFBCtWWzPO6qLJHtCRQHevg44GIXEHArA=;
- b=WgYtBEiVtzvFzYpcoQCo6Fpe4eROg83KoRoGdfJXX3aeN8JF4R6YIMfUbqs6LAHk6Ck7qpAgf
- m/hd1r8BQvdABQ1/qOaUmDXmOivLeCfRRvEi37e+o5ugg/mAGhNkuau
+ bh=MF0NUq9Df3Ci0gvVslU/Grk5h+q15+CFuXNbs4eqWWE=;
+ b=pC1NAZB1BQXdHgwv8z9M9nec8UsJzGcB3e5xhVqpufk8VyEGUWerUMdHzDupPhHqkhGtAypQ7
+ 2lCin6vXeaLBJtfGp+RmBIp0bJuvOFWCh9PrWH0Rwvc6V13adFqojsq
 X-Developer-Key: i=venkat.yadlapati@yahoo.com; a=ed25519;
  pk=e8KStCtEMvUP1Se/riB/KVnDAQFEVR2Dw2PcuA8/eME=
 X-Endpoint-Received: by B4 Relay for venkat.yadlapati@yahoo.com/20261023
@@ -114,36 +112,409 @@ Content-Transfer-Encoding: 7bit
 
 From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 
-Add the Molokai (SM8845) codename to the patterns of SoC compatibles.
+Molokai is a Kaanapali derivative. Describe it on top of the Kaanapali
+dtsi: it has its own TLMM, with different pins for most serial engines
+and a different GPIO to PDC wakeup map, and a PDC with one more interrupt
+range. It has neither the I2C master hub nor the fourth QUP wrapper, and
+QUP3 SE5 does not exist. Its graphics clock controller is not compatible
+with the Kaanapali one.
+
+Its NoCs differ from the Kaanapali ones as well (aggre-noc split into
+aggre1 and aggre2, other QoS ports, MMSS config split into HF and SF), so
+switch every interconnect provider to the Molokai compatibles, resize
+their register windows and add aggre2_noc. The crypto engine, SCM and the
+QUP2 and QUP3 serial engines use aggre2_noc.
+
+The SDC2 lines are muxed on regular GPIOs instead of dedicated pins, so
+the Kaanapali SDC2 pin states are dropped; boards using SDC2 describe
+their own.
 
 Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- Documentation/devicetree/bindings/arm/qcom-soc.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/molokai.dtsi | 375 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 375 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom-soc.yaml b/Documentation/devicetree/bindings/arm/qcom-soc.yaml
-index 179aadc86a9f..19904e5bc947 100644
---- a/Documentation/devicetree/bindings/arm/qcom-soc.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom-soc.yaml
-@@ -30,7 +30,7 @@ select:
-       contains:
-         oneOf:
-           - pattern: "^qcom,.*(apq|ipq|mdm|msm|qcm|qcs|q[dr]u|sa|sar|sc|sd[amx]|sm|x1[ep])[0-9]+.*$"
--          - pattern: "^qcom,.*(eliza|kaanapali|kuno|glymur|hawi|mahua|maili|milos|nord|shikra).*$"
-+          - pattern: "^qcom,.*(eliza|kaanapali|kuno|glymur|hawi|mahua|maili|milos|molokai|nord|shikra).*$"
-   required:
-     - compatible
- 
-@@ -42,7 +42,7 @@ properties:
-         - pattern: "^qcom,(apq|ipq|mdm|msm|qcm|qcs|q[dr]u|sa|sc|sd[amx]|sm|x1[ep])[0-9]+(pro)?-.*$"
-         - pattern: "^qcom,sar[0-9]+[a-z]?-.*$"
-         - pattern: "^qcom,(sa|sc)8[0-9]+[a-z][a-z]?-.*$"
--        - pattern: "^qcom,(eliza|kaanapali|kuno|glymur|hawi|mahua|maili|milos|nord|shikra)-.+$"
-+        - pattern: "^qcom,(eliza|kaanapali|kuno|glymur|hawi|mahua|maili|milos|molokai|nord|shikra)-.+$"
- 
-         # Legacy namings - variations of existing patterns/compatibles are OK,
-         # but do not add completely new entries to these:
+diff --git a/arch/arm64/boot/dts/qcom/molokai.dtsi b/arch/arm64/boot/dts/qcom/molokai.dtsi
+new file mode 100644
+index 000000000000..42446354fffb
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/molokai.dtsi
+@@ -0,0 +1,375 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2026 Venkat Yadlapati <venkat.yadlapati@yahoo.com>
++ *
++ * Molokai (SM8845) is a Kaanapali derivative with its own TLMM: the pins of
++ * most serial engines and all the GPIO wakeup interrupts are different. It
++ * has no I2C master hub, no fourth QUP wrapper and no QUP3 SE5, and its PDC
++ * maps one more interrupt range. The SDC2 lines are muxed on regular GPIOs
++ * instead of dedicated pins, and the GPU is an Adreno 829 instead of the
++ * Adreno 840.
++ */
++#include "kaanapali.dtsi"
++
++#include <dt-bindings/interconnect/qcom,molokai-rpmh.h>
++
++/delete-node/ &gpi_dma4;
++/delete-node/ &i2c_master_hub;
++/delete-node/ &qupv3_4;
++/delete-node/ &uart18;
++
++/delete-node/ &hub_i2c0_data_clk;
++/delete-node/ &hub_i2c1_data_clk;
++/delete-node/ &hub_i2c2_data_clk;
++/delete-node/ &hub_i2c3_data_clk;
++/delete-node/ &hub_i2c4_data_clk;
++/delete-node/ &qup_i2c19_data_clk;
++/delete-node/ &qup_i2c20_data_clk;
++/delete-node/ &qup_i2c21_data_clk;
++/delete-node/ &qup_i2c22_data_clk;
++/delete-node/ &qup_i2c23_data_clk;
++/delete-node/ &qup_spi19_cs;
++/delete-node/ &qup_spi19_data_clk;
++/delete-node/ &qup_spi20_cs;
++/delete-node/ &qup_spi20_data_clk;
++/delete-node/ &qup_spi21_cs;
++/delete-node/ &qup_spi21_data_clk;
++/delete-node/ &qup_uart18_cts_rts;
++/delete-node/ &qup_uart18_default;
++/delete-node/ &sdc2_default;
++/delete-node/ &sdc2_sleep;
++
++/* The Kaanapali aggre-noc is aggre1-noc on Molokai, see also aggre2_noc */
++&aggre_noc {
++	compatible = "qcom,molokai-aggre1-noc";
++	reg = <0x0 0x016e0000 0x0 0x16400>;
++	clocks = <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
++		 <&gcc GCC_AGGRE_USB3_PRIM_AXI_CLK>;
++};
++
++&clk_virt {
++	compatible = "qcom,molokai-clk-virt";
++};
++
++&cnoc_main {
++	compatible = "qcom,molokai-cnoc-main";
++};
++
++&config_noc {
++	compatible = "qcom,molokai-cnoc-cfg";
++	reg = <0x0 0x01600000 0x0 0x9200>;
++};
++
++&crypto {
++	interconnects = <&aggre2_noc MASTER_CRYPTO QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&gem_noc {
++	compatible = "qcom,molokai-gem-noc";
++};
++
++&gpucc {
++	compatible = "qcom,molokai-gpucc";
++};
++
++&i2c8 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_2 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_2 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c9 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_2 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_2 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c10 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_2 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_2 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c11 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_2 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_2 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c12 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_2 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_2 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c13 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_3 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_3 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c14 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_3 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_3 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c15 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_3 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_3 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c16 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_3 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_3 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&i2c17 {
++	interconnects = <&clk_virt MASTER_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS
++			 &clk_virt SLAVE_QUP_CORE_3 QCOM_ICC_TAG_ALWAYS>,
++			<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ACTIVE_ONLY
++			 &config_noc SLAVE_QUP_3 QCOM_ICC_TAG_ACTIVE_ONLY>,
++			<&aggre2_noc MASTER_QUP_3 QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&lpass_ag_noc {
++	compatible = "qcom,molokai-lpass-ag-noc";
++};
++
++&lpass_lpiaon_noc {
++	compatible = "qcom,molokai-lpass-lpiaon-noc";
++};
++
++&lpass_lpicx_noc {
++	compatible = "qcom,molokai-lpass-lpicx-noc";
++};
++
++&mc_virt {
++	compatible = "qcom,molokai-mc-virt";
++};
++
++&mmss_noc {
++	compatible = "qcom,molokai-mmss-noc";
++	reg = <0x0 0x01780000 0x0 0x7d400>;
++};
++
++&nsp_noc {
++	compatible = "qcom,molokai-nsp-noc";
++	reg = <0x0 0x260c0000 0x0 0x1c080>;
++};
++
++&pcie_noc {
++	compatible = "qcom,molokai-pcie-anoc";
++};
++
++&pdc {
++	compatible = "qcom,molokai-pdc", "qcom,pdc";
++	qcom,pdc-ranges = <0 745 38>,
++			  <40 785 11>,
++			  <51 527 4>,
++			  <58 534 2>,
++			  <61 537 20>,
++			  <84 559 14>,
++			  <98 609 32>,
++			  <130 717 12>,
++			  <142 251 5>,
++			  <147 796 16>,
++			  <163 783 2>,
++			  <165 531 2>,
++			  <167 536 1>,
++			  <168 557 2>,
++			  <170 415 1>,
++			  <171 438 1>,
++			  <172 579 1>,
++			  <173 703 1>,
++			  <174 708 1>,
++			  <175 714 1>,
++			  <176 68 1>,
++			  <177 86 1>,
++			  <178 96 1>,
++			  <179 249 1>,
++			  <180 504 9>;
++};
++
++&qup_i2c0_data_clk {
++	pins = "gpio32", "gpio33";
++};
++
++&qup_i2c1_data_clk {
++	pins = "gpio36", "gpio37";
++};
++
++&qup_i2c4_data_clk {
++	pins = "gpio48", "gpio49";
++};
++
++&qup_i2c5_data_clk {
++	pins = "gpio72", "gpio73";
++	function = "qup1_se5_mira";
++};
++
++&qup_i2c10_data_clk {
++	pins = "gpio8", "gpio9";
++};
++
++&qup_i2c11_data_clk {
++	pins = "gpio12", "gpio13";
++};
++
++&qup_i2c12_data_clk {
++	pins = "gpio117", "gpio118";
++	function = "qup2_se4_mirb";
++};
++
++&qup_i2c14_data_clk {
++	pins = "gpio68", "gpio69";
++};
++
++&qup_i2c15_data_clk {
++	pins = "gpio80", "gpio81";
++};
++
++&qup_i2c16_data_clk {
++	pins = "gpio76", "gpio77";
++};
++
++&qup_i2c17_data_clk {
++	pins = "gpio52", "gpio53";
++};
++
++&qup_spi0_cs {
++	pins = "gpio35";
++};
++
++&qup_spi0_data_clk {
++	pins = "gpio32", "gpio33", "gpio34";
++};
++
++&qup_spi1_cs {
++	pins = "gpio39";
++};
++
++&qup_spi1_data_clk {
++	pins = "gpio36", "gpio37", "gpio38";
++};
++
++&qup_spi4_cs {
++	pins = "gpio51";
++};
++
++&qup_spi4_data_clk {
++	pins = "gpio48", "gpio49", "gpio50";
++};
++
++&qup_spi5_cs {
++	pins = "gpio75";
++	function = "qup1_se5_mira";
++};
++
++&qup_spi5_data_clk {
++	pins = "gpio72", "gpio73", "gpio74";
++	function = "qup1_se5_mira";
++};
++
++&qup_spi10_cs {
++	pins = "gpio11";
++};
++
++&qup_spi10_data_clk {
++	pins = "gpio8", "gpio9", "gpio10";
++};
++
++&qup_spi11_cs {
++	pins = "gpio15";
++};
++
++&qup_spi11_data_clk {
++	pins = "gpio12", "gpio13", "gpio14";
++};
++
++&qup_spi14_cs {
++	pins = "gpio71";
++};
++
++&qup_spi14_data_clk {
++	pins = "gpio68", "gpio69", "gpio70";
++};
++
++&qup_spi15_cs {
++	pins = "gpio83";
++};
++
++&qup_spi15_data_clk {
++	pins = "gpio80", "gpio81", "gpio82";
++};
++
++&qup_spi16_cs {
++	pins = "gpio147";
++};
++
++&qup_spi16_data_clk {
++	pins = "gpio76", "gpio77", "gpio146";
++};
++
++&qup_spi17_cs {
++	pins = "gpio55";
++};
++
++&qup_spi17_data_clk {
++	pins = "gpio52", "gpio53", "gpio54";
++};
++
++&scm {
++	interconnects = <&aggre2_noc MASTER_CRYPTO QCOM_ICC_TAG_ALWAYS
++			 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
++};
++
++&soc {
++	aggre2_noc: interconnect@1700000 {
++		compatible = "qcom,molokai-aggre2-noc";
++		reg = <0x0 0x01700000 0x0 0x22400>;
++		qcom,bcm-voters = <&apps_bcm_voter>;
++		#interconnect-cells = <2>;
++		clocks = <&rpmhcc RPMH_IPA_CLK>;
++	};
++};
++
++&system_noc {
++	compatible = "qcom,molokai-system-noc";
++};
++
++&tlmm {
++	compatible = "qcom,molokai-tlmm";
++	gpio-ranges = <&tlmm 0 0 206>;
++};
 
 -- 
 2.56.1
