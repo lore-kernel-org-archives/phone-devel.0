@@ -1,78 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795804775;
-	b=rszcgtLhR24kwan7FkWAp6VNKCyn8QtOPY5tMNfrS/PAkRbhOxPFiYY5qNQlbwH7iAkA
-	 2eQfN5jKn6i/A4b6fwo9mhXuiVM0hyxqc9aQ/KojZpfsKmcGC5YUPRoIxHUV9mP1mVINH
-	 Vc//JHO5+//iXSaAVfDd0JbxbIEJNJggOL/ofXuQvlgipLuQKpZgF3djRiBYeKT+sQEDh
-	 UW4G1MJkRrMDyTP6Feam9fvw17oCEcG4BucC6lo/xBpBwbU1wKKm4r5Z8BmJlABvg5lfL
-	 szHs1r6hOuSSlzJolOPZvU85KmqKz0tvY0DCUjwf+sxr3V4IhKZNwi9F0DpofcwRliQ==
+	t=1795804777;
+	b=38ljwAclb7pPHdxPeAUip3QrAtUDCaVLDphhpG/KXUmv0UMKDIhX9THPqaeXUqS3LNlf
+	 zPH8cWcv8HFyLeTVcFLzldG++5dL8Xp05Z9RB0kI4OEk04QlCVoohtj7ooZFMjfa5nkY4
+	 OwLx8elftRpWKx/Wj89I8AtEMLzuWFeYETtMw8kCI27BEW6fuSKGLY27qKWylY2xOP83M
+	 6D0XMf7x91u5Y15R2hsoYLQojPpLzqILWGx6j/dkDYZa9tfrTNhJkKA6osyU0SYgR5P5O
+	 K2oSWWgrAV2ZJeZsYD+l1um58UBLFsNtCs1JX40wzi43JbtzKs0yassxDH1MEMGfnQg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795804775;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795804777;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=fN016Ani6Rp+Ym/1nwewB0a76sIl1PgTWVmpnxhEMU0=;
-	b=t+6kqRjttdPRAowzgjrby/UV63sm07TaKKos9z8UJqXqSu9YGTm7D6tWoRigz/iS/Whz
-	 gGnYzfgHEgLooN3ToHZPYPYOKY/NlhA65PZT3nCkUhroJSx0KXLFR4+zJnqGrduO+kiz2
-	 9X5amXtCTuJjHLB7WzG2E19uKm2EuS66jlpTdwk3v4B80NWFMQUjpcrdvo0mONlvM0T32
-	 +bX7yhfHi026YWNKwyMTCAzUZFHlcojKqRoT9o22Ch259mubrkV3exE+61l1aOHeADLcq
-	 vJjNROpIzCLL3uhsuM5e0vOehQeCSNTdPGAIxDKZnMkLuMgYs/VSe9MPJPrH6a3HalQ==
+	bh=4sD1ZkqiY2GZwKRYH85si4EbEJxtv2x2+CnSHPTE3I0=;
+	b=qrP3IO7k4U57Z2dQInvMWtUUpgE77CdGgmsmMEdNSMWlPPNEx3ot8iUrJrILtvlSlLsB
+	 Lb69hqPZ2hu5Qgnc765jscIqgbj4WyH1xanzvYxTLBJKgjeBYwnXR24MX39yo9Cwszl/W
+	 6yhQnQOPMOZ58j4WbZ51VkcZbIml6h+gTR9RZFZi9XfqJHhXaEXqDKkQahRnqjJak2KRt
+	 +V86GHzutQhOZEY/At4bC7cJi1nxgMHqoF5D/2cdo7HfMqYJOuWh5nyqJQLd5jjBQzfXN
+	 IktLw9mqf3yqKzXKPBzg1Pi38bPC4BUMwUoH7UNBjTf58pK2rI29STkk3kbup6nWFDg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PWP8gTOr;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iNqopRIP;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D409C606A686;
-	Fri, 27 Nov 2026 18:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38CF606A6A8;
+	Fri, 27 Nov 2026 18:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PWP8gTOr
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iNqopRIP
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795804775;
-	b=arirgCmXiWjDzERR+0mZNT9g6dIuLhhjXLlCTenGd+ene5kyudLP4pwZizcNu9XmuFWs
-	 0IAaD3zMlWe+mxYlKxAKMhG6BukgXPtTPaf4Hy58wkDn5kLK7KscMaQFrU4ohCXtVRvAs
-	 X5wLepmOEv6b5sPlJeRglq0/ME0STVkZ1DNNonq9eimkIMqIk6LtypnHt2PATA9sQ18ZZ
-	 /Ij1ncP0o9zPx0swNf2ee+ZXhIsvDLmn5iV4+htdh2QmznHd1ITnSjyopEzcL5PlIWxtn
-	 KL0MVWLi8VtKX5wbr8SXBT5LYYg8JQ3zF0uHyDTXtHfHKLIPlVkEBzvbHNsung0ycHg==
+	t=1795804776;
+	b=T6kM/31XxnHPCrTsRyaw2VUqlkwj7HCmgQvHBcLJWGYqoxd5RMpjHf2UG119xWtGbhV2
+	 8BEvD7Is2EeNXbhvDFcUrDkeJchsrVpqr+DGKtOse3IgpkLdK+sOSRxs3lIxqM1iUz0d7
+	 RG/w42hypPLI+qcXyUhB8J0vLtyiuKxxsPl6IAgwOYTXLSyvVpddGTjC0+NQFVetr4iCV
+	 N7OnTzKNhXOAy7crn48fXBnXlKbCBKj7K4wVWkO8Dh5XaFd7CBQzwbHjhApU765xRxpmx
+	 /pNR7H7Vp5IY8cOzRuulXxZcE8j12iBuGJ3KXmcZe9FESOqx1bqO77JhQu2bkMyJRXg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795804775;
+	c=relaxed/relaxed; t=1795804776;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=fN016Ani6Rp+Ym/1nwewB0a76sIl1PgTWVmpnxhEMU0=;
-	b=PmbeQeNiCU8qZU9yRLbu8L5/74dBturvgTBjgw7ubiiuWHAXn7rMFMzlRPCp8S240oT7
-	 YBVhd36EzgbARZ+d261FFAQFhHuK+xPtwgs8IZRO5eSaaFJqZrNuT5B2vmda72obk8dt1
-	 TYpL88PxUVtto7EbcqDx+XTnsTIH8SIYtLJ/uHxD2T5boMR/k2iPPo25fEM2GAF0j8Wjr
-	 Mz862Mfq6F0G9SwXQHdVZDzl+UNARA8FBR84VUUJ2vbhooS3zvY+CLSdTtGPMSts8HSxR
-	 lSz8W5vq1eod3aJi5Nf69onpXi9b7DWNz/mz/vwjhELApEgPIGlyG3bHSFeIBkcCv3w==
+	bh=4sD1ZkqiY2GZwKRYH85si4EbEJxtv2x2+CnSHPTE3I0=;
+	b=rX/B/kFn+NCGqV6vmOfAOpo1EYnlorEugmhYwoAUxiDib3iCUeAzpfp3oRsWS+Peimdm
+	 7d2iPYmuVLsrQRy+f1m6eWEwNxge3EVMktp16j0GNXjJn2iydS/de9F1nY/rk66BCnxK5
+	 A6a3eaXg9VcTCtvDHWEaUTSZOwO41DxsvEMl1r8YkisVImbU63dviqBjIc2AbqIz7lVPL
+	 JtfD7SmD0gd85xxmdOsyhr0FhFQgrTIfyH0AUfQhAsVz2FPtWTS1VuR0fejuAt70IWvUy
+	 yflHijfNz0gDSdHbnM/Dd2qk7C6kvmSdVq87Pac6Pt6rmeeRVGpKXH11Oc969P022FA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 1D99A1F0089C;
+	by smtp.kernel.org (Postfix) with ESMTPS id 40CF71F0089F;
 	Fri, 27 Nov 2026 18:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795804775;
-	bh=fN016Ani6Rp+Ym/1nwewB0a76sIl1PgTWVmpnxhEMU0=;
+	s=k20260515; t=1795804776;
+	bh=4sD1ZkqiY2GZwKRYH85si4EbEJxtv2x2+CnSHPTE3I0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=PWP8gTOrJBNebuvxiWXCiJJHjgRyEdsYzsaAwAZBGvCamWy5kc3QcdcCVFWoqHxNc
-	 yyRyksXJ/kb77aXw0nis+esRtFwkpVmdRddoPzPZKXIzcvEEX/9RjpAMaS+nctYkjJ
-	 kCXIGbUJKg+DCUXKcc/x5L58QZnmr9OLJX7Pk2ljQBX1VMKI7UEmg057yFe7CwMBEn
-	 hup3ZMs07kmLXaY6GDsLR92zKc78LLRwa8bzUjL5NoIw1ZeLrA6SfD27S5Ja/k2i/B
-	 bYoPwXb3dgNia9Qj0Q9NxPsSFL/18ND14iUwZ89X/kazViv51uYankIx0KpQh/mg7V
-	 1zJaFHIE7/OtA==
+	b=iNqopRIPJgVMOiqZVIW+V897XNJpNWiuxA1utVfzCzEFKPElYh+zSoJcpb/XmCJ+K
+	 w9HhRbts4Pb6VzmFyGZiXnlkYP1dhR05GeqoqMfeP4BUxFZqrxLVHM0qTrVh+6cnBX
+	 lqevjw50WudpnIuUYiIL/M+0WiZ3mEmL7E4lYHo5j4KaWJh39kEJruaWuO9WkTS9vK
+	 iabxZZzB5OoD4PtGJoItqMFJYgL+psr6ZryUCYQGbzlilc4Bj2F0Npve+4S2Etwy3J
+	 DQVsIcX3NbPU8fhzOmbw2hmZjEuwEvYaI5SO9+1NB8XMXpvqMrDprcCkoJdhxRl8ud
+	 m2hIbX7CN5TJQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id A23584DD2F;
+	by lkml.kernel.org (Postfix) with ESMTP id C1B614DD33;
 	Fri, 27 Nov 2026 18:39:24 +0000 (UTC)
 From: Venkat Yadlapati via B4 Relay <devnull+venkat.yadlapati.yahoo.com@kernel.org>
-Date: Sat, 28 Nov 2026 00:09:22 +0530
-Subject: [PATCH v5 02/11] soc: qcom: socinfo: Add SM8845 SoC ID
+Date: Sat, 28 Nov 2026 00:09:23 +0530
+Subject: [PATCH v5 03/11] dt-bindings: interrupt-controller: qcom,pdc:
+ Document Molokai PDC
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -83,7 +84,7 @@ List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261128-molokai-soc-v5-2-144801dfad7f@yahoo.com>
+Message-Id: <20261128-molokai-soc-v5-3-144801dfad7f@yahoo.com>
 References: <20261128-molokai-soc-v5-0-144801dfad7f@yahoo.com>
 In-Reply-To: <20261128-molokai-soc-v5-0-144801dfad7f@yahoo.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -98,11 +99,11 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  Venkat Yadlapati <venkat.yadlapati@yahoo.com>, 
  Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795804762; l=742;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795804762; l=994;
  i=venkat.yadlapati@yahoo.com; s=20261023; h=from:subject:message-id;
- bh=IRJIefuMwJxDPdNxVL+f0fcPDYIY2lpI0UcMgrvWU7E=;
- b=rzOeIMDInmH95/ptEtk74MoA4Czuoz+G/pEND5F/v1uxJwB4bckHOVKqHUpTUVGwuCY5n7vE+
- oOnS9vQ8HOAC6OOIL+oONg6J9K4MQzJg6NmJm+pR7lxQyvh6f6gZGyY
+ bh=AtXYB47jpEkNJ5+VdRoyyGnPME6veYsNpY8wyZYc4r8=;
+ b=/YghBFxFo22hA80zTV08iEOQ1Fp+D0q5+yLAS7pUKPRddRUw3V6wpPUUYXVYzYqw1WvsiPcmE
+ Rl7OWGNUIoxA2b+1QaX5CCAVusPKhh4h97mi+EAFpX+GACHuIL0/7rc
 X-Developer-Key: i=venkat.yadlapati@yahoo.com; a=ed25519;
  pk=e8KStCtEMvUP1Se/riB/KVnDAQFEVR2Dw2PcuA8/eME=
 X-Endpoint-Received: by B4 Relay for venkat.yadlapati@yahoo.com/20261023
@@ -113,26 +114,27 @@ Content-Transfer-Encoding: 7bit
 
 From: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 
-Add the SoC ID for SM8845, a variant of SM8850 (Kaanapali).
+Document the Power Domain Controller of the Qualcomm Molokai (SM8845) SoC,
+which maps one more range of interrupts than the Kaanapali one.
 
 Signed-off-by: Venkat Yadlapati <venkat.yadlapati@yahoo.com>
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- drivers/soc/qcom/socinfo.c | 1 +
+ Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-index 18105ddcf04d..718d1fa7e830 100644
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -541,6 +541,7 @@ static const struct soc_id soc_id[] = {
- 	{ qcom_board_id(QCS8275) },
- 	{ qcom_board_id(QCS9075) },
- 	{ qcom_board_id(QCS615) },
-+	{ qcom_board_id(SM8845) },
- 	{ qcom_board_id(SA8797P) },
- 	{ qcom_board_id(SM8975) },
- 	{ qcom_board_id(CQ7790M) },
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.yaml b/Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.yaml
+index 8401d3b48e0f..64de63b7a031 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.yaml
+@@ -33,6 +33,7 @@ properties:
+           - qcom,kuno-pdc
+           - qcom,maili-pdc
+           - qcom,milos-pdc
++          - qcom,molokai-pdc
+           - qcom,nord-pdc
+           - qcom,qcs615-pdc
+           - qcom,qcs8300-pdc
 
 -- 
 2.56.1
