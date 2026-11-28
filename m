@@ -1,79 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795811435;
-	b=aFm0pZW74KlGBZAKcLWmzO3un4oULl/+TDZQuyzYh+qmO5x6ydHvTGHAMWtwtlhGGfVX
-	 fILjwVlzEzFU6QlKpSU1JHvhVhepansHzzjlu7LGRjqIntMcgmesbzexe7+iujXSXmyVT
-	 qwRU9YmdFS2dcPoECjHig1eE7hh6g+pTu//kKlDVdmfm/X00gHpl40VbsovtOyEQXuPfW
-	 0jAZkA9NiBGKjKquE60NhJYqeweCOJ66CLZ9NqBx6c/IPusX9SrKL8SNcn5YXimYjOnOl
-	 Snd21BS9Ysca1ibxvegYSqPzagPSObayfu6l5D9JSWwIe/VqQi1HZUdSllYbKHCOQ3w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795811435;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=kTk8LQEMS4R5shZWeKU76miL+YW4AUSX5jvGj7Ee8CU=;
-	b=fBQxLX82K5CKK8qXOBNKOJRTMz1DQZoHBrIMTniAIE8sDQGxp2dWVzLIiPJBH6dKrayK
-	 jNxyBkcdzAN/j6zJWMrl+oTwa3qL6KDbuxiiq1HCbqOEDjSzkletZ8yCbrsf82Y908iNZ
-	 1csgmb8BYOmP2HFzTnFfq5a4zk5QUTKGzf15X5PP6+/yzU5JfCMfnqS6dxsCDrBvBy7Kg
-	 4H+sc7jtIeYgBgnt2EQLWDfRKKz3j7ezXYI9nEx5OoD84M+IgVnm3E5B4yZw+7/2d86Ox
-	 tZpabc3Dyj7fH7+6kYVZdfPAE7YpajGZYMZQe84Hr38olpp8e24lNNz5Qj3nxf8M40w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=REZxj8I3;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C956E606A321;
-	Fri, 27 Nov 2026 20:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=REZxj8I3
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795811435;
-	b=ASk1Ti2eVGQws25hRt2kZob05wxM50/lBJ+L5Hh7nwe4UxfltRyvBUtNK6yIDib9i8Rn
-	 l4a38S0v1epRrtKvd4vRGMOhGpiYlRX+V7C8I7MS6qW+bT+tcb9vE7mM8BMoZWW9MQeIf
-	 6t239iCVosgwFT17lqvIensab4iUdNZfXRFgoUtuHJlhNzzh3Kiy1RDgsQK111+gmmO23
-	 dzniJAx4D/r5RI5OrvYuG2CZ7gYN862kZJiTtqX1Phd6Zsx55DzB7ME2vKTbzSuO4A5IF
-	 a1oerFDbmvHqP/lTpEaOt/YMIrhj9jQA3cuGpEHeKoXLpnG1+Npt0cB9FBhLNF1Z1Vg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795811435;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=kTk8LQEMS4R5shZWeKU76miL+YW4AUSX5jvGj7Ee8CU=;
-	b=CpPeM+3MnvgAqmrP5jqnxjsjIeNPDrmcCtpJSewCD0GSPbSslyHUjFG6WX19HVah11kn
-	 nY0N+vcahEMwA3TzLxKiC8RBDn6NA5m4luuvMloT1RkJE6yfdeqfUGYOHiyGlFpPGqGec
-	 oot5ZF1gdmzILZVe2QUSOQ4cyNqHSES+U5xTGCAVnPrh9XiMnuzcFPwAcuD0VrmhPNivy
-	 8vbtl49laj+zdtMih5AwzskYwOkzWYiaIddARJCCmnXL9cMCQEGuFsGn7ABV9IfkjQIe6
-	 +OMGvBGYw/O36coWa40vMUu7CHHt40O343xRhDQP8Bj59Ynu7ruihWw9IbBGUmpQIlQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795840389;
+	b=RI8oFWstf/CfIRJUHK1LvOLTvlDL5kKaK3PNmRQB0vDSIekNxGrBkVaXgzFqRP7doHwH
+	 Fa3zNjoCgFBFTNt22te0gGUA7RTO0HtSrbvp2xxhKUQFKN7Duv7JfEg9uMqwuI6QlqVr5
+	 8+sN0fr7r2mgomj/76vmN7gXbmpZ7yMXr/ajYkpQ7AlzZ+upUwOCxON/zTCoscNmW2Als
+	 bSUe8mNLDbcu7y3452vYCRnNZKnon4MuqVmeevGKaZQgsnNyPJcfYOFzYM13qTNg3YtEW
+	 ttwkNjr+6BsLp5NVT6EL56Q652fdzrz8hzE07mRcOcxMm8k053g/BZ4aifTI56DHmRw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795840389;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:In-Reply-To:References:Content-Type:Date:
+	 Message-ID;
+	bh=qhf6HHYFUlV0Ii1kQze/CtNGoi88xb50T2RCDKewG6I=;
+	b=fYOKTstlWGCXw+Qean0CMarFSUQ93U5HH7MQBfwsVGPPG59LxYaT1EhM6Ex+nlgWYLKy
+	 zyCKqkbnBKIprT9ErLgJ5W+j1DMK5TYYMS/SMU6693lMyTn3rkwu+Z5wBokqR3SwNS9nN
+	 oiXeL09su8ZyJce2uMleq7zUIZlIwp//fjVZHFffEN1619kpNa/hWC82TgSUY09HwUVHG
+	 VAUtCeGclpIYRB4zvsUun+XaYNcQvvd8HfLQHhNsTXJegDp0DZlbx4bG8xr9AdPKIvdn0
+	 YvfEHWO9uxRV2Q7TV4M6ydOGgkeqqZ/WpjqoWkaDOKOGXv6NwRXrUB+pDIoxJhH4s6A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uwhFStPF;
+	arc=none smtp.remote-ip=209.85.216.47
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id DE0411F00897;
-	Fri, 27 Nov 2026 20:30:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795811435;
-	bh=kTk8LQEMS4R5shZWeKU76miL+YW4AUSX5jvGj7Ee8CU=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=REZxj8I3Vpd1FtDJgI+DEVNi8KTjoTYF1zYz0uJGIcCWq6hCEZHnZlt2Xfmgg2QNV
-	 WyGDWac96hI5ED29msftAJr0FxyKXfhzh7agqk9cvZyIUdXwrb6QeoLozMithWiBha
-	 lPCqi1E+dzuTAaOt5vRf9MriMzPyDjQKSWe9AlzUqiky7lzNbE7XWO2SXvIImozKFd
-	 ta22sfRObHnPfGK1G9jbCMcErmro+OHZd4Qu/l1H9vApfMSYY96LEeGGLdU9vfr+k5
-	 0H2ykUFwkQLeewIdKTGlJ1wSiCj/6TXN8+089aVwGi1lGX80hKWK432T4sLmZIJ9kh
-	 JCCvvoZXAzUAQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 6B1A64DD8F;
-	Fri, 27 Nov 2026 20:30:21 +0000 (UTC)
-From: Paul Sajna via B4 Relay <devnull+sajattack.postmarketos.org@kernel.org>
-Date: Fri, 27 Nov 2026 13:30:17 -0700
-Subject: [PATCH] arm64: dts: qcom: sdm845-lg-judyln: Set
- regulator-always-on for ibb
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF7E606A31C
+	for <phone-devel@vger.kernel.org>; Sat, 28 Nov 2026 04:33:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DF7E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uwhFStPF
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3b532f8a51eso630944a91.1
+        for <phone-devel@vger.kernel.org>; Fri, 27 Nov 2026 20:33:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795840388; x=1796445188; darn=vger.kernel.org;
+        h=message-id:date:content-type:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qhf6HHYFUlV0Ii1kQze/CtNGoi88xb50T2RCDKewG6I=;
+        b=uwhFStPFskqhXnoduK+N2QkfbdQ3l/s0yIwLSiv2B1bbsHnb1SuZ9x/ESxJ6Wyin0A
+         U6o2K2RLng7rfq03UE/m0LuQQhtvOb4Z2IvZgicQY+NfwriHtPj9dBT/M4dQzccZClZe
+         7LPfQXRKfjmJ2Xw8vijc5Zx6yQZAU9CcTt5m/Jxxk935hlUryaeUxec6KQCF7p5Ppmic
+         mCMn3dBYhl/rJDrZN5TbuKnNeA6dc8lBcNOl/Hwu8cQ8YLzgeUmS/qhSHK2GOVmvA2QH
+         AkJDK7H9T41lWqh7mt0x9hiJzliCJkpO+JdYxTfxMMjHdSlAswA9MiBc6UyTwsTuVoGX
+         jHMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795840388; x=1796445188;
+        h=message-id:date:content-type:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=qhf6HHYFUlV0Ii1kQze/CtNGoi88xb50T2RCDKewG6I=;
+        b=YxH59m2iWWBoLlO6/d7OnVa1z+7vJb291FsdU+nPDVt+e+m0ou136By3vH+NkURP3q
+         RRGPqdZ1ywBPZdqqcQKOT0pgmBHqngkeXAvHcItQc7S12rdzwvolxf1468isBxyRrY2p
+         ve5ZnKds9ndE16zpCcBEuZ0F9eLYv+cQM0ubS1aJOXqGvFwOmRAM+azbJ2G8jIJgTJL3
+         E/6by5GiXffEvOYq4ZYrJ7k8u3Br4Erx95Dl5KPvQjRavUzBqDIA6Xd79y8/40DanXbw
+         AUjwqvD6eZtvkGxrhjEp3/+fv2uivYrvTmGVahXufSx3iouJ/zqjCwv5V1wqekOSUiy8
+         9PyA==
+X-Forwarded-Encrypted: i=1; AL+hErGRzaqlZwN2NnOuDRTn6TOZH/wR3j0bmC24JzFkZz2POa4WZ0Cj1OfWbNbLO3/EKEewPBfphBtvuhcxVA==@vger.kernel.org
+X-Gm-Message-State: APuU4Z8DtwlSqh4GC8F0xJPYmTKM9HGCkMUZlbk3FmaX3lJ39w2XPrC3
+	0ed61ESBcwaCxRjf7McndrU9CEzZu+M+Derqs4EB5AUJqLivjgWJmOdw
+X-Gm-Gg: AZFdTZd2YJDV5WipmFom4k5eX5iGE5lSmYsX6blr7kUemBYNV2o9vaLo1+DqgxVe8z2
+	bdFcUausUTAOnC6V8lDrwmQbRRM318rZ9MreYR5A8CISjlq6uPpJCAE9hoSj5Tyx0gBoY7bOiE4
+	6wVCoJks9/kLGzEml/srgB6Z/cXtGKTnXdoMmmfzmSib2ItB09mcGqi5p4sfUSENhH+s2rxuHAY
+	qWM2EQiEM+qOccwAXZFQ/ZD3KMdCkrFXqvh7SZ3f3foU96paEXh4EsyzJsNHDAN+KehWNS3G8oQ
+	lbiYDPH7xHQA5cpbxm72zpIopLXFQhOJVXCGy52Y4ipUdWOFv6HfPGoAVW0ogjx09/JGJRsI8dZ
+	OiyMkHGfhMi0jkYYIPI2p6f4wSzvkL6TvH9vIga/sb5xEWfjWl49sxIzzmvWEzQbVg+66hgINoQ
+	gPJO3BeKTqT2sSgTGfbHL/ctkj/ld4bEZKQ59aHDNCbiRCVi5FCEvKTkaXLBop3rBX6KsJ2mZSo
+	vMB+jKPqZ4zrTNbSyeo8eWgmad7HzCWsfgmwJxwn1vx88zcRNEUrCrkPJffTOuFHBRzpl2ePDDg
+	U6TJKxGGziYxZOS7MEOKzxowZDB5kcKQmOm5ol5B1pjW3g2ipgYSX8fLuMjFec0Ciuc9ixjlHIY
+	=
+X-Received: by 2002:a17:90b:2648:b0:3ab:189b:6980 with SMTP id 98e67ed59e1d1-3b41c952ebdmr24822169a91.39.1795840388460;
+        Fri, 27 Nov 2026 20:33:08 -0800 (PST)
+Received: from mac.lan (114-45-156-18.dynamic-ip.hinet.net. [114.45.156.18])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b7d36bcsm17993882a91.3.2026.11.27.20.33.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 20:33:07 -0800 (PST)
+From: Ilia Snezhkov <iasnezhkov@gmail.com>
+To: Roman Vivchar <rva333@protonmail.com>
+Cc: matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ amergnat@baylibre.com, me@adomerle.pw, devicetree@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] soc: mediatek: mtk-pmic-pwrap: Add MT6789 support
+In-Reply-To: <czEp-CqZIp301roqRSqIALy9ubTnOg7uHv75zRifEAuhIS0f1zSU45eKzIC3fZfiUnaahQK6yVuQvthvHZOt267Mpt13X55ERh2A6HJRTic=@protonmail.com>
+References: <20261127030009.10572-1-iasnezhkov@gmail.com>
+ <20261127030009.10572-4-iasnezhkov@gmail.com> <czEp-CqZIp301roqRSqIALy9ubTnOg7uHv75zRifEAuhIS0f1zSU45eKzIC3fZfiUnaahQK6yVuQvthvHZOt267Mpt13X55ERh2A6HJRTic=@protonmail.com>
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 28 Nov 2026 12:33:01 +0800
+Message-ID: <179584038151.67185.14057994923136112895@gmail.com>
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Post: <mailto:phone-devel@vger.kernel.org>
@@ -82,85 +100,44 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:phone-devel+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261127-judyln-ibb-always-on-v1-1-9e687e625afd@postmarketos.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQ6CMBBA4auQWTsJrfwYr2JctJ0Bh5BiOiIQw
- t2tuvwW7+2gnIQVrsUOid+iMsUMcyogPFzsGYWywZa2Mca2OMy0jRHFe3Tj4jbFKSK1oaJwqc5
- U15DTZ+JO1t/2dv9bZz9weH1fcBwf8lCF1HgAAAA=
-X-Change-ID: 20261127-judyln-ibb-always-on-d7c4dc843d55
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- stable@vger.kernel.org, Paul Sajna <sajattack@postmarketos.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795811420; l=1748;
- i=sajattack@postmarketos.org; s=20250413; h=from:subject:message-id;
- bh=+pKkKHybW1iJ5KMQ7H1eBl6Hh5TX6R/S9mAl8MBd+AI=;
- b=R6MUGlBNXM9ybJeDKoWVCg7V9gzifYsRpCk6S/JdVlEeqn1bDMSytJ4hft/H4CqyzVFbVPQn/
- AlXOFCzYmiQAy+iJEpJmwiIT1s96rVTdTgST52bCX5R4aOhMuE2iwEv
-X-Developer-Key: i=sajattack@postmarketos.org; a=ed25519;
- pk=ZFE/UBqiz9Wr8b+zBL27opOjw5x5ket5JFqks/VQGeM=
-X-Endpoint-Received: by B4 Relay for sajattack@postmarketos.org/20250413
- with auth_id=1505
-X-Original-From: Paul Sajna <sajattack@postmarketos.org>
-Reply-To: sajattack@postmarketos.org
-Content-Transfer-Encoding: 7bit
 
-From: Paul Sajna <sajattack@postmarketos.org>
+Hi Roman,
 
-After resuming from long periods with the screen powered off,
-the display develops hazy shadowy patterns at the edges, that may
-even persist full reboots. It seems the current setup is temporarily
-damaging the display.
+On Fri, 27 Nov 2026 18:12:33 +0000, Roman Vivchar wrote:
+> I don't see INT_FLG and INT_CLR in the 5.10 kernel [1]. Where did you
+> find them?
 
-This fix was previously proposed in [1], but rejected due to
-battery/power concerns.
+They come from the MediaTek PMIF bank 3 interrupt register layout that
+MT6789 shares with MT6833/MT6853/MT8195:
 
-Since then, I have determined it matches the behaviour of the vendor
-kernel. See downstream Lineage kernel [2].
+- In mainline drivers/spmi/spmi-mtk-pmif.c (mt8195_regs[]) and
+  drivers/soc/mediatek/mtk-pmic-wrap.c (mt8195_regs[]), every PMIF
+  offset matches MT6789 (INIT_DONE=0x0, TIMER_EN=0x3E4,
+  WACS2=0x880..0x8A8, bank 3 IRQ enable=0x450), and bank 3's status
+  and clear registers sit at +0x8 / +0xC:
+    PMIF_IRQ_EVENT_EN_3 / PWRAP_INT1_EN  = 0x450
+    PMIF_IRQ_FLAG_3     / PWRAP_INT1_FLG = 0x458
+    PMIF_IRQ_CLR_3      / PWRAP_INT1_CLR = 0x45C
+- The same 5.10 tree you linked also has this exact layout in
+  drivers/spmi/spmi-mtk-pmif-core.c (mt6833_regs[] lines 167-169 and
+  mt6xxx_regs[] lines 119-121, where mt6833_regs[] in mtk-pmic-wrap.c
+  is identical to mt6789_regs[]).
 
-I confirmed the linked line 816 that skips panel power-off is run
-via adb logcat.
+Omitting PWRAP_INT_FLG and PWRAP_INT_CLR in the 5.10 BSP's mt6789_regs[]
+leaves both entries zero-initialized (offset 0x0 = PWRAP_INIT_DONE2), so
+if any interrupt enabled by PWRAP_INT_EN (0x450, mask 0x180000) fires,
+pwrap_interrupt() reads/writes 0x0 instead of clearing bank 3 and leaves
+the level-high IRQ asserted.
 
-```
-[Display][lge-dsi-panel:dsi_panel_power_off:816] [Display] Do not control LCD powers for LPWG mode
-```
-was logged.
+> Also, the series doesn't apply on next-20261125. It might be due to
+> recent mt6572 changes. Please rebase.
 
-[1]: https://lore.kernel.org/linux-arm-msm/20250916-judyln-dts-v2-13-5e16e60263af@postmarketos.org/#t
-[2]: https://github.com/LineageOS/android_kernel_lge_sdm845/blob/16c83a1f965b45dc6707a5d5afdb0904b419aff2/drivers/gpu/drm/msm/lge/lge_dsi_panel.c#L816
+Confirmed: the conflicts are from the mt6572 commits and the
+dev_err_probe() conversion in pwrap_probe() on linux-next. I will rebase
+the series onto linux-next, carry your Reviewed-by on patch 1/3, and
+send v5.
 
-Fixes: 2e7cdd400b6a ("arm64: dts: qcom: sdm845-lg-judyln: Add lab/ibb")
-
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
----
- arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-index 349faa123ff1..008c34fb1644 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-judyln.dts
-@@ -120,6 +120,7 @@ &ibb {
- 	regulator-over-current-protection;
- 	regulator-pull-down;
- 	regulator-soft-start;
-+	regulator-always-on;
- 	qcom,discharge-resistor-kohms = <300>;
- };
- 
-
----
-base-commit: a9c48428cbd8d96b26f92631d0db6f8519c5fcc5
-change-id: 20261127-judyln-ibb-always-on-d7c4dc843d55
+Thanks for reviewing!
 
 Best regards,
---  
-Paul Sajna <sajattack@postmarketos.org>
-
-
+Ilia
